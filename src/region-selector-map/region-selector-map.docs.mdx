@@ -1,0 +1,95 @@
+---
+description: 'A Map component to select regions.'
+labels: ['GIS', 'Geospatial', 'Map', 'Mapbox', 'Agriculture', 'DST']
+---
+
+import { RegionSelectorMap } from './region-selector-map';
+
+## React Component for rendering an interactive Map
+
+A Map component made using Mapbox GL.
+
+### List of component properties:
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| `selectorFunction` | function | callback function to set the selected region's object as its value |
+| `selectedState` | string | initial selected state to highlight on the map |
+| `availableStates` | array | available states that will be rendered on map |
+| `initWidth` | string | map width in css format string |
+| `initHeight` | string | map height in css format string |
+| `initLon` | float | initial longitude of window center at the time of loading |
+| `initLat` | float | initial latitude of window center at the time of loading |
+| `initStartZoom` | float | initial zoom level at the time of loading. higher values are zoomed in and vise versa |
+
+
+### Component usage
+
+```js
+<RegionSelectorMap
+  selectorFunction={() => {}}
+  selectedState=""
+  availableStates={[]}
+  initWidth="400px"
+  initHeight="300px"
+  initLon={-80.16}
+  initLat={37.75}
+  initStartZoom={10}
+/>
+```
+
+### Using props to customize the components
+
+Modify the text to see it change live:
+
+```js live
+<RegionSelectorMap
+  selectorFunction={() => {}}
+  selectedState=""
+  availableStates={[
+    "Alabama",
+    "Arkansas",
+    "Connecticut",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Illinois",
+    "Indiana",
+    "Iowa",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Maine",
+    "Maryland",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Missouri",
+    "Nebraska",
+    "New Hampshire",
+    "New Jersey",
+    "New York",
+    "North Carolina",
+    "North Dakota",
+    "Ohio",
+    "Oklahoma",
+    "Ontario",
+    "Pennsylvania",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Vermont",
+    "Virginia",
+    "West Virginia",
+    "Wisconsin"
+  ]}
+  initWidth="400px"
+  initHeight="300px"
+  initLon={-95}
+  initLat={43}
+  initStartZoom={2}
+/>
+```
