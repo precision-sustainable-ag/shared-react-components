@@ -1,13 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
+import PropTypes, { string } from "prop-types";
 import styles from "./map.module.scss";
 import boundaries from "./us_states-ca_ab-ca_on.json";
 import "./mapbox-gl.css";
 
 // source of us-canada.geojson:
 // https://cartographyvectors.com/map/793-combined-us-canada-with-states-provinces
-
-// mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
 
 let hoveredStateId = null;
 let selectedStateId = null;
@@ -259,6 +258,45 @@ const RegionSelectorMap = ({
       </div>
     </>
   );
+};
+
+RegionSelectorMap.propTypes = {
+  /**
+   * callback function to set the selected region's object as its value
+   */
+  selectorFunction: PropTypes.func,
+  /**
+   * initial selected state to highlight on the map
+   */
+  selectedState: PropTypes.string,
+  /**
+   * available states that will be rendered on map
+   */
+  availableStates: PropTypes.arrayOf(string),
+  /**
+   * map width in css format string
+   */
+  initWidth: PropTypes.string,
+  /**
+   * map height in css format string
+   */
+  initHeight: PropTypes.string,
+  /**
+   * initial longitude of window center at the time of loading
+   */
+  initLon: PropTypes.number,
+  /**
+   * initial latitude of window center at the time of loading
+   */
+  initLat: PropTypes.number,
+  /**
+   * initial zoom level at the time of loading. higher values are zoomed in and vise versa
+   */
+  initStartZoom: PropTypes.number,
+  /**
+   * mapbox token
+   */
+  mapBoxToken: PropTypes.string,
 };
 
 export { RegionSelectorMap };
