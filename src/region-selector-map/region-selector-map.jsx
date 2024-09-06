@@ -22,7 +22,7 @@ const RegionSelectorMap = ({
   initLon = -95,
   initLat = 40,
   initStartZoom = 2,
-  mapBoxToken,
+  mapboxToken,
 }) => {
   const [hoveredStateName, setHoveredStateName] = useState("");
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -31,7 +31,7 @@ const RegionSelectorMap = ({
   const mapContainer = useRef();
 
   useEffect(() => {
-    mapboxgl.accessToken = mapBoxToken;
+    mapboxgl.accessToken = mapboxToken;
   }, []);
 
   useEffect(
@@ -296,7 +296,7 @@ RegionSelectorMap.propTypes = {
   /**
    * mapbox token
    */
-  mapBoxToken: PropTypes.string,
+  mapboxToken: PropTypes.string,
 };
 
 export { RegionSelectorMap };

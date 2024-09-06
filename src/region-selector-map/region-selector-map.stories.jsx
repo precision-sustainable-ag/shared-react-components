@@ -4,9 +4,6 @@ import { RegionSelectorMap } from "./region-selector-map";
 const meta = {
   component: RegionSelectorMap,
   tags: ["autodocs"],
-  parameters: {
-    layout: "centered",
-  },
 };
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -62,7 +59,7 @@ export const BasicMap = {
     initLon: -95,
     initLat: 40,
     initStartZoom: 2,
-    mapBoxToken: mapboxToken,
+    mapboxToken: mapboxToken,
   },
 };
 
@@ -115,6 +112,6 @@ export const WithInitRegionMap = {
     initLon: -95,
     initLat: 40,
     initStartZoom: 2,
-    mapBoxToken: mapboxToken,
+    mapboxToken: mapboxToken,
   },
 };

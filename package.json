@@ -26,6 +26,10 @@
     "storybook": "^8.2.9"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+    "@turf/area": "^7.1.0",
+    "@turf/centroid": "^7.1.0",
     "mapbox-gl": "^3.6.0"
   }
 }
