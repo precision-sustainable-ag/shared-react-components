@@ -4,7 +4,7 @@ import MapboxDraw from "@mapbox/mapbox-gl-draw";
 import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
 import area from "@turf/area";
 import centroid from "@turf/centroid";
-import PropTypes, { string } from "prop-types";
+import PropTypes, { object } from "prop-types";
 
 import { geocodeReverse, coordinatesGeocoder } from "./helpers";
 
@@ -480,7 +480,7 @@ Map.propTypes = {
   /**
    * initial features or polygons to draw on the map in geojson format
    */
-  initFeatures: PropTypes.arrayOf(string),
+  initFeatures: PropTypes.arrayOf(object),
   /**
    * map width in css format string
    */

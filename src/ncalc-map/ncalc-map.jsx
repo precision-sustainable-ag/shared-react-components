@@ -7,7 +7,7 @@ import area from "@turf/area";
 import centroid from "@turf/centroid";
 import turf from "turf";
 import chroma from "chroma-js";
-import PropTypes, { string } from "prop-types";
+import PropTypes, { object } from "prop-types";
 
 import { geocodeReverse, coordinatesGeocoder } from "./helpers";
 import RasterTools from "./raster-tools";
@@ -717,7 +717,7 @@ NcalcMap.propTypes = {
   /**
    * initial features or polygons to draw on the map in geojson format
    */
-  initFeatures: PropTypes.arrayOf(string),
+  initFeatures: PropTypes.arrayOf(object),
   /**
    * map width in css format string
    */
