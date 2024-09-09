@@ -4,6 +4,11 @@ import { RegionSelectorMap } from "./region-selector-map";
 const meta = {
   component: RegionSelectorMap,
   tags: ["autodocs"],
+  argTypes: {
+    mapboxToken: {
+      table: { disable: true },
+    },
+  },
 };
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;

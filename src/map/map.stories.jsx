@@ -4,6 +4,11 @@ import { Map } from "./map";
 const meta = {
   component: Map,
   tags: ["autodocs"],
+  argTypes: {
+    mapboxToken: {
+      table: { disable: true },
+    },
+  },
 };
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
