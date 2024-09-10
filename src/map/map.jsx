@@ -491,18 +491,30 @@ Map.propTypes = {
   initHeight: PropTypes.string,
   /**
    * map initial address string shown in searchbar
+   *
+   * **This prop only applies when the component initially mounts,
+   * any subsequent updates will not update the component.**
    */
   initAddress: PropTypes.string,
   /**
    * initial longitude of window center at the time of loading
+   *
+   * **This prop only applies when the component initially mounts,
+   * any subsequent updates will not update the component.**
    */
   initLon: PropTypes.number,
   /**
    * initial latitude of window center at the time of loading
+   *
+   * **This prop only applies when the component initially mounts,
+   * any subsequent updates will not update the component.**
    */
   initLat: PropTypes.number,
   /**
    * initial zoom level at the time of loading. higher values are zoomed in and vise versa
+   *
+   * **This prop only applies when the component initially mounts,
+   * any subsequent updates will not update the component.**
    */
   initStartZoom: PropTypes.number,
   /**
@@ -515,6 +527,9 @@ Map.propTypes = {
   initMaxZoom: PropTypes.number,
   /**
    * if address search bar is enabled
+   *
+   * **==All the boolean props== only applies when the component initially mounts,
+   * any subsequent updates will not update the component.**
    */
   hasSearchBar: PropTypes.bool,
   /**
