@@ -27,39 +27,46 @@ const RegionSelectorMap = ({
   const [hoveredStateName, setHoveredStateName] = useState("");
   const [mapLoaded, setMapLoaded] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [mapError, setMapError] = useState(false);
   const map = useRef();
   const mapContainer = useRef();
 
   useEffect(() => {
     mapboxgl.accessToken = mapboxToken;
-  }, []);
+  }, [mapboxToken]);
 
-  useEffect(
-    () => () => {
-      hoveredStateId = null;
-      selectedStateId = null;
-      boundaryData = null;
-      availableData = null;
-    },
-    []
-  );
+  useEffect(() => () => {
+    hoveredStateId = null;
+    selectedStateId = null;
+    boundaryData = null;
+    availableData = null;
+  }, []);
 
   useEffect(() => {
     if (!boundaryData) {
-      // Fetch the data and sort based on availableStates prop
       fetch(boundaries)
         .then((r) => r.text())
         .then((text) => {
-          const json = boundaries;
-          boundaryData = json;
-          availableData = {
-            ...json,
-            features: json.features.filter(
-              (data) =>
-                availableStates.indexOf(data.properties.STATE_NAME) !== -1
-            ),
-          };
-          setDataLoaded(true);
+          try {
+            const json = boundaries;
+            boundaryData = json;
+            availableData = {
+              ...json,
+              features: json.features.filter(
+                (data) => availableStates.indexOf(data.properties.STATE_NAME) !== -1
+              ),
+            };
+            console.log("Boundary data loaded:", boundaryData);
+            console.log("Available data:", availableData);
+            setDataLoaded(true);
+          } catch (error) {
+            console.error("Error processing boundary data:", error);
+            setMapError(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching boundary data:", error);
+          setMapError(true);
         });
     } else {
       availableData = {
@@ -68,6 +75,7 @@ const RegionSelectorMap = ({
           (data) => availableStates.indexOf(data.properties.STATE_NAME) !== -1
         ),
       };
+      console.log("Updated available data:", availableData);
       if (map.current) {
         const source = map.current.getSource("states");
         if (source) source.setData(availableData);
@@ -77,9 +85,7 @@ const RegionSelectorMap = ({
   }, [availableStates]);
 
   useEffect(() => {
-    // Whenever the selectedState prop changed, automatically select it on the map.
-    if (mapLoaded) {
-      // if there are selected states, unselect it first
+    if (mapLoaded && selectedState) {
       map.current.setFeatureState(
         { source: "states", id: selectedStateId },
         { click: false }
@@ -100,11 +106,11 @@ const RegionSelectorMap = ({
         { click: true }
       );
     }
-  }, [selectedState, mapLoaded]);
+  }, [selectedState, mapLoaded, selectorFunction]);
 
   useEffect(() => {
-    //// MAP CREATE
     if (dataLoaded) {
+      console.log("Initializing map");
       var Map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/streets-v12",
@@ -115,25 +121,15 @@ const RegionSelectorMap = ({
         projection: "albers",
       });
       map.current = Map;
-      map.current.on("load", () => {
-        // remove unnecessary labels: country labels
-        Object.values(map.current.style._layers).forEach((l) => {
-          if (l.type == "symbol" && l.id !== "state-label")
-            map.current.setLayoutProperty(l.id, "visibility", "none");
-        });
-        Object.values(map.current.style._layers).forEach((l) => {
-          if (l.type == "line")
-            map.current.setLayoutProperty(l.id, "visibility", "none");
-        });
 
-        // Add a data source containing GeoJSON data.
+      map.current.on("load", () => {
+        console.log("Map loaded");
         map.current.addSource("states", {
           type: "geojson",
           data: availableData,
         });
 
-        // The feature-state dependent fill-opacity expression will render the hover effect
-        // when a feature's hover state is set to true.
+        // Add state fills layer
         map.current.addLayer({
           id: "state-fills",
           type: "fill",
@@ -165,8 +161,7 @@ const RegionSelectorMap = ({
           },
         });
 
-        // When the user moves their mouse over the state-fill layer, we'll update the
-        // feature state for the feature under the mouse.
+        // Add hover event listeners
         map.current.on("mousemove", "state-fills", (e) => {
           if (e.features.length > 0) {
             if (hoveredStateId !== null) {
@@ -184,7 +179,7 @@ const RegionSelectorMap = ({
           }
         });
 
-        map.current.on("mouseleave", "state-fills", (e) => {
+        map.current.on("mouseleave", "state-fills", () => {
           if (hoveredStateId !== null) {
             map.current.setFeatureState(
               { source: "states", id: hoveredStateId },
@@ -195,48 +190,64 @@ const RegionSelectorMap = ({
           setHoveredStateName("");
         });
 
+        // Add click event listener
         map.current.on("click", "state-fills", (e) => {
-          map.current.setFeatureState(
-            { source: "states", id: selectedStateId },
-            { click: false }
-          );
-          selectedStateId = e.features[0].id;
-
-          if (boundaryData && boundaryData.features) {
-            let selectedFeature = boundaryData.features.filter(
-              (el) => el.id === selectedStateId
+          if (e.features.length > 0) {
+            const clickedState = e.features[0];
+            selectorFunction(clickedState);
+            if (selectedStateId !== null) {
+              map.current.setFeatureState(
+                { source: "states", id: selectedStateId },
+                { click: false }
+              );
+            }
+            selectedStateId = clickedState.id;
+            map.current.setFeatureState(
+              { source: "states", id: selectedStateId },
+              { click: true }
             );
-            if (selectedFeature.length > 0)
-              selectedFeature = selectedFeature[0];
-            selectorFunction(selectedFeature);
           }
-          map.current.setFeatureState(
-            { source: "states", id: selectedStateId },
-            { click: true }
-          );
         });
 
-        // Change the cursor to a pointer when the mouse is over the places layer.
+        // Change cursor to pointer when hovering over states
         map.current.on("mouseenter", "state-fills", () => {
           map.current.getCanvas().style.cursor = "pointer";
-          map.current.style.cursor = "pointer";
         });
 
-        // Change it back to a pointer when it leaves.
         map.current.on("mouseleave", "state-fills", () => {
           map.current.getCanvas().style.cursor = "";
         });
-        // set the map loaded status
+
         if (!mapLoaded) setMapLoaded(true);
       });
+
+      map.current.on("error", (e) => {
+        console.error("Map load error:", e);
+        setMapError(true);
+        setMapLoaded(true);
+      });
+
+      const loadTimeout = setTimeout(() => {
+        if (!mapLoaded) {
+          console.warn("Map load timeout");
+          setMapLoaded(true);
+        }
+      }, 5000);
+
+      return () => clearTimeout(loadTimeout);
     }
-  }, [dataLoaded]);
+  }, [dataLoaded, initLon, initLat, initStartZoom]);
 
   return (
     <>
-      {!mapLoaded && (
+      {!mapLoaded && !mapError && (
         <div className={styles.loadingContainer}>
           <div className={styles.loading}>Loading . . .</div>
+        </div>
+      )}
+      {mapError && (
+        <div className={styles.errorContainer}>
+          <div className={styles.error}>Error loading map</div>
         </div>
       )}
       <div className={styles.wrapper}>
