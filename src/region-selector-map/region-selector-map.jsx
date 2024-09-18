@@ -44,30 +44,17 @@ const RegionSelectorMap = ({
 
   useEffect(() => {
     if (!boundaryData) {
-      fetch(boundaries)
-        .then((r) => r.text())
-        .then((text) => {
-          try {
-            const json = boundaries;
-            boundaryData = json;
-            availableData = {
-              ...json,
-              features: json.features.filter(
-                (data) => availableStates.indexOf(data.properties.STATE_NAME) !== -1
-              ),
-            };
-            console.log("Boundary data loaded:", boundaryData);
-            console.log("Available data:", availableData);
-            setDataLoaded(true);
-          } catch (error) {
-            console.error("Error processing boundary data:", error);
-            setMapError(true);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching boundary data:", error);
-          setMapError(true);
-        });
+      const json = boundaries;
+      boundaryData = json;
+      availableData = {
+        ...json,
+        features: json.features.filter(
+          (data) => availableStates.indexOf(data.properties.STATE_NAME) !== -1
+        ),
+      };
+      console.log("Boundary data loaded:", boundaryData);
+      console.log("Available data:", availableData);
+      setDataLoaded(true);
     } else {
       availableData = {
         ...boundaryData,
