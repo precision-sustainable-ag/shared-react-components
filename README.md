@@ -8,10 +8,8 @@ This repository contains a collection of reusable React components which is used
 
 ## Table of Contents:
 
-- [PSA Shared Components Library](#psa-shared-components-library)
-  - [Table of Contents:](#table-of-contents)
-    - [Setup](#setup)
-    - [Development](#development)
+- [Setup](#setup)
+- [Development](#development)
 
 ### Setup
 
@@ -20,8 +18,8 @@ This repository contains a collection of reusable React components which is used
 First, clone the repository to your local machine:
 
 ```
-git clone https://github.com/username/repository-name.git
-cd repository-name
+git clone https://github.com/precision-sustainable-ag/shared-react-components.git
+cd shared-react-components
 ```
 
 2. Install Dependencies
