@@ -95,7 +95,15 @@ export const PSAButton = ({
 
 
 PSAButton.propTypes = {
+  /**
+   * The text displayed on the button.
+   */
   title: PropTypes.string,
+  
+  /**
+   * The type of button to render, affecting its styling and behavior.
+   * Options include 'LightButton', 'PillButton', 'ValuesChanged', 'ModalLink', or 'ToggleOptions'.
+   */
   buttonType: PropTypes.oneOf([
     'LightButton',
     'PillButton',
@@ -103,7 +111,20 @@ PSAButton.propTypes = {
     'ModalLink',
     'ToggleOptions'
   ]),
+  
+  /**
+   * Indicates whether the button is currently selected.
+   */
   selected: PropTypes.bool,
+  
+  /**
+   * If true, the button will be rendered with a transparent background.
+   */
   transparent: PropTypes.bool,
+  
+  /**
+   * Callback function to handle click events on the button.
+   */
   onClick: PropTypes.func,
 };
+
