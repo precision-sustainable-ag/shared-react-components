@@ -73,13 +73,13 @@ const StyledButton = styled(Button, {
   }),
 }));
 
-export function PSAButton({
+export const PSAButton = ({
   title = "",
   buttonType = "LightButton",
   selected = false,
   transparent = false,
   onClick = () => {},
-}) {
+}) => {
   return (
     <StyledButton
       buttonType={buttonType}
@@ -90,7 +90,9 @@ export function PSAButton({
       {title}
     </StyledButton>
   );
-}
+};
+
+
 
 PSAButton.propTypes = {
   title: PropTypes.string,
