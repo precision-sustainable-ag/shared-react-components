@@ -110,16 +110,6 @@ const RegionSelectorMap = ({
       });
       map.current = Map;
       map.current.on("load", () => {
-        // remove unnecessary labels: country labels
-        Object.values(map.current.style._layers).forEach((l) => {
-          if (l.type == "symbol" && l.id !== "state-label")
-            map.current.setLayoutProperty(l.id, "visibility", "none");
-        });
-        Object.values(map.current.style._layers).forEach((l) => {
-          if (l.type == "line")
-            map.current.setLayoutProperty(l.id, "visibility", "none");
-        });
-
         // Add a data source containing GeoJSON data.
         map.current.addSource("states", {
           type: "geojson",
