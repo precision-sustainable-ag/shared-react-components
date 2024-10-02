@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 3000",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "create-new-component": "node ./utils/create-new-component"
   },
   "keywords": [],
   "author": "",
