@@ -1,5 +1,5 @@
 import React from "react";
-import { PSATextField } from "./textfeild";
+import { PSATextField } from "./textfield";
 
 const meta = {
   component: PSATextField,
