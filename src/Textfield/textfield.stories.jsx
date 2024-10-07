@@ -6,45 +6,48 @@ const meta = {
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: `This is a custom TextField component based on MUI's \`TextField\`. 
+        It Inherits all [MUI TextField props](https://mui.com/material-ui/api/text-field/) 
+        and can be styled as needed.`,
+      },
+    },
   },
 };
 
 export default meta;
 
 export const DefaultTextField = {
-  args: {
-    style: {},
-    placeholder: "Enter text here...",
-    multiline: false,
-    variant: "outlined",
-    fullWidth: true,
-    minRows: 1,
-    onChange: (e) => console.log(e.target.value), // Example onChange function
-    autoFocus: false,
-    error: false,
-    value: "",
-    InputProps: {},
-    color: "primary",
-    label: "Sample Label",
-    onChangeCapture: (e) => console.log("Change captured:", e.target.value),
-  },
+  render: () => (
+    <PSATextField
+      placeholder="Enter text here..."
+      variant="outlined"
+      fullWidth
+      minRows={1}
+      onChange={(e) => console.log(e.target.value)}
+      value=""
+      color="primary"
+      label="Sample Label"
+      onChangeCapture={(e) => console.log("Change captured=", e.target.value)}
+    />
+  ),
 };
 
 export const MultilineTextField = {
-  args: {
-    style: {},
-    placeholder: "Enter multiline text...",
-    multiline: true,
-    variant: "outlined",
-    fullWidth: true,
-    minRows: 3,
-    onChange: (e) => console.log(e.target.value),
-    autoFocus: false,
-    error: false,
-    value: "",
-    InputProps: {},
-    color: "primary",
-    label: "Multiline Label",
-    onChangeCapture: (e) => console.log("Change captured:", e.target.value),
-  },
+  render: () => (
+    <PSATextField
+      placeholder="Enter multiline text..."
+      multiline
+      variant="outlined"
+      fullWidth
+      minRows={3}
+      onChange={(e) => console.log(e.target.value)}
+      autoFocus
+      value=""
+      color="primary"
+      label="Multiline Label"
+      onChangeCapture={(e) => console.log("Change captured:", e.target.value)}
+    />
+  ),
 };
