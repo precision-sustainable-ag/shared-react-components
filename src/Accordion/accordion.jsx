@@ -85,53 +85,53 @@ export const PSAAccordion = ({
   );
 };
 
-// PropTypes for better type checking
+/** PropTypes for better type checking */
 PSAAccordion.propTypes = {
-  // Accordion Props
-  // The type of accordion
+  /** Accordion Props */
+  /** The type of accordion */
   accordionType: PropTypes.oneOf([
     '',
     'SheetReferences'
   ]),
-  // Whether the accordion is expanded at the start
+  /** Whether the accordion is expanded at the start */
   defaultExpanded: PropTypes.bool,
-  // Whether the accordion is expanded or not
+  /** Whether the accordion is expanded or not */
   expanded: PropTypes.bool,
-  // the testing attribute of the accordion
+  /** The testing attribute of the accordion */
   accordionDataTest: PropTypes.string,
-  // The function activated when the accordion changes
+  /** The function activated when the accordion changes */
   onChange: PropTypes.func,
   
-  // Accordion Summary Props
-  // The content in the accordion summary
+  /** Accordion Summary Props */
+  /** The content in the accordion summary */
   summaryContent: PropTypes.node,
-  // The expand icon for the accordion summary
+  /** The expand icon for the accordion summary */
   summaryExpandIcon: PropTypes.node,
-  // The sx that is passed to the accordion summary
+  /** The sx that is passed to the accordion summary */
   summarySx: PropTypes.object,
-  // the testing attribute of the accordion summary
+  /** The testing attribute of the accordion summary */
   summaryDataTest: PropTypes.string,
-  // The type of the accordion summary
+  /** The type of the accordion summary */
   summaryType: PropTypes.oneOf([
     '',
     'NRCSAccordionSummary'
   ]),
-  // The theme of the accordion summary
+  /** The theme of the accordion summary */
   summaryTheme: PropTypes.object,
 
-  // The divider between the accordion summary and details
+  /** The divider between the accordion summary and details */
   divider: PropTypes.node,
 
-  // Accordion Content Props
-  // The content in the accordion details
+  /** Accordion Content Props */
+  /** The content in the accordion details */
   detailsContent: PropTypes.node,
-  // the testing attribute of the accordion details
+  /** The testing attribute of the accordion details */
   detailsDataTest: PropTypes.string,
   detailsType: PropTypes.oneOf([
     '',
     'NRCSAccordionDetails'
   ]),
-  // The type of the accordion summary
+  /** The type of the accordion summary */
   detailsTheme: PropTypes.object,
 };
 
