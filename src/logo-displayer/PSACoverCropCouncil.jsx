@@ -1,7 +1,8 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 
-const PSACoverCropCouncil = ({
-  councilShorthandRedux,
+export const PSALogoDisplayer = ({
+  council,
   alt,
   style,
 }) => {
@@ -11,7 +12,7 @@ const PSACoverCropCouncil = ({
   // useEffect to update favicon
   useEffect(() => {
     if (faviconRef.current) {
-      switch (councilShorthandRedux) {
+      switch (council) {
         case 'NECCC':
           faviconRef.current.href = 'src/logo-displayer/assets/neccc-favicon.ico';
           break;
@@ -26,12 +27,12 @@ const PSACoverCropCouncil = ({
           break;
       }
     }
-  }, [councilShorthandRedux]);
+  }, [council]);
 
   // useEffect to update logo image
   useEffect(() => {
     if (logoRef.current) {
-      switch (councilShorthandRedux) {
+      switch (council) {
         case 'NECCC':
           logoRef.current.src = 'src/logo-displayer/assets/neccc_wide_logo_color_web.jpg';
           break;
@@ -46,7 +47,7 @@ const PSACoverCropCouncil = ({
           break;
       }
     }
-  }, [councilShorthandRedux]);
+  }, [council]);
 
   return (
     <img
@@ -57,4 +58,8 @@ const PSACoverCropCouncil = ({
   );
 };
 
-export default PSACoverCropCouncil;
+PSALogoDisplayer.propTypes = {
+  council: PropTypes.string,
+  alt: PropTypes.string,
+  style: PropTypes.object
+};

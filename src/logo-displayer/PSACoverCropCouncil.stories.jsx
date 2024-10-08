@@ -1,12 +1,12 @@
 import React from 'react';
-import PSACoverCropCouncil from './PSACoverCropCouncil';
+import { PSALogoDisplayer } from './PSACoverCropCouncil';
 
 const meta = {
-  title: 'PSACoverCropCouncil',
-  component: PSACoverCropCouncil,
+  title: 'PSALogoDisplayer',
+  component: PSALogoDisplayer,
   tags: ['autodocs'],
   argTypes: {
-    councilShorthandRedux: {
+    council: {
       control: 'select',
       options: ['NECCC', 'SCCC', 'MCCC', 'PSA'], // Dropdown for the councilShorthandRedux
     },
@@ -15,12 +15,12 @@ const meta = {
 
 export default meta;
 
-const Template = (args) => <PSACoverCropCouncil {...args} />;
+const Template = (args) => <PSALogoDisplayer {...args} />;
 
 // Default Story
 export const DefaultLogo = Template.bind({});
 DefaultLogo.args = {
-  councilShorthandRedux: 'PSA',
+  council: 'PSA',
   alt: 'PSA Logo',
   style: {
     maxWidth: '100%',
@@ -31,7 +31,7 @@ DefaultLogo.args = {
 // NECCC Logo
 export const NECCCLogo = Template.bind({});
 NECCCLogo.args = {
-  councilShorthandRedux: 'NECCC',
+  council: 'NECCC',
   alt: 'NECCC Logo',
   style: {
     maxWidth: '100%',
@@ -42,7 +42,7 @@ NECCCLogo.args = {
 // SCCC Logo
 export const SCCCLogo = Template.bind({});
 SCCCLogo.args = {
-  councilShorthandRedux: 'SCCC',
+  council: 'SCCC',
   alt: 'SCCC Logo',
   style: {
     maxWidth: '100%',
@@ -53,7 +53,7 @@ SCCCLogo.args = {
 // MCCC Logo
 export const MCCCLogo = Template.bind({});
 MCCCLogo.args = {
-  councilShorthandRedux: 'MCCC',
+  council: 'MCCC',
   alt: 'MCCC Logo',
   style: {
     maxWidth: '100%',

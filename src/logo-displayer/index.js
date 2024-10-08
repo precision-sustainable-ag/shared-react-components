@@ -1,2 +1,2 @@
-import { PSACoverCropCouncil } from "./PSACoverCropCouncil";
-export default PSACoverCropCouncil;
+import { PSALogoDisplayer } from "./PSACoverCropCouncil";
+export default PSALogoDisplayer;
