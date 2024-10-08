@@ -59,7 +59,19 @@ export const PSALogoDisplayer = ({
 };
 
 PSALogoDisplayer.propTypes = {
+
+  /**
+   * Council name based on what the logo image will be displayed
+   */
   council: PropTypes.string,
+
+  /**
+   * An alternative text which will be displayed if the logo image doesn't get loaded
+   */
   alt: PropTypes.string,
+
+  /**
+   * A style object for the img component
+   */
   style: PropTypes.object
 };
