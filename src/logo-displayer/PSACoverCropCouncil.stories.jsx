@@ -1,62 +1,62 @@
 import React from 'react';
-import { PSACoverCropCouncil } from './PSACoverCropCouncil';
+import PSACoverCropCouncil from './PSACoverCropCouncil';
 
 const meta = {
-    title: 'PSACoverCropCouncil',
-    component: PSACoverCropCouncil,
-    tags: ["autodocs"],
-  };
-  
+  title: 'PSACoverCropCouncil',
+  component: PSACoverCropCouncil,
+  tags: ['autodocs'],
+  argTypes: {
+    councilShorthandRedux: {
+      control: 'select',
+      options: ['NECCC', 'SCCC', 'MCCC', 'PSA'], // Dropdown for the councilShorthandRedux
+    },
+  },
+};
+
 export default meta;
 
-export const psaLogo = {
-    render: () => (
-      <PSACoverCropCouncil
-      src={'src/logo-displayer/assets/PSAlogo-text.png'}
-      alt=""
-      style={{
-        maxWidth: '120px',
-        height: 'auto',
-      }}
-      />
-    ),
-  };
+const Template = (args) => <PSACoverCropCouncil {...args} />;
 
-  export const mwcccLogo = {
-    render: () => (
-      <PSACoverCropCouncil
-      src={'src/logo-displayer/assets/mwccc_logo.png'}
-      alt=""
-      style={{
-        maxWidth: '120px',
-        height: 'auto',
-      }}
-      />
-    ),
-  };
+// Default Story
+export const DefaultLogo = Template.bind({});
+DefaultLogo.args = {
+  councilShorthandRedux: 'PSA',
+  alt: 'PSA Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};
 
-  export const necccLogo = {
-    render: () => (
-      <PSACoverCropCouncil
-      src={'src/logo-displayer/assets/neccc_wide_logo_color_web.jpg'}
-      alt=""
-      style={{
-        maxWidth: '120px',
-        height: 'auto',
-      }}
-      />
-    ),
-  };
+// NECCC Logo
+export const NECCCLogo = Template.bind({});
+NECCCLogo.args = {
+  councilShorthandRedux: 'NECCC',
+  alt: 'NECCC Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};
 
-  export const scccLogo = {
-    render: () => (
-      <PSACoverCropCouncil
-      src={'src/logo-displayer/assets/sccc_logo.png'}
-      alt=""
-      style={{
-        maxWidth: '120px',
-        height: 'auto',
-      }}
-      />
-    ),
-  };
+// SCCC Logo
+export const SCCCLogo = Template.bind({});
+SCCCLogo.args = {
+  councilShorthandRedux: 'SCCC',
+  alt: 'SCCC Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};
+
+// MCCC Logo
+export const MCCCLogo = Template.bind({});
+MCCCLogo.args = {
+  councilShorthandRedux: 'MCCC',
+  alt: 'MCCC Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};
