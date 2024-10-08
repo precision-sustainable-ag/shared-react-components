@@ -50,34 +50,34 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ type, theme }) => ({
 }));
 
 export const PSAAccordion = ({
-  accordionType, defaultExpanded, expanded, accordionDataTest, onChange, accordionSx,
-  summaryContent, summaryExpandIcon, summarySx, summaryDataTest, summaryType, summaryTheme,
+  accordionType, defaultExpanded, expanded, onChange, accordionSx, theme,
+  summaryContent, summaryExpandIcon, summarySx,
   divider,
-  detailsContent, detailsDataTest, detailsType, detailsTheme,
+  detailsContent,
 }) => {
   return (
     <StyledAccordion
       type={accordionType}
       defaultExpanded={defaultExpanded}
       expanded={expanded || undefined}
-      data-test={accordionDataTest}
+      data-test='psa-accordion'
       onChange={onChange}
       sx={accordionSx}
     >
       <StyledAccordionSummary
         sx={summarySx}
         expandIcon={summaryExpandIcon}
-        data-test={summaryDataTest}
-        type={summaryType}
-        theme={summaryTheme}
+        data-test='psa-accordion-summary'
+        type={accordionType}
+        theme={theme}
       >
         {summaryContent}
       </StyledAccordionSummary>
       {divider && divider}
       <StyledAccordionDetails
-        data-test={detailsDataTest}
-        type={detailsType}
-        theme={detailsTheme}
+        data-test='psa-accordion-details'
+        type={accordionType}
+        theme={theme}
       >
         {detailsContent}
       </StyledAccordionDetails>
@@ -90,15 +90,13 @@ PSAAccordion.propTypes = {
   /** Accordion Props */
   /** The type of accordion */
   accordionType: PropTypes.oneOf([
-    '',
-    'SheetReferences'
+    'SheetReferences',
+    'NRCSAccordionSummary'
   ]),
   /** Whether the accordion is expanded at the start */
   defaultExpanded: PropTypes.bool,
   /** Whether the accordion is expanded or not */
   expanded: PropTypes.bool,
-  /** The testing attribute of the accordion */
-  accordionDataTest: PropTypes.string,
   /** The function activated when the accordion changes */
   onChange: PropTypes.func,
   
@@ -109,13 +107,6 @@ PSAAccordion.propTypes = {
   summaryExpandIcon: PropTypes.node,
   /** The sx that is passed to the accordion summary */
   summarySx: PropTypes.object,
-  /** The testing attribute of the accordion summary */
-  summaryDataTest: PropTypes.string,
-  /** The type of the accordion summary */
-  summaryType: PropTypes.oneOf([
-    '',
-    'NRCSAccordionSummary'
-  ]),
   /** The theme of the accordion summary */
   summaryTheme: PropTypes.object,
 
@@ -125,12 +116,6 @@ PSAAccordion.propTypes = {
   /** Accordion Content Props */
   /** The content in the accordion details */
   detailsContent: PropTypes.node,
-  /** The testing attribute of the accordion details */
-  detailsDataTest: PropTypes.string,
-  detailsType: PropTypes.oneOf([
-    '',
-    'NRCSAccordionDetails'
-  ]),
   /** The type of the accordion summary */
   detailsTheme: PropTypes.object,
 };

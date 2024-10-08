@@ -39,8 +39,7 @@ SheetReferenceAccordion.args = {
 
 export const NRCSAAccordion = Template.bind({}); 
 NRCSAAccordion.args = {
-    summaryType: "NRCSAccordionSummary",
-    detailsType: "NRCSAccordionDetails",
+    accordionType: "NRCSAccordionSummary",
     summaryContent: <div>Summary Content</div>,
     summaryExpandIcon: <span> ^ </span>, 
     detailsContent: <div>Details Content</div>, 
