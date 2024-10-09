@@ -5,4 +5,5 @@ export { default as FadeAlert } from "./fade-alert/index";
 export { default as NcalcMap } from "./ncalc-map/index";
 export { default as PSAButton } from "./button/index";
 export { default as PSATextField } from "./Textfield/index";
+export { default as PSALogoDisplayer } from "./logo-displayer/index";
 export { default as PSAAccordion } from "./Accordion/index";
