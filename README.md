@@ -33,3 +33,10 @@ To begin developing and previewing your components, start the Storybook developm
 This will open Storybook in your default browser at http://localhost:3000, where you can explore and interact with all the components in the library.
 
 ### Development
+
+##### 1. Create New Component
+To create a new component run the following code.
+
+``` 
+npm run create-new-component -- --name=componentName
+```
