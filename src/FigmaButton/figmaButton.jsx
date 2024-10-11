@@ -10,34 +10,82 @@ export function PSAFigmaButton({
   text = "Next",
 }) {
   const theme = useTheme();
-  return (
-    <Button
-      sx={{
-        display: "flex",
-        // width: "6.4375rem",
-        // height: "2.375rem",
-        padding: "0.20381rem 1.1875rem",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "0.375rem",
-        borderRadius: "0.50956rem",
-        background: "var(--Background-White, #FFF)",
-        /* PSI - Dropshadow */
-        boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
-        ".MuiButton-icon": {
-          margin: "-0.2rem",
-          color: theme.palette.additional.greydark,
-        },
-        "&:hover": {
-          backgroundColor: theme.palette.additional.greydark,
+
+  const customStyles = () => {
+    switch (variant) {
+      case "standard":
+        return {
+          padding: "0.20381rem 1.1875rem",
+          background: "#FFF",
+          boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
+          ".MuiButton-icon": {
+            margin: "-0.2rem",
+            color: theme.palette.additional.greydark,
+          },
+          "&:hover": {
+            backgroundColor: theme.palette.additional.greydark,
+            "& .MuiTypography-root": {
+              color: "#fff",
+            },
+            ".MuiButton-icon": {
+              color: "#fff",
+            },
+          },
+        };
+      case "color":
+        return {
+          padding: "0.16531rem 0.75rem",
+          boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
+          background: theme.palette.main.accent2,
           "& .MuiTypography-root": {
             color: "#fff",
           },
           ".MuiButton-icon": {
+            margin: "-0.2rem",
             color: "#fff",
           },
-        },
+          "&:hover": {
+            backgroundColor: theme.palette.additional.greydark,
+            ".MuiButton-icon": {
+              color: "#fff",
+            },
+          },
+        };
+      case "text":
+        return {
+          "& .MuiTypography-root": {
+            textDecoration: "underline",
+          },
+          ".MuiButton-icon": {
+            margin: "-0.2rem",
+            color: theme.palette.additional.greydark,
+          },
+          "&:hover": {
+            "& .MuiTypography-root": {
+              color: theme.palette.main.accent2,
+            },
+            ".MuiButton-icon": {
+              color: theme.palette.main.accent2,
+            },
+          },
+        };
+      default:
+        return {};
+    }
+  };
+
+  return (
+    <Button
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "0.375rem",
+        borderRadius: "0.50956rem",
+        textTransform: "none",
+        ...customStyles(),
       }}
+      color=""
       variant="text"
       startIcon={leftIcon && icon}
       endIcon={rightIcon && icon}
