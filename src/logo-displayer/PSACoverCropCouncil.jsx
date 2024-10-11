@@ -39,7 +39,7 @@ export const PSALogoDisplayer = ({ council, alt, style }) => {
           logoRef.current.src = "images/mwccc_logo.png";
           break;
         default:
-          logoRef.current.src = "images/PSAlogo-text.png";
+          logoRef.current.src = "images/PSA_logo.png";
           break;
       }
     }
