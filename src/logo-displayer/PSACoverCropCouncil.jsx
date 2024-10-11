@@ -14,16 +14,16 @@ export const PSALogoDisplayer = ({
     if (faviconRef.current) {
       switch (council) {
         case 'NECCC':
-          faviconRef.current.href = 'src/logo-displayer/assets/neccc-favicon.ico';
+          faviconRef.current.href = 'public/favicons/neccc-favicon.ico';
           break;
         case 'SCCC':
-          faviconRef.current.href = 'src/logo-displayer/assets/sccc-favicon.ico';
+          faviconRef.current.href = 'public/favicons/sccc-favicon.ico';
           break;
         case 'MCCC':
-          faviconRef.current.href = 'src/logo-displayer/assets/mccc-favicon.ico';
+          faviconRef.current.href = 'public/favicons/mccc-favicon.ico';
           break;
         default:
-          faviconRef.current.href = 'src/logo-displayer/assets/psa-favicon.ico';
+          faviconRef.current.href = 'public/favicons/psa-favicon.ico';
           break;
       }
     }
@@ -34,16 +34,16 @@ export const PSALogoDisplayer = ({
     if (logoRef.current) {
       switch (council) {
         case 'NECCC':
-          logoRef.current.src = 'src/logo-displayer/assets/neccc_wide_logo_color_web.jpg';
+          logoRef.current.src = 'public/images/neccc_logo.png';
           break;
         case 'SCCC':
-          logoRef.current.src = 'src/logo-displayer/assets/sccc_logo.png';
+          logoRef.current.src = 'public/images/sccc_logo.png';
           break;
         case 'MCCC':
-          logoRef.current.src = 'src/logo-displayer/assets/mwccc_logo.png';
+          logoRef.current.src = 'public/images/mwccc_logo.png';
           break;
         default:
-          logoRef.current.src = 'src/logo-displayer/assets/PSAlogo-text.png';
+          logoRef.current.src = 'public/images/PSAlogo-text.png';
           break;
       }
     }
