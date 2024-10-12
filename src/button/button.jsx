@@ -79,6 +79,7 @@ export const PSAButton = ({
   selected = false,
   transparent = false,
   onClick = () => {},
+  ...props
 }) => {
   return (
     <StyledButton
@@ -86,6 +87,7 @@ export const PSAButton = ({
       selected={selected}
       transparent={transparent}
       onClick={onClick}
+      {...props}
     >
       {title}
     </StyledButton>
@@ -126,5 +128,10 @@ PSAButton.propTypes = {
    * Callback function to handle click events on the button.
    */
   onClick: PropTypes.func,
+
+  /**
+   * Additional MUI Button props like `disabled` can be passed here.
+   */
+  disabled: PropTypes.bool,
 };
 

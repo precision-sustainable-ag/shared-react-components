@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Grid,
@@ -8,9 +8,10 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
-} from '@mui/material';
-export function PSAFeedback({ title = "", apiEndPoint="" }) {
-
+} from "@mui/material";
+import PSAButton from "../button";
+import PSATextField from "../Textfield";
+export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
   const [snackbarData, setSnackbarData] = useState({
     open: false,
     message: "",
@@ -18,7 +19,7 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
   });
 
   const [feedbackData, setFeedbackData] = useState({
-    repository: "", //Repo-name
+    repository: "dst-feedback", //Repo-name
     title: "",
     comments: "",
     labels: [],
@@ -62,7 +63,7 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
     return { state: false, message: "" };
   };
   useEffect(() => {
-    document.title = 'Feedback';
+    document.title = "Feedback";
   }, []);
 
   const handleTextInputChange = (event, propertyName) => {
@@ -79,9 +80,15 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
 
   const handleCheckboxChange = (event) => {
     if (event.target.checked) {
-      setFeedbackData({ ...feedbackData, labels: [...feedbackData.labels, event.target.name] });
+      setFeedbackData({
+        ...feedbackData,
+        labels: [...feedbackData.labels, event.target.name],
+      });
     } else {
-      setFeedbackData({ ...feedbackData, labels: remove(feedbackData.labels, event.target.name) });
+      setFeedbackData({
+        ...feedbackData,
+        labels: remove(feedbackData.labels, event.target.name),
+      });
     }
   };
 
@@ -90,37 +97,40 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
   };
 
   const handleSubmit = () => {
-    fetch({apiEndPoint}, {
-      method: 'POST',
+    fetch("https://developfeedback.covercrop-data.org/v1/issues", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ ...feedbackData, labels: ['cc-selector', ...feedbackData.labels] }),
+      body: JSON.stringify({
+        ...feedbackData,
+        labels: [label, ...feedbackData.labels],
+      }),
     })
       .then((response) => {
         if (response.status === 201) {
           setSnackbarData({
             open: true,
-            message: 'Feedback Successfully Submitted!',
-            color: 'green',
+            message: "Feedback Successfully Submitted!",
+            color: "green",
           });
         } else if (response.status === 400) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Bad Request`,
-            color: 'red',
+            color: "red",
           });
         } else if (response.status === 422) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Unprocessable Entry`,
-            color: 'red',
+            color: "red",
           });
         } else if (response.status === 500) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Internal Server Error`,
-            color: 'red',
+            color: "red",
           });
         }
         return response.json();
@@ -136,10 +146,10 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
       container
       rowSpacing={5}
       style={{
-        paddingLeft: '10%',
-        paddingRight: '10%',
-        paddingTop: '3%',
-        paddingBottom: '3%',
+        paddingLeft: "10%",
+        paddingRight: "10%",
+        paddingTop: "3%",
+        paddingBottom: "3%",
       }}
     >
       {/* Title */}
@@ -150,56 +160,95 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
       </Grid>
 
       {/* Feedback Title */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">Title</Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-            *
+          <Typography variant="h6" display="inline-block">
+            Title
           </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          {/* <PSATextField
-            placeholder="Enter Your Title"
-            variant="outlined"
-            onChange={(event) => handleTextInputChange(event, 'title')}
-          /> */}
-        </Grid>
-      </Grid>
-
-      {/* Feedback Messsage */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">Message </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
+          <Typography
+            variant="h6"
+            display="inline-block"
+            style={{ color: "red" }}
+          >
             *
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body1">
-            Explain your feedback as thoroughly as you can. Your feedback will help us improve the
-            species selection experience. You can attach a screenshot of your feedback below.
+            Give your feedback a short descriptive title.
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          {/* <PSATextField
+          <PSATextField
+            placeholder="Enter Your Title"
+            variant="outlined"
+            onChange={(event) => handleTextInputChange(event, "title")}
+          />
+        </Grid>
+      </Grid>
+
+      {/* Feedback Messsage */}
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12}>
+          <Typography variant="h6" display="inline-block">
+            Message{" "}
+          </Typography>
+          <Typography
+            variant="h6"
+            display="inline-block"
+            style={{ color: "red" }}
+          >
+            *
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body1">
+            Explain your feedback as thoroughly as you can. Your feedback will
+            help us improve the species selection experience. You can attach a
+            screenshot of your feedback below.
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <PSATextField
             placeholder="Enter Your Feedback"
             multiline
             variant="outlined"
             fullWidth
             minRows={3}
-            onChange={(event) => handleTextInputChange(event, 'comments')}
-          /> */}
+            onChange={(event) => handleTextInputChange(event, "comments")}
+          />
         </Grid>
       </Grid>
 
       {/* Feedback Topic */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">Topic </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
+          <Typography variant="h6" display="inline-block">
+            Topic{" "}
+          </Typography>
+          <Typography
+            variant="h6"
+            display="inline-block"
+            style={{ color: "red" }}
+          >
             *
           </Typography>
         </Grid>
@@ -209,84 +258,97 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
         <Grid item xs={12}>
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox onChange={handleCheckboxChange} name="About the Cover Crop Data" />}
+              control={
+                <Checkbox
+                  onChange={handleCheckboxChange}
+                  name="About the Cover Crop Data"
+                />
+              }
               label="About the Cover Crop Data"
             />
             <FormControlLabel
-              control={<Checkbox onChange={handleCheckboxChange} name="About the Website" />}
+              control={
+                <Checkbox
+                  onChange={handleCheckboxChange}
+                  name="About the Website"
+                />
+              }
               label="About the Website"
             />
             <FormControlLabel
-              control={<Checkbox onChange={handleCheckboxChange} name="Other" />}
+              control={
+                <Checkbox onChange={handleCheckboxChange} name="Other" />
+              }
               label="Other"
             />
           </FormGroup>
         </Grid>
       </Grid>
 
-      {/* //Screenshot
-        <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-          <Grid item xs={12}>
-            <Typography variant="h6">Screen Shot Upload</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">
-              Upload a screenshot demonstrating your feedback. We welcome marked up screenshots to
-              further your point.
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              type="file"
-              onChange={handleScreenshotUpload}
-              InputLabelProps={{ shrink: true }}
-              variant="outlined"
-            />
-          </Grid>
-        </Grid> */}
-
       {/* Name */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         <Grid item xs={12}>
           <Typography variant="h6">Name </Typography>
         </Grid>
         <Grid item xs={12}>
-          {/* <PSATextField
+          <PSATextField
             placeholder="Enter Name"
             variant="outlined"
-            onChange={(event) => handleTextInputChange(event, 'name')}
-          /> */}
+            onChange={(event) => handleTextInputChange(event, "name")}
+          />
         </Grid>
       </Grid>
 
       {/* Email */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         <Grid item xs={12}>
           <Typography variant="h6">Email </Typography>
         </Grid>
         <Grid item xs={12}>
-          {/* <PSATextField
+          <PSATextField
             placeholder="Enter Email"
             variant="outlined"
-            onChange={(event) => handleTextInputChange(event, 'email')}
-          /> */}
+            onChange={(event) => handleTextInputChange(event, "email")}
+          />
         </Grid>
       </Grid>
 
       {/* Submit */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         {checkDisabled().state && (
-        <Grid item xs={12}>
-          <Typography variant="body1" style={{ color: 'red' }}>
-            {checkDisabled().message}
-            . Please fill all required fields before submitting.
-          </Typography>
-        </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1" style={{ color: "red" }}>
+              {checkDisabled().message}. Please fill all required fields before
+              submitting.
+            </Typography>
+          </Grid>
         )}
         <Grid item xs={12}>
-          <Button disabled={checkDisabled().state} onClick={handleSubmit} size="large" variant="outlined">
-            Submit
-          </Button>
+          <PSAButton
+            title="Submit"
+            disabled={checkDisabled().state}
+            onClick={handleSubmit}
+            size="large"
+            variant="outlined"
+          />
         </Grid>
       </Grid>
       <Snackbar
@@ -294,7 +356,7 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
         autoHideDuration={5000}
         onClose={handleSnackbarClose}
         message={snackbarData.message}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         color={snackbarData.color}
       />
     </Grid>
@@ -302,6 +364,32 @@ export function PSAFeedback({ title = "", apiEndPoint="" }) {
 }
 
 PSAFeedback.propTypes = {
-  title: PropTypes.string,
-  apiEndPoint: PropTypes.string
+  /** 
+   * The title of the feedback section. This will be displayed at the top of the component.
+   * Required: Expected to be a string.
+   */
+  title: PropTypes.string.isRequired,
+
+  /** 
+   * The label text associated with the feedback input.
+   * This will be shown either with a selector or a seed calculator, depending on the implementation.
+   * Required: Expected to be a string.
+   */
+  label: PropTypes.string.isRequired,
+
+  /** 
+   * Redux object that handles the user's consent state for feedback.
+   * Used to manage and store consent-related information in the feedback process.
+   * Required: Expected to be an object.
+   */
+  consentRedux: PropTypes.object.isRequired,
+
+  /** 
+   * Function for sending data to the Pirsch Analytics service.
+   * It tracks and logs feedback or user interactions within the component.
+   * Required: Expected to be a function.
+   */
+  pirschAnalytics: PropTypes.func.isRequired,
 };
+
+
