@@ -189,6 +189,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             placeholder="Enter Your Title"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, "title")}
+            data-test="feedback_title"
           />
         </Grid>
       </Grid>
@@ -228,6 +229,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             fullWidth
             minRows={3}
             onChange={(event) => handleTextInputChange(event, "comments")}
+            data-test="feedback_message"
           />
         </Grid>
       </Grid>
@@ -262,6 +264,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
                 <Checkbox
                   onChange={handleCheckboxChange}
                   name="About the Cover Crop Data"
+                  data-test="feedback_data"
                 />
               }
               label="About the Cover Crop Data"
@@ -271,13 +274,14 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
                 <Checkbox
                   onChange={handleCheckboxChange}
                   name="About the Website"
+                  data-test="feedback_website"
                 />
               }
               label="About the Website"
             />
             <FormControlLabel
               control={
-                <Checkbox onChange={handleCheckboxChange} name="Other" />
+                <Checkbox onChange={handleCheckboxChange} name="Other" data-test="feedback_other" />
               }
               label="Other"
             />
@@ -301,6 +305,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             placeholder="Enter Name"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, "name")}
+            data-test="feedback_name"
           />
         </Grid>
       </Grid>
@@ -321,6 +326,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             placeholder="Enter Email"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, "email")}
+            data-test="feedback_email"
           />
         </Grid>
       </Grid>
@@ -335,7 +341,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
       >
         {checkDisabled().state && (
           <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: "red" }}>
+            <Typography variant="body1" style={{ color: "red" }}  data-test="feedback_alert">
               {checkDisabled().message}. Please fill all required fields before
               submitting.
             </Typography>
@@ -348,6 +354,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             onClick={handleSubmit}
             size="large"
             variant="outlined"
+            data-test="feedback_submit"
           />
         </Grid>
       </Grid>
@@ -358,6 +365,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         message={snackbarData.message}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         color={snackbarData.color}
+        data-test="feedback_snackbar"
       />
     </Grid>
   );
