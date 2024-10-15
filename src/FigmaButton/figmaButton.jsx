@@ -2,12 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button, Typography, useTheme } from "@mui/material";
 
+/**
+ * Custom Button component,
+ *  styling is based on [Figma](https://www.figma.com/design/dipljCC6Z3GZBFhJqth7a7/PSI-Components?node-id=393-5807&node-type=canvas&m=dev), 
+ *  component is based on [MUI Button](https://mui.com/api/button/).
+ */
 export function PSAFigmaButton({
   variant = "standard",
   icon,
   rightIcon = false,
   leftIcon = false,
   text = "Next",
+  ...props
 }) {
   const theme = useTheme();
 
@@ -89,6 +95,7 @@ export function PSAFigmaButton({
       variant="text"
       startIcon={leftIcon && icon}
       endIcon={rightIcon && icon}
+      {...props}
     >
       <Typography
         sx={{
@@ -108,4 +115,33 @@ export function PSAFigmaButton({
 
 /* Define Props Type */
 
-PSAFigmaButton.propTypes = {};
+PSAFigmaButton.propTypes = {
+  /**
+   * The variant of button.
+   * 
+   *  Options include `standard`, `color`, `text`.
+   */
+  variant: PropTypes.oneOf(['standard', 'color', 'text']),
+  /**
+   * Icon used in the button.
+   * 
+   * The options here is just for illustration of different kinds of icons, any icons can be used.
+   */
+  icon: PropTypes.node,
+  /**
+   * Props for rendering buttons on the right side of the button. 
+   */
+  rightIcon: PropTypes.bool,
+  /**
+   * Props for rendering buttons on the left side of the button. 
+   */
+  leftIcon: PropTypes.bool,
+  /**
+   * Props for rendering texts in the button. 
+   */
+  text: PropTypes.string,
+  /**
+   *  These are additional props which could be passed to the wrapped MUI Button, refer to [MUI docs](https://mui.com/api/button/) for available props.
+   */
+  props: PropTypes.object
+};

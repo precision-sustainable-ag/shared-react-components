@@ -16,6 +16,14 @@ const meta = {
       control: "select",
       options: ["standard", "color", "text"],
     },
+    icon:{
+      control: 'select',
+      options: {
+        arrow: <ArrowForwardIcon />,
+        login: <PersonIcon />,
+        flower: <LocalFloristIcon />,
+      }
+    }
   },
 };
 
@@ -24,10 +32,10 @@ export default meta;
 export const StandardButton = {
   args: {
     variant: "standard",
-    text: "12345",
+    text: "Next",
     icon: <ArrowForwardIcon />,
     rightIcon: true,
-    leftIcon: true,
+    leftIcon: false,
   },
 };
 
@@ -48,5 +56,19 @@ export const TextButton = {
     icon: <LocalFloristIcon />,
     rightIcon: true,
     leftIcon: false,
+  },
+};
+
+export const CustomButton = {
+  args: {
+    variant: "color",
+    text: "LOGIN",
+    icon: <PersonIcon />,
+    rightIcon: true,
+    leftIcon: false,
+    disabled: true,
+    style: {
+      background: 'red'
+    },
   },
 };
