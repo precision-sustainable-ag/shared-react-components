@@ -37,18 +37,7 @@ export function PSAHeader({ title, subtitle, council }) {
             flex: 1,
           }}
         >
-          <Typography
-            sx={{
-              color: theme.palette.main.text,
-              fontFamily: "IBM Plex Sans",
-              fontSize: "2.5rem",
-              fontStyle: "normal",
-              fontWeight: 600,
-              lineHeight: "normal",
-            }}
-          >
-            {title}
-          </Typography>
+          <Typography variant="header">{title}</Typography>
         </Grid>
         <Grid item xs={12} sx={{ display: "flex" }}>
           <Box
@@ -58,22 +47,11 @@ export function PSAHeader({ title, subtitle, council }) {
               sx={{
                 width: "11.6875rem",
                 height: "0.3125rem",
-                backgroundColor: theme.palette.main.accent1,
+                backgroundColor: "main.accent1",
                 marginRight: "1rem",
               }}
             />
-            <Typography
-              sx={{
-                color: theme.palette.main.text,
-                fontFamily: "IBM Plex Sans",
-                fontSize: "1.25rem",
-                fontStyle: "italic",
-                fontWeight: 500,
-                lineHeight: "normal",
-              }}
-            >
-              {subtitle}
-            </Typography>
+            <Typography variant="subtitle">{subtitle}</Typography>
           </Box>
         </Grid>
       </Grid>
@@ -120,5 +98,5 @@ PSAHeader.propTypes = {
   /**
    * Current council, the value will be applied to the logo displayer
    */
-  subtitle: PropTypes.string,
+  council: PropTypes.string,
 };
