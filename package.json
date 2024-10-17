@@ -26,15 +26,15 @@
     "sass-embedded": "^1.78.0",
     "storybook": "^8.2.9",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mapbox/mapbox-gl-draw": "^1.4.3",
-    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
+    "react-dom": "^18.3.1",
     "@mui/icons-material": "^6.1.3",
     "@mui/material": "^6.0.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0"
+  },
+  "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.3",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "@turf/area": "^7.1.0",
     "@turf/centroid": "^7.1.0",
     "chroma-js": "^3.0.0",
@@ -44,6 +44,10 @@
   },
   "peerDependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "@mui/icons-material": "^6.1.3",
+    "@mui/material": "^6.0.2",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0"
   }
 }
