@@ -2,7 +2,7 @@
 
 **Date Created:** 9/04/24
 
-**Date Last Modified:** 09/24/2024
+**Date Last Modified:** 10/17/2024
 
 This repository contains a collection of reusable React components which is used across our DST projects. This library is developed using [Storybook](https://storybook.js.org/).
 
@@ -51,7 +51,7 @@ To update a component to current project, first add this repo to `package.json` 
 ```
 "dependencies": {
   ...,
-  "shared-react-components": "github:precision-sustainable-ag/shared-react-components@version",
+  "shared-react-components": "github:precision-sustainable-ag/shared-react-components#version",
 }
 ```
 
