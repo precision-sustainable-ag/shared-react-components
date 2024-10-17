@@ -44,6 +44,15 @@ npm run create-new-component -- --name=componentName
 
 You don't need to include the `PSA` prefix in the `componentName` here since it'll be automatically generated.
 
-After the component is generated,
+##### 2. Integrate Component to Current Project
 
-##### 2. Create New Component
+To update a component to current project, first add this repo to `package.json` of the project:
+
+```
+"dependencies": {
+  ...,
+  "shared-react-components": "github:precision-sustainable-ag/shared-react-components@version",
+}
+```
+
+If the repo is already imported in the project, run `npm install shared-react-component --force` to update the codes, then run `npm start -- --force` to rebuild the project.
