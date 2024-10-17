@@ -24,7 +24,9 @@
     "@storybook/test": "^8.2.9",
     "prop-types": "^15.8.1",
     "sass-embedded": "^1.78.0",
-    "storybook": "^8.2.9"
+    "storybook": "^8.2.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -37,9 +39,11 @@
     "@turf/centroid": "^7.1.0",
     "chroma-js": "^3.0.0",
     "mapbox-gl": "^3.6.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
     "shared-react-components": "file:",
     "turf": "^3.0.14"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   }
 }
