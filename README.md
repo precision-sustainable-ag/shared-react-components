@@ -35,8 +35,15 @@ This will open Storybook in your default browser at http://localhost:3000, where
 ### Development
 
 ##### 1. Create New Component
-To create a new component run the following code.
 
-``` 
+To create a new component run the following code:
+
+```
 npm run create-new-component -- --name=componentName
 ```
+
+You don't need to include the `PSA` prefix in the `componentName` here since it'll be automatically generated.
+
+After the component is generated,
+
+##### 2. Create New Component
