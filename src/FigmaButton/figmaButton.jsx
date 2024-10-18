@@ -91,7 +91,6 @@ export function PSAFigmaButton({
         textTransform: "none",
         ...customStyles(),
       }}
-      color=""
       variant="text"
       startIcon={leftIcon && icon}
       endIcon={rightIcon && icon}
