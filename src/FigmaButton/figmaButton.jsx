@@ -13,6 +13,8 @@ export function PSAFigmaButton({
   rightIcon = false,
   leftIcon = false,
   text = "Next",
+  buttonSx = {},
+  textSx = {},
   ...props
 }) {
   const theme = useTheme();
@@ -90,6 +92,7 @@ export function PSAFigmaButton({
         borderRadius: "0.50956rem",
         textTransform: "none",
         ...customStyles(),
+        ...buttonSx,
       }}
       variant="text"
       startIcon={leftIcon && icon}
@@ -104,6 +107,7 @@ export function PSAFigmaButton({
           fontStyle: "normal",
           fontWeight: 500,
           lineHeight: "normal",
+          ...textSx,
         }}
       >
         {text}
@@ -143,4 +147,12 @@ PSAFigmaButton.propTypes = {
    *  These are additional props which could be passed to the wrapped MUI Button, refer to [MUI docs](https://mui.com/api/button/) for available props.
    */
   props: PropTypes.object,
+  /**
+   *  Custom styles to the MUI Button component
+   */
+  buttonSx: PropTypes.object,
+  /**
+   *  Custom styles to the MUI Typography component
+   */
+  textSx: PropTypes.object,
 };

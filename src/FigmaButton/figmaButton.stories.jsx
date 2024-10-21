@@ -16,14 +16,14 @@ const meta = {
       control: "select",
       options: ["standard", "color", "text"],
     },
-    icon:{
-      control: 'select',
+    icon: {
+      control: "select",
       options: {
         arrow: <ArrowForwardIcon />,
         login: <PersonIcon />,
         flower: <LocalFloristIcon />,
-      }
-    }
+      },
+    },
   },
 };
 
@@ -68,7 +68,13 @@ export const CustomButton = {
     leftIcon: false,
     disabled: true,
     style: {
-      background: 'red'
+      background: "red",
+    },
+    buttonSx: {
+      height: "200px",
+    },
+    textSx: {
+      fontSize: "100px",
     },
   },
 };
