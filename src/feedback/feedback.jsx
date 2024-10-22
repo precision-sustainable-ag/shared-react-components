@@ -153,6 +153,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         paddingRight: "10%",
         paddingTop: "3%",
         paddingBottom: "3%",
+        textAlign:"left"
       }}
     >
       {/* Title */}
