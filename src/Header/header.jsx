@@ -61,7 +61,10 @@ export function PSAHeader({
               flex: 1,
             }}
           >
-            <Typography variant="header" fontSize={underMd && "1.25rem"}>
+            <Typography
+              variant="header"
+              fontSize={underMd ? "1.25rem" : "2.5rem"}
+            >
               {title}
             </Typography>
           </Grid>
@@ -91,9 +94,9 @@ export function PSAHeader({
         md={6}
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: underMd ? "center" : "flex-end",
           alignItems: "center",
-          gap: "1rem",
+          gap: "0.5rem",
         }}
       >
         {underMd ? (
@@ -127,6 +130,8 @@ export function PSAHeader({
                 text={button.text}
                 key={i}
                 onClick={button.onClick}
+                buttonSx={button.buttonSx}
+                textSx={button.textSx}
               />
             ))}
           </>
@@ -151,4 +156,23 @@ PSAHeader.propTypes = {
    * Current council, the value will be applied to the logo displayer
    */
   council: PropTypes.string,
+  /**
+   * The onClick function for the logo image.
+   */
+  onLogoClick: PropTypes.func,
+  /**
+   * List of nav buttons, this should be a list of `<PSAFigmaButton />`.
+   */
+  navButtons: PropTypes.arrayOf(
+    PropTypes.shape({
+      variant: PropTypes.oneOf(["standard", "color", "text"]),
+      icon: PropTypes.node,
+      rightIcon: PropTypes.bool,
+      leftIcon: PropTypes.bool,
+      text: PropTypes.string,
+      props: PropTypes.object,
+      buttonSx: PropTypes.object,
+      textSx: PropTypes.object,
+    })
+  ),
 };
