@@ -8,4 +8,5 @@ export { default as PSAButton } from "./button/index";
 export { default as PSATextField } from "./Textfield/index";
 export { default as PSALogoDisplayer } from "./logo-displayer/index";
 export { default as PSAAccordion } from "./Accordion/index";
+export { default as PSADropdown } from "./psadropdown/index";
 export { default as PSAFigmaButton } from "./FigmaButton/index";
