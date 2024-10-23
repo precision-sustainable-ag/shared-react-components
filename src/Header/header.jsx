@@ -11,7 +11,9 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
 import MenuIcon from "@mui/icons-material/Menu";
+import PersonIcon from "@mui/icons-material/Person";
 
 export function PSAHeader({
   title,
@@ -26,6 +28,27 @@ export function PSAHeader({
   const [anchor, setAnchor] = useState(null);
   const open = Boolean(anchor);
 
+  const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } =
+    useAuth0();
+
+  const handleLogin = async () => {
+    if (window.Cypress) await loginWithRedirect();
+    else await loginWithPopup();
+  };
+
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
+
+  const handleAuthButtonClick = () => {
+    if (isAuthenticated) return handleLogout();
+    return handleLogin();
+  };
+
   return (
     <Grid
       container
@@ -33,6 +56,7 @@ export function PSAHeader({
         display: "flex",
         height: "9.6875rem",
       }}
+      pr="1rem"
     >
       <Grid
         item
@@ -118,6 +142,19 @@ export function PSAHeader({
                   </Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleAuthButtonClick}>
+                <Typography
+                  sx={{
+                    fontSize: "0.875rem",
+                    fontWeight: "bold",
+                    color: isAuthenticated
+                      ? "additional.error"
+                      : "main.accent2",
+                  }}
+                >
+                  {isAuthenticated ? "LOGOUT" : "LOGIN"}
+                </Typography>
+              </MenuItem>
             </Menu>
           </>
         ) : (
@@ -131,9 +168,22 @@ export function PSAHeader({
                 key={i}
                 onClick={button.onClick}
                 buttonSx={button.buttonSx}
-                textSx={button.textSx}
+                textSx={{ ...button.textSx, fontSize: "1rem" }}
               />
             ))}
+            <PSAFigmaButton
+              variant="color"
+              icon={<PersonIcon />}
+              rightIcon
+              text={isAuthenticated ? "LOGOUT" : "LOGIN"}
+              onClick={handleAuthButtonClick}
+              buttonSx={{
+                backgroundColor: isAuthenticated
+                  ? "additional.error"
+                  : "main.accent2",
+              }}
+              textSx={{ fontSize: "1rem" }}
+            />
           </>
         )}
       </Grid>

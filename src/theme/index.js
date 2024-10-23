@@ -18,7 +18,7 @@ const theme = createTheme({
       support3: "#C48B0F",
       support4: "#91643B",
       support5: "#624469",
-      error: "#416782",
+      error: "#DD3804",
     },
   },
   typography: {

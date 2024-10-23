@@ -37,13 +37,6 @@ const navButtons = [
     rightIcon: true,
     onClick: fn(),
   },
-  {
-    variant: "color",
-    text: "LOGIN",
-    icon: <PersonIcon />,
-    rightIcon: true,
-    onClick: fn(),
-  },
 ];
 
 export const DefaultHeader = {

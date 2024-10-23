@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@chromatic-com/storybook": "^1.8.0",
     "@storybook/addon-essentials": "^8.2.9",
     "@storybook/addon-interactions": "^8.2.9",
@@ -43,6 +44,7 @@
     "chroma-js": "^3.0.0"
   },
   "peerDependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "@mui/icons-material": "^5.16.7",
