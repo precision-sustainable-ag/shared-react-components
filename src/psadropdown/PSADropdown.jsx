@@ -20,7 +20,7 @@ export const PSADropdown = ({
       {...SelectProps}
     >
       {items.map((item, index) => (
-        <MenuItem key={index} value={item.value}>
+        <MenuItem key={index} value={item.value} data-cy={`${SelectProps['data-cy']}-${index}`}>
           {item.label}
         </MenuItem>
       ))}
@@ -66,6 +66,7 @@ PSADropdown.propTypes = {
     style: PropTypes.object,
     sx: PropTypes.object,
     error: PropTypes.bool,
+    'data-cy': PropTypes.string,
   }),
 };
 
