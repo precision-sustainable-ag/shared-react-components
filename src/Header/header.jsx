@@ -54,7 +54,7 @@ export function PSAHeader({
       container
       sx={{
         display: "flex",
-        height: "9.6875rem",
+        height: underMd ? "85px" : "9.6875rem",
       }}
       pr="1rem"
     >
