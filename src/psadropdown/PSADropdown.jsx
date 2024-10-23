@@ -66,6 +66,7 @@ PSADropdown.propTypes = {
     style: PropTypes.object,
     sx: PropTypes.object,
     error: PropTypes.bool,
+    'data-cy': PropTypes.string,
   }),
 };
 

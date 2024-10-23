@@ -66,6 +66,7 @@ DefaultDropdown.args = {
         borderWidth: '2.5px',
       },
     },
+    'data-cy': "select-option"
   },
 };
 
@@ -114,6 +115,6 @@ StyledDropdown.args = {
       },
     },
     error: false,
+    'data-cy': "select-option"
   },
 };
-  
