@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-    FormControl, InputLabel, MenuItem, Select,
-} from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export const PSADropdown = ({
   label,
@@ -12,15 +10,14 @@ export const PSADropdown = ({
   SelectProps = {},
 }) => (
   <FormControl sx={formSx} variant={SelectProps.variant}>
-    <InputLabel sx={inputSx}>
-      {label}
-    </InputLabel>
-    <Select
-      label={label}
-      {...SelectProps}
-    >
+    <InputLabel sx={inputSx}>{label}</InputLabel>
+    <Select label={label} {...SelectProps}>
       {items.map((item, index) => (
-        <MenuItem key={index} value={item.value} data-cy={`${SelectProps['data-cy']}-${index}`}>
+        <MenuItem
+          key={index}
+          value={item.value}
+          data-test={`${SelectProps["data-test"]}-${index}`}
+        >
           {item.label}
         </MenuItem>
       ))}
@@ -29,7 +26,6 @@ export const PSADropdown = ({
 );
 
 PSADropdown.propTypes = {
-
   /**
    * The label text for the dropdown
    */
@@ -41,7 +37,8 @@ PSADropdown.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
     })
   ).isRequired,
 
@@ -60,13 +57,12 @@ PSADropdown.propTypes = {
    */
   SelectProps: PropTypes.shape({
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
+    variant: PropTypes.oneOf(["standard", "outlined", "filled"]),
     onChange: PropTypes.func.isRequired,
     MenuProps: PropTypes.object,
     style: PropTypes.object,
     sx: PropTypes.object,
     error: PropTypes.bool,
-    'data-cy': PropTypes.string,
+    "data-test": PropTypes.string,
   }),
 };
-

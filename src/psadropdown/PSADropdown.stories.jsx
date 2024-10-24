@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { PSADropdown } from './PSADropdown'; // Assuming PSADropdown is the component you are working on
+import React, { useState } from "react";
+import { PSADropdown } from "./PSADropdown"; // Assuming PSADropdown is the component you are working on
 
 export default {
-  title: 'PSADropdown',
+  title: "PSADropdown",
   component: PSADropdown,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   parameters: {
     layout: "centered",
     docs: {
@@ -18,7 +18,7 @@ export default {
 };
 
 const Template = (args) => {
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
 
   return (
     <PSADropdown
@@ -35,86 +35,86 @@ const Template = (args) => {
 // Default story
 export const DefaultDropdown = Template.bind({});
 DefaultDropdown.args = {
-  label: 'Default',
+  label: "Default",
   items: [
-    { label: 'Option 1', value: 'option1' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
   ],
   formSx: { minWidth: 120 },
   inputSx: {
-    color: '#598445',
-    '&.Mui-focused': {
-      color: '#598445',
-      fontWeight: 'medium',
+    color: "#598445",
+    "&.Mui-focused": {
+      color: "#598445",
+      fontWeight: "medium",
     },
   },
   SelectProps: {
     sx: {
       minWidth: 100,
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '1px',
-        borderRadius: '4px',
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "1px",
+        borderRadius: "4px",
       },
-      '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '2px',
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2px",
       },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '2.5px',
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2.5px",
       },
     },
-    'data-cy': "select-option"
+    "data-test": "select-option",
   },
 };
 
 // Dropdown with custom styles
 export const StyledDropdown = Template.bind({});
 StyledDropdown.args = {
-  label: 'Style',
+  label: "Style",
   items: [
-    { label: 'Option 1', value: 'option1' },
-    { label: 'Option 2', value: 'option2' },
-    { label: 'Option 3', value: 'option3' },
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Option 3", value: "option3" },
   ],
   formSx: { minWidth: 120 },
   inputSx: {
-    color: '#598445',
-    '&.Mui-focused': {
-      color: '#598445',
-      fontWeight: 'medium',
+    color: "#598445",
+    "&.Mui-focused": {
+      color: "#598445",
+      fontWeight: "medium",
     },
   },
   SelectProps: {
-    variant: 'filled',
-    style: { backgroundColor: 'lightblue' },
+    variant: "filled",
+    style: { backgroundColor: "lightblue" },
     sx: {
       minWidth: 100,
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '1px',
-        borderRadius: '4px',
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "1px",
+        borderRadius: "4px",
       },
-      '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '2px',
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2px",
       },
-      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#598445',
-        borderWidth: '2.5px',
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2.5px",
       },
     },
     MenuProps: {
       PaperProps: {
         style: {
-          backgroundColor: 'lightgray',
-          color: 'black',
+          backgroundColor: "lightgray",
+          color: "black",
         },
       },
     },
     error: false,
-    'data-cy': "select-option"
+    "data-test": "select-option",
   },
 };
