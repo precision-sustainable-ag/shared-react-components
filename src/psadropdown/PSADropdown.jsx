@@ -16,7 +16,7 @@ export const PSADropdown = ({
         <MenuItem
           key={index}
           value={item.value}
-          data-test={`${SelectProps["data-test"]}-${index}`}
+          data-test={`${SelectProps["data-test"]}-${item.label}`}
         >
           {item.label}
         </MenuItem>
