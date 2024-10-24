@@ -18,7 +18,27 @@ const theme = createTheme({
       support3: "#C48B0F",
       support4: "#91643B",
       support5: "#624469",
-      error: "#416782",
+      error: "#DD3804",
+    },
+  },
+  typography: {
+    fontFamily: "IBM Plex Sans",
+    color: "#1F1F1F",
+    header: {
+      color: "#1F1F1F",
+      fontFamily: "IBM Plex Sans",
+      fontSize: "2.5rem",
+      fontStyle: "normal",
+      fontWeight: 600,
+      lineHeight: "normal",
+    },
+    subtitle: {
+      color: "#1F1F1F",
+      fontFamily: "IBM Plex Sans",
+      fontSize: "1.25rem",
+      fontStyle: "italic",
+      fontWeight: 500,
+      lineHeight: "normal",
     },
   },
 });

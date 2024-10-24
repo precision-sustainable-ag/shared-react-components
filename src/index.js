@@ -3,10 +3,12 @@ export { default as Spinner } from "./spinner/index";
 export { default as Map } from "./map/index";
 export { default as FadeAlert } from "./fade-alert/index";
 export { default as NcalcMap } from "./ncalc-map/index";
-export { default as PSAFeedback } from "./feedback/index"
+export { default as PSAFeedback } from "./feedback/index";
 export { default as PSAButton } from "./button/index";
 export { default as PSATextField } from "./Textfield/index";
 export { default as PSALogoDisplayer } from "./logo-displayer/index";
 export { default as PSAAccordion } from "./Accordion/index";
 export { default as PSADropdown } from "./psadropdown/index";
 export { default as PSAFigmaButton } from "./FigmaButton/index";
+export { default as PSAHeader } from "./Header/index";
+export { default as PSATheme } from "./theme/index";
