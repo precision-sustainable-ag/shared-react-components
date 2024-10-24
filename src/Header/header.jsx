@@ -64,7 +64,7 @@ export function PSAHeader({
         md={6}
         sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
       >
-        <Button onClick={onLogoClick}>
+        <Button onClick={onLogoClick} data-test="header_logo_button">
           <PSALogoDisplayer
             council={council}
             alt={council}
@@ -88,6 +88,7 @@ export function PSAHeader({
             <Typography
               variant="header"
               fontSize={underMd ? "1.25rem" : "2.5rem"}
+              data-test="header_title"
             >
               {title}
             </Typography>
@@ -104,7 +105,11 @@ export function PSAHeader({
                   marginRight: "1rem",
                 }}
               />
-              <Typography variant="subtitle" fontSize={underMd && "0.75rem"}>
+              <Typography
+                variant="subtitle"
+                fontSize={underMd && "0.75rem"}
+                data-test="header_subtitle"
+              >
                 {subtitle}
               </Typography>
             </Box>
@@ -130,7 +135,11 @@ export function PSAHeader({
             </Button>
             <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
               {navButtons?.map((button, i) => (
-                <MenuItem onClick={button.onClick} key={i}>
+                <MenuItem
+                  onClick={button.onClick}
+                  key={i}
+                  data-test={`navbar-${button.text}`}
+                >
                   <Typography
                     sx={{
                       fontSize: "0.875rem",
@@ -142,7 +151,7 @@ export function PSAHeader({
                   </Typography>
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleAuthButtonClick}>
+              <MenuItem onClick={handleAuthButtonClick} data-test="auth_button">
                 <Typography
                   sx={{
                     fontSize: "0.875rem",
@@ -169,6 +178,7 @@ export function PSAHeader({
                 onClick={button.onClick}
                 buttonSx={button.buttonSx}
                 textSx={{ ...button.textSx, fontSize: "1rem" }}
+                data-test={`navbar-${button.text}`}
               />
             ))}
             <PSAFigmaButton
@@ -183,6 +193,7 @@ export function PSAHeader({
                   : "main.accent2",
               }}
               textSx={{ fontSize: "1rem" }}
+              data-test="auth_button"
             />
           </>
         )}
