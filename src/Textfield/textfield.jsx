@@ -42,5 +42,6 @@ export const PSATextField = styled(TextField)(({ theme }) => ({
   },
   input: {
     paddingLeft: "1.25rem",
+    fontFamily: "IBM Plex Sans",
   },
 }));
