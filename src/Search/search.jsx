@@ -30,7 +30,6 @@ export const PSASearch = ({
   boxType,
   variant="standard",
   testId,
-  dataCy,
   }) => {
     return (
     <StyledBox
