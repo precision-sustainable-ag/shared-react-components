@@ -13,6 +13,11 @@ import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
+/**
+ * This is a custom Accordion component,
+ *  styling is based on [Figma](https://www.figma.com/design/dipljCC6Z3GZBFhJqth7a7/PSI-Components?node-id=393-5807&node-type=canvas&m=dev),
+ *  component is based on [MUI Accordion](https://mui.com/material-ui/react-accordion/).
+ */
 export const PSAAccordion = ({
   expanded,
   onChange,
@@ -85,17 +90,20 @@ export const PSAAccordion = ({
 
 /** PropTypes for better type checking */
 PSAAccordion.propTypes = {
-  /** Accordion Props */
   /** Whether the accordion is expanded or not */
   expanded: PropTypes.bool,
   /** The function activated when the accordion changes */
   onChange: PropTypes.func,
-
   /** The content in the accordion summary */
   summaryContent: PropTypes.node,
-  /** The sx that is passed to the accordion summary */
-  summarySx: PropTypes.object,
-
   /** The content in the accordion details */
   detailsContent: PropTypes.node,
+  /** Other props of Accordion */
+  accordionProps: PropTypes.object,
+  /** Other props of AccordionSummary */
+  summaryProps: PropTypes.object,
+  /** The sx that is passed to the accordion summary */
+  summarySx: PropTypes.object,
+  /** id for testing */
+  testId: PropTypes.string,
 };

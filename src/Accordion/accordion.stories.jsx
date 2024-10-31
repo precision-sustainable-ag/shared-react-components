@@ -64,7 +64,7 @@ ColoredAccordion.args = {
     >
       <GrassIcon />
       <Typography fontSize={"1.5625rem"} fontWeight={600} pl={"0.5rem"}>
-        Summary Content
+        White Summary Content
       </Typography>
     </Box>
   ),
