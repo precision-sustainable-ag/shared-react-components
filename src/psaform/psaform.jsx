@@ -11,43 +11,43 @@ import {
 import PSAButton from "../button";
 import PSATextField from "../Textfield";
 
-export function PSAForm({
+export const PSAForm = ({
+  apiUrl,
+  submitMessage,
   headerTitle,
-  title,
-  titleDescription,
-  titleTextFieldProps,
-  messageTitle,
-  messageDescription,
-  messageTextFieldProps,
-  topicTitle,
-  topicDescription,
-  checkBoxLabel1,
-  topicCheckbox1,
-  checkBoxLabel2,
-  topicCheckbox2,
-  checkBoxLabel3,
-  topicCheckbox3,
-  nameTitle,
-  nameTextFieldProps,
-  emailTitle,
-  emailTextFieldProps,
+  textFields,
+  checkboxes,
+  buttons,
   consentRedux,
   pirschAnalytics,
-}) {
+}) => {
+
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+
+  const remove = (arr, value) => arr.filter((item) => item !== value);
+
   const [snackbarData, setSnackbarData] = useState({
     open: false,
     message: "",
     color: "",
   });
 
-  const [feedbackData, setFeedbackData] = useState({
-    repository: "dst-feedback",
-    title: "",
-    comments: "",
-    labels: [],
-    name: "",
-    email: "",
-  });
+  const initialFormData = textFields.reduce((acc, field) => {
+    acc[field.name] = "";
+    return acc;
+  }, { repository: "dst", labels: [] });
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    // Check for required fields whenever formData changes
+    const { state } = checkDisabled();
+    setIsSubmitDisabled(state);
+  }, [formData]);
+
+  useEffect(() => {
+    pirschAnalytics("Visited Page", { meta: { visited: "Feedback" } });
+  }, [consentRedux]);
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return "";
@@ -57,65 +57,58 @@ export function PSAForm({
   };
 
   const checkDisabled = () => {
-    const titleMissing = feedbackData.title === "";
-    const commentsMissing = feedbackData.comments === "";
-    const labelsMissing = feedbackData.labels.length === 0;
     const messageArr = [];
-
-    if (titleMissing) messageArr.push("Title");
-    if (commentsMissing) messageArr.push("Message");
-    if (labelsMissing) messageArr.push("Topic");
-
+  
+    // Check required text fields
+    textFields.forEach((field) => {
+      if (field.required && formData[field.name] === "") {
+        messageArr.push(field.label);
+      }
+    });
+  
+    // Check required checkboxes in each group
+    checkboxes.forEach((group) => {
+      if(group.required && formData.labels.length === 0)
+      {
+        messageArr.push(group.title);
+      }
+    });
+  
     const messageStr = convertMessageArr(messageArr);
-    return titleMissing || commentsMissing || labelsMissing
+    return messageArr.length > 0
       ? { state: true, message: messageStr }
       : { state: false, message: "" };
-  };
+  }; 
 
-  useEffect(() => {
-    pirschAnalytics("Visited Page", { meta: { visited: "Feedback" } });
-  }, [consentRedux]);
-
-  const handleTextInputChange = (event, propertyName) => {
-    setFeedbackData({ ...feedbackData, [propertyName]: event.target.value });
-  };
-
-  const remove = (arr, value) => {
-    const index = arr.indexOf(value);
-    if (index > -1) arr.splice(index, 1);
-    return arr;
+  const handleTextInputChange = (event, name) => {
+    setFormData({ ...formData, [name]: event.target.value });
   };
 
   const handleCheckboxChange = (event) => {
-    if (event.target.checked) {
-      setFeedbackData({
-        ...feedbackData,
-        labels: [...feedbackData.labels, event.target.name],
-      });
-    } else {
-      setFeedbackData({
-        ...feedbackData,
-        labels: remove(feedbackData.labels, event.target.name),
-      });
-    }
+    const { name, checked } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      labels: checked ? [...(prev.labels || []), name] : remove(prev.labels || [], name),
+    }));
   };
 
-  const handleSnackbarClose = () => setSnackbarData({ ...snackbarData, open: false });
-
   const handleSubmit = () => {
-    fetch("https://developfeedback.covercrop-data.org/v1/issues", {
+    const { state, message } = checkDisabled();
+    if (state) {
+      setSnackbarData({ open: true, message, color: "red" });
+      return;
+    }
+
+    fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ...feedbackData,
-        labels: [headerTitle, ...feedbackData.labels],
-      }),
+      body: JSON.stringify(formData),
     })
       .then((response) => {
         setSnackbarData({
           open: true,
           message: response.status === 201
-            ? "Feedback Successfully Submitted!"
+            ? submitMessage
             : `Error ${response.status}. ${
                 response.status === 400
                   ? "Bad Request"
@@ -138,166 +131,115 @@ export function PSAForm({
         </Grid>
       </Grid>
 
-      {/* Feedback Title */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
-            {title}
-          </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: "red" }}>
-            *
-          </Typography>
+      {/* Dynamically Render Text Fields */}
+      {textFields.map((field, index) => (
+        <Grid key={index} container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+          <Grid item xs={12}>
+            <Typography variant="h6">
+              {field.label} {field.required && <span style={{ color: "red" }}>*</span>}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="body1">{field.description}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <PSATextField
+              {...field.props}
+              onChange={(event) => handleTextInputChange(event, field.name)}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{titleDescription}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <PSATextField
-            {...titleTextFieldProps}
-            onChange={(event) => handleTextInputChange(event, "title")}
-          />
-        </Grid>
-      </Grid>
+      ))}
 
-      {/* Feedback Message */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        {/* Dynamically Render Checkbox Groups */}
+    {checkboxes.map((group, groupIndex) => (
+      <Grid key={groupIndex} container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
-            {messageTitle}
+          <Typography variant="h6">
+            {group.title} {group.required && <span style={{ color: "red" }}>*</span>}
           </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: "red" }}>
-            *
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{messageDescription}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <PSATextField
-            {...messageTextFieldProps}
-            onChange={(event) => handleTextInputChange(event, "comments")}
-          />
-        </Grid>
-      </Grid>
-
-      {/* Feedback Topic */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
-            {topicTitle}
-          </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: "red" }}>
-            *
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">{topicDescription}</Typography>
         </Grid>
         <Grid item xs={12}>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox {...topicCheckbox1} onChange={handleCheckboxChange} />}
-              label={checkBoxLabel1}
-            />
-            <FormControlLabel
-              control={<Checkbox {...topicCheckbox2} onChange={handleCheckboxChange} />}
-              label={checkBoxLabel2}
-            />
-            <FormControlLabel
-              control={<Checkbox {...topicCheckbox3} onChange={handleCheckboxChange} />}
-              label={checkBoxLabel3}
-            />
+            {group.options.map((checkbox, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    {...checkbox.props}
+                    onChange={handleCheckboxChange}
+                  />
+                }
+                label={checkbox.label}
+              />
+            ))}
           </FormGroup>
         </Grid>
       </Grid>
+    ))}
 
-      {/* Name */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+    {/* Submit Button with Disabled State */}
+    <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      {isSubmitDisabled && (
         <Grid item xs={12}>
-          <Typography variant="h6">{nameTitle}</Typography>
+          <Typography variant="body1" style={{ color: "red" }}>
+            {checkDisabled().message}. Please fill all required fields before submitting.
+          </Typography>
         </Grid>
-        <Grid item xs={12}>
-          <PSATextField
-            {...nameTextFieldProps}
-            onChange={(event) => handleTextInputChange(event, "name")}
-          />
-        </Grid>
-      </Grid>
-
-      {/* Email */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6">{emailTitle}</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <PSATextField
-            {...emailTextFieldProps}
-            onChange={(event) => handleTextInputChange(event, "email")}
-          />
-        </Grid>
-      </Grid>
-
-      {/* Submit */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        {checkDisabled().state && (
-          <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: "red" }}>
-              {checkDisabled().message}. Please fill all required fields before submitting.
-            </Typography>
-          </Grid>
-        )}
-        <Grid item xs={12}>
+      )}
+      {buttons.map((button, index) => (
+        <Grid key={index} item xs={12}>
           <PSAButton
-            title="Submit"
-            disabled={checkDisabled().state}
-            onClick={handleSubmit}
-            size="large"
-            variant="outlined"
+            {...button.props}
+            onClick={button.action === "submit" ? handleSubmit : button.onClick}
+            disabled={isSubmitDisabled}
           />
         </Grid>
-      </Grid>
+      ))}
+    </Grid>
+
       <Snackbar
         open={snackbarData.open}
         autoHideDuration={5000}
-        onClose={handleSnackbarClose}
+        onClose={() => setSnackbarData({ ...snackbarData, open: false })}
         message={snackbarData.message}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         color={snackbarData.color}
       />
     </Grid>
   );
-}
+};
 
-/* Define Props Type */
 PSAForm.propTypes = {
+  apiUrl: PropTypes.string.isRequired,
+  submitMessage: PropTypes.string.isRequired,
   headerTitle: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  titleDescription: PropTypes.string.isRequired,
-  titleTextFieldProps: PropTypes.object, // Object containing props for the title text field
-  messageTitle: PropTypes.string.isRequired,
-  messageDescription: PropTypes.string.isRequired,
-  messageTextFieldProps: PropTypes.object, // Object containing props for the message text field
-  topicTitle: PropTypes.string.isRequired,
-  topicDescription: PropTypes.string.isRequired,
-  checkBoxLabel1: PropTypes.string.isRequired,
-  topicCheckbox1: PropTypes.shape({
-    checked: PropTypes.bool,
-    name: PropTypes.string.isRequired,
-  }), // Props object for the first checkbox
-  checkBoxLabel2: PropTypes.string.isRequired,
-  topicCheckbox2: PropTypes.shape({
-    checked: PropTypes.bool,
-    name: PropTypes.string.isRequired,
-  }), // Props object for the second checkbox
-  checkBoxLabel3: PropTypes.string.isRequired,
-  topicCheckbox3: PropTypes.shape({
-    checked: PropTypes.bool,
-    name: PropTypes.string.isRequired,
-  }), // Props object for the third checkbox
-  nameTitle: PropTypes.string.isRequired,
-  nameTextFieldProps: PropTypes.object, // Object containing props for the name text field
-  emailTitle: PropTypes.string.isRequired,
-  emailTextFieldProps: PropTypes.object, // Object containing props for the email text field
-  consentRedux: PropTypes.bool, // Boolean indicating consent (optional)
-  pirschAnalytics: PropTypes.func.isRequired, // Function for analytics callback
+  textFields: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      description: PropTypes.string,
+      props: PropTypes.object, // Any additional props for PSATextField component
+      name: PropTypes.string.isRequired,
+      required: PropTypes.bool, // Determines if the field is required
+    })
+  ).isRequired,
+  checkboxes: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      props: PropTypes.shape({
+        checked: PropTypes.bool,
+        name: PropTypes.string.isRequired,
+      }),
+      required: PropTypes.bool, // Determines if the checkbox is required
+    })
+  ),
+  buttons: PropTypes.arrayOf(
+    PropTypes.shape({
+      props: PropTypes.object, // Any additional props for PSAButton component
+      action: PropTypes.string, // "submit" for submit action, or any custom identifier
+      onClick: PropTypes.func, // onClick function if action is not "submit"
+    })
+  ).isRequired,
+  consentRedux: PropTypes.bool, // Redux state for user consent
+  pirschAnalytics: PropTypes.func.isRequired, // Analytics function
 };
