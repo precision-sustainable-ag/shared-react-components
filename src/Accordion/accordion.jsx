@@ -6,117 +6,96 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  styled,
+  Typography,
+  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
-
-const StyledAccordion = styled(Accordion)(({ type }) => ({
-  ...(type === "SheetReferences" && {
-    border: "1px solid #2b7b79",
-    boxShadow: "none",
-  }),
-}));
-
-const StyledAccordionSummary = styled(AccordionSummary)(({ type, theme }) => ({
-  ...(type === "NRCSAccordionSummary" && {
-    "&.MuiAccordionSummary-root": {
-      minHeight: "1.5rem",
-      padding: "0.3125rem 1rem",
-      backgroundColor: theme.palette.primary.dark,
-      color: theme.palette.primary.text,
-      ".MuiAccordionSummary-content": {
-        margin: "0",
-      },
-      "&.Mui-expanded": {
-        minHeight: "2rem",
-      },
-      ".MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-        transform: "rotate(0deg) !important",
-      },
-    },
-  }),
-}));
-
-const StyledAccordionDetails = styled(AccordionDetails)(({ type, theme }) => ({
-  ...(type === "NRCSAccordionDetails" && {
-    "&.MuiAccordionDetails-root": {
-      padding: " 2%",
-      "th,td": {
-        color: theme.palette.primary.text,
-      },
-    },
-  }),
-}));
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 export const PSAAccordion = ({
-  accordionType,
-  defaultExpanded,
   expanded,
   onChange,
-  accordionSx,
-  theme,
   summaryContent,
-  summaryExpandIcon,
-  summarySx,
-  divider,
   detailsContent,
+  accordionProps,
+  summaryProps,
+  summarySx,
+  testId,
 }) => {
   return (
-    <StyledAccordion
-      type={accordionType}
-      defaultExpanded={defaultExpanded}
-      expanded={expanded || undefined}
-      data-test="psa-accordion"
+    <Accordion
+      expanded={expanded}
       onChange={onChange}
-      sx={accordionSx}
+      sx={{
+        boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
+        "&.MuiAccordion-root": {
+          borderRadius: "1.6875rem",
+        },
+        backgroundColor: "additional.background2",
+      }}
+      data-test={`psa-accordion-${testId}`}
+      {...accordionProps}
     >
-      <StyledAccordionSummary
-        sx={summarySx}
-        expandIcon={summaryExpandIcon}
+      <AccordionSummary
+        expandIcon={
+          <Typography
+            sx={{
+              textDecoration: "underline",
+              display: "flex",
+              alignItems: "center",
+              color: "main.text",
+            }}
+          >
+            {expanded ? "Hide " : "Show "}
+            {expanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </Typography>
+        }
+        sx={{
+          ".MuiAccordionSummary-expandIconWrapper": {
+            transform: "none",
+            WebkitTransform: "none",
+            transition: "none",
+            WebkitTransition: "none",
+            "&.Mui-expanded": {
+              transform: "none",
+              WebkitTransform: "none",
+            },
+          },
+          height: "70px",
+          // backgroundColor: "main.accent2",
+
+          borderTopLeftRadius: "1.6875rem",
+          borderTopRightRadius: "1.6875rem",
+          borderBottomLeftRadius: expanded ? 0 : "1.6875rem",
+          borderBottomRightRadius: expanded ? 0 : "1.6875rem",
+          ...summarySx,
+        }}
         data-test="psa-accordion-summary"
-        type={accordionType}
-        theme={theme}
+        {...summaryProps}
       >
         {summaryContent}
-      </StyledAccordionSummary>
-      {divider && divider}
-      <StyledAccordionDetails
-        data-test="psa-accordion-details"
-        type={accordionType}
-        theme={theme}
-      >
+      </AccordionSummary>
+      <AccordionDetails data-test="psa-accordion-details">
         {detailsContent}
-      </StyledAccordionDetails>
-    </StyledAccordion>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
 /** PropTypes for better type checking */
 PSAAccordion.propTypes = {
   /** Accordion Props */
-  /** The type of accordion */
-  accordionType: PropTypes.oneOf(["SheetReferences", "NRCSAccordionSummary"]),
-  /** Whether the accordion is expanded at the start */
-  defaultExpanded: PropTypes.bool,
   /** Whether the accordion is expanded or not */
   expanded: PropTypes.bool,
   /** The function activated when the accordion changes */
   onChange: PropTypes.func,
-  /** The theme of the accordion */
-  theme: PropTypes.object,
 
-  /** Accordion Summary Props */
   /** The content in the accordion summary */
   summaryContent: PropTypes.node,
-  /** The expand icon for the accordion summary */
-  summaryExpandIcon: PropTypes.node,
   /** The sx that is passed to the accordion summary */
   summarySx: PropTypes.object,
 
-  /** The divider between the accordion summary and details */
-  divider: PropTypes.node,
-
-  /** Accordion Content Props */
   /** The content in the accordion details */
   detailsContent: PropTypes.node,
 };

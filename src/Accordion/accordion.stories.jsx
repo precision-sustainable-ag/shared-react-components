@@ -1,47 +1,71 @@
-import React from "react";
-import { PSAAccordion } from "./accordion"; 
+import React, { useState } from "react";
+import { PSAAccordion } from "./accordion";
+import { Box, Typography } from "@mui/material";
+import GrassIcon from "@mui/icons-material/Grass";
 
 const meta = {
   component: PSAAccordion,
   tags: ["autodocs"],
-  parameters: {
-    layout: "centered",
-  },
+  parameters: {},
 };
 
 export default meta;
 
-
-const Template = (args) => <PSAAccordion {...args} />;
-
-export const DefaultAccordion = Template.bind({}); 
-DefaultAccordion.args = {
-    accordionType: "",
-    summaryContent: <div>Summary Content</div>,
-    summaryExpandIcon: <span> ^ </span>, 
-    detailsContent: <div>Details Content</div>, 
-    divider: null,
+const Template = (args) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <PSAAccordion
+      expanded={open}
+      onChange={() => setOpen(!open)}
+      summaryContent={
+        <Box
+          sx={{
+            display: "flex",
+            jutifyContent: "center",
+            alignItems: "center",
+            color: "additional.greydark",
+          }}
+        >
+          <GrassIcon />
+          <Typography fontSize={"1.5625rem"} fontWeight={600} pl={"0.5rem"}>
+            Summary Content
+          </Typography>
+        </Box>
+      }
+      detailsContent={
+        <Box height={"100px"}>
+          <Typography>Details content</Typography>
+        </Box>
+      }
+      {...args}
+    />
+  );
 };
 
+export const DefaultAccordion = Template.bind({});
+DefaultAccordion.args = {};
 
-
-
-export const SheetReferenceAccordion = Template.bind({}); 
-SheetReferenceAccordion.args = {
-    accordionType: "SheetReferences",
-    summaryContent: <div>Summary Content</div>,
-    summaryExpandIcon: <span> ^ </span>, 
-    detailsContent: <div>Details Content</div>, 
-    divider: null,
-    
-};
-
-
-export const NRCSAAccordion = Template.bind({}); 
-NRCSAAccordion.args = {
-    accordionType: "NRCSAccordionSummary",
-    summaryContent: <div>Summary Content</div>,
-    summaryExpandIcon: <span> ^ </span>, 
-    detailsContent: <div>Details Content</div>, 
-    divider: null,
+export const ColoredAccordion = Template.bind({});
+ColoredAccordion.args = {
+  summarySx: {
+    backgroundColor: "main.accent2",
+    ".MuiAccordionSummary-expandIconWrapper p": {
+      color: "white",
+    },
+  },
+  summaryContent: (
+    <Box
+      sx={{
+        display: "flex",
+        jutifyContent: "center",
+        alignItems: "center",
+        color: "white",
+      }}
+    >
+      <GrassIcon />
+      <Typography fontSize={"1.5625rem"} fontWeight={600} pl={"0.5rem"}>
+        Summary Content
+      </Typography>
+    </Box>
+  ),
 };
