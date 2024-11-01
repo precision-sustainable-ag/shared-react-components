@@ -1,9 +1,12 @@
+import React from "react";
 import { TextField, styled } from "@mui/material";
 
 /**
  * This component is based on [MUI TextField](https://mui.com/material-ui/react-text-field/) component.
  */
-export const PSATextField = styled(TextField)(({ theme }) => ({
+export const PSATextField = styled((props) => (
+  <TextField {...props} InputLabelProps={{ shrink: true }} />
+))(({ theme }) => ({
   marginTop: "20px",
   ".MuiOutlinedInput-root": {
     boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
