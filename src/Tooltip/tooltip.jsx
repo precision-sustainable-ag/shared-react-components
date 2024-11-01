@@ -48,13 +48,6 @@ PSATooltip.propTypes = {
   enterTouchDelay: PropTypes.number,
 
   /**
-   * If you want to render HTML inside the tooltip. Use this cautiously.
-   */
-  dangerouslySetInnerHTML: PropTypes.shape({
-    __html: PropTypes.string
-  }),
-
-  /**
    * Custom content to render inside the tooltip.
    */
   tooltipContent: PropTypes.node,
