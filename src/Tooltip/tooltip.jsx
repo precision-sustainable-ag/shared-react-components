@@ -6,14 +6,13 @@ export function PSATooltip({
   title, 
   placement = 'bottom', 
   arrow = true,
-  enterTouchDelay = 0, 
-  dangerouslySetInnerHTML, 
+  enterTouchDelay = 0,  
   tooltipContent, 
   ...props
 }) {
   return (
     <Tooltip
-      title={dangerouslySetInnerHTML ? undefined : title}
+      title={title}
       placement={placement}
       arrow={arrow}
       enterTouchDelay={enterTouchDelay}
