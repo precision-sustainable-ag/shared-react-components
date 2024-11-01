@@ -55,21 +55,27 @@ export function PSAHeader({
       sx={{
         display: "flex",
         height: underMd ? "85px" : "9.6875rem",
+        boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
       }}
-      pr="1rem"
+      pl={underMd ? 0 : "1rem"}
+      pr={underMd ? 0 : "1rem"}
     >
       <Grid
         item
         xs={10}
         md={6}
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center",
+        }}
       >
         <Button onClick={onLogoClick} data-test="header_logo_button">
           <PSALogoDisplayer
             council={council}
             alt={council}
             style={{
-              height: "75px",
+              width: underMd ? "100px" : "150px",
             }}
           />
         </Button>
