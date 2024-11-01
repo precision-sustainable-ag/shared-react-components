@@ -27,9 +27,7 @@ const Template = (args) => {
           }}
         >
           <GrassIcon />
-          <Typography fontSize={"1.5625rem"} fontWeight={600} pl={"0.5rem"}>
-            Summary Content
-          </Typography>
+          <Typography>Summary Content</Typography>
         </Box>
       }
       detailsContent={
@@ -47,10 +45,12 @@ DefaultAccordion.args = {};
 
 export const ColoredAccordion = Template.bind({});
 ColoredAccordion.args = {
-  summarySx: {
-    backgroundColor: "main.accent2",
-    ".MuiAccordionSummary-expandIconWrapper p": {
-      color: "white",
+  sx: {
+    ".MuiAccordionSummary-root": {
+      backgroundColor: "main.accent2",
+      ".MuiAccordionSummary-expandIconWrapper p": {
+        color: "white",
+      },
     },
   },
   summaryContent: (

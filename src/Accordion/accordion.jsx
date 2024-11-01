@@ -21,11 +21,11 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 export const PSAAccordion = ({
   expanded,
   onChange,
+  sx,
   summaryContent,
   detailsContent,
   accordionProps,
   summaryProps,
-  summarySx,
   testId,
 }) => {
   return (
@@ -38,8 +38,9 @@ export const PSAAccordion = ({
           borderRadius: "1.6875rem",
         },
         backgroundColor: "additional.background2",
+        ...sx,
       }}
-      data-test={`psa-accordion-${testId}`}
+      data-test={testId}
       {...accordionProps}
     >
       <AccordionSummary
@@ -67,6 +68,12 @@ export const PSAAccordion = ({
               WebkitTransform: "none",
             },
           },
+          ".MuiAccordionSummary-content p": {
+            fontFamily: "IBM PLex Sans",
+            fontSize: "1.5626rem",
+            fontWeight: 600,
+            paddingLeft: "0.5rem",
+          },
           height: "70px",
           // backgroundColor: "main.accent2",
 
@@ -74,7 +81,6 @@ export const PSAAccordion = ({
           borderTopRightRadius: "1.6875rem",
           borderBottomLeftRadius: expanded ? 0 : "1.6875rem",
           borderBottomRightRadius: expanded ? 0 : "1.6875rem",
-          ...summarySx,
         }}
         data-test="psa-accordion-summary"
         {...summaryProps}
@@ -94,6 +100,8 @@ PSAAccordion.propTypes = {
   expanded: PropTypes.bool,
   /** The function activated when the accordion changes */
   onChange: PropTypes.func,
+  /** The sx that is passed to the accordion, this can be used to customize styling for the accordion and its children */
+  sx: PropTypes.object,
   /** The content in the accordion summary */
   summaryContent: PropTypes.node,
   /** The content in the accordion details */
@@ -102,8 +110,6 @@ PSAAccordion.propTypes = {
   accordionProps: PropTypes.object,
   /** Other props of AccordionSummary */
   summaryProps: PropTypes.object,
-  /** The sx that is passed to the accordion summary */
-  summarySx: PropTypes.object,
   /** id for testing */
   testId: PropTypes.string,
 };
