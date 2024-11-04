@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { PSATextField } from "./textfield";
 
 const meta = {
@@ -18,36 +18,37 @@ const meta = {
 
 export default meta;
 
-export const DefaultTextField = {
-  render: () => (
+const Template = (args) => {
+  const [text, setText] = useState("");
+
+  return (
     <PSATextField
       placeholder="Enter text here..."
       variant="outlined"
       fullWidth
       minRows={1}
-      onChange={(e) => console.log(e.target.value)}
-      value=""
-      color="primary"
+      onChange={(e) => setText(e.target.value)}
+      value={text}
       label="Sample Label"
-      onChangeCapture={(e) => console.log("Change captured=", e.target.value)}
+      {...args}
     />
-  ),
+  );
 };
 
-export const MultilineTextField = {
-  render: () => (
-    <PSATextField
-      placeholder="Enter multiline text..."
-      multiline
-      variant="outlined"
-      fullWidth
-      minRows={3}
-      onChange={(e) => console.log(e.target.value)}
-      autoFocus
-      value=""
-      color="primary"
-      label="Multiline Label"
-      onChangeCapture={(e) => console.log("Change captured:", e.target.value)}
-    />
-  ),
+export const DefaultTextField = Template.bind({});
+
+export const DisabledTextField = Template.bind({});
+DisabledTextField.args = {
+  disabled: true,
+};
+
+export const ErrorTextField = Template.bind({});
+ErrorTextField.args = {
+  error: true,
+};
+
+export const MultilineTextField = Template.bind({});
+MultilineTextField.args = {
+  multiline: true,
+  minRows: 3,
 };
