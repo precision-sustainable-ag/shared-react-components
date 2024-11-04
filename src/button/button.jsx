@@ -76,7 +76,7 @@ const StyledButton = styled(Button, {
 export const PSAButton = ({
   title = "",
   buttonType = "LightButton",
-  hoverText = "hoverText".
+  hoverText,
   selected = false,
   transparent = false,
   onClick = () => {},
