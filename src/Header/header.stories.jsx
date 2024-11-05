@@ -10,6 +10,12 @@ const meta = {
   parameters: {
     layout: "fullscreen",
   },
+  argTypes: {
+    council: {
+      control: "select",
+      options: ["NECCC", "SCCC", "MCCC", "PSA"],
+    },
+  },
 };
 
 export default meta;
