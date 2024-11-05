@@ -17,9 +17,8 @@ export function PSATooltip({
       arrow={arrow}
       enterTouchDelay={enterTouchDelay}
       {...props}
-    >
-      {tooltipContent}
-    </Tooltip>
+      children={tooltipContent}
+    />
   );
 }
 
