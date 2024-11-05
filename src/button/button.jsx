@@ -76,6 +76,7 @@ const StyledButton = styled(Button, {
 export const PSAButton = ({
   title = "",
   buttonType = "LightButton",
+  hoverText,
   selected = false,
   transparent = false,
   onClick = () => {},
@@ -87,6 +88,7 @@ export const PSAButton = ({
       selected={selected}
       transparent={transparent}
       onClick={onClick}
+      title={hoverText}
       {...props}
     >
       {title}
@@ -133,5 +135,11 @@ PSAButton.propTypes = {
    * Additional MUI Button props like `disabled` can be passed here.
    */
   disabled: PropTypes.bool,
+
+    /**
+   * The text displayed on the button upon hovering.
+   */
+    hoverText: PropTypes.string,
+
 };
 

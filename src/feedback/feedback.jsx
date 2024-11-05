@@ -359,6 +359,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             size="large"
             variant="outlined"
             data-test="feedback_submit"
+            buttonType=""
           />
         </Grid>
       </Grid>
