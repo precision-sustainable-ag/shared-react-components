@@ -64,7 +64,6 @@ export const PSASearch = ({
           ...inputProps,
         }}
         data-test={testId}
-        data-cy={dataCy}
       />
     </StyledBox>
   );
