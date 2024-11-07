@@ -191,6 +191,7 @@ PSAForm.propTypes = {
       label: PropTypes.string.isRequired,
       description: PropTypes.string,
       props: PropTypes.object,
+      options: PropTypes.object,
       name: PropTypes.string.isRequired,
       required: PropTypes.bool,
     })
