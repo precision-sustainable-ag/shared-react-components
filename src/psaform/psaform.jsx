@@ -24,9 +24,7 @@ export const PSAForm = ({
   });
 
   const initialFormData = fields.reduce((acc, field) => {
-    if (field.type === "text") {
-      acc[field.name] = "";
-    }
+    acc[field.name] = "";
     return acc;
   }, {labels: []});
 
