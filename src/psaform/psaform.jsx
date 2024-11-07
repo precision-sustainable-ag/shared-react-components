@@ -183,28 +183,8 @@ PSAForm.propTypes = {
   apiUrl: PropTypes.string.isRequired,
   submitMessage: PropTypes.string.isRequired,
   headerTitle: PropTypes.string.isRequired,
-  fields: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.oneOf(["text", "checkbox"]).isRequired,
-      label: PropTypes.string.isRequired,
-      description: PropTypes.string,
-      props: PropTypes.object,
-      options: PropTypes.arrayOf(
-        PropTypes.shape({
-          label: PropTypes.string,
-          props: PropTypes.object,
-        })),
-      name: PropTypes.string.isRequired,
-      required: PropTypes.bool,
-    })
-  ).isRequired,
-  buttons: PropTypes.arrayOf(
-    PropTypes.shape({
-      props: PropTypes.object,
-      action: PropTypes.string,
-      onClick: PropTypes.func,
-    })
-  ).isRequired,
+  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
+  buttons: PropTypes.arrayOf(PropTypes.object).isRequired,
   consentRedux: PropTypes.bool,
   pirschAnalytics: PropTypes.func.isRequired,
 };
