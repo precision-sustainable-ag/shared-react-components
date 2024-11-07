@@ -10,12 +10,8 @@ export const PSAForm = ({
   headerTitle,
   fields, // Single prop for both text fields and checkboxes
   buttons,
-  consentRedux,
-  pirschAnalytics,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
-  const remove = (arr, value) => arr.filter((item) => item !== value);
 
   const [snackbarData, setSnackbarData] = useState({
     open: false,
@@ -34,10 +30,6 @@ export const PSAForm = ({
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
   }, [formData]);
-
-  useEffect(() => {
-    pirschAnalytics("Visited Page", { meta: { visited: "Feedback" } });
-  }, [consentRedux]);
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return "";
@@ -67,6 +59,7 @@ export const PSAForm = ({
   };
 
   const handleCheckboxChange = (event) => {
+    const remove = (arr, value) => arr.filter((item) => item !== value);
     const { name, checked } = event.target;
     setFormData((prev) => ({
       ...prev,
@@ -180,11 +173,59 @@ export const PSAForm = ({
 };
 
 PSAForm.propTypes = {
-  apiUrl: PropTypes.string.isRequired,
-  submitMessage: PropTypes.string.isRequired,
-  headerTitle: PropTypes.string.isRequired,
-  fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-  buttons: PropTypes.arrayOf(PropTypes.object).isRequired,
-  consentRedux: PropTypes.bool,
-  pirschAnalytics: PropTypes.func.isRequired,
+  /**
+   * The URL to which form data is submitted upon form submission
+   */
+  apiUrl: PropTypes.string,
+
+  /**
+   * Message displayed in a Snackbar upon successful form submission
+   */
+  submitMessage: PropTypes.string,
+
+  /**
+   * Header title displayed at the top of the form
+   */
+  headerTitle: PropTypes.string,
+
+  /**
+   * Array of field objects for the form. Each field object must include:
+   * - `name` (string): Identifier for the form field.
+   * - `label` (string): Label displayed for the form field.
+   * - `type` (string): Type of the form field (e.g., "text" or "checkbox").
+   * - `required` (boolean): Whether the field is required.
+   * - `description` (string): Additional description displayed below the field label.
+   * - `options` (array): For checkboxes, an array of checkbox objects with `label` and `props` for each option.
+   */
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      label: PropTypes.string,
+      type: PropTypes.oneOf(["text", "checkbox"]),
+      required: PropTypes.bool,
+      description: PropTypes.string,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          label: PropTypes.string,
+          props: PropTypes.object,
+        })
+      ),
+      props: PropTypes.object,
+    })
+  ),
+
+  /**
+   * Array of button objects for the form. Each button object should include:
+   * - `action` (string): The action type of the button, such as "submit".
+   * - `onClick` (function): Function called on button click.
+   * - `props` (object): Additional props for the button.
+   */
+  buttons: PropTypes.arrayOf(
+    PropTypes.shape({
+      action: PropTypes.string,
+      onClick: PropTypes.func,
+      props: PropTypes.object,
+    })
+  ),
 };
+
