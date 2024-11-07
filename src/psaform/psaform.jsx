@@ -74,6 +74,8 @@ export const PSAForm = ({
       return;
     }
 
+    console.log("Submitting formData:", JSON.stringify(formData));
+
     fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
