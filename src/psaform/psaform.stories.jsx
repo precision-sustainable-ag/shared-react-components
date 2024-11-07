@@ -1,5 +1,5 @@
 import React from "react";
-import { PSAForm } from "./psaform"; // Ensure the correct path to PSAForm component
+import { PSAForm } from "./psaform";
 
 export default {
   title: "PSAForm",
