@@ -193,7 +193,7 @@ PSAForm.propTypes = {
       props: PropTypes.object,
       options: PropTypes.arrayOf(
         PropTypes.shape({
-          label: PropTypes.string.isRequired,
+          label: PropTypes.string,
           props: PropTypes.object,
         })),
       name: PropTypes.string.isRequired,
