@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  Grid,
-  Typography,
-  Snackbar,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-} from "@mui/material";
+import { Grid, Typography, Snackbar, Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import PSAButton from "../button";
 import PSATextField from "../Textfield";
 
@@ -15,13 +8,11 @@ export const PSAForm = ({
   apiUrl,
   submitMessage,
   headerTitle,
-  textFields,
-  checkboxes,
+  fields, // Single prop for both text fields and checkboxes
   buttons,
   consentRedux,
   pirschAnalytics,
 }) => {
-
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const remove = (arr, value) => arr.filter((item) => item !== value);
@@ -32,15 +23,16 @@ export const PSAForm = ({
     color: "",
   });
 
-  const initialFormData = textFields.reduce((acc, field) => {
-    acc[field.name] = "";
+  const initialFormData = fields.reduce((acc, field) => {
+    if (field.type === "text") {
+      acc[field.name] = "";
+    }
     return acc;
-  }, { repository: "dst", labels: [] });
+  }, {labels: []});
 
   const [formData, setFormData] = useState(initialFormData);
 
   useEffect(() => {
-    // Check for required fields whenever formData changes
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
   }, [formData]);
@@ -58,27 +50,19 @@ export const PSAForm = ({
 
   const checkDisabled = () => {
     const messageArr = [];
-  
-    // Check required text fields
-    textFields.forEach((field) => {
-      if (field.required && formData[field.name] === "") {
+
+    fields.forEach((field) => {
+      if (field.required && ((field.type === "text" && formData[field.name] === "") ||
+        (field.type === "checkbox" && formData.labels.length === 0))) {
         messageArr.push(field.label);
       }
     });
-  
-    // Check required checkboxes in each group
-    checkboxes.forEach((group) => {
-      if(group.required && formData.labels.length === 0)
-      {
-        messageArr.push(group.title);
-      }
-    });
-  
+
     const messageStr = convertMessageArr(messageArr);
     return messageArr.length > 0
       ? { state: true, message: messageStr }
       : { state: false, message: "" };
-  }; 
+  };
 
   const handleTextInputChange = (event, name) => {
     setFormData({ ...formData, [name]: event.target.value });
@@ -109,13 +93,12 @@ export const PSAForm = ({
           open: true,
           message: response.status === 201
             ? submitMessage
-            : `Error ${response.status}. ${
-                response.status === 400
-                  ? "Bad Request"
-                  : response.status === 422
-                  ? "Unprocessable Entry"
-                  : "Internal Server Error"
-              }`,
+            : `Error ${response.status}. ${response.status === 400
+              ? "Bad Request"
+              : response.status === 422
+                ? "Unprocessable Entry"
+                : "Internal Server Error"
+            }`,
           color: response.status === 201 ? "green" : "red",
         });
         return response.json();
@@ -131,8 +114,7 @@ export const PSAForm = ({
         </Grid>
       </Grid>
 
-      {/* Dynamically Render Text Fields */}
-      {textFields.map((field, index) => (
+      {fields.map((field, index) => (
         <Grid key={index} container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
           <Grid item xs={12}>
             <Typography variant="h6">
@@ -143,25 +125,14 @@ export const PSAForm = ({
             <Typography variant="body1">{field.description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <PSATextField
-              {...field.props}
-              onChange={(event) => handleTextInputChange(event, field.name)}
-            />
-          </Grid>
-        </Grid>
-      ))}
-
-        {/* Dynamically Render Checkbox Groups */}
-    {checkboxes.map((group, groupIndex) => (
-      <Grid key={groupIndex} container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6">
-            {group.title} {group.required && <span style={{ color: "red" }}>*</span>}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <FormGroup>
-            {group.options.map((checkbox, index) => (
+            {field.type === "text" ? (
+              <PSATextField
+                {...field.props}
+                onChange={(event) => handleTextInputChange(event, field.name)}
+              />
+            ) : (
+              <FormGroup>
+               {field.options.map((checkbox, index) => (
               <FormControlLabel
                 key={index}
                 control={
@@ -173,30 +144,30 @@ export const PSAForm = ({
                 label={checkbox.label}
               />
             ))}
-          </FormGroup>
-        </Grid>
-      </Grid>
-    ))}
-
-    {/* Submit Button with Disabled State */}
-    <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-      {isSubmitDisabled && (
-        <Grid item xs={12}>
-          <Typography variant="body1" style={{ color: "red" }}>
-            {checkDisabled().message}. Please fill all required fields before submitting.
-          </Typography>
-        </Grid>
-      )}
-      {buttons.map((button, index) => (
-        <Grid key={index} item xs={12}>
-          <PSAButton
-            {...button.props}
-            onClick={button.action === "submit" ? handleSubmit : button.onClick}
-            disabled={isSubmitDisabled}
-          />
+              </FormGroup>
+            )}
+          </Grid>
         </Grid>
       ))}
-    </Grid>
+
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        {isSubmitDisabled && (
+          <Grid item xs={12}>
+            <Typography variant="body1" style={{ color: "red" }}>
+              {checkDisabled().message}. Please fill all required fields before submitting.
+            </Typography>
+          </Grid>
+        )}
+        {buttons.map((button, index) => (
+          <Grid key={index} item xs={12}>
+            <PSAButton
+              {...button.props}
+              onClick={button.action === "submit" ? handleSubmit : button.onClick}
+              disabled={isSubmitDisabled}
+            />
+          </Grid>
+        ))}
+      </Grid>
 
       <Snackbar
         open={snackbarData.open}
@@ -214,32 +185,23 @@ PSAForm.propTypes = {
   apiUrl: PropTypes.string.isRequired,
   submitMessage: PropTypes.string.isRequired,
   headerTitle: PropTypes.string.isRequired,
-  textFields: PropTypes.arrayOf(
+  fields: PropTypes.arrayOf(
     PropTypes.shape({
+      type: PropTypes.oneOf(["text", "checkbox"]).isRequired,
       label: PropTypes.string.isRequired,
       description: PropTypes.string,
-      props: PropTypes.object, // Any additional props for PSATextField component
+      props: PropTypes.object,
       name: PropTypes.string.isRequired,
-      required: PropTypes.bool, // Determines if the field is required
+      required: PropTypes.bool,
     })
   ).isRequired,
-  checkboxes: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      props: PropTypes.shape({
-        checked: PropTypes.bool,
-        name: PropTypes.string.isRequired,
-      }),
-      required: PropTypes.bool, // Determines if the checkbox is required
-    })
-  ),
   buttons: PropTypes.arrayOf(
     PropTypes.shape({
-      props: PropTypes.object, // Any additional props for PSAButton component
-      action: PropTypes.string, // "submit" for submit action, or any custom identifier
-      onClick: PropTypes.func, // onClick function if action is not "submit"
+      props: PropTypes.object,
+      action: PropTypes.string,
+      onClick: PropTypes.func,
     })
   ).isRequired,
-  consentRedux: PropTypes.bool, // Redux state for user consent
-  pirschAnalytics: PropTypes.func.isRequired, // Analytics function
+  consentRedux: PropTypes.bool,
+  pirschAnalytics: PropTypes.func.isRequired,
 };

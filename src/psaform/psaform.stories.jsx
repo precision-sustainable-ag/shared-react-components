@@ -25,8 +25,9 @@ DefaultForm.args = {
   apiUrl: "https://developfeedback.covercrop-data.org/v1/issues",
   submitMessage: "Feedback submitted successfully",
   headerTitle: "Cover Crop Species Selector Feedback",
-  textFields: [
+  fields: [
     {
+      type: "text",
       label: "Title",
       description: "Give your feedback a short descriptive title.",
       props: {
@@ -38,6 +39,7 @@ DefaultForm.args = {
       required: true,
     },
     {
+      type: "text",
       label: "Message",
       description: "Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.",
       props: {
@@ -52,28 +54,9 @@ DefaultForm.args = {
       required: true,
     },
     {
-      label: "Name",
-      props: {
-        placeholder: "Enter Name",
-        variant: "outlined",
-        "data-test": "feedback_name",
-      },
-      name: "feedback_name",
-    },
-    {
-      label: "Email",
-      props: {
-        placeholder: "Enter Email",
-        variant: "outlined",
-        "data-test": "feedback_email",
-      },
-      name: "feedback_email",
-    },
-  ],
-  checkboxes: [
-    {
-      title: "Feedback Type",
-      required: true,
+      type: "checkbox",
+      label: "Feedback Type",
+      description: "Select the type of feedback you are providing.",
       options: [
         {
           label: "About the Cover Crop Data",
@@ -97,6 +80,27 @@ DefaultForm.args = {
           },
         },
       ],
+      required: true,
+    },
+    {
+      type: "text",
+      label: "Name",
+      props: {
+        placeholder: "Enter Name",
+        variant: "outlined",
+        "data-test": "feedback_name",
+      },
+      name: "feedback_name",
+    },
+    {
+      type: "text",
+      label: "Email",
+      props: {
+        placeholder: "Enter Email",
+        variant: "outlined",
+        "data-test": "feedback_email",
+      },
+      name: "feedback_email",
     },
   ],
   buttons: [
@@ -118,8 +122,9 @@ DefaultForm.args = {
 export const CustomForm = Template.bind({});
 CustomForm.args = {
   headerTitle: "Introduction Form",
-  textFields: [
+  fields: [
     {
+      type: "text",
       label: "Name",
       props: {
         placeholder: "Enter Name",
@@ -129,6 +134,7 @@ CustomForm.args = {
       required: true,
     },
     {
+      type: "text",
       label: "Email",
       props: {
         placeholder: "Enter Email",
@@ -138,8 +144,9 @@ CustomForm.args = {
       required: true,
     },
     {
+      type: "text",
       label: "Message",
-      description: "Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.",
+      description: "Provide your feedback to help us improve.",
       props: {
         placeholder: "Enter Your Feedback",
         multiline: true,
@@ -151,11 +158,10 @@ CustomForm.args = {
       name: "feedback_message",
       required: true,
     },
-  ],
-  checkboxes: [
     {
-      title: "Hobbies",
-      required: true,
+      type: "checkbox",
+      label: "Hobbies",
+      description: "Select your hobbies.",
       options: [
         {
           label: "Hobby1",
@@ -176,6 +182,7 @@ CustomForm.args = {
           },
         },
       ],
+      required: true,
     },
   ],
   buttons: [
