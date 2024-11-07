@@ -43,7 +43,7 @@ const PieChartLabel = ({
   );
 };
 
-/** Labels the entire PSAPieChart  */
+/** Labels the entire PSAPieChart */
 const PSAPieChartLabel = ({ label }) => (
   <Typography
     sx={{
