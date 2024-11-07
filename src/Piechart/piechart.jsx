@@ -7,10 +7,17 @@ import {
 } from 'recharts';
 import { useTheme } from '@emotion/react';
 
+/** Possible colors for the pie chart options */
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+/** Format values for display */
 const twoDigit = (value) => Number(parseFloat(value).toFixed(2));
+
+/** Radians used for calculations */
 const RADIAN = Math.PI / 180;
 
+
+/** Labels each pie chart segment */
 const PieChartLabel = ({
   cx,
   cy,
@@ -36,6 +43,7 @@ const PieChartLabel = ({
   );
 };
 
+/** Labels the entire PSAPieChart */
 const PSAPieChartLabel = ({ label }) => (
   <Typography
     sx={{
@@ -49,6 +57,7 @@ const PSAPieChartLabel = ({ label }) => (
   </Typography>
 );
 
+/** Creates a legend for the Pie Chart */
 const PSAPieChartLegend = ({ chartData }) => {
   const theme = useTheme();
   const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -114,11 +123,17 @@ export function PSAPiechart({chartData, label,}) {
   );
 }
 
-/* Define Props Type */
-
+/* PSAPieChart Props */
 PSAPiechart.propTypes = { 
+
+  // Data to be used in the chart, exits in the following format
+  // [ { name: 'Category A', value: 400 },
+  // { name: 'Category B', value: 300 },
+  // { name: 'Category C', value: 200 },
+  // { name: 'Category D', value: 100 }, ]
   chartData: PropTypes.array,
 
+  // Chart Label
   label: PropTypes.string,
 
 };
