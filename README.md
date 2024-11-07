@@ -2,7 +2,7 @@
 
 **Date Created:** 9/04/24
 
-**Date Last Modified:** 09/24/2024
+**Date Last Modified:** 10/17/2024
 
 This repository contains a collection of reusable React components which is used across our DST projects. This library is developed using [Storybook](https://storybook.js.org/).
 
@@ -35,8 +35,24 @@ This will open Storybook in your default browser at http://localhost:3000, where
 ### Development
 
 ##### 1. Create New Component
-To create a new component run the following code.
 
-``` 
+To create a new component run the following code:
+
+```
 npm run create-new-component -- --name=componentName
 ```
+
+You don't need to include the `PSA` prefix in the `componentName` here since it'll be automatically generated.
+
+##### 2. Integrate Component to Current Project
+
+To update a component to current project, first add this repo to `package.json` of the project:
+
+```
+"dependencies": {
+  ...,
+  "shared-react-components": "github:precision-sustainable-ag/shared-react-components#version",
+}
+```
+
+If the repo is already imported in the project, run `npm install shared-react-component --force` to update the codes, then run `npm start -- --force` to rebuild the project.
