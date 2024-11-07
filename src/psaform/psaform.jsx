@@ -22,7 +22,7 @@ export const PSAForm = ({
   const initialFormData = fields.reduce((acc, field) => {
     acc[field.name] = "";
     return acc;
-  }, {labels: []});
+  }, {repository: "dst", labels: []});
 
   const [formData, setFormData] = useState(initialFormData);
 
