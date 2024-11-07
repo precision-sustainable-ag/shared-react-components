@@ -13,3 +13,4 @@ export { default as PSAFigmaButton } from "./FigmaButton/index";
 export { default as PSAHeader } from "./Header/index";
 export { default as PSATheme } from "./theme/index";
 export { default as PSATooltip } from "./Tooltip/index";
+export { default as PSAPiechart } from "./Piechart/index";
