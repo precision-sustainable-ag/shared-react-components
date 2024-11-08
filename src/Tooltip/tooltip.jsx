@@ -66,6 +66,16 @@ PSATooltip.propTypes = {
    */
   tooltipContent: PropTypes.node,
 
+    /**
+   * Callback fired when the mouse enters the tooltip area.
+   */
+    onMouseEnter: PropTypes.func,
+
+    /**
+     * Callback fired when the mouse leaves the tooltip area.
+     */
+    onMouseLeave: PropTypes.func,
+
    /**
    * Additional props to customize nested elements within Tooltip.
    */
