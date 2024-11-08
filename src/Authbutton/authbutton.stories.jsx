@@ -12,7 +12,18 @@ const meta = {
 
 export default meta;
 
-// Default Story for PSAAuthbutton
-export const DefaultAuthbutton = {
+export const DefaultAuthButton = {
   args: {},
+};
+
+export const CustomAuthButton = {
+  args: {
+    buttonSx: {
+      height: "100px",
+      backgroundColor: "main.accent1",
+    },
+    textSx: {
+      fontSize: "2rem",
+    },
+  },
 };
