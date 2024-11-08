@@ -6,8 +6,13 @@ export function PSATooltip({
   title, 
   placement = 'bottom', 
   arrow = true,
-  enterTouchDelay = 0,  
+  enterTouchDelay = 0, 
+  leaveTouchDelay = 0, 
   tooltipContent, 
+  open,
+  onMouseEnter,
+  onMouseLeave,
+  componentsProps = {},
   ...props
 }) {
   return (
@@ -16,6 +21,11 @@ export function PSATooltip({
       placement={placement}
       arrow={arrow}
       enterTouchDelay={enterTouchDelay}
+      leaveTouchDelay={leaveTouchDelay}
+      open={open}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      componentsProps={componentsProps}
       {...props}
       children={tooltipContent}
     />
@@ -47,8 +57,18 @@ PSATooltip.propTypes = {
   enterTouchDelay: PropTypes.number,
 
   /**
+   * The delay in milliseconds before hiding the tooltip on touch devices.
+   */
+  leaveTouchDelay: PropTypes.number,
+
+  /**
    * Custom content to render inside the tooltip.
    */
   tooltipContent: PropTypes.node,
+
+   /**
+   * Additional props to customize nested elements within Tooltip.
+   */
+   componentsProps: PropTypes.object,
 
 };
