@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { PSALogoDisplayer, PSAFigmaButton } from "../index";
 import {
@@ -142,9 +142,9 @@ export function PSAHeader({
             </Menu>
           </>
         ) : (
-          <>
-            {navContent?.map((item, i) =>
-              item.type === "button" ? (
+          navContent.map((item, i) => (
+            <Fragment key={i}>
+              {item.type === "button" ? (
                 <PSAFigmaButton
                   variant={item.variant}
                   icon={item.icon}
@@ -158,9 +158,9 @@ export function PSAHeader({
                 />
               ) : (
                 item.component
-              )
-            )}
-          </>
+              )}
+            </Fragment>
+          ))
         )}
       </Grid>
     </Grid>
@@ -187,7 +187,7 @@ PSAHeader.propTypes = {
    */
   onLogoClick: PropTypes.func,
   /**
-   * Content of the navbar, this should be a list of components and should be collapse to a menu list when in smaller size screens.
+   * Content of the navbar, this should be a list of components with type property `type="button"` or `type="component"`.
    */
   navContent: PropTypes.arrayOf(
     PropTypes.shape({
