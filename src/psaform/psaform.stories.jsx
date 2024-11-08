@@ -25,6 +25,7 @@ DefaultForm.args = {
   apiUrl: "https://developfeedback.covercrop-data.org/v1/issues",
   submitMessage: "Feedback submitted successfully",
   headerTitle: "Cover Crop Species Selector Feedback",
+  repository: "dst-feedback",
   fields: [
     {
       type: "text",
@@ -35,7 +36,7 @@ DefaultForm.args = {
         variant: "outlined",
         "data-test": "feedback_title",
       },
-      name: "feedback_title",
+      name: "title",
       required: true,
     },
     {
@@ -50,7 +51,7 @@ DefaultForm.args = {
         minRows: 3,
         "data-test": "feedback_message",
       },
-      name: "feedback_message",
+      name: "comments",
       required: true,
     },
     {
@@ -61,21 +62,21 @@ DefaultForm.args = {
         {
           label: "About the Cover Crop Data",
           props: {
-            name: "feedback_data",
+            name: "About the Cover Crop Data",
             "data-test": "feedback_data",
           },
         },
         {
           label: "About the Website",
           props: {
-            name: "feedback_website",
+            name: "About the Website",
             "data-test": "feedback_website",
           },
         },
         {
           label: "Other",
           props: {
-            name: "feedback_other",
+            name: "Other",
             "data-test": "feedback_other",
           },
         },
@@ -90,7 +91,7 @@ DefaultForm.args = {
         variant: "outlined",
         "data-test": "feedback_name",
       },
-      name: "feedback_name",
+      name: "name",
     },
     {
       type: "text",
@@ -100,7 +101,7 @@ DefaultForm.args = {
         variant: "outlined",
         "data-test": "feedback_email",
       },
-      name: "feedback_email",
+      name: "email",
     },
   ],
   buttons: [

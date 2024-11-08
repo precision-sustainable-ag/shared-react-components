@@ -8,6 +8,7 @@ export const PSAForm = ({
   apiUrl,
   submitMessage,
   headerTitle,
+  repository,
   fields, // Single prop for both text fields and checkboxes
   buttons,
 }) => {
@@ -20,9 +21,10 @@ export const PSAForm = ({
   });
 
   const initialFormData = fields.reduce((acc, field) => {
-    acc[field.name] = "";
+    if(field.type === "text")
+      acc[field.name] = "";
     return acc;
-  }, {repository: "dst", labels: []});
+  }, {repository: repository, labels: []});
 
   const [formData, setFormData] = useState(initialFormData);
 
@@ -73,8 +75,6 @@ export const PSAForm = ({
       setSnackbarData({ open: true, message, color: "red" });
       return;
     }
-
-    console.log("Submitting formData:", JSON.stringify(formData));
 
     fetch(apiUrl, {
       method: "POST",
@@ -230,4 +230,3 @@ PSAForm.propTypes = {
     })
   ),
 };
-
