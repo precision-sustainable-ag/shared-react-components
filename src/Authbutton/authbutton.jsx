@@ -8,7 +8,7 @@ import PersonIcon from "@mui/icons-material/Person";
  * This is a button component based on `figmaButton`. The button includes functions for login/logout and is need to be implemented under
  * `Auth0Provider`. Check [Auth0 document](https://developer.auth0.com/resources/guides/spa/react/basic-authentication) for more details.
  */
-export function PSAAuthButton({}) {
+export function PSAAuthButton({ buttonSx, textSx }) {
   const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } =
     useAuth0();
 
@@ -39,8 +39,9 @@ export function PSAAuthButton({}) {
       onClick={handleAuthButtonClick}
       buttonSx={{
         backgroundColor: isAuthenticated ? "additional.error" : "main.accent2",
+        ...buttonSx,
       }}
-      textSx={{ fontSize: "1rem" }}
+      textSx={{ fontSize: "1rem", ...textSx }}
       data-test="auth_button"
     />
   );
@@ -48,4 +49,9 @@ export function PSAAuthButton({}) {
 
 /* Define Props Type */
 
-PSAAuthButton.propTypes = {};
+PSAAuthButton.propTypes = {
+  /** Additional styles for button */
+  buttonSx: PropTypes.object,
+  /** Additional styles for the text in the button */
+  textSx: PropTypes.object,
+};
