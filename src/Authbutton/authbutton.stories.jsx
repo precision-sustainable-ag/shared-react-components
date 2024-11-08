@@ -1,5 +1,5 @@
 import React from "react";
-import { PSAAuthButton } from "./authButton";
+import { PSAAuthButton } from "./authbutton";
 import { Button, Typography } from "@mui/material";
 
 const meta = {
