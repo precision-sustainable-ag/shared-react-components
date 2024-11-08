@@ -38,7 +38,9 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
     if (arr.length === 2) {
       return `The "${arr.join('" and "')}" fields are blank`;
     }
-    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]}" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${
+      arr[arr.length - 1]
+    }" fields are blank`;
   };
 
   const checkDisabled = () => {
@@ -63,7 +65,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
     return { state: false, message: "" };
   };
   useEffect(() => {
-    pirschAnalytics('Visited Page', { meta: { visited: 'Feedback' } });
+    pirschAnalytics("Visited Page", { meta: { visited: "Feedback" } });
   }, [consentRedux]);
   useEffect(() => {
     document.title = "Feedback";
@@ -153,7 +155,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         paddingRight: "10%",
         paddingTop: "3%",
         paddingBottom: "3%",
-        textAlign:"left"
+        textAlign: "left",
       }}
     >
       {/* Title */}
@@ -285,7 +287,11 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             />
             <FormControlLabel
               control={
-                <Checkbox onChange={handleCheckboxChange} name="Other" data-test="feedback_other" />
+                <Checkbox
+                  onChange={handleCheckboxChange}
+                  name="Other"
+                  data-test="feedback_other"
+                />
               }
               label="Other"
             />
@@ -345,7 +351,11 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
       >
         {checkDisabled().state && (
           <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: "red" }}  data-test="feedback_alert">
+            <Typography
+              variant="body1"
+              style={{ color: "red" }}
+              data-test="feedback_alert"
+            >
               {checkDisabled().message}. Please fill all required fields before
               submitting.
             </Typography>
@@ -377,32 +387,30 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
 }
 
 PSAFeedback.propTypes = {
-  /** 
+  /**
    * The title of the feedback section. This will be displayed at the top of the component.
    * Required: Expected to be a string.
    */
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 
-  /** 
+  /**
    * The label text associated with the feedback input.
    * This will be shown either with a selector or a seed calculator, depending on the implementation.
    * Required: Expected to be a string.
    */
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
 
-  /** 
+  /**
    * Redux object that handles the user's consent state for feedback.
    * Used to manage and store consent-related information in the feedback process.
    * Required: Expected to be an object.
    */
-  consentRedux: PropTypes.object.isRequired,
+  consentRedux: PropTypes.object,
 
-  /** 
+  /**
    * Function for sending data to the Pirsch Analytics service.
    * It tracks and logs feedback or user interactions within the component.
    * Required: Expected to be a function.
    */
-  pirschAnalytics: PropTypes.func.isRequired,
+  pirschAnalytics: PropTypes.func,
 };
-
-
