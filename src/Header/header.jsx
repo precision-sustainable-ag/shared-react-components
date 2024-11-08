@@ -158,7 +158,7 @@ export function PSAHeader({
                 </MenuItem>
               ))}
               <MenuItem onClick={handleAuthButtonClick} data-test="auth_button">
-                <Typography
+                {/* <Typography
                   sx={{
                     fontSize: "0.875rem",
                     fontWeight: "bold",
@@ -168,7 +168,20 @@ export function PSAHeader({
                   }}
                 >
                   {isAuthenticated ? "LOGOUT" : "LOGIN"}
-                </Typography>
+                </Typography> */}
+                <PSAFigmaButton
+                  variant="text"
+                  icon={<PersonIcon />}
+                  text={isAuthenticated ? "LOGOUT" : "LOGIN"}
+                  onClick={handleAuthButtonClick}
+                  buttonSx={{
+                    color: isAuthenticated
+                      ? "additional.error"
+                      : "main.accent2",
+                  }}
+                  textSx={{ fontSize: "1rem" }}
+                  data-test="auth_button"
+                />
               </MenuItem>
             </Menu>
           </>

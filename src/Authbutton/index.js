@@ -1,2 +1,2 @@
-import { PSAAuthbutton } from "./authbutton"; 
-export default PSAAuthbutton;
+import { PSAAuthButton } from "./authButton";
+export default PSAAuthButton;
