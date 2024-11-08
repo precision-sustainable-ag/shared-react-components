@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import PropTypes from "prop-types";
 import { PSALogoDisplayer, PSAFigmaButton } from "../index";
 import {
@@ -11,43 +11,20 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { useAuth0 } from "@auth0/auth0-react";
 import MenuIcon from "@mui/icons-material/Menu";
-import PersonIcon from "@mui/icons-material/Person";
 
 export function PSAHeader({
   title,
   subtitle,
   council,
   onLogoClick,
-  navButtons,
+  navContent,
 }) {
   const theme = useTheme();
   const underMd = useMediaQuery(theme.breakpoints.down("md"));
 
   const [anchor, setAnchor] = useState(null);
   const open = Boolean(anchor);
-
-  const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } =
-    useAuth0();
-
-  const handleLogin = async () => {
-    if (window.Cypress) await loginWithRedirect();
-    else await loginWithPopup();
-  };
-
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
-    });
-  };
-
-  const handleAuthButtonClick = () => {
-    if (isAuthenticated) return handleLogout();
-    return handleLogin();
-  };
 
   return (
     <Grid
@@ -140,68 +117,50 @@ export function PSAHeader({
               <MenuIcon style={{ color: theme.palette.main.accent1 }} />
             </Button>
             <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
-              {navButtons?.map((button, i) => (
+              {navContent?.map((item, i) => (
                 <MenuItem
-                  onClick={button.onClick}
+                  onClick={item.onClick}
                   key={i}
-                  data-test={`navbar-${button.text}`}
+                  data-test={`navbar-${item.text}`}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: "0.875rem",
-                      fontWeight: "bold",
-                      color: "main.text",
-                    }}
-                  >
-                    {button.text}
-                  </Typography>
+                  {/* if type is button, return text menuItem, else return component directly */}
+                  {item.type === "button" ? (
+                    <Typography
+                      sx={{
+                        fontSize: "0.875rem",
+                        fontWeight: "bold",
+                        color: "main.text",
+                      }}
+                    >
+                      {item.text}
+                    </Typography>
+                  ) : (
+                    item.component
+                  )}
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleAuthButtonClick} data-test="auth_button">
-                <Typography
-                  sx={{
-                    fontSize: "0.875rem",
-                    fontWeight: "bold",
-                    color: isAuthenticated
-                      ? "additional.error"
-                      : "main.accent2",
-                  }}
-                >
-                  {isAuthenticated ? "LOGOUT" : "LOGIN"}
-                </Typography>
-              </MenuItem>
             </Menu>
           </>
         ) : (
-          <>
-            {navButtons?.map((button, i) => (
-              <PSAFigmaButton
-                variant={button.variant}
-                icon={button.icon}
-                rightIcon={button.rightIcon}
-                text={button.text}
-                key={i}
-                onClick={button.onClick}
-                buttonSx={button.buttonSx}
-                textSx={{ ...button.textSx, fontSize: "1rem" }}
-                data-test={`navbar-${button.text}`}
-              />
-            ))}
-            <PSAFigmaButton
-              variant="color"
-              icon={<PersonIcon />}
-              rightIcon
-              text={isAuthenticated ? "LOGOUT" : "LOGIN"}
-              onClick={handleAuthButtonClick}
-              buttonSx={{
-                backgroundColor: isAuthenticated
-                  ? "additional.error"
-                  : "main.accent2",
-              }}
-              textSx={{ fontSize: "1rem" }}
-              data-test="auth_button"
-            />
-          </>
+          navContent.map((item, i) => (
+            <Fragment key={i}>
+              {item.type === "button" ? (
+                <PSAFigmaButton
+                  variant={item.variant}
+                  icon={item.icon}
+                  rightIcon={item.rightIcon}
+                  text={item.text}
+                  key={i}
+                  onClick={item.onClick}
+                  buttonSx={item.buttonSx}
+                  textSx={{ ...item.textSx, fontSize: "1rem" }}
+                  data-test={`navbar-${item.text}`}
+                />
+              ) : (
+                item.component
+              )}
+            </Fragment>
+          ))
         )}
       </Grid>
     </Grid>
@@ -228,10 +187,11 @@ PSAHeader.propTypes = {
    */
   onLogoClick: PropTypes.func,
   /**
-   * List of nav buttons, this should be a list of `<PSAFigmaButton />`.
+   * Content of the navbar, this should be a list of components with type property `type="button"` or `type="component"`.
    */
-  navButtons: PropTypes.arrayOf(
+  navContent: PropTypes.arrayOf(
     PropTypes.shape({
+      type: PropTypes.oneOf(["button", "component"]),
       variant: PropTypes.oneOf(["standard", "color", "text"]),
       icon: PropTypes.node,
       rightIcon: PropTypes.bool,
@@ -240,6 +200,7 @@ PSAHeader.propTypes = {
       props: PropTypes.object,
       buttonSx: PropTypes.object,
       textSx: PropTypes.object,
+      component: PropTypes.node,
     })
   ),
 };

@@ -1,8 +1,9 @@
 import React from "react";
 import { fn } from "@storybook/test";
 import { PSAHeader } from "./header";
-import PersonIcon from "@mui/icons-material/Person";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import PSAAuthButton from "../Authbutton";
+import PSADropdown from "../psadropdown";
 
 const meta = {
   component: PSAHeader,
@@ -20,8 +21,9 @@ const meta = {
 
 export default meta;
 
-const navButtons = [
+const navContent = [
   {
+    type: "button",
     variant: "text",
     text: "Release Notes",
     icon: <ChatBubbleOutlineIcon />,
@@ -30,6 +32,7 @@ const navButtons = [
     style: { fontSize: "1rem" },
   },
   {
+    type: "button",
     variant: "text",
     text: "About",
     icon: <ChatBubbleOutlineIcon />,
@@ -37,11 +40,34 @@ const navButtons = [
     onClick: fn(),
   },
   {
+    type: "button",
     variant: "text",
     text: "Feedback",
     icon: <ChatBubbleOutlineIcon />,
     rightIcon: true,
     onClick: fn(),
+  },
+];
+
+const customNavComponent = [
+  {
+    type: "component",
+    component: (
+      <PSADropdown
+        SelectProps={{
+          value: "",
+        }}
+        items={[
+          { label: "Option 1", value: "option1" },
+          { label: "Option 2", value: "option2" },
+          { label: "Option 3", value: "option3" },
+        ]}
+      />
+    ),
+  },
+  {
+    type: "component",
+    component: <PSAAuthButton />,
   },
 ];
 
@@ -51,6 +77,16 @@ export const DefaultHeader = {
     subtitle: "",
     council: "",
     onLogoClick: fn(),
-    navButtons: navButtons,
+    navContent: navContent,
+  },
+};
+
+export const HeaderWithCustomNavComponent = {
+  args: {
+    title: "Seeding Rate Calculator",
+    subtitle: "",
+    council: "",
+    onLogoClick: fn(),
+    navContent: [...navContent, ...customNavComponent],
   },
 };
