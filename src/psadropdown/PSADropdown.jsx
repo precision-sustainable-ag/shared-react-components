@@ -29,18 +29,17 @@ PSADropdown.propTypes = {
   /**
    * The label text for the dropdown
    */
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
 
   /**
    * Array of items for the dropdown, each item must have a label and value
    */
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      label: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     })
-  ).isRequired,
+  ),
 
   /**
    * The sx prop for styling the FormControl element
@@ -58,7 +57,7 @@ PSADropdown.propTypes = {
   SelectProps: PropTypes.shape({
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     variant: PropTypes.oneOf(["standard", "outlined", "filled"]),
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
     MenuProps: PropTypes.object,
     style: PropTypes.object,
     sx: PropTypes.object,
