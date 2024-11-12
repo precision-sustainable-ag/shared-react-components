@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { PSATooltip } from "./tooltip"; 
 import { Info } from '@mui/icons-material';
 import { Button, styled } from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const meta = {
   component: PSATooltip,
@@ -103,8 +104,36 @@ export const TooltipContentExample = () => (
     placement="top" 
     tooltipContent={tooltipContent()}/>
     </div>
-
   </>
 );
+
+export const customEventExample = () => {
+  const [hovering, setHovering] = useState(false);
+
+  const tooltipTitle = () => {
+    return 'This is the tooltip content';
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '50px' }}>
+      <PSATooltip
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+        arrow
+        title={tooltipTitle()}
+        placement="top"
+        tooltipContent={
+          <Button variant="contained" color="primary">
+            Hover over me
+          </Button>
+        }
+      />
+      <div style={{ marginTop: '20px', fontSize: '18px' }}>
+        {hovering ? 'Mouse is over the button' : 'Mouse is not over the button'}
+      </div>
+    </div>
+  );
+};
+
 
 export default meta;

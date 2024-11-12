@@ -3,52 +3,39 @@ import PropTypes from "prop-types";
 import { Tooltip } from '@mui/material';
 
 export function PSATooltip({
-  title, 
-  placement = 'bottom', 
-  arrow = true,
-  enterTouchDelay = 0,  
+  onMouseEnter,//Extracting onMouseEnter from the props.
+  onMouseLeave,//Extracting onMouseLeave from the props.
   tooltipContent, 
   ...props
 }) {
+  // Cloning tooltipContent and adding/injecting event handlers directly to element
+  const eventHandlers = {};
+  if (onMouseEnter) eventHandlers.onMouseEnter = onMouseEnter;
+  if (onMouseLeave) eventHandlers.onMouseLeave = onMouseLeave;
+  const clonedTooltipContent = React.cloneElement(tooltipContent, eventHandlers);
   return (
     <Tooltip
-      title={title}
-      placement={placement}
-      arrow={arrow}
-      enterTouchDelay={enterTouchDelay}
       {...props}
-      children={tooltipContent}
+      children={clonedTooltipContent}
     />
   );
 }
 
 PSATooltip.propTypes = {
-  
-   /**
-   * The text or node to be displayed inside the tooltip.
-   */
-  title: PropTypes.node,
-
-  /**
-   * Where the tooltip will appear relative to its child element.
-   */
-  placement: PropTypes.oneOf([
-    'top', 'bottom', 'left', 'right', 'top-start', 'top-end', 'bottom-start', 'bottom-end', 'left-start', 'left-end', 'right-start', 'right-end'
-  ]),
-
-  /**
-   * Whether the tooltip will have an arrow pointing to the child element.
-   */
-  arrow: PropTypes.bool,
-
-  /**
-   * The delay in milliseconds before showing the tooltip on touch devices.
-   */
-  enterTouchDelay: PropTypes.number,
 
   /**
    * Custom content to render inside the tooltip.
    */
   tooltipContent: PropTypes.node,
+
+  /**
+   * Mouse enter event handler.
+   */
+  onMouseEnter: PropTypes.func,
+
+  /**
+   * Mouse leave event handler.
+   */
+  onMouseLeave: PropTypes.func,
 
 };
