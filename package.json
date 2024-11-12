@@ -41,6 +41,7 @@
     "@turf/centroid": "^7.1.0",
     "chroma-js": "^3.0.0",
     "mapbox-gl": "^3.6.0",
+    "recharts": "^2.13.3",
     "turf": "^3.0.14"
   },
   "peerDependencies": {
