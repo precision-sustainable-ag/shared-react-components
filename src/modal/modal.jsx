@@ -9,7 +9,8 @@ export function PSAModal({
   open, 
   onClose, 
   closeAfterTransition, 
-  disableEscapeKeyDown}) {
+  disableEscapeKeyDown
+}) {
   return (
     <Modal
       sx={sx}
