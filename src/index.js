@@ -17,3 +17,5 @@ export { default as PSATooltip } from "./Tooltip/index";
 export { default as PSAPiechart } from "./Piechart/index";
 export { default as PSAAuthButton } from "./Authbutton/index";
 export { default as PSASlider } from "./Slider/index";
+export { default as PSAModal } from "./modal/index";
+
