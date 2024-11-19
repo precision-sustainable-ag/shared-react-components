@@ -19,3 +19,4 @@ export { default as PSAAuthButton } from "./Authbutton/index";
 export { default as PSASlider } from "./Slider/index";
 export { default as PSAModal } from "./modal/index";
 export { default as PSACheckbox } from "./Checkbox/index";
+export { default as PSAProfile } from "./Profile/index";
