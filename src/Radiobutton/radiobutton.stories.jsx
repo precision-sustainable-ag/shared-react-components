@@ -57,6 +57,7 @@ export const RadioButtonRow = () => {
     <PSARadiobutton
       options={options}
       selectedValue={selectedValue}
+      sx={{ marginLeft: '1em', display: 'inline-block' }}
       onChange={handleChange}
       row
       aria-label="unit selection"

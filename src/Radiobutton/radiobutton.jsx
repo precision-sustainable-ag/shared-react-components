@@ -4,10 +4,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import PropTypes from 'prop-types';
 
-export function PSARadiobutton({ options, selectedValue, onChange, row = false, ...props }) {
+export function PSARadiobutton({ options, selectedValue, onChange, row = false, sx, ...props }) {
   return (
     <RadioGroup
       row={row}
+      sx={sx}
       {...props}
     >
       {options.map((option) => (
@@ -50,7 +51,7 @@ PSARadiobutton.propTypes = {
   row: PropTypes.bool,
 
   /**
-   * Additional props to be passed to the RadioGroup component
+   * Additional styles to be applied to the RadioGroup
    */
-  RadioGroupProps: PropTypes.object,
+  sx: PropTypes.object, // Add PropTypes for the sx prop
 };
