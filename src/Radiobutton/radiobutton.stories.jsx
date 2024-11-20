@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { PSARadiobutton } from "./radiobutton";
+import React, { useState } from 'react';
+import { PSARadiobutton } from './radiobutton';
 
 const meta = {
   title: "PSARadiobutton",
@@ -9,7 +9,7 @@ const meta = {
     layout: "centered",
     docs: {
       description: {
-        component: `This is a custom Radio button component based on MUI's Radio component.`,
+        component: `This is a custom RadioGroup component based on MUI's RadioGroup component. It supports dynamic options and handles selection state.`,
       },
     },
   },
@@ -17,13 +17,12 @@ const meta = {
 
 export default meta;
 
-export const RadiobuttonGroup = () => {
-  const [selectedValue, setSelectedValue] = useState("");
+export const RadioButtonColumn = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
 
   const options = [
-    { label: "Option A", value: "optionA" },
-    { label: "Option B", value: "optionB" },
-    { label: "Option C", value: "optionC" },
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
   ];
 
   const handleChange = (value) => {
@@ -31,26 +30,37 @@ export const RadiobuttonGroup = () => {
   };
 
   return (
-    <div>
-      {options.map((option) => (
-        <div
-          key={option.value}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "8px",
-          }}
-        >
-          <PSARadiobutton
-            checked={selectedValue === option.value}
-            name="psa-radiobutton-group"
-            color="primary"
-            style={{ marginRight: "8px" }}
-            onChange={() => handleChange(option.value)}
-          />
-          <label htmlFor={option.label}>{option.label}</label>
-        </div>
-      ))}
-    </div>
+    <PSARadiobutton
+      options={options}
+      selectedValue={selectedValue}
+      onChange={handleChange}
+      row={false}
+      aria-label="unit selection"
+      name="unit"
+    />
+  );
+};
+
+export const RadioButtonRow = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+
+  const options = [
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <PSARadiobutton
+      options={options}
+      selectedValue={selectedValue}
+      onChange={handleChange}
+      row
+      aria-label="unit selection"
+      name="unit"
+    />
   );
 };
