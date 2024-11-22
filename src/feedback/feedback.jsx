@@ -9,7 +9,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from "@mui/material";
-import PSAButton from "../button";
+import PSAButton from "../Button";
 import PSATextField from "../Textfield";
 export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
   const [snackbarData, setSnackbarData] = useState({

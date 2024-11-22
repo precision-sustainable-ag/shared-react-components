@@ -3,6 +3,7 @@ import { FadeAlert } from "./fade-alert";
 import { Button, Typography } from "@mui/material";
 
 const meta = {
+  title: "FadeAlert",
   component: FadeAlert,
   tags: ["autodocs"],
   parameters: {

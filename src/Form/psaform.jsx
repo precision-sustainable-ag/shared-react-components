@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Grid, Typography, Snackbar, Checkbox, FormGroup, FormControlLabel } from "@mui/material";
-import PSAButton from "../button";
+import {
+  Grid,
+  Typography,
+  Snackbar,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+} from "@mui/material";
+import PSAButton from "../Button";
 import PSATextField from "../Textfield";
 
 export const PSAForm = ({
@@ -20,11 +27,13 @@ export const PSAForm = ({
     color: "",
   });
 
-  const initialFormData = fields.reduce((acc, field) => {
-    if(field.type === "text")
-      acc[field.name] = "";
-    return acc;
-  }, {repository: repository, labels: []});
+  const initialFormData = fields.reduce(
+    (acc, field) => {
+      if (field.type === "text") acc[field.name] = "";
+      return acc;
+    },
+    { repository: repository, labels: [] }
+  );
 
   const [formData, setFormData] = useState(initialFormData);
 
@@ -36,16 +45,22 @@ export const PSAForm = ({
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return "";
     if (arr.length === 1) return `The "${arr[0]}" field is blank`;
-    if (arr.length === 2) return `The "${arr.join('" and "')}" fields are blank`;
-    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]}" fields are blank`;
+    if (arr.length === 2)
+      return `The "${arr.join('" and "')}" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${
+      arr[arr.length - 1]
+    }" fields are blank`;
   };
 
   const checkDisabled = () => {
     const messageArr = [];
 
     fields.forEach((field) => {
-      if (field.required && ((field.type === "text" && formData[field.name] === "") ||
-        (field.type === "checkbox" && formData.labels.length === 0))) {
+      if (
+        field.required &&
+        ((field.type === "text" && formData[field.name] === "") ||
+          (field.type === "checkbox" && formData.labels.length === 0))
+      ) {
         messageArr.push(field.label);
       }
     });
@@ -65,7 +80,9 @@ export const PSAForm = ({
     const { name, checked } = event.target;
     setFormData((prev) => ({
       ...prev,
-      labels: checked ? [...(prev.labels || []), name] : remove(prev.labels || [], name),
+      labels: checked
+        ? [...(prev.labels || []), name]
+        : remove(prev.labels || [], name),
     }));
   };
 
@@ -84,14 +101,16 @@ export const PSAForm = ({
       .then((response) => {
         setSnackbarData({
           open: true,
-          message: response.status === 201
-            ? submitMessage
-            : `Error ${response.status}. ${response.status === 400
-              ? "Bad Request"
-              : response.status === 422
-                ? "Unprocessable Entry"
-                : "Internal Server Error"
-            }`,
+          message:
+            response.status === 201
+              ? submitMessage
+              : `Error ${response.status}. ${
+                  response.status === 400
+                    ? "Bad Request"
+                    : response.status === 422
+                    ? "Unprocessable Entry"
+                    : "Internal Server Error"
+                }`,
           color: response.status === 201 ? "green" : "red",
         });
         return response.json();
@@ -100,7 +119,11 @@ export const PSAForm = ({
   };
 
   return (
-    <Grid container rowSpacing={5} style={{ padding: "3% 10%", textAlign: "left" }}>
+    <Grid
+      container
+      rowSpacing={5}
+      style={{ padding: "3% 10%", textAlign: "left" }}
+    >
       <Grid container item spacing={1} justifyContent="center">
         <Grid item xs={12}>
           <Typography variant="h3">{headerTitle}</Typography>
@@ -108,10 +131,18 @@ export const PSAForm = ({
       </Grid>
 
       {fields.map((field, index) => (
-        <Grid key={index} container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+        <Grid
+          key={index}
+          container
+          item
+          spacing={1}
+          justifyContent="flex-start"
+          alignItems="flex-start"
+        >
           <Grid item xs={12}>
             <Typography variant="h6">
-              {field.label} {field.required && <span style={{ color: "red" }}>*</span>}
+              {field.label}{" "}
+              {field.required && <span style={{ color: "red" }}>*</span>}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -125,29 +156,36 @@ export const PSAForm = ({
               />
             ) : (
               <FormGroup>
-               {field.options.map((checkbox, index) => (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    {...checkbox.props}
-                    onChange={handleCheckboxChange}
+                {field.options.map((checkbox, index) => (
+                  <FormControlLabel
+                    key={index}
+                    control={
+                      <Checkbox
+                        {...checkbox.props}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
+                    label={checkbox.label}
                   />
-                }
-                label={checkbox.label}
-              />
-            ))}
+                ))}
               </FormGroup>
             )}
           </Grid>
         </Grid>
       ))}
 
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Grid
+        container
+        item
+        spacing={1}
+        justifyContent="flex-start"
+        alignItems="flex-start"
+      >
         {isSubmitDisabled && (
           <Grid item xs={12}>
             <Typography variant="body1" style={{ color: "red" }}>
-              {checkDisabled().message}. Please fill all required fields before submitting.
+              {checkDisabled().message}. Please fill all required fields before
+              submitting.
             </Typography>
           </Grid>
         )}
@@ -155,7 +193,9 @@ export const PSAForm = ({
           <Grid key={index} item xs={12}>
             <PSAButton
               {...button.props}
-              onClick={button.action === "submit" ? handleSubmit : button.onClick}
+              onClick={
+                button.action === "submit" ? handleSubmit : button.onClick
+              }
               disabled={isSubmitDisabled}
             />
           </Grid>

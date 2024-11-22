@@ -1,8 +1,8 @@
 import React from "react";
 import { PSAAuthButton } from "./authbutton";
-import { Button, Typography } from "@mui/material";
 
 const meta = {
+  title: "AuthButton",
   component: PSAAuthButton,
   tags: ["autodocs"],
   parameters: {

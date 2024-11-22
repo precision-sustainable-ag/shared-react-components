@@ -2,6 +2,7 @@ import React from "react";
 import { PSAFeedback } from "./feedback";
 
 const meta = {
+  title: "Feedback",
   component: PSAFeedback,
   tags: ["autodocs"],
 };
