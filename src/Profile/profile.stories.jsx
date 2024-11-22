@@ -1,7 +1,8 @@
 import React from "react";
-import { PSAProfile } from "./profile"; 
+import { PSAProfile } from "./profile";
 
 const meta = {
+  title: "Layout/Profile",
   component: PSAProfile,
   tags: ["autodocs"],
   parameters: {
@@ -11,7 +12,6 @@ const meta = {
 
 export default meta;
 
-export const DefaultProfile = { 
-  args: {
-  },
+export const DefaultProfile = {
+  args: {},
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { PSAForm } from "./psaform";
 
 export default {
-  title: "PSAForm",
+  title: "Inputs/Form",
   component: PSAForm,
   tags: ["autodocs"],
   parameters: {
@@ -42,7 +42,8 @@ DefaultForm.args = {
     {
       type: "text",
       label: "Message",
-      description: "Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.",
+      description:
+        "Explain your feedback as thoroughly as you can. Your feedback will help us improve the experience.",
       props: {
         placeholder: "Enter Your Feedback",
         multiline: true,
@@ -116,7 +117,8 @@ DefaultForm.args = {
     },
   ],
   consentRedux: true,
-  pirschAnalytics: (action, options) => console.log(`Analytics action: ${action}`, options),
+  pirschAnalytics: (action, options) =>
+    console.log(`Analytics action: ${action}`, options),
 };
 
 // Custom Form Example
@@ -198,5 +200,6 @@ CustomForm.args = {
     },
   ],
   consentRedux: true,
-  pirschAnalytics: (action, options) => console.log(`Analytics action: ${action}`, options),
+  pirschAnalytics: (action, options) =>
+    console.log(`Analytics action: ${action}`, options),
 };

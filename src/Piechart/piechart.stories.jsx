@@ -8,6 +8,7 @@ const defaultPieChartData = {
 };
 
 const meta = {
+  title: "Functional/PieChart",
   component: PSAPiechart,
   tags: ["autodocs"],
 };

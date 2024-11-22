@@ -4,6 +4,7 @@ import { Box, Typography } from "@mui/material";
 import GrassIcon from "@mui/icons-material/Grass";
 
 const meta = {
+  title: "Layout/Accordion",
   component: PSAAccordion,
   tags: ["autodocs"],
   parameters: {},

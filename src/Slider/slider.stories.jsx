@@ -3,6 +3,7 @@ import { PSASlider } from "./slider";
 import { Box } from "@mui/material";
 
 const meta = {
+  title: "Inputs/Slider",
   component: PSASlider,
   tags: ["autodocs"],
   parameters: {

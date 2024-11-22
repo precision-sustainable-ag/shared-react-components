@@ -3,9 +3,10 @@ import { fn } from "@storybook/test";
 import { PSAHeader } from "./header";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import PSAAuthButton from "../Authbutton";
-import PSADropdown from "../psadropdown";
+import PSADropdown from "../Dropdown";
 
 const meta = {
+  title: "Functional/Header",
   component: PSAHeader,
   tags: ["autodocs"],
   parameters: {

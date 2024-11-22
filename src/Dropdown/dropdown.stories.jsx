@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { PSADropdown } from "./PSADropdown"; // Assuming PSADropdown is the component you are working on
+import { PSADropdown } from "./dropdown"; // Assuming PSADropdown is the component you are working on
 
 export default {
-  title: "PSADropdown",
+  title: "Layout/Dropdown",
   component: PSADropdown,
   tags: ["autodocs"],
   parameters: {

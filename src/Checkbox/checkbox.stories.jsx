@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PSACheckbox } from "./checkbox";
 
 const meta = {
-  title: "PSACheckbox",
+  title: "Inputs/CheckBox",
   component: PSACheckbox,
   tags: ["autodocs"],
   parameters: {
@@ -33,7 +33,10 @@ export const CheckboxGroup = () => {
   return (
     <div>
       {options.map((option) => (
-        <div key={option.value} style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+        <div
+          key={option.value}
+          style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
+        >
           <PSACheckbox
             checked={comparisonKeys.includes(option.value)}
             name={option.label}
@@ -43,13 +46,13 @@ export const CheckboxGroup = () => {
             onChange={() => {
               const comparisonKeysCopy = [...comparisonKeys];
               const indexOfValue = comparisonKeysCopy.indexOf(option.value);
-          
+
               if (indexOfValue === -1) {
                 comparisonKeysCopy.push(option.value);
               } else {
                 comparisonKeysCopy.splice(indexOfValue, 1);
               }
-          
+
               handleUpdateComparisonKeys(comparisonKeysCopy);
             }}
           />

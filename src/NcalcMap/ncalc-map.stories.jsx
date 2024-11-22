@@ -3,6 +3,7 @@ import { NcalcMap } from "./ncalc-map";
 import initRasterObject from "./sample-response.json";
 
 const meta = {
+  title: "Functional/NcalcMap",
   component: NcalcMap,
   tags: ["autodocs"],
 };

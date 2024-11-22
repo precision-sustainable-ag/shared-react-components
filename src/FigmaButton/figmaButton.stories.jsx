@@ -6,6 +6,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 
 const meta = {
+  title: "Inputs/FigmaButton",
   component: PSAFigmaButton,
   tags: ["autodocs"],
   parameters: {
