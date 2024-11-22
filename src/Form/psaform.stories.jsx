@@ -2,7 +2,7 @@ import React from "react";
 import { PSAForm } from "./psaform";
 
 export default {
-  title: "Form",
+  title: "Inputs/Form",
   component: PSAForm,
   tags: ["autodocs"],
   parameters: {

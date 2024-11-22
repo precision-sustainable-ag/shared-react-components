@@ -2,7 +2,7 @@ import React from "react";
 import { PSAAuthButton } from "./authbutton";
 
 const meta = {
-  title: "AuthButton",
+  title: "Inputs/AuthButton",
   component: PSAAuthButton,
   tags: ["autodocs"],
   parameters: {

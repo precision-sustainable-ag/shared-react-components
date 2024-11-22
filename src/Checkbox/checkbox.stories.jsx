@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PSACheckbox } from "./checkbox";
 
 const meta = {
-  title: "CheckBox",
+  title: "Inputs/CheckBox",
   component: PSACheckbox,
   tags: ["autodocs"],
   parameters: {

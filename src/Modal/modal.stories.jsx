@@ -3,7 +3,7 @@ import { PSAModal } from "./modal";
 import { Button } from "@mui/material";
 
 const meta = {
-  title: "Modal",
+  title: "Layout/Modal",
   component: PSAModal,
   tags: ["autodocs"],
   parameters: {

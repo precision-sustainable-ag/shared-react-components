@@ -2,7 +2,7 @@ import React from "react";
 import { PSALogoDisplayer } from "./LogoDisplayer";
 
 const meta = {
-  title: "LogoDisplayer",
+  title: "Functional/LogoDisplayer",
   component: PSALogoDisplayer,
   tags: ["autodocs"],
   argTypes: {

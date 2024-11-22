@@ -6,7 +6,7 @@ import PSAAuthButton from "../Authbutton";
 import PSADropdown from "../Dropdown";
 
 const meta = {
-  title: "Header",
+  title: "Functional/Header",
   component: PSAHeader,
   tags: ["autodocs"],
   parameters: {

@@ -2,7 +2,7 @@ import { fn } from "@storybook/test";
 import { RegionSelectorMap } from "./region-selector-map";
 
 const meta = {
-  title: "RegionSelectorMap",
+  title: "Functional/RegionSelectorMap",
   component: RegionSelectorMap,
   tags: ["autodocs"],
   argTypes: {

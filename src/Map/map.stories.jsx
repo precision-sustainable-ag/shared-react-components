@@ -2,7 +2,7 @@ import { fn } from "@storybook/test";
 import { Map } from "./map";
 
 const meta = {
-  title: "Map",
+  title: "Functional/Map",
   component: Map,
   tags: ["autodocs"],
   argTypes: {

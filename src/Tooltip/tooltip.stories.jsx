@@ -3,7 +3,7 @@ import { PSATooltip } from "./tooltip";
 import { Button } from "@mui/material";
 
 const meta = {
-  title: "Tooltip",
+  title: "Feedback/Tooltip",
   component: PSATooltip,
   tags: ["autodocs"],
   parameters: {

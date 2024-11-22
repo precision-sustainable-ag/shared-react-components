@@ -2,7 +2,7 @@ import React from "react";
 import { PSAFeedback } from "./feedback";
 
 const meta = {
-  title: "Feedback",
+  title: "Feedback/Feedback",
   component: PSAFeedback,
   tags: ["autodocs"],
 };

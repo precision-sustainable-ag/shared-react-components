@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PSADropdown } from "./dropdown"; // Assuming PSADropdown is the component you are working on
 
 export default {
-  title: "Dropdown",
+  title: "Layout/Dropdown",
   component: PSADropdown,
   tags: ["autodocs"],
   parameters: {

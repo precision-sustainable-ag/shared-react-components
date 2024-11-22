@@ -2,7 +2,7 @@ import React from "react";
 import { PSAProfile } from "./profile";
 
 const meta = {
-  title: "Profile",
+  title: "Layout/Profile",
   component: PSAProfile,
   tags: ["autodocs"],
   parameters: {

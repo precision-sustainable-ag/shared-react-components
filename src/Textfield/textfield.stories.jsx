@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { PSATextField } from "./textfield";
 
 const meta = {
-  title: "TextField",
+  title: "Inputs/TextField",
   component: PSATextField,
   tags: ["autodocs"],
   parameters: {

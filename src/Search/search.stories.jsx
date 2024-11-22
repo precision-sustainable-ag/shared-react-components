@@ -2,7 +2,7 @@ import React from "react";
 import { PSASearch } from "./search";
 
 const meta = {
-  title: "Search",
+  title: "Inputs/Search",
   component: PSASearch,
   tags: ["autodocs"],
   parameters: {
