@@ -70,7 +70,7 @@ export const PSAForm = ({
     }));
   };
 
-  const handleSubmit = () => {
+  const submit = () => {
     const { state, message } = checkDisabled();
     if (state) {
       setSnackbarData({ open: true, message, color: "red" });
@@ -163,7 +163,7 @@ export const PSAForm = ({
           <Grid key={index} item xs={12}>
             <PSAButton
               {...button.props}
-              onClick={button.action === "submit" ? handleSubmit : button.onClick}
+              onClick={button.action === "submit" ? submit : button.onClick}
               disabled={isSubmitDisabled}
             />
           </Grid>
