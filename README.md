@@ -2,15 +2,22 @@
 
 **Date Created:** 9/04/24
 
-**Date Last Modified:** 11/15/2024
+**Date Last Modified:** 11/22/2024
 
 This repository contains a collection of reusable React components which is used across our DST projects. This library is developed using [Storybook](https://storybook.js.org/).
 
 ## Table of Contents:
 
-- [Setup](#setup)
-- [Development](#development)
-- [Common Issues](#common-issues)
+- [PSA Shared Components Library](#psa-shared-components-library)
+  - [Table of Contents:](#table-of-contents)
+  - [Setup](#setup)
+  - [Development](#development)
+    - [Create New Shared Component](#create-new-shared-component)
+    - [Integrate Component to Current Project](#integrate-component-to-current-project)
+  - [Common Issues](#common-issues)
+    - [Not getting updated components](#not-getting-updated-components)
+    - [Cannot get color properties](#cannot-get-color-properties)
+    - [Problem while import the repo to a project which is not using Vite](#problem-while-import-the-repo-to-a-project-which-is-not-using-vite)
 
 ## Setup
 
@@ -99,9 +106,9 @@ This repository contains a collection of reusable React components which is used
 ### Integrate Component to Current Project
 
 1. **Update changes to the project**
-   
+
    To integrate a component to current project, first add this repo to `package.json` of the project:
-   
+
    ```
    "dependencies": {
    ...,
@@ -109,34 +116,34 @@ This repository contains a collection of reusable React components which is used
    ...,
    }
    ```
-   
+
    If current work is on a specific branch and it's not been merged to `develop`, replace `#version` with `#branchName` ( e.g. `#feature/header` ). If all works have been merged to `develop`, remove the `#version`.
-   
+
    If the repo is already imported in the project, run
-   
+
    ```
    npm install shared-react-component --force
    ```
-   
+
    to update the codes.
-   
+
    To make sure all the changes have been updated, check `node_modules/shared-react-component/src` has all the updates of the component, if the updates are not shown, see [Common Issues](#common-issues).
 
 2. **Replace previous component with shared component**
 
    After getting all updates, replace the previous component with shared component.
-   
+
    To import the shared component, use
-   
+
    ```
    import { componentName } from 'shared-react-components/src';
    ```
-   
+
    Then replace the previous component, make sure all props are aligned and all functions should work as well. Please take care of the `data-test` tags and make sure that they are also applied to the shared component to maintain consistent testing functionality.
 
 ## Common Issues
 
-**Not getting updated components**
+#### Not getting updated components
 
 If you're having problems getting the updated component, try find the updated component under `node_modules/shared-react-component/src`, if the updates are not listed, it means that the updates are not correctly downloaded. First check if the branch name in `package.json` is correct, then run
 
@@ -145,3 +152,48 @@ npm install shared-react-component --force
 ```
 
 If this is not solving the problem, delete `node_modules` and run `npm install` again.
+
+#### Cannot get color properties
+
+If you are having problems like this ( or getting other colors ) :
+
+```
+figmaButton.jsx:31 Uncaught TypeError: Cannot read properties of undefined (reading 'greydark')
+   at customStyles (figmaButton.jsx:31:1)
+
+```
+
+This is because some of the components are using a shared theme which is defined in `src/theme`, in order to solve this, you'll need to integrate the theme to your project.
+
+If your project currently is not using a MUI theme from `<ThemeProvider>`, you'll need to create a `<ThemeProvider>` and pass the theme from `src/theme`. [Check for MUI documents about how to define the `<ThemeProvider>`](https://mui.com/material-ui/customization/theming/#themeprovider).
+
+If your project already have a existed theme, you can utilize [MUI `deepmerge` function](https://mui.com/material-ui/customization/theming/#createtheme-options-args-theme) to merge the shared theme with you current theme.
+
+```
+import { deepmerge } from '@mui/utils';
+import { createTheme } from '@mui/material/styles';
+import { PSATheme } from 'shared-react-components/src';
+
+const theme = createTheme(deepmerge(PSATheme, yourTheme));
+```
+
+Currently the components using the theme are: `FigmaButton`, `Header` and `TextField`.
+
+#### Problem while import the repo to a project which is not using Vite
+
+If you are having this error when trying to import the repo into a project which is not using Vite:
+
+```
+ERROR in ./node_modules/shared-react-components/src/Accordion/accordion.jsx 32:4
+Module parse failed: Unexpected token (32:4)
+File was processed with these loaders:
+ * ./node_modules/react-scripts/node_modules/source-map-loader/dist/cjs.js
+You may need an additional loader to handle the result of these loaders.
+| }) => {
+|   return (
+>     <Accordion
+|       expanded={expanded}
+|       onChange={onChange}
+```
+
+Please refer to [this article](https://medium.com/@duvvurukishore/how-i-resolved-you-may-need-additional-loader-to-handle-the-result-of-these-loaders-error-919a2e0356a0) to solve the problem.
