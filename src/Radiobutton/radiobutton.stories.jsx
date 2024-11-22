@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { PSARadiobutton } from './radiobutton';
+import React, { useState } from "react";
+import { PSARadiobutton } from "./radiobutton";
 
 const meta = {
-  title: "PSARadiobutton",
+  title: "Inputs/RadioButton",
   component: PSARadiobutton,
   tags: ["autodocs"],
   parameters: {
@@ -57,7 +57,7 @@ export const RadioButtonRow = () => {
     <PSARadiobutton
       options={options}
       selectedValue={selectedValue}
-      sx={{ marginLeft: '1em', display: 'inline-block' }}
+      sx={{ marginLeft: "1em", display: "inline-block" }}
       onChange={handleChange}
       row
       aria-label="unit selection"
