@@ -11,6 +11,7 @@ export const PSAForm = ({
   repository,
   fields, // Single prop for both text fields and checkboxes
   buttons,
+  handleSubmit,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
@@ -69,34 +70,41 @@ export const PSAForm = ({
     }));
   };
 
-  const handleSubmit = () => {
+  const submit = () => {
     const { state, message } = checkDisabled();
     if (state) {
       setSnackbarData({ open: true, message, color: "red" });
       return;
     }
 
-    fetch(apiUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        setSnackbarData({
-          open: true,
-          message: response.status === 201
-            ? submitMessage
-            : `Error ${response.status}. ${response.status === 400
-              ? "Bad Request"
-              : response.status === 422
-                ? "Unprocessable Entry"
-                : "Internal Server Error"
-            }`,
-          color: response.status === 201 ? "green" : "red",
-        });
-        return response.json();
+    if (handleSubmit) {
+      handleSubmit(formData);
+    }
+    else
+    {
+      fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       })
-      .catch((error) => console.error(error));
+        .then((response) => {
+          setSnackbarData({
+            open: true,
+            message: response.status === 201
+              ? submitMessage
+              : `Error ${response.status}. ${response.status === 400
+                ? "Bad Request"
+                : response.status === 422
+                  ? "Unprocessable Entry"
+                  : "Internal Server Error"
+              }`,
+            color: response.status === 201 ? "green" : "red",
+          });
+          return response.json();
+        })
+        .catch((error) => console.error(error));
+    }
+
   };
 
   return (
@@ -155,7 +163,7 @@ export const PSAForm = ({
           <Grid key={index} item xs={12}>
             <PSAButton
               {...button.props}
-              onClick={button.action === "submit" ? handleSubmit : button.onClick}
+              onClick={button.action === "submit" ? submit : button.onClick}
               disabled={isSubmitDisabled}
             />
           </Grid>
@@ -229,4 +237,9 @@ PSAForm.propTypes = {
       props: PropTypes.object,
     })
   ),
+
+  /**
+   * Function to handle form submission
+   */
+  handleSubmit: PropTypes.func.isRequired,
 };
