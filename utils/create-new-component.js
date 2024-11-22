@@ -102,7 +102,7 @@ export default PSA${pascalCaseName};`;
 
   const indexFilePath = path.join(__dirname, "..", "src", "index.js");
   const writeContent = `export { default as PSA${pascalCaseName} } from "./${pascalCaseName}/index";\n`;
-  fs.writeFileSync(indexFilePath, writeContent, "utf8");
+  fs.appendFileSync(indexFilePath, writeContent, "utf8");
 
   console.log(`Created folder and files for: ${pascalCaseName}`);
 }
