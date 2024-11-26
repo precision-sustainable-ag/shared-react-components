@@ -70,13 +70,58 @@ DefaultDropdown.args = {
   },
 };
 
+// Header Option Story
+export const HeaderOption = Template.bind({});
+HeaderOption.args = {
+  label: "Header",
+  items: [
+    { label: "Options Group 1", isHeader: true },
+    { label: "Option 1", value: "option1" },
+    { label: "Option 2", value: "option2" },
+    { label: "Options Group 2", isHeader: true },
+    { label: "Option 3", value: "option3" },
+  ],
+  formSx: { minWidth: 120 },
+  inputSx: {
+    color: "#598445",
+    "&.Mui-focused": {
+      color: "#598445",
+      fontWeight: "medium",
+    },
+  },
+  SelectProps: {
+    sx: {
+      minWidth: 100,
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "1px",
+        borderRadius: "4px",
+      },
+      "&:hover .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2px",
+      },
+      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#598445",
+        borderWidth: "2.5px",
+      },
+    },
+    "data-test": "select-option",
+  },
+  menuSx: {
+    fontWeight: "bold", color: "yellow", backgroundColor: "#000080",
+  }
+};
+
 // Dropdown with custom styles
 export const StyledDropdown = Template.bind({});
 StyledDropdown.args = {
   label: "Style",
   items: [
+    { label: "Options Group 1", isHeader: true },
     { label: "Option 1", value: "option1" },
     { label: "Option 2", value: "option2" },
+    { label: "Options Group 2", isHeader: true },
     { label: "Option 3", value: "option3" },
   ],
   formSx: { minWidth: 120 },

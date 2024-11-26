@@ -8,6 +8,7 @@ export const PSADropdown = ({
   formSx = {},
   inputSx = {},
   SelectProps = {},
+  menuSx = {},
 }) => (
   <FormControl sx={formSx} variant={SelectProps.variant}>
     <InputLabel sx={inputSx}>{label}</InputLabel>
@@ -17,6 +18,8 @@ export const PSADropdown = ({
           key={index}
           value={item.value}
           data-test={`${SelectProps["data-test"]}-${item.label}`}
+          disabled={item.isHeader}
+          style={item.isHeader ? menuSx : {}}
         >
           {item.label}
         </MenuItem>
@@ -64,4 +67,9 @@ PSADropdown.propTypes = {
     error: PropTypes.bool,
     "data-test": PropTypes.string,
   }),
+
+    /**
+   * The sx prop for styling the MenuItem element
+   */
+    menuSx: PropTypes.object,
 };
