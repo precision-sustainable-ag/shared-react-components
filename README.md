@@ -17,6 +17,7 @@ This repository contains a collection of reusable React components which is used
   - [Common Issues](#common-issues)
     - [Not getting updated components](#not-getting-updated-components)
     - [Cannot get color properties](#cannot-get-color-properties)
+    - [Not getting correct font](#not-getting-correct-font)
     - [Problem while import the repo to a project which is not using Vite](#problem-while-import-the-repo-to-a-project-which-is-not-using-vite)
 
 ## Setup
@@ -178,6 +179,14 @@ const theme = createTheme(deepmerge(PSATheme, yourTheme));
 ```
 
 Currently the components using the theme are: `FigmaButton`, `Header` and `TextField`.
+
+#### Not getting correct font
+
+Currently most of our shared components are using [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) font, if you have not getting the correct font in your app, add this line to your `App.js` :
+
+```
+import '@fontsource/ibm-plex-sans';
+```
 
 #### Problem while import the repo to a project which is not using Vite
 
