@@ -21,3 +21,4 @@ export { default as PSAModal } from "./Modal/index";
 export { default as PSACheckbox } from "./Checkbox/index";
 export { default as PSAProfile } from "./Profile/index";
 export { default as PSARadiobutton } from "./Radiobutton/index";
+export { default as PSALoadingspinner } from "./Loadingspinner/index";
