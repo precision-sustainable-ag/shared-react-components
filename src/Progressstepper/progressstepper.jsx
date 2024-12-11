@@ -55,6 +55,8 @@ export const PSAProgressstepper = ({
   typographyProps = {},
 }) => {
 
+  console.log('Steps:', steps);
+
   const getStepIcon = (currStep, activeStep) => {
     if (activeStep < currStep) return <StepLight />;
     if (activeStep > currStep) return <StepDark />;
