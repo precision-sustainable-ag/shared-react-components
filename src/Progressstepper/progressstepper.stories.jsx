@@ -32,7 +32,6 @@ Default.args = {
       { label: "Cash Crop" },
       { label: "Output" },
     ],
-    activeStep: 1,
     boxProps: {
       sx: { backgroundColor: '#F5F5F5', opacity: 0.9, width: '100%' }
     },
