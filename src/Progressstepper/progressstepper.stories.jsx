@@ -1,5 +1,4 @@
 import React from "react";
-import { MemoryRouter } from 'react-router-dom';
 import { PSAProgressstepper } from "./progressstepper";
 
 const meta = {
@@ -18,9 +17,7 @@ const Template = (args) => {
   };
 
   return (
-    <MemoryRouter>
-      <PSAProgressstepper {...args} onStepClick={onStepClick} />
-    </MemoryRouter>
+    <PSAProgressstepper {...args} onStepClick={onStepClick} />
   );
 };
 

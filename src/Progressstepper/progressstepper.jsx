@@ -1,7 +1,6 @@
 import React from 'react';
 import { Box, Step, StepButton, Stepper, styled, Typography } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-import { useNavigate } from 'react-router-dom';
 
 const StepLight = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
@@ -56,12 +55,6 @@ export const PSAProgressstepper = ({
   typographyProps = {},
 }) => {
 
-  const navigate = useNavigate();
-
-  const handleClickStep = (stepName, index) => {
-    navigate(`/${stepName}`);
-  };
-
   const getStepIcon = (currStep, activeStep) => {
     if (activeStep < currStep) return <StepLight />;
     if (activeStep > currStep) return <StepDark />;
@@ -88,7 +81,7 @@ export const PSAProgressstepper = ({
         {steps.map((step, index) => (
           <Step key={index} completed={index < activeStep} {...stepProps}>
             <StepButton
-              onClick={onStepClick ? () => onStepClick(step, index) : () => handleClickStep(step, index)}
+              onClick={() => onStepClick(step, index)}
               icon={getStepIcon(index, activeStep)}
               sx={{
                 '.MuiStepLabel-label': { marginTop: 0 },
