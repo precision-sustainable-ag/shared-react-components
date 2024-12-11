@@ -49,18 +49,13 @@ export const PSAProgressstepper = ({
   tabs = [],
   activeStep = 0,
   onStepClick = () => {},
+  getStepIcon,
   boxProps = {},
   stepperProps = {},
   stepProps = {},
   stepButtonProps = {},
   typographyProps = {},
 }) => {
-
-  const getStepIcon = (currStep, activeStep) => {
-    if (activeStep < currStep) return <StepLight />;
-    if (activeStep > currStep) return <StepDark />;
-    return <StepActive />;
-  };
 
   return (
     <Box
