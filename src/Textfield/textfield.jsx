@@ -5,7 +5,11 @@ import { TextField, styled } from "@mui/material";
  * This component is based on [MUI TextField](https://mui.com/material-ui/react-text-field/) component.
  */
 export const PSATextField = styled((props) => (
-  <TextField {...props} InputLabelProps={{ shrink: true }} />
+  <TextField
+    {...props}
+    InputLabelProps={{ shrink: true }}
+    sx={{ fieldset: props.label ? {} : { top: 0 } }}
+  />
 ))(({ theme }) => ({
   marginTop: "20px",
   ".MuiOutlinedInput-root": {

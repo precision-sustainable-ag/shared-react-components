@@ -52,4 +52,5 @@ export const MultilineTextField = Template.bind({});
 MultilineTextField.args = {
   multiline: true,
   minRows: 3,
+  label: "",
 };
