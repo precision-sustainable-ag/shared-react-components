@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Step, StepButton, Stepper, styled, Typography } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const StepLight = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
@@ -55,7 +57,13 @@ export const PSAProgressstepper = ({
   typographyProps = {},
 }) => {
 
-  console.log('Steps:', steps);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleClickStep = (stepName, index) => {
+    dispatch(set.activeStep(index));
+    navigate(`/${stepName}`);
+  };
 
   const getStepIcon = (currStep, activeStep) => {
     if (activeStep < currStep) return <StepLight />;
@@ -83,7 +91,7 @@ export const PSAProgressstepper = ({
         {steps.map((step, index) => (
           <Step key={index} completed={index < activeStep} {...stepProps}>
             <StepButton
-              onClick={() => onStepClick(step, index)}
+              onClick={() => handleClickStep(step, index)}
               icon={getStepIcon(index, activeStep)}
               sx={{
                 '.MuiStepLabel-label': { marginTop: 0 },
