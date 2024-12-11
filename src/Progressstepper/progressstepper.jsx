@@ -77,7 +77,10 @@ export const PSAProgressstepper = ({
         {steps.map((step, index) => (
           <Step key={index} completed={index < activeStep} {...stepProps}>
             <StepButton
-              onClick={() => onStepClick(tabs[index], index)}
+              onClick={() => {
+                activeStep = index
+                onStepClick(tabs[index], index)
+              }}
               icon={getStepIcon(index, activeStep)}
               sx={{
                 '.MuiStepLabel-label': { marginTop: 0 },
