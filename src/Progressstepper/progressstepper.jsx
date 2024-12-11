@@ -106,7 +106,7 @@ export const PSAProgressstepper = ({
                 }}
                 {...typographyProps}
               >
-                {step.label || step.title}
+                {step}
               </Typography>
             </StepButton>
           </Step>
