@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Box, Step, StepButton, Stepper, styled, Typography } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
@@ -47,7 +47,7 @@ const CustomStepConnector = styled(StepConnector)(() => ({
 export const PSAProgressstepper = ({
   steps = [],
   tabs = [],
-  onStepClick = () => {},
+  onStepClick = () => { },
   boxProps = {},
   stepperProps = {},
   stepProps = {},
@@ -63,10 +63,39 @@ export const PSAProgressstepper = ({
   };
 
   const getStepIcon = (currStep, activeStep) => {
-    if (activeStep < currStep) return <StepLight />;
-    if (activeStep > currStep) return <StepDark />;
-    return <StepActive />;
+    const baseIcon = (() => {
+      if (activeStep < currStep) return <StepLight />;
+      if (activeStep > currStep) return <StepDark />;
+      return <StepActive />;
+    })();
+  
+    const getTextColor = () => {
+      if (activeStep === currStep) return 'white';
+      if (activeStep > currStep) return 'white';  
+      return 'black';                             
+    };
+  
+    return (
+      <Box position="relative" display="inline-flex">
+        {baseIcon}
+        <Typography
+          variant="caption"
+          position="absolute"
+          top="50%"
+          left="50%"
+          sx={{
+            transform: 'translate(-50%, -50%)',
+            color: getTextColor(),
+            fontWeight: activeStep === currStep ? 'bold' : 'normal',
+          }}
+        >
+          {currStep + 1}
+        </Typography>
+      </Box>
+    );
   };
+  
+  
 
   return (
     <Box
