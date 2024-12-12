@@ -39,6 +39,7 @@ export const SeedCalc = Template.bind({});
 
 SeedCalc.args = {
   maxAvailableStep: 2,
+  strokeColor: 'white',
   steps: [
     'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
   ],

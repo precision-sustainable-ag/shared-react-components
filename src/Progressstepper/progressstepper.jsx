@@ -15,9 +15,9 @@ const StepDark = ({ strokeColor }) => (
   </svg>
 );
 
-const StepActive = () => (
+const StepActive = ({ strokeColor }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
-    <circle cx="21" cy="21" r="20" fill="#334A03" stroke="#F5F5F5" strokeWidth="17" />
+    <circle cx="21" cy="21" r="20" fill="#334A03" stroke={strokeColor} strokeWidth="17" />
     <circle cx="21" cy="21" r="19" stroke="#334A03" strokeWidth="3" />
   </svg>
 );
@@ -76,7 +76,7 @@ export const PSAStepper = ({
     const baseIcon = maxAvailableStep != undefined ?
 
       (() => {
-        if (activeStep === currStep) return <StepActive />;
+        if (activeStep === currStep) return <StepActive strokeColor={strokeColor} />;
         if (maxAvailableStep < currStep) return <StepLight strokeColor={strokeColor} />;
         if (maxAvailableStep >= currStep) return <StepDark strokeColor={strokeColor} />;
       })()
@@ -84,7 +84,7 @@ export const PSAStepper = ({
       (() => {
         if (activeStep < currStep) return <StepLight strokeColor={strokeColor} />;
         if (activeStep > currStep) return <StepDark strokeColor={strokeColor} />;
-        else return <StepActive />;
+        else return <StepActive strokeColor={strokeColor} />;
       })()
 
     const getTextColor = maxAvailableStep != undefined ? 
@@ -123,7 +123,7 @@ export const PSAStepper = ({
     <Box
       p="1rem"
       sx={{
-        backgroundColor: '#F5F5F5',
+        backgroundColor: 'white',
         opacity: 0.9,
         ...boxProps.sx,
       }}
