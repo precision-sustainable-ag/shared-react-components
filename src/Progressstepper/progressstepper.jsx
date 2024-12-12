@@ -15,9 +15,9 @@ const StepDark = ({ strokeColor }) => (
   </svg>
 );
 
-const StepActive = ({ strokeColor }) => (
+const StepActive = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
-    <circle cx="21" cy="21" r="20" fill="#334A03" stroke={strokeColor} strokeWidth="17" />
+    <circle cx="21" cy="21" r="20" fill="#334A03" stroke="#F5F5F5" strokeWidth="17" />
     <circle cx="21" cy="21" r="19" stroke="#334A03" strokeWidth="3" />
   </svg>
 );
@@ -76,7 +76,7 @@ export const PSAStepper = ({
     const baseIcon = maxAvailableStep != undefined ?
 
       (() => {
-        if (activeStep === currStep) return <StepActive strokeColor={strokeColor} />;
+        if (activeStep === currStep) return <StepActive />;
         if (maxAvailableStep < currStep) return <StepLight strokeColor={strokeColor} />;
         if (maxAvailableStep >= currStep) return <StepDark strokeColor={strokeColor} />;
       })()
@@ -84,7 +84,7 @@ export const PSAStepper = ({
       (() => {
         if (activeStep < currStep) return <StepLight strokeColor={strokeColor} />;
         if (activeStep > currStep) return <StepDark strokeColor={strokeColor} />;
-        else return <StepActive strokeColor={strokeColor} />;
+        else return <StepActive />;
       })()
 
     const getTextColor = maxAvailableStep != undefined ? 
