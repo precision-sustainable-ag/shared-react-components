@@ -37,7 +37,6 @@
     "@fontsource/ibm-plex-sans": "^5.1.0",
     "@mapbox/mapbox-gl-draw": "^1.4.3",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
-    "@reduxjs/toolkit": "^2.4.0",
     "@turf/area": "^7.1.0",
     "@turf/centroid": "^7.1.0",
     "chroma-js": "^3.0.0",

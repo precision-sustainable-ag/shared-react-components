@@ -47,7 +47,6 @@ const CustomStepConnector = styled(StepConnector)(() => ({
 
 export const PSAStepper = ({
   steps = [],
-  tabs = [],
   maxAvailableStep,
   onStepClick = () => { },
   boxProps = {},
@@ -66,9 +65,9 @@ export const PSAStepper = ({
     }
   }, [stepperProps.activeStep]);
 
-  const handleStepClick = (tab, index) => {
+  const handleStepClick = (step, index) => {
     setActiveStep(index);
-    onStepClick(tab, index);
+    onStepClick(step, index);
   };
 
   const getStepIcon = (currStep, activeStep) => {
@@ -139,7 +138,7 @@ export const PSAStepper = ({
         {steps.map((step, index) => (
           <Step key={index} completed={index < activeStep} disabled={maxAvailableStep !== undefined ? maxAvailableStep < index : false} {...stepProps}>
             <StepButton
-              onClick={() => handleStepClick(tabs[index], index)}
+              onClick={() => handleStepClick(steps[index], index)}
               icon={getStepIcon(index, activeStep)}
               sx={{
                 '.MuiStepLabel-label': { marginTop: 0 },
@@ -177,11 +176,6 @@ PSAStepper.propTypes = {
    * Array of step labels to display in the stepper.
    */
   steps: PropTypes.arrayOf(PropTypes.string).isRequired,
-
-  /**
-   * Array of tabs or additional data that is associated with each step.
-   */
-  tabs: PropTypes.arrayOf(PropTypes.any).isRequired,
 
   /**
    * The maximum available step that the user can access (optional).

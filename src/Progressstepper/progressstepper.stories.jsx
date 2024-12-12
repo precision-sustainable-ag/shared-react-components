@@ -21,14 +21,8 @@ const Template = (args) => {
 export const NCalc = Template.bind({});
 
 NCalc.args = {
-  onStepClick: (tab, index) => {
-    alert(`Navigating to ${tab} (Step: ${index + 1})`);
-  },
   steps: [
     'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
-  ],
-  tabs: [
-    'home', 'location', 'soil', 'covercrop', 'cashcrop', 'output'
   ],
   stepperProps: {
     activeStep: 0
