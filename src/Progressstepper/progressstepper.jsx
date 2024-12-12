@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Step, StepButton, Stepper, styled, Typography } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 
@@ -55,7 +55,13 @@ export const PSAProgressstepper = ({
   typographyProps = {},
 }) => {
 
-  const [activeStep, setActiveStep] = useState(stepperProps.activeStep);
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (stepperProps.activeStep !== undefined) {
+      setActiveStep(stepperProps.activeStep);
+    }
+  }, [stepperProps.activeStep]);
 
   const handleStepClick = (tab, index) => {
     setActiveStep(index);
@@ -63,6 +69,7 @@ export const PSAProgressstepper = ({
   };
 
   const getStepIcon = (currStep, activeStep) => {
+
     const baseIcon = (() => {
       if (activeStep < currStep) return <StepLight />;
       if (activeStep > currStep) return <StepDark />;
