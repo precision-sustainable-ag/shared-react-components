@@ -47,6 +47,7 @@ const CustomStepConnector = styled(StepConnector)(() => ({
 export const PSAProgressstepper = ({
   steps = [],
   tabs = [],
+  maxAvailableStep = 1,
   onStepClick = () => { },
   boxProps = {},
   stepperProps = {},
@@ -71,14 +72,14 @@ export const PSAProgressstepper = ({
   const getStepIcon = (currStep, activeStep) => {
 
     const baseIcon = (() => {
-      if (activeStep < currStep) return <StepLight />;
-      if (activeStep > currStep) return <StepDark />;
-      return <StepActive />;
+      if (activeStep === currStep) return <StepActive />;
+      if (maxAvailableStep < currStep) return <StepLight />;
+      if (maxAvailableStep >= currStep) return <StepDark />;
     })();
   
     const getTextColor = () => {
-      if (activeStep === currStep) return 'white';
-      if (activeStep > currStep) return 'white';  
+      if (maxAvailableStep === currStep) return 'white';
+      if (maxAvailableStep > currStep) return 'white';  
       return 'black';                             
     };
   
@@ -93,7 +94,7 @@ export const PSAProgressstepper = ({
           sx={{
             transform: 'translate(-50%, -50%)',
             color: getTextColor(),
-            fontWeight: activeStep === currStep ? 'bold' : 'normal',
+            fontWeight: maxAvailableStep === currStep ? 'bold' : 'normal',
           }}
         >
           {currStep + 1}
@@ -101,9 +102,6 @@ export const PSAProgressstepper = ({
       </Box>
     );
   };
-
-  console.log('ActiveStep: ', activeStep);
-  console.log('StepperActiveStep: ', stepperProps.activeStep);
 
   return (
     <Box
@@ -123,7 +121,7 @@ export const PSAProgressstepper = ({
         {...stepperProps}
       >
         {steps.map((step, index) => (
-          <Step key={index} completed={index < activeStep} {...stepProps}>
+          <Step key={index} completed={index < activeStep} disabled={maxAvailableStep < index} {...stepProps}>
             <StepButton
               onClick={() => handleStepClick(tabs[index], index)}
               icon={getStepIcon(index, activeStep)}
