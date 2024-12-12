@@ -108,7 +108,7 @@ export const PSAProgressstepper = ({
       {...boxProps}
     >
       <Stepper
-        activeStep={activeStep}
+        activeStep={stepperProps.activeStep ? stepperProps.activeStep : activeStep}
         alternativeLabel
         nonLinear
         connector={<CustomStepConnector />}
