@@ -95,6 +95,9 @@ export const PSAProgressstepper = ({
     );
   };
 
+  console.log('ActiveStep: ', activeStep);
+  console.log('StepperActiveStep: ', stepperProps.activeStep);
+
   return (
     <Box
       p="1rem"
