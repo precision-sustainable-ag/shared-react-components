@@ -45,7 +45,7 @@ const CustomStepConnector = styled(StepConnector)(() => ({
   },
 }));
 
-export const PSAProgressstepper = ({
+export const PSAStepper = ({
   steps = [],
   tabs = [],
   maxAvailableStep,
@@ -172,7 +172,7 @@ export const PSAProgressstepper = ({
   );
 };
 
-PSAProgressstepper.propTypes = {
+PSAStepper.propTypes = {
   /**
    * Array of step labels to display in the stepper.
    */

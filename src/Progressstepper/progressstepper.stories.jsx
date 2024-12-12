@@ -1,11 +1,12 @@
 import React from "react";
-import { PSAProgressstepper } from "./progressstepper";
+import { PSAStepper } from "./progressstepper";
 
 const meta = {
-  component: PSAProgressstepper,
+  title: "Functional/Stepper",
+  component: PSAStepper,
   tags: ["autodocs"],
   parameters: {
-    layout: "centered",
+    layout: "fullScreen",
   },
 };
 
@@ -13,35 +14,35 @@ export default meta;
 
 const Template = (args) => {
   return (
-    <PSAProgressstepper {...args}/>
+    <PSAStepper {...args} />
   );
 };
 
 export const NCalc = Template.bind({});
 
 NCalc.args = {
-    steps: [
-      'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
-    ],
-    stepperProps: {
-      activeStep: 0
-    },
-    boxProps: {
-      sx: { backgroundColor: '#F5F5F5', opacity: 0.9, width: '100%' }
-    },
-  };
+  onStepClick: (tab, index) => {
+    alert(`Navigating to ${tab} (Step: ${index + 1})`);
+  },
+  steps: [
+    'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
+  ],
+  tabs: [
+    'home', 'location', 'soil', 'covercrop', 'cashcrop', 'output'
+  ],
+  stepperProps: {
+    activeStep: 0
+  },
+};
 
 export const SeedCalc = Template.bind({});
 
 SeedCalc.args = {
   maxAvailableStep: 2,
-    steps: [
-      'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
-    ],
-    stepperProps: {
-      activeStep: 0
-    },
-    boxProps: {
-      sx: { backgroundColor: '#F5F5F5', opacity: 0.9, width: '100%' }
-    },
-  };
+  steps: [
+    'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
+  ],
+  stepperProps: {
+    activeStep: 0
+  },
+};
