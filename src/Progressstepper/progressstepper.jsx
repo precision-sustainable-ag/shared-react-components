@@ -55,7 +55,7 @@ export const PSAProgressstepper = ({
   typographyProps = {},
 }) => {
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(stepperProps.activeStep);
 
   const handleStepClick = (tab, index) => {
     setActiveStep(index);
@@ -94,8 +94,6 @@ export const PSAProgressstepper = ({
       </Box>
     );
   };
-  
-  
 
   return (
     <Box
@@ -108,7 +106,7 @@ export const PSAProgressstepper = ({
       {...boxProps}
     >
       <Stepper
-        activeStep={stepperProps.activeStep ? stepperProps.activeStep : activeStep}
+        activeStep={activeStep}
         alternativeLabel
         nonLinear
         connector={<CustomStepConnector />}
