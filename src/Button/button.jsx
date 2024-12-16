@@ -112,6 +112,7 @@ PSAButton.propTypes = {
     "ValuesChanged",
     "ModalLink",
     "ToggleOptions",
+    "",
   ]),
 
   /**
