@@ -48,13 +48,16 @@ export function PSAHeader({
         }}
       >
         <Button onClick={onLogoClick} data-test="header_logo_button">
-          <PSALogoDisplayer
-            council={council}
-            alt={council}
-            style={{
-              width: underMd ? "100px" : "150px",
-            }}
-          />
+          <Box sx={{ width: underMd ? "100px" : "150px" }}>
+            <PSALogoDisplayer
+              council={council}
+              alt={council}
+              style={{
+                maxWidth: underMd ? "100px" : "150px",
+                maxHeight: underMd ? "60px" : "80px",
+              }}
+            />
+          </Box>
         </Button>
 
         <Grid item sx={{ display: "flex", flexDirection: "column" }}>
