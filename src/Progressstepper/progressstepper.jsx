@@ -144,6 +144,7 @@ export const PSAStepper = ({
                 '.MuiStepLabel-label': { marginTop: 0 },
                 ...stepButtonProps.sx,
               }}
+              data-test={`step-${index}`}
               {...stepButtonProps}
             >
               <Typography
