@@ -100,7 +100,7 @@ PSAButton.propTypes = {
   /**
    * The text displayed on the button.
    */
-  title: PropTypes.string,
+  title: PropTypes.node,
 
   /**
    * The type of button to render, affecting its styling and behavior.
