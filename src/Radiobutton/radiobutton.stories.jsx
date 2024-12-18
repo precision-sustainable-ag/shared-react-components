@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { PSARadiobutton } from "./radiobutton";
+import { PSARadioButton } from "./radiobutton";
 
 const meta = {
   title: "Inputs/RadioButton",
-  component: PSARadiobutton,
+  component: PSARadioButton,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -30,7 +30,7 @@ export const RadioButtonColumn = () => {
   };
 
   return (
-    <PSARadiobutton
+    <PSARadioButton
       options={options}
       selectedValue={selectedValue}
       onChange={handleChange}
@@ -54,7 +54,7 @@ export const RadioButtonRow = () => {
   };
 
   return (
-    <PSARadiobutton
+    <PSARadioButton
       options={options}
       selectedValue={selectedValue}
       sx={{ marginLeft: "1em", display: "inline-block" }}
