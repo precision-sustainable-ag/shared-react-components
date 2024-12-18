@@ -1,2 +1,2 @@
-import { PSALoadingspinner } from "./loadingspinner"; 
-export default PSALoadingspinner;
+import { PSALoadingSpinner } from "./loadingspinner";
+export default PSALoadingSpinner;
