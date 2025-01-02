@@ -19,7 +19,7 @@ export const PSATextField = styled((props) => (
       borderColor: theme.palette.main.background1,
     },
     "&:hover fieldset": {
-      borderColor: theme.palette.main.background1,
+      borderColor: theme.palette.main.accent2,
     },
     "&.Mui-focused fieldset": {
       borderColor: theme.palette.main.accent2,
@@ -42,6 +42,9 @@ export const PSATextField = styled((props) => (
     maxWidth: "100%",
     overflow: "visible",
     "&.Mui-focused": {
+      color: theme.palette.main.text,
+    },
+    "&.Mui-error": {
       color: theme.palette.main.text,
     },
   },
