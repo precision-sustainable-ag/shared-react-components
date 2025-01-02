@@ -16,13 +16,13 @@ export const PSATextField = styled((props) => (
     boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
     fieldset: {
       borderWidth: "2px",
-      borderColor: theme.palette.main.text,
+      borderColor: theme.palette.main.background1,
     },
-    "&:not(.Mui-disabled):not(.Mui-error):hover fieldset": {
-      borderColor: theme.palette.main.accent1,
+    "&:hover fieldset": {
+      borderColor: theme.palette.main.accent2,
     },
     "&.Mui-focused fieldset": {
-      borderColor: theme.palette.main.accent1,
+      borderColor: theme.palette.main.accent2,
     },
     "&.Mui-error fieldset": {
       borderColor: theme.palette.additional.error,
@@ -42,6 +42,9 @@ export const PSATextField = styled((props) => (
     maxWidth: "100%",
     overflow: "visible",
     "&.Mui-focused": {
+      color: theme.palette.main.text,
+    },
+    "&.Mui-error": {
       color: theme.palette.main.text,
     },
   },
