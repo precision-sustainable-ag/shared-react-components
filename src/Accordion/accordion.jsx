@@ -8,6 +8,7 @@ import {
   AccordionSummary,
   Typography,
   Box,
+  Container,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -27,6 +28,8 @@ export const PSAAccordion = ({
   accordionProps,
   summaryProps,
   testId,
+  error,
+  subContainer
 }) => {
   return (
     <Accordion
@@ -37,7 +40,7 @@ export const PSAAccordion = ({
         "&.MuiAccordion-root": {
           borderRadius: "1.6875rem",
         },
-        backgroundColor: "additional.background2",
+        backgroundColor: error ? "#f3e2dd" : "additional.background2",
         ...sx,
       }}
       data-test={testId}
@@ -88,7 +91,95 @@ export const PSAAccordion = ({
         {summaryContent}
       </AccordionSummary>
       <AccordionDetails data-test="psa-accordion-details">
-        {detailsContent}
+        {subContainer && subContainer.length > 0 ? (
+          <div
+            style={{
+              fontFamily: "IBM Plex Sans",
+              padding: "40px",
+            }}
+          >
+            {subContainer.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  width: "100%",
+                  maxWidth: "1200px",
+                  margin: "0 auto",
+                  backgroundColor: "#fff",
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                  marginBottom: "20px", // Add spacing between cards
+                }}
+              >
+                {/* Header Section */}
+                <div
+                  style={{
+                    backgroundColor: "#f5f5f5",
+                    padding: "20px",
+                    borderTopLeftRadius: "8px",
+                    borderTopRightRadius: "8px",
+                  }}
+                >
+                  <h3
+                    style={{
+                      margin: 0,
+                      color: "#333",
+                      fontWeight: "normal",
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                </div>
+
+                {/* Content Section */}
+                <div
+                  style={{
+                    padding: "20px",
+                  }}
+                >
+                  {item.list.map((listItem, listIndex) => (
+                    <div
+                      key={listIndex}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "10px",
+                        border: listItem.selected
+                          ? "3px solid #ddd"
+                          : "1px solid #ddd",
+                        borderRadius: "4px",
+                        marginBottom: "15px", // Add spacing between list items
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "120px",
+                          padding: "8px 12px",
+                          border: "1px solid #ddd",
+                          borderRadius: "4px",
+                          marginRight: "20px",
+                          fontSize: "1.1rem",
+                        }}
+                      >
+                        {listItem.key}
+                      </div>
+                      <span
+                        style={{
+                          fontSize: "1rem",
+                          color: "#333",
+                        }}
+                      >
+                        {listItem.label} - {listItem.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          detailsContent
+        )}
       </AccordionDetails>
     </Accordion>
   );
@@ -112,4 +203,8 @@ PSAAccordion.propTypes = {
   summaryProps: PropTypes.object,
   /** id for testing */
   testId: PropTypes.string,
+  /** Indicates whether the accordion is in an error state */
+  error: PropTypes.bool,
+
+  subContainer: PropTypes.array,
 };
