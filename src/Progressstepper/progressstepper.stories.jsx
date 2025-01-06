@@ -13,19 +13,15 @@ const meta = {
 export default meta;
 
 const Template = (args) => {
-  return (
-    <PSAStepper {...args} />
-  );
+  return <PSAStepper {...args} />;
 };
 
 export const NCalc = Template.bind({});
 
 NCalc.args = {
-  steps: [
-    'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
-  ],
+  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
   stepperProps: {
-    activeStep: 0
+    activeStep: 0,
   },
 };
 
@@ -33,11 +29,20 @@ export const SeedCalc = Template.bind({});
 
 SeedCalc.args = {
   maxAvailableStep: 2,
-  strokeColor: 'white',
-  steps: [
-    'Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'
-  ],
+  strokeColor: "white",
+  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
   stepperProps: {
-    activeStep: 0
+    activeStep: 0,
   },
+};
+
+export const Mobile = Template.bind({});
+
+Mobile.args = {
+  strokeColor: "white",
+  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
+  stepperProps: {
+    activeStep: 0,
+  },
+  mobile: true,
 };
