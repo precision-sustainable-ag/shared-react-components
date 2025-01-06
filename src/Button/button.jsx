@@ -15,7 +15,7 @@ const pillBackgroundColor = (selected, transparent) => {
 
 // Use MUI's styled system to define the button styles
 const StyledButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== "buttonType",
+  shouldForwardProp: (prop) => prop !== "buttonType" && prop !== "transparent",
 })(({ buttonType, selected, transparent }) => ({
   ...(buttonType === "LightButton" && {
     backgroundColor: "#e3f2f4",
@@ -74,8 +74,8 @@ const StyledButton = styled(Button, {
 }));
 
 export const PSAButton = ({
-  title = "",
-  buttonType = "LightButton",
+  title,
+  buttonType = "",
   hoverText,
   selected = false,
   transparent = false,
@@ -100,7 +100,7 @@ PSAButton.propTypes = {
   /**
    * The text displayed on the button.
    */
-  title: PropTypes.string,
+  title: PropTypes.node,
 
   /**
    * The type of button to render, affecting its styling and behavior.
@@ -112,6 +112,7 @@ PSAButton.propTypes = {
     "ValuesChanged",
     "ModalLink",
     "ToggleOptions",
+    "",
   ]),
 
   /**

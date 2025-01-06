@@ -1,16 +1,19 @@
-import React from 'react';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Radio from '@mui/material/Radio';
-import PropTypes from 'prop-types';
+import React from "react";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import PropTypes from "prop-types";
 
-export function PSARadiobutton({ options, selectedValue, onChange, row = false, sx, ...props }) {
+export function PSARadioButton({
+  options,
+  selectedValue,
+  onChange,
+  row = false,
+  sx,
+  ...props
+}) {
   return (
-    <RadioGroup
-      row={row}
-      sx={sx}
-      {...props}
-    >
+    <RadioGroup row={row} sx={sx} {...props}>
       {options.map((option) => (
         <FormControlLabel
           key={option.value}
@@ -24,21 +27,23 @@ export function PSARadiobutton({ options, selectedValue, onChange, row = false, 
   );
 }
 
-PSARadiobutton.propTypes = {
+PSARadioButton.propTypes = {
   /**
    * Array of options for the radio group, each option must have a label and value
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        .isRequired,
     })
   ).isRequired,
 
   /**
    * The currently selected value of the radio group
    */
-  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
 
   /**
    * Callback function triggered when the selection changes

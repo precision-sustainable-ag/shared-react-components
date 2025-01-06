@@ -36,20 +36,37 @@ const Template = (args) => {
   );
 };
 
-export const DefaultTextField = Template.bind({});
-
 export const DisabledTextField = Template.bind({});
 DisabledTextField.args = {
   disabled: true,
 };
+
+export const DefaultTextField = Template.bind({});
 
 export const ErrorTextField = Template.bind({});
 ErrorTextField.args = {
   error: true,
 };
 
+export const FocusedTextField = Template.bind({});
+FocusedTextField.args = {
+  autoFocus: true,
+  value: "1.1",
+  label: "Focus",
+};
+
 export const MultilineTextField = Template.bind({});
 MultilineTextField.args = {
   multiline: true,
   minRows: 3,
+  label: "Resizable Multiline",
+  placeholder: "Enter text here...",
+  variant: "outlined",
+  fullWidth: true,
+  sx: {
+    "& .MuiOutlinedInput-input": {
+      resize: "both",
+      overflow: "auto",
+    },
+  },
 };

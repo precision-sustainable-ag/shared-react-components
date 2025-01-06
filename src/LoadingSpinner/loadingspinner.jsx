@@ -2,11 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./spinner.module.scss";
 
-export function PSALoadingspinner({ loaderStyle }) {
-
+export function PSALoadingSpinner({ loaderStyle }) {
   const defaultStyle = {
-    width: '50px',
-    height: '50px',
+    width: "50px",
+    height: "50px",
     border: `8px solid #90EE90`,
     borderTop: `8px solid green`,
     borderLeft: `8px solid green`,
@@ -18,11 +17,9 @@ export function PSALoadingspinner({ loaderStyle }) {
   return <div style={loaderStyle ? loaderStyle : defaultStyle}></div>;
 }
 
-PSALoadingspinner.propTypes = {
-
-   /**
+PSALoadingSpinner.propTypes = {
+  /**
    * Styles for the loader
    */
-   loaderStyle: PropTypes.object,
-
+  loaderStyle: PropTypes.object,
 };
