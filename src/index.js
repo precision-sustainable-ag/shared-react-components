@@ -22,3 +22,4 @@ export { default as PSACheckbox } from "./Checkbox/index";
 export { default as PSAProfile } from "./Profile/index";
 export { default as PSARadioButton } from "./RadioButton/index";
 export { default as PSALoadingSpinner } from "./LoadingSpinner/index";
+export { default as PSAStepper } from "./Stepper/index";
