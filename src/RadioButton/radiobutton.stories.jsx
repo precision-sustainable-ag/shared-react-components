@@ -17,7 +17,7 @@ const meta = {
 
 export default meta;
 
-export const RadioButtonColumn = () => {
+export const SmallRadioButtonColumn = () => {
   const [selectedValue, setSelectedValue] = useState("lb/ac");
 
   const options = [
@@ -41,7 +41,7 @@ export const RadioButtonColumn = () => {
   );
 };
 
-export const RadioButtonRow = () => {
+export const SmallRadioButtonRow = () => {
   const [selectedValue, setSelectedValue] = useState("lb/ac");
 
   const options = [
@@ -63,5 +63,59 @@ export const RadioButtonRow = () => {
       aria-label="unit selection"
       name="unit"
     />
+  );
+};
+
+export const LargeRadioButtonColumn = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+
+  const options = [
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <div style={{ width: "500px" }}>
+      <PSARadioButton
+        options={options}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+        row={false}
+        aria-label="unit selection"
+        name="unit"
+        size="medium"
+      />
+    </div>
+  );
+};
+
+export const LargeRadioButtonRow = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+
+  const options = [
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <div style={{ width: "600px" }}>
+      <PSARadioButton
+        options={options}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+        row={true}
+        aria-label="unit selection"
+        name="unit"
+        size="medium"
+      />
+    </div>
   );
 };
