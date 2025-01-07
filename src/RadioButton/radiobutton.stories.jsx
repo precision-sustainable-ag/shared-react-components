@@ -87,7 +87,7 @@ export const LargeRadioButtonColumn = () => {
         row={false}
         aria-label="unit selection"
         name="unit"
-        size="medium"
+        size="large"
       />
     </div>
   );
@@ -114,7 +114,7 @@ export const LargeRadioButtonRow = () => {
         row={true}
         aria-label="unit selection"
         name="unit"
-        size="medium"
+        size="large"
       />
     </div>
   );
