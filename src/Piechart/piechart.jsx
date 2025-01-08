@@ -2,10 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box, Typography } from "@mui/material";
-import { Square } from "@mui/icons-material";
-
-const COLORS = ["#c48b0f", "#27739e", "#598445", "#91643b"];
+import { Box } from "@mui/material";
 
 // Graph size mappings
 const sizeMapping = {
@@ -14,39 +11,11 @@ const sizeMapping = {
   large: "100%",
 };
 
-// Legend Component for Highcharts
-const PSAPieChartLegend = ({ chartData }) => (
-  <Box
-    sx={{
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "flex-start",
-      paddingLeft: "1rem",
-    }}
-  >
-    {chartData.map((data, i) => (
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          marginBottom: "0.5rem",
-        }}
-        key={i}
-      >
-        <Square sx={{ color: COLORS[i % COLORS.length], marginRight: "0.5rem" }} />
-        <Typography>{data.name}</Typography>
-      </Box>
-    ))}
-  </Box>
-);
-
-// Main Pie Chart Component using Highcharts
-export const PSAPiechart = ({ chartData, label, size = "medium" }) => {
+export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }) => {
   const options = {
     chart: {
       type: "pie",
-      height: 400,
+      height: size === "small" ? 300 : 400,
     },
     title: {
       text: label || "Pie Chart",
@@ -59,20 +28,27 @@ export const PSAPiechart = ({ chartData, label, size = "medium" }) => {
         valueSuffix: "%",
       },
     },
+    legend: {
+      layout: "vertical",
+      align: "right",
+      verticalAlign: "middle",
+    },
     plotOptions: {
       pie: {
         allowPointSelect: true,
         cursor: "pointer",
+        innerSize: donut ? "80%" : "0%",
         dataLabels: {
           enabled: true,
           format: "{point.percentage:.1f}%",
           connectorWidth: 0,
+          distance: size === "small" ? 2 : 11,
           style: {
-            fontSize: "14px",
+            fontSize: size === "small" ? "10px" : "14px",
             fontWeight: "normal",
           },
         },
-        showInLegend: false,
+        showInLegend: true,
       },
     },
     series: [
@@ -82,7 +58,6 @@ export const PSAPiechart = ({ chartData, label, size = "medium" }) => {
         data: chartData.map((data, i) => ({
           name: data.name,
           y: data.value,
-          color: COLORS[i % COLORS.length],
         })),
       },
     ],
@@ -98,14 +73,7 @@ export const PSAPiechart = ({ chartData, label, size = "medium" }) => {
         width: sizeMapping[size],
       }}
     >
-
-      <Box sx={{ flex: 1, minWidth: "300px" }}>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-      </Box>
-
-      <Box sx={{ flex: 1 }}>
-        <PSAPieChartLegend chartData={chartData} />
-      </Box>
+      <HighchartsReact highcharts={Highcharts} options={options} />
     </Box>
   );
 };
@@ -119,6 +87,7 @@ PSAPiechart.propTypes = {
   ),
   label: PropTypes.string,
   size: PropTypes.oneOf(["small", "medium", "large"]),
+  donut: PropTypes.bool,
 };
 
 export default PSAPiechart;
