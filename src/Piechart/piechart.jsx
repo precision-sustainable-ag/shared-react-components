@@ -18,10 +18,10 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
       height: size === "small" ? 300 : 400,
     },
     title: {
-      text: label || "Pie Chart",
+      text: label,
     },
     tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+      pointFormat: "{series.name}: <b>{point.percentage}%</b>",
     },
     accessibility: {
       point: {
@@ -40,7 +40,7 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
         innerSize: donut ? "80%" : "0%",
         dataLabels: {
           enabled: true,
-          format: "{point.percentage:.1f}%",
+          format: "{point.percentage}%",
           connectorWidth: 0,
           distance: size === "small" ? 2 : 11,
           style: {
