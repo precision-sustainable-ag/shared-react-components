@@ -1,7 +1,7 @@
 import React from "react";
 import Radio from "@mui/material/Radio";
 import PropTypes from "prop-types";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, SvgIcon, Typography } from "@mui/material";
 
 export function PSARadioButton({
   options,
@@ -27,7 +27,7 @@ export function PSARadioButton({
           onClick={() => onChange(option.value)}
           sx={{
             width: "100%",
-            padding: 2,
+            padding: 1,
             textAlign: "left",
             backgroundColor: selectedValue === option.value && "main.accent2",
             color: selectedValue === option.value ? "white" : "text.primary",
@@ -43,17 +43,30 @@ export function PSARadioButton({
             },
           }}
         >
-          <Radio
-            checked={selectedValue === option.value}
-            sx={{
-              color: selectedValue === option.value ? "white" : "primary.main",
-              marginRight: 1,
-              padding: "4px",
-              "&.Mui-checked": {
-                color: "white",
-              },
-            }}
-          />
+          {option.icon ? (
+            <SvgIcon
+              component={option.icon}
+              sx={{
+                color:
+                  selectedValue === option.value ? "white" : "primary.main",
+                marginRight: 1,
+                padding: "4px",
+              }}
+            />
+          ) : (
+            <Radio
+              checked={selectedValue === option.value}
+              sx={{
+                color:
+                  selectedValue === option.value ? "white" : "primary.main",
+                marginRight: 1,
+                padding: "4px",
+                "&.Mui-checked": {
+                  color: "white",
+                },
+              }}
+            />
+          )}
           <Typography
             sx={{
               fontSize: "14px",
@@ -71,13 +84,15 @@ export function PSARadioButton({
 
 PSARadioButton.propTypes = {
   /**
-   * Array of options for the radio group, each option must have a label and value
+   * Array of options for the radio group, each option must have a label and value,
+   * and can optionally have an icon
    */
   options: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         .isRequired,
+      icon: PropTypes.elementType,
     })
   ).isRequired,
 
