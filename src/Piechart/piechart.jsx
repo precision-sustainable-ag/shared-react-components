@@ -4,18 +4,11 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Box } from "@mui/material";
 
-// Graph size mappings
-const sizeMapping = {
-  small: "33%",
-  medium: "50%",
-  large: "100%",
-};
-
-export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }) => {
+export const PSAPiechart = ({ chartData, label, donut = false }) => {
   const options = {
     chart: {
       type: "pie",
-      height: size === "small" ? 300 : 400,
+      height: 400,
     },
     title: {
       text: label,
@@ -30,7 +23,7 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
     },
     legend: {
       layout: "vertical",
-      align: "right",
+      align: "right", 
       verticalAlign: "middle",
     },
     plotOptions: {
@@ -42,9 +35,9 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
           enabled: true,
           format: "{point.percentage:.2f}%",
           connectorWidth: 0,
-          distance: size === "small" ? 2 : 11,
+          distance: 2,
           style: {
-            fontSize: size === "small" ? "9px" : "14px",
+            fontSize: "14px",
             fontWeight: "normal",
           },
         },
@@ -55,7 +48,7 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
       {
         name: "Share",
         colorByPoint: true,
-        data: chartData.map((data, i) => ({
+        data: chartData.map((data) => ({
           name: data.name,
           y: data.value,
         })),
@@ -70,7 +63,7 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        width: sizeMapping[size],
+        width:  "100%",
       }}
     >
       <HighchartsReact highcharts={Highcharts} options={options} />
@@ -86,7 +79,6 @@ PSAPiechart.propTypes = {
     })
   ),
   label: PropTypes.string,
-  size: PropTypes.oneOf(["small", "medium", "large"]),
   donut: PropTypes.bool,
 };
 
