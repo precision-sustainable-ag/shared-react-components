@@ -40,11 +40,11 @@ export const PSAPiechart = ({ chartData, label, size = "medium", donut = false }
         innerSize: donut ? "80%" : "0%",
         dataLabels: {
           enabled: true,
-          format: "{point.percentage}%",
+          format: "{point.percentage:.2f}%",
           connectorWidth: 0,
           distance: size === "small" ? 2 : 11,
           style: {
-            fontSize: size === "small" ? "10px" : "14px",
+            fontSize: size === "small" ? "9px" : "14px",
             fontWeight: "normal",
           },
         },
