@@ -14,58 +14,43 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
   });
   const theme = useTheme();
 
-  const [chartOptions, setChartOptions] = useState({
-    title: {
-      text: title,
-    },
-    xAxis: {
-      categories: xAxis.categories,
-      title: {
-        text: xAxis.title,
-        style: {
-          fontStyle: "italic",
-          color: theme.palette.additional.grey2,
-        },
-      },
-      lineWidth: 0,
-    },
-    yAxis: {
-      title: {
-        text: yAxis.title,
-        style: {
-          fontStyle: "italic",
-          color: theme.palette.additional.grey2,
-        },
-      },
-    },
-    series: data,
-    chart: {
-      type: "line",
-      plotBackgroundColor: theme.palette.additional.background2,
-      plotBorderColor: theme.palette.main.background1,
-      plotBorderWidth: 2,
-    },
-  });
+  const chartOptions =
+    options !== null
+      ? options
+      : {
+          title: {
+            text: title,
+          },
+          xAxis: {
+            categories: xAxis.categories,
+            title: {
+              text: xAxis.title,
+              style: {
+                fontStyle: "italic",
+                color: theme.palette.additional.grey2,
+              },
+            },
+            lineWidth: 0,
+          },
+          yAxis: {
+            title: {
+              text: yAxis.title,
+              style: {
+                fontStyle: "italic",
+                color: theme.palette.additional.grey2,
+              },
+            },
+          },
+          series: data,
+          chart: {
+            type: "line",
+            plotBackgroundColor: theme.palette.additional.background2,
+            plotBorderColor: theme.palette.main.background1,
+            plotBorderWidth: 2,
+          },
+        };
 
-  useEffect(() => {
-    setChartOptions((prevOptions) => ({
-      ...prevOptions,
-      title: { text: title || prevOptions.title.text },
-      xAxis: {
-        title: { text: xAxis.title || prevOptions.xAxis.title.text },
-        categories: xAxis.categories || prevOptions.xAxis.categories,
-      },
-      yAxis: { title: { text: yAxis.title || prevOptions.yAxis.title.text } },
-      data: data || prevOptions.data,
-    }));
-  }, [title, xAxis, yAxis, data]);
-
-  return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={options === null ? chartOptions : options}
-    />
-  );
+  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
 }
 
 /* Define Props Type */
