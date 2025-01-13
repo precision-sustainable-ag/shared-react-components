@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Box } from "@mui/material";
 
 export const PSAPiechart = ({ chartData, label, donut = false }) => {
   const options = {
@@ -14,7 +13,7 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
       text: label,
     },
     tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage}%</b>",
+      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
     },
     accessibility: {
       point: {
@@ -33,7 +32,7 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
         innerSize: donut ? "80%" : "0%",
         dataLabels: {
           enabled: true,
-          format: "{point.percentage:.2f}%",
+          format: "{point.percentage:.1f}%",
           connectorWidth: 0,
           distance: 2,
           style: {
@@ -57,28 +56,21 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexWrap: "wrap",
-        width:  "100%",
-      }}
-    >
       <HighchartsReact highcharts={Highcharts} options={options} />
-    </Box>
   );
 };
 
 PSAPiechart.propTypes = {
+   /** Array of objects with `name` (string) and `value` (number) for pie chart data */
   chartData: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.number,
     })
   ),
+   /** Title of the chart */
   label: PropTypes.string,
+  /** Indicates if the chart should render as a donut (true) or standard pie chart (false) */
   donut: PropTypes.bool,
 };
 
