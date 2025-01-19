@@ -29,7 +29,6 @@ export const PSAAccordion = ({
   summaryProps,
   testId,
   error,
-  subContainer,
 }) => {
   return (
     <Accordion
