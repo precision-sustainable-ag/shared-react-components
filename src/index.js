@@ -23,3 +23,5 @@ export { default as PSAProfile } from "./Profile/index";
 export { default as PSARadiobutton } from "./Radiobutton/index";
 export { default as PSALoadingspinner } from "./Loadingspinner/index";
 export { default as PSASubcontainer } from "./Subcontainer/index";
+export { default as PSAStepper } from "./Stepper/index";
+

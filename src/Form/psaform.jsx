@@ -278,5 +278,5 @@ PSAForm.propTypes = {
   /**
    * Function to handle form submission
    */
-  handleSubmit: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func,
 };

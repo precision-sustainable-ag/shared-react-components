@@ -1,9 +1,9 @@
-import { PSALoadingspinner } from "./loadingspinner";
+import { PSALoadingSpinner } from "./loadingspinner";
 import styles from "./spinner.module.scss";
 
 const meta = {
-  title: "Feedback/Loadingspinner",
-  component: PSALoadingspinner,
+  title: "Feedback/LoadingSpinner",
+  component: PSALoadingSpinner,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
