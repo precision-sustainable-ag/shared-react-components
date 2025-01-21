@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -28,123 +28,110 @@ export function PSABarChart({
 
   const chartType = orientation === "horizontal" ? "bar" : "column";
 
-  const chartOptions = useMemo(() => {
-    return {
-      chart: {
-        type: chartType,
-        height,
-        marginRight: orientation === "horizontal" ? 100 : null,
-        plotBackgroundColor: theme.palette.additional.background2,
-        plotBorderColor: theme.palette.main.background1,
-        plotBorderWidth: 2,
-        ...additionalOptions.chart,
+  const chartOptions = {
+    chart: {
+      type: chartType,
+      height,
+      marginRight: orientation === "horizontal" ? 100 : null,
+      plotBackgroundColor: theme.palette.additional.background2,
+      plotBorderColor: theme.palette.main.background1,
+      plotBorderWidth: 2,
+      ...additionalOptions.chart,
+    },
+    title: {
+      text: chartTitle,
+      useHTML: true,
+      style: {
+        fontStyle: "italic",
+        color: theme.palette.additional.grey2,
       },
+      ...additionalOptions.title,
+    },
+    xAxis: {
+      categories,
       title: {
-        text: chartTitle,
-        useHTML: true,
+        text: xAxisTitle,
         style: {
           fontStyle: "italic",
           color: theme.palette.additional.grey2,
         },
-        ...additionalOptions.title,
       },
-      xAxis: {
-        categories,
-        title: {
-          text: xAxisTitle,
-          style: {
-            fontStyle: "italic",
-            color: theme.palette.additional.grey2,
-          },
+      labels: {
+        style: {
+          fontSize: "13px",
+          color: "black",
         },
-        labels: {
-          style: {
-            fontSize: "13px",
-            color: "black",
-          },
-          ...additionalOptions.xAxis?.labels,
-        },
-        lineWidth: 0,
-        ...additionalOptions.xAxis,
+        ...additionalOptions.xAxis?.labels,
       },
-      yAxis: {
-        title: {
-          text: yAxisTitle,
-          style: {
-            fontStyle: "italic",
-            color: theme.palette.additional.grey2,
-          },
+      lineWidth: 0,
+      ...additionalOptions.xAxis,
+    },
+    yAxis: {
+      title: {
+        text: yAxisTitle,
+        style: {
+          fontStyle: "italic",
+          color: theme.palette.additional.grey2,
         },
-        labels: {
+      },
+      labels: {
+        enabled: true,
+        ...additionalOptions.yAxis?.labels,
+      },
+      ...additionalOptions.yAxis,
+    },
+    legend: {
+      align: "center",
+      verticalAlign: "top",
+      ...additionalOptions.legend,
+    },
+    plotOptions: {
+      series: {
+        stacking: additionalOptions.plotOptions?.series?.stacking || null,
+        dataLabels: {
           enabled: true,
-          ...additionalOptions.yAxis?.labels,
-        },
-        ...additionalOptions.yAxis,
-      },
-      legend: {
-        align: "center",
-        verticalAlign: "top",
-        ...additionalOptions.legend,
-      },
-      plotOptions: {
-        series: {
-          stacking: additionalOptions.plotOptions?.series?.stacking || null,
-          dataLabels: {
-            enabled: true,
-            format: "{y}",
-            crop: false,
-            overflow: "justify",
-            style: {
-              textOutline: "none",
-              fontSize: "0.9rem",
-              ...additionalOptions.plotOptions?.series?.dataLabels?.style,
-            },
-            ...additionalOptions.plotOptions?.series?.dataLabels,
+          format: "{y}",
+          crop: false,
+          overflow: "justify",
+          style: {
+            textOutline: "none",
+            fontSize: "0.9rem",
+            ...additionalOptions.plotOptions?.series?.dataLabels?.style,
           },
-          animation: false,
-          ...additionalOptions.plotOptions?.series,
+          ...additionalOptions.plotOptions?.series?.dataLabels,
         },
-        ...additionalOptions.plotOptions,
+        animation: false,
+        ...additionalOptions.plotOptions?.series,
       },
-      series: [
+      ...additionalOptions.plotOptions,
+    },
+    series: [
+      {
+        name: "Value",
+        data,
+        color,
+        ...additionalOptions.series?.[0],
+      },
+    ],
+    credits: {
+      enabled: false,
+    },
+    responsive: {
+      rules: [
         {
-          name: "Value",
-          data,
-          color,
-          ...additionalOptions.series?.[0],
+          condition: {
+            maxWidth: 600,
+          },
+          chartOptions: {
+            chart: {
+              marginRight: 50,
+            },
+          },
         },
       ],
-      credits: {
-        enabled: false,
-      },
-      responsive: {
-        rules: [
-          {
-            condition: {
-              maxWidth: 600,
-            },
-            chartOptions: {
-              chart: {
-                marginRight: 50,
-              },
-            },
-          },
-        ],
-      },
-      ...additionalOptions,
-    };
-  }, [
-    categories,
-    data,
-    orientation,
-    chartTitle,
-    color,
-    xAxisTitle,
-    yAxisTitle,
-    height,
-    additionalOptions,
-    theme,
-  ]);
+    },
+    ...additionalOptions,
+  };
 
   if (loading) {
     return <div>Loading...</div>;
