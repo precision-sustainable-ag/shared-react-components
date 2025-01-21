@@ -1,2 +1,2 @@
-import { PSABarchart } from "./barchart"; 
-export default PSABarchart;
+import { PSABarChart } from "./barchart"; 
+export default PSABarChart;

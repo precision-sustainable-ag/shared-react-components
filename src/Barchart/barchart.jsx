@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { useTheme } from "@mui/material";
 
 export function PSABarChart({
   categories,
@@ -15,7 +16,16 @@ export function PSABarChart({
   height,
   additionalOptions,
 }) {
-  // Determine chart type based on orientation
+  const theme = useTheme();
+
+  Highcharts.setOptions({
+    chart: {
+      style: {
+        fontFamily: "IBM Plex Sans",
+      },
+    },
+  });
+
   const chartType = orientation === "horizontal" ? "bar" : "column";
 
   const chartOptions = useMemo(() => {
@@ -24,16 +34,29 @@ export function PSABarChart({
         type: chartType,
         height,
         marginRight: orientation === "horizontal" ? 100 : null,
+        plotBackgroundColor: theme.palette.additional.background2,
+        plotBorderColor: theme.palette.main.background1,
+        plotBorderWidth: 2,
         ...additionalOptions.chart,
       },
       title: {
         text: chartTitle,
         useHTML: true,
+        style: {
+          fontStyle: "italic",
+          color: theme.palette.additional.grey2,
+        },
         ...additionalOptions.title,
       },
       xAxis: {
         categories,
-        title: { text: xAxisTitle },
+        title: {
+          text: xAxisTitle,
+          style: {
+            fontStyle: "italic",
+            color: theme.palette.additional.grey2,
+          },
+        },
         labels: {
           style: {
             fontSize: "13px",
@@ -41,10 +64,17 @@ export function PSABarChart({
           },
           ...additionalOptions.xAxis?.labels,
         },
+        lineWidth: 0,
         ...additionalOptions.xAxis,
       },
       yAxis: {
-        title: { text: yAxisTitle },
+        title: {
+          text: yAxisTitle,
+          style: {
+            fontStyle: "italic",
+            color: theme.palette.additional.grey2,
+          },
+        },
         labels: {
           enabled: true,
           ...additionalOptions.yAxis?.labels,
@@ -113,6 +143,7 @@ export function PSABarChart({
     yAxisTitle,
     height,
     additionalOptions,
+    theme,
   ]);
 
   if (loading) {
@@ -123,11 +154,7 @@ export function PSABarChart({
     return <div>No data available</div>;
   }
 
-  return (
-    <div>
-      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-    </div>
-  );
+  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
 }
 
 // PropTypes: helps catch type errors and document the interface
@@ -179,5 +206,3 @@ PSABarChart.defaultProps = {
   height: 400,
   additionalOptions: {},
 };
-
-export default PSABarChart;
