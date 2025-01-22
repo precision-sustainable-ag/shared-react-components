@@ -2,15 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import PSASubContainer from "../SubContainer";
 
-export const PSAPiechart = ({ chartData, label, donut = false }) => {
+export const PSAPiechart = ({ chartData, label, donut = true }) => {
   const options = {
     chart: {
       type: "pie",
-      height: 400,
+      height: 200,
     },
     title: {
-      text: label,
+      text: undefined,
     },
     tooltip: {
       pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
@@ -21,8 +22,10 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
       },
     },
     legend: {
+      margin: -10,
+      padding: 0,
       layout: "vertical",
-      align: "right", 
+      align: "right",
       verticalAlign: "middle",
     },
     plotOptions: {
@@ -34,7 +37,7 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
           enabled: true,
           format: "{point.percentage:.1f}%",
           connectorWidth: 0,
-          distance: 2,
+          distance: 0,
           style: {
             fontSize: "14px",
             fontWeight: "normal",
@@ -53,25 +56,51 @@ export const PSAPiechart = ({ chartData, label, donut = false }) => {
         })),
       },
     ],
+    responsive: {
+      rules: [
+        {
+          // when width < 300, use following chart options
+          condition: {
+            maxWidth: 300,
+          },
+          chartOptions: {
+            legend: {
+              layout: "vertical",
+              align: "center",
+              verticalAlign: "bottom",
+              maxHeight: 60,
+            },
+            plotOptions: {
+              pie: {
+                dataLabels: {
+                  format: "{point.percentage:.0f}%",
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
   };
 
   return (
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <PSASubContainer
+      title={label}
+      content={<HighchartsReact highcharts={Highcharts} options={options} />}
+    />
   );
 };
 
 PSAPiechart.propTypes = {
-   /** Array of objects with `name` (string) and `value` (number) for pie chart data */
+  /** Array of objects with `name` (string) and `value` (number) for pie chart data */
   chartData: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.number,
     })
   ),
-   /** Title of the chart */
+  /** Title of the chart */
   label: PropTypes.string,
   /** Indicates if the chart should render as a donut (true) or standard pie chart (false) */
   donut: PropTypes.bool,
 };
-
-export default PSAPiechart;
