@@ -7,7 +7,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
-  Box,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -27,6 +26,7 @@ export const PSAAccordion = ({
   accordionProps,
   summaryProps,
   testId,
+  error,
 }) => {
   return (
     <Accordion
@@ -37,7 +37,7 @@ export const PSAAccordion = ({
         "&.MuiAccordion-root": {
           borderRadius: "1.6875rem",
         },
-        backgroundColor: "additional.background2",
+        backgroundColor: error ? "#f3e2dd" : "additional.background2",
         ...sx,
       }}
       data-test={testId}
@@ -112,4 +112,6 @@ PSAAccordion.propTypes = {
   summaryProps: PropTypes.object,
   /** id for testing */
   testId: PropTypes.string,
+  /** Indicates whether the accordion is in an error state */
+  error: PropTypes.bool,
 };
