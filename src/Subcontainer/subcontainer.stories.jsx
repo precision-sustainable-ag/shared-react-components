@@ -1,9 +1,9 @@
 import React from "react";
-import { PSASubcontainer } from "./subcontainer";
+import { PSASubContainer } from "./subcontainer";
 
 const meta = {
-  title: "Layout/Subcontainer",
-  component: PSASubcontainer,
+  title: "Layout/SubContainer",
+  component: PSASubContainer,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",

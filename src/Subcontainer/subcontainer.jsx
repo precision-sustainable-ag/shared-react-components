@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function PSASubcontainer({ title, content, error }) {
+export function PSASubContainer({ title, content, error }) {
   return (
     <div
       style={{
@@ -29,15 +29,7 @@ export function PSASubcontainer({ title, content, error }) {
             borderTopRightRadius: "8px",
           }}
         >
-          <h3
-            style={{
-              margin: 0,
-              color: "#333",
-              fontWeight: "normal",
-            }}
-          >
-            {title}
-          </h3>
+          {title}
         </div>
 
         {/* Content Section */}
@@ -49,9 +41,9 @@ export function PSASubcontainer({ title, content, error }) {
 
 /* Define Props Type */
 
-PSASubcontainer.propTypes = {
+PSASubContainer.propTypes = {
   /** The Title of the SubContainer */
-  title: PropTypes.string,
+  title: PropTypes.node,
   /** The Content of the SubContainer */
   content: PropTypes.node,
 };

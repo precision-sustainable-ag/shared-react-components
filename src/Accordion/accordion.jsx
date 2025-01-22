@@ -7,8 +7,6 @@ import {
   AccordionDetails,
   AccordionSummary,
   Typography,
-  Box,
-  Container,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -116,6 +114,4 @@ PSAAccordion.propTypes = {
   testId: PropTypes.string,
   /** Indicates whether the accordion is in an error state */
   error: PropTypes.bool,
-
-  subContainer: PropTypes.array,
 };
