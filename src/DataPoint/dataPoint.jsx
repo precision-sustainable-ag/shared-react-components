@@ -1,46 +1,56 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import PSASubContainer from "../SubContainer";
 
-export function PSADataPoint({ value, icon, unit, boxSx }) {
+export function PSADataPoint({ title, value, icon, unit, boxSx }) {
   return (
-    <Box
-      sx={{
-        minWidth: "300px",
-        minHeight: "155px",
-        display: "flex",
-        ...boxSx,
-      }}
-    >
-      <Box margin={"auto"}>
-        <Typography
+    <PSASubContainer
+      title={title}
+      content={
+        <Box
           sx={{
-            fontSize: "40px",
-            fontWeight: 600,
-            color: "main.text",
-            textAlign: "center",
+            minWidth: "300px",
+            minHeight: "155px",
+            display: "flex",
+            ...boxSx,
           }}
         >
-          {value}
-          {icon}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "1rem",
-            color: `additional.grey1`,
-            textAlign: "center",
-          }}
-        >
-          {unit}
-        </Typography>
-      </Box>
-    </Box>
+          <Box margin={"auto"}>
+            <Typography
+              sx={{
+                fontSize: "40px",
+                fontWeight: 600,
+                color: "main.text",
+                textAlign: "center",
+              }}
+            >
+              {value}
+              {icon}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                color: `additional.grey1`,
+                textAlign: "center",
+              }}
+            >
+              {unit}
+            </Typography>
+          </Box>
+        </Box>
+      }
+    />
   );
 }
 
 /* Define Props Type */
 
 PSADataPoint.propTypes = {
+  /**
+   * The title of the data point, it will be displayed as the wrapper's title.
+   */
+  title: PropTypes.string,
   /**
    * The display value of the data point.
    */

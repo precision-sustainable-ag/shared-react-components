@@ -15,11 +15,10 @@ export default meta;
 
 export const DefaultDataPoint = {
   args: {
+    title: "Data Point",
     value: "7000",
     icon: <AddIcon sx={{ color: "main.accent2" }} />,
     unit: "lbs per acre",
-    boxSx: {
-      backgroundColor: "additional.background2",
-    },
+    boxSx: {},
   },
 };
