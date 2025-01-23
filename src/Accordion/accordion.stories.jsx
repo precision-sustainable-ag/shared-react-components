@@ -70,3 +70,21 @@ ColoredAccordion.args = {
     </Box>
   ),
 };
+
+export const ErrorAccordion = Template.bind({});
+ErrorAccordion.args = {
+  error: true,
+  summaryContent: (
+    <Box
+      sx={{
+        display: "flex",
+        jutifyContent: "center",
+        alignItems: "center",
+        color: "additional.greydark",
+      }}
+    >
+      <GrassIcon />
+      <Typography>Error Summary Content</Typography>
+    </Box>
+  ),
+};
