@@ -1,139 +1,77 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Box, Typography, useMediaQuery } from "@mui/material";
-import { Square } from "@mui/icons-material";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import { useTheme } from "@emotion/react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
-/** Possible colors for the pie chart options */
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
-/** Format values for display */
-const twoDigit = (value) => Number(parseFloat(value).toFixed(2));
-
-/** Radians used for calculations */
-const RADIAN = Math.PI / 180;
-
-/** Labels each pie chart segment */
-const PieChartLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.3;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+export const PSAPiechart = ({ chartData, label, donut = false }) => {
+  const options = {
+    chart: {
+      type: "pie",
+      height: 400,
+    },
+    title: {
+      text: label,
+    },
+    tooltip: {
+      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+    },
+    accessibility: {
+      point: {
+        valueSuffix: "%",
+      },
+    },
+    legend: {
+      layout: "vertical",
+      align: "right", 
+      verticalAlign: "middle",
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: "pointer",
+        innerSize: donut ? "80%" : "0%",
+        dataLabels: {
+          enabled: true,
+          format: "{point.percentage:.1f}%",
+          connectorWidth: 0,
+          distance: 2,
+          style: {
+            fontSize: "14px",
+            fontWeight: "normal",
+          },
+        },
+        showInLegend: true,
+      },
+    },
+    series: [
+      {
+        name: "Share",
+        colorByPoint: true,
+        data: chartData.map((data) => ({
+          name: data.name,
+          y: data.value,
+        })),
+      },
+    ],
+  };
 
   return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(1)}%`}
-    </text>
+      <HighchartsReact highcharts={Highcharts} options={options} />
   );
 };
 
-/** Labels the entire PSAPieChart */
-const PSAPieChartLabel = ({ label }) => (
-  <Typography
-    sx={{
-      textAlign: "center",
-      textDecoration: "underline #cccccc",
-      textUnderlineOffset: "0.5rem",
-      fontWeight: 600,
-    }}
-  >
-    {label}
-  </Typography>
-);
-
-/** Creates a legend for the Pie Chart */
-const PSAPieChartLegend = ({ chartData }) => {
-  const theme = useTheme();
-  const matchesMd = useMediaQuery(theme.breakpoints.down("md"));
-
-  return (
-    <Box sx={{ p: "1rem 0" }}>
-      {chartData.map((data, i) => (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            p: matchesMd ? "0.25rem 2%" : "0.25rem 15%",
-          }}
-          key={i}
-        >
-          <Typography
-            fontSize={matchesMd ? "0.75rem" : "1rem"}
-            sx={{ display: "flex", alignItems: "center" }}
-            data-test="piechart_label"
-          >
-            <Square sx={{ color: COLORS[i] }} />
-            {data.name}
-          </Typography>
-          <Typography
-            fontSize={matchesMd ? "0.75rem" : "1rem"}
-            sx={{ display: "flex", alignItems: "center" }}
-            data-test="piechart_value"
-          >
-            {twoDigit(data.value)}
-          </Typography>
-        </Box>
-      ))}
-    </Box>
-  );
-};
-
-export function PSAPiechart({ chartData, label }) {
-  return (
-    <>
-      <ResponsiveContainer width="100%" height={200}>
-        <PieChart>
-          <Pie
-            data={chartData}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={PieChartLabel}
-            outerRadius={80}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
-
-      <PSAPieChartLabel label={label} />
-      <PSAPieChartLegend chartData={chartData} />
-    </>
-  );
-}
-
-/* PSAPieChart Props */
 PSAPiechart.propTypes = {
-  /**
-   * Data to be used in the chart, exits in the following format:
-   */
+   /** Array of objects with `name` (string) and `value` (number) for pie chart data */
   chartData: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.number,
     })
   ),
-
-  /** Label of the chart */
+   /** Title of the chart */
   label: PropTypes.string,
+  /** Indicates if the chart should render as a donut (true) or standard pie chart (false) */
+  donut: PropTypes.bool,
 };
+
+export default PSAPiechart;

@@ -40,6 +40,7 @@
     "@turf/area": "^7.1.0",
     "@turf/centroid": "^7.1.0",
     "chroma-js": "^3.0.0",
+    "highcharts": "^12.1.2",
     "highcharts-react-official": "^3.2.1",
     "mapbox-gl": "^3.6.0",
     "recharts": "^2.13.3",

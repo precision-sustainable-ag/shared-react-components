@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { PSARadioButton } from "./radiobutton";
+import StarIcon from "@mui/icons-material/Star";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const meta = {
   title: "Inputs/RadioButton",
@@ -17,7 +19,7 @@ const meta = {
 
 export default meta;
 
-export const RadioButtonColumn = () => {
+export const SmallRadioButtonColumn = () => {
   const [selectedValue, setSelectedValue] = useState("lb/ac");
 
   const options = [
@@ -41,7 +43,7 @@ export const RadioButtonColumn = () => {
   );
 };
 
-export const RadioButtonRow = () => {
+export const SmallRadioButtonRow = () => {
   const [selectedValue, setSelectedValue] = useState("lb/ac");
 
   const options = [
@@ -63,5 +65,86 @@ export const RadioButtonRow = () => {
       aria-label="unit selection"
       name="unit"
     />
+  );
+};
+
+export const LargeRadioButtonColumn = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+
+  const options = [
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <div style={{ width: "500px" }}>
+      <PSARadioButton
+        options={options}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+        row={false}
+        aria-label="unit selection"
+        name="unit"
+        size="large"
+      />
+    </div>
+  );
+};
+
+export const LargeRadioButtonRow = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+
+  const options = [
+    { label: "lb/ac", value: "lb/ac" },
+    { label: "kg/ha", value: "kg/ha" },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <div style={{ width: "600px" }}>
+      <PSARadioButton
+        options={options}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+        row={true}
+        aria-label="unit selection"
+        name="unit"
+        size="large"
+      />
+    </div>
+  );
+};
+
+export const IconRadioButton = () => {
+  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const options = [
+    { label: "lb/ac", value: "lb/ac", icon: StarIcon },
+    { label: "kg/ha", value: "kg/ha" },
+    { label: "mg/ac", value: "mg/ac", icon: CalendarTodayIcon },
+  ];
+
+  const handleChange = (value) => {
+    setSelectedValue(value);
+  };
+
+  return (
+    <div style={{ width: "600px" }}>
+      <PSARadioButton
+        options={options}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+        row={false}
+        aria-label="unit selection"
+        name="unit"
+        size="large"
+      />
+    </div>
   );
 };
