@@ -5,9 +5,6 @@ const meta = {
   title: "Functional/LineChart",
   component: PSALineChart,
   tags: ["autodocs"],
-  parameters: {
-    layout: "centered",
-  },
 };
 
 export default meta;

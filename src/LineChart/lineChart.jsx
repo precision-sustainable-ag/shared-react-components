@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 import PropTypes from "prop-types";
+import PSASubContainer from "../SubContainer";
 
 export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
   Highcharts.setOptions({
@@ -19,7 +20,7 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
       ? options
       : {
           title: {
-            text: title,
+            text: undefined,
           },
           xAxis: {
             categories: xAxis.categories,
@@ -50,7 +51,14 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
           },
         };
 
-  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
+  return (
+    <PSASubContainer
+      title={title}
+      content={
+        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+      }
+    />
+  );
 }
 
 /* Define Props Type */
