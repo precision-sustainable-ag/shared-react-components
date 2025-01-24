@@ -4,9 +4,6 @@ export default {
   title: "Functional/BarChart",
   component: PSABarChart,
   tags: ["autodocs"],
-  parameters: {
-    layout: "centered", // Keeps the chart centered
-  },
 };
 
 const commonArgs = {

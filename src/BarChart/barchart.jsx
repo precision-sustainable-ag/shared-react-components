@@ -3,18 +3,19 @@ import PropTypes from "prop-types";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
+import PSASubContainer from "../SubContainer";
 
 export function PSABarChart({
   categories,
   data,
-  orientation,
+  orientation = "vertical",
   chartTitle,
-  color,
+  color = "#4caf50",
   xAxisTitle,
   yAxisTitle,
-  loading,
-  height,
-  additionalOptions,
+  loading = false,
+  height = 400,
+  additionalOptions = {},
 }) {
   const theme = useTheme();
 
@@ -39,13 +40,7 @@ export function PSABarChart({
       ...additionalOptions.chart,
     },
     title: {
-      text: chartTitle,
-      useHTML: true,
-      style: {
-        fontStyle: "italic",
-        color: theme.palette.additional.grey2,
-      },
-      ...additionalOptions.title,
+      text: undefined,
     },
     xAxis: {
       categories,
@@ -141,7 +136,14 @@ export function PSABarChart({
     return <div>No data available</div>;
   }
 
-  return <HighchartsReact highcharts={Highcharts} options={chartOptions} />;
+  return (
+    <PSASubContainer
+      title={chartTitle}
+      content={
+        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+      }
+    />
+  );
 }
 
 // PropTypes: helps catch type errors and document the interface
@@ -179,17 +181,4 @@ PSABarChart.propTypes = {
    * (e.g., custom tooltips, multiple series, etc.).
    */
   additionalOptions: PropTypes.object,
-};
-
-PSABarChart.defaultProps = {
-  categories: [],
-  data: [],
-  orientation: "vertical",
-  chartTitle: "PSA Bar Chart",
-  color: "#4caf50",
-  xAxisTitle: "Categories",
-  yAxisTitle: "Values",
-  loading: false,
-  height: 400,
-  additionalOptions: {},
 };
