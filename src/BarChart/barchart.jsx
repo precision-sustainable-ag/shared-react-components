@@ -8,14 +8,14 @@ import PSASubContainer from "../SubContainer";
 export function PSABarChart({
   categories,
   data,
-  orientation,
+  orientation = "vertical",
   chartTitle,
-  color,
+  color = "#4caf50",
   xAxisTitle,
   yAxisTitle,
-  loading,
-  height,
-  additionalOptions,
+  loading = false,
+  height = 400,
+  additionalOptions = {},
 }) {
   const theme = useTheme();
 
@@ -181,17 +181,4 @@ PSABarChart.propTypes = {
    * (e.g., custom tooltips, multiple series, etc.).
    */
   additionalOptions: PropTypes.object,
-};
-
-PSABarChart.defaultProps = {
-  categories: [],
-  data: [],
-  orientation: "vertical",
-  chartTitle: "PSA Bar Chart",
-  color: "#4caf50",
-  xAxisTitle: "Categories",
-  yAxisTitle: "Values",
-  loading: false,
-  height: 400,
-  additionalOptions: {},
 };
