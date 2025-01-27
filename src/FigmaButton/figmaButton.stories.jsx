@@ -40,6 +40,17 @@ export const StandardButton = {
   },
 };
 
+export const StandardDisabledButton = {
+  args: {
+    variant: "standard",
+    text: "Next",
+    icon: <ArrowForwardIcon />,
+    rightIcon: true,
+    leftIcon: false,
+    disabled: true,
+  },
+};
+
 export const ColorButton = {
   args: {
     variant: "color",

@@ -13,6 +13,7 @@ export function PSAFigmaButton({
   rightIcon = false,
   leftIcon = false,
   text = "Next",
+  disabled = false,
   buttonSx = {},
   textSx = {},
   ...props
@@ -91,12 +92,30 @@ export function PSAFigmaButton({
         gap: "0.375rem",
         borderRadius: "0.50956rem",
         textTransform: "none",
+        minWidth: "24px",
+        minHeight: "24px",
         ...customStyles(),
+        ...(disabled
+          ? {
+              backgroundColor: theme.palette.additional.grey1,
+              "& .MuiTypography-root": {
+                color: "#fff",
+              },
+              ".MuiButton-icon": {
+                margin: "-0.2rem",
+                color: "#fff",
+              },
+            }
+          : {}),
         ...buttonSx,
       }}
       variant="text"
       startIcon={leftIcon && icon}
       endIcon={rightIcon && icon}
+      disabled={disabled}
+      disableRipple={true}
+      aria-label={text}
+      aria-disabled={disabled}
       {...props}
     >
       <Typography
@@ -143,6 +162,10 @@ PSAFigmaButton.propTypes = {
    * Props for rendering texts in the button.
    */
   text: PropTypes.string,
+  /**
+   * Props for disabling the button.
+   */
+  disabled: PropTypes.bool,
   /**
    *  These are additional props which could be passed to the wrapped MUI Button, refer to [MUI docs](https://mui.com/api/button/) for available props.
    */
