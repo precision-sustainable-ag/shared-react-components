@@ -115,7 +115,6 @@ export function PSAFigmaButton({
       disabled={disabled}
       disableRipple={true}
       aria-label={text}
-      aria-disabled={disabled}
       {...props}
     >
       <Typography

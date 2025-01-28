@@ -10,7 +10,7 @@ const pillBackgroundColor = (selected, transparent) => {
   if (transparent) {
     return "transparent";
   }
-  return "#e3f2f4";
+  return "#FBFDFD";
 };
 
 // Use MUI's styled system to define the button styles
@@ -64,13 +64,18 @@ const StyledButton = styled(Button, {
   }),
   ...(buttonType === "ToggleOptions" && {
     backgroundColor: selected ? "#598444" : "white",
-    color: selected ? "white" : "#8abc62",
+    color: selected ? "white" : "#5C8136",
     border: "10px",
     "&:hover": {
       backgroundColor: selected ? "#598444" : "white",
-      color: selected ? "white" : "#8abc62",
+      color: selected ? "white" : "#5C8136",
     },
   }),
+  minWidth: "24px",
+  minHeight: "24px",
+  "&.Mui-disabled": {
+    color: "#757575",
+  },
 }));
 
 export const PSAButton = ({
