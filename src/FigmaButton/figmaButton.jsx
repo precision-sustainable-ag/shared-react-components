@@ -113,7 +113,6 @@ export function PSAFigmaButton({
       startIcon={leftIcon && icon}
       endIcon={rightIcon && icon}
       disabled={disabled}
-      disableRipple={true}
       aria-label={text}
       {...props}
     >
