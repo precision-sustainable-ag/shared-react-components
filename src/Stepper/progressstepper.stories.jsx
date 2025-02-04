@@ -6,7 +6,7 @@ const meta = {
   component: PSAStepper,
   tags: ["autodocs"],
   parameters: {
-    layout: "fullScreen",
+    layout: "fullscreen",
   },
 };
 
