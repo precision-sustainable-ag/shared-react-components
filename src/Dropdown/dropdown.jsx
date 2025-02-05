@@ -11,8 +11,10 @@ export const PSADropdown = ({
   menuSx = {},
 }) => (
   <FormControl sx={formSx} variant={SelectProps.variant}>
-    <InputLabel sx={inputSx}>{label}</InputLabel>
-    <Select label={label} {...SelectProps}>
+    <InputLabel sx={inputSx} id={`${label}-select`}>
+      {label}
+    </InputLabel>
+    <Select labelId={`${label}-select`} label={label} {...SelectProps}>
       {items.map((item, index) => (
         <MenuItem
           key={index}
@@ -68,8 +70,8 @@ PSADropdown.propTypes = {
     "data-test": PropTypes.string,
   }),
 
-    /**
+  /**
    * The sx prop for styling the MenuItem element
    */
-    menuSx: PropTypes.object,
+  menuSx: PropTypes.object,
 };
