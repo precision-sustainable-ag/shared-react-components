@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Box, Typography, IconButton, Tooltip } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import CheckIcon from "@mui/icons-material/Check";
-import theme from "../Theme";
+import theme from ".";
 
 export function PSAColorpalette() {
   const [copiedHex, setCopiedHex] = useState("");
