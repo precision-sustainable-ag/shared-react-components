@@ -26,7 +26,7 @@ export function PSAColorpalette() {
   };
 
   const ColorBox = ({ name, hex, category }) => {
-    const jsPath = `PSATheme.palette.${category}.${name}`;
+    const jsPath = `theme.palette.${category}.${name}`;
     const isHexCopied = copiedHex === hex;
     const isPathCopied = copiedPath === jsPath;
 
