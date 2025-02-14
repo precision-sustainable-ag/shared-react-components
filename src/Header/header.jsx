@@ -47,7 +47,11 @@ export function PSAHeader({
           alignItems: "center",
         }}
       >
-        <Button onClick={onLogoClick} data-test="header_logo_button">
+        <Button
+          onClick={onLogoClick}
+          data-test="header_logo_button"
+          aria-label="Reset and go back to home page"
+        >
           <Box sx={{ width: underMd ? "100px" : "150px" }}>
             <PSALogoDisplayer
               council={council}

@@ -8,7 +8,7 @@ const meta = {
   argTypes: {
     council: {
       control: "select",
-      options: ["NECCC", "SCCC", "MCCC", "PSA"], // Dropdown for the councilShorthandRedux
+      options: ["NECCC", "SCCC", "MCCC", "WCCC", "PSA"], // Dropdown for the councilShorthandRedux
     },
   },
 };

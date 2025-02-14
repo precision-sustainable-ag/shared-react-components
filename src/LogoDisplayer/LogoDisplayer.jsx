@@ -18,6 +18,9 @@ export const PSALogoDisplayer = ({ council, alt, style }) => {
         case "MCCC":
           faviconRef.current.href = "favicons/mccc-favicon.ico";
           break;
+        case "WCCC":
+          faviconRef.current.href = "favicons/wccc-favicon.ico";
+          break;
         default:
           faviconRef.current.href = "favicons/psa-favicon.ico";
           break;
@@ -37,6 +40,9 @@ export const PSALogoDisplayer = ({ council, alt, style }) => {
           break;
         case "MCCC":
           logoRef.current.src = "images/mwccc_logo.png";
+          break;
+        case "WCCC":
+          logoRef.current.src = "images/wccc_logo.png";
           break;
         default:
           logoRef.current.src = "images/PSA_logo.png";
