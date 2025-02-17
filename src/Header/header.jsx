@@ -87,14 +87,6 @@ export function PSAHeader({
             <Box
               sx={{ display: "flex", alignItems: "center", height: "2.25rem" }}
             >
-              <Box
-                sx={{
-                  width: "11.6875rem",
-                  height: "0.3125rem",
-                  backgroundColor: "main.accent1",
-                  marginRight: "1rem",
-                }}
-              />
               <Typography
                 variant="subtitle"
                 fontSize={underMd && "0.75rem"}
