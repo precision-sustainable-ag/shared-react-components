@@ -62,7 +62,7 @@ export const PSATextField = styled((props) => (
     fontFamily: "IBM Plex Sans",
     "&.Mui-disabled": {
       color: "#6B6B6B",
-      "-webkit-text-fill-color": "unset",
+      WebkitTextFillColor: "unset",
     },
   },
 }));
