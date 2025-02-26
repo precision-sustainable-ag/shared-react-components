@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Highcharts from "highcharts";
+import Highcharts from "../../utils/highchartsConfig";
 import HighchartsReact from "highcharts-react-official";
 import PSASubContainer from "../SubContainer";
 
