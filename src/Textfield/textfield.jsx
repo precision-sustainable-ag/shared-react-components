@@ -16,7 +16,7 @@ export const PSATextField = styled((props) => (
     boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
     fieldset: {
       borderWidth: "2px",
-      borderColor: theme.palette.main.background1,
+      borderColor: theme.palette.additional.grey1,
     },
     "&:hover fieldset": {
       borderColor: theme.palette.main.accent2,
@@ -28,7 +28,10 @@ export const PSATextField = styled((props) => (
       borderColor: theme.palette.additional.error,
     },
     "&.Mui-disabled fieldset": {
-      borderColor: theme.palette.main.background1,
+      borderColor: theme.palette.additional.grey1,
+    },
+    "&.Mui-disabled": {
+      backgroundColor: "#F0F0F0",
     },
   },
   "& label": {
@@ -47,6 +50,9 @@ export const PSATextField = styled((props) => (
     "&.Mui-error": {
       color: theme.palette.main.text,
     },
+    "&.Mui-disabled": {
+      color: "#757575",
+    },
   },
   "legend span": {
     display: "none",
@@ -54,5 +60,9 @@ export const PSATextField = styled((props) => (
   input: {
     paddingLeft: "1.25rem",
     fontFamily: "IBM Plex Sans",
+    "&.Mui-disabled": {
+      color: "#6B6B6B",
+      "-webkit-text-fill-color": "unset",
+    },
   },
 }));
