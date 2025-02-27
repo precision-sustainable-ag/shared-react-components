@@ -201,7 +201,7 @@ export const PSAStepper = ({
             style={{
               background:
                 activeStep === steps.length || nextButtonDisabled
-                  ? theme.palette.additional.grey2
+                  ? theme.palette.additional.grey1
                   : theme.palette.main.accent1,
             }}
           />
@@ -217,7 +217,7 @@ export const PSAStepper = ({
             style={{
               background:
                 activeStep === 0
-                  ? theme.palette.additional.grey2
+                  ? theme.palette.additional.grey1
                   : theme.palette.main.accent1,
             }}
           />
