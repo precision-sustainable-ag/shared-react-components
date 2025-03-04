@@ -446,7 +446,7 @@ const Map = ({
       {hasCoordBar && cursorLoc.longitude && (
         <div className={styles.infobar}>
           <ul>
-            <li>{`Longitude:${cursorLoc.longitude}`}</li>
+            <li>{`lwongitude:${cursorLoc.longitude}`}</li>
             <li>{`Latitude:${cursorLoc.latitude}`}</li>
             {polygonArea > 0 && (
               <li>{`Arasdfea ${polygonArea.toFixed(2)} acres`}</li>
