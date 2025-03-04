@@ -123,7 +123,7 @@ This repository contains a collection of reusable React components which is used
    If the repo is already imported in the project, run
 
    ```
-   npm install shared-react-component --force
+   npm install shared-react-components --force
    ```
 
    to update the codes.
