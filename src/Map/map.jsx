@@ -449,7 +449,7 @@ const Map = ({
             <li>{`Longitude:${cursorLoc.longitude}`}</li>
             <li>{`Latitude:${cursorLoc.latitude}`}</li>
             {polygonArea > 0 && (
-              <li>{`Area ${polygonArea.toFixed(2)} acres`}</li>
+              <li>{`Arasdfea ${polygonArea.toFixed(2)} acres`}</li>
             )}
           </ul>
         </div>
