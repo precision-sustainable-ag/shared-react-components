@@ -181,6 +181,7 @@ const Map = ({
   const handleDrawDelete = (e) => {
     setIsDrawActive(false);
     onDraw({ mode: "delete", e: e });
+    setPolygonArea(0);
   };
   const handleDrawUpdate = (e) => {
     onDraw({ mode: "update", e: e });
@@ -446,10 +447,10 @@ const Map = ({
       {hasCoordBar && cursorLoc.longitude && (
         <div className={styles.infobar}>
           <ul>
-            <li>{`lwongitude:${cursorLoc.longitude}`}</li>
+            <li>{`Longitude:${cursorLoc.longitude}`}</li>
             <li>{`Latitude:${cursorLoc.latitude}`}</li>
             {polygonArea > 0 && (
-              <li>{`Arasdfea ${polygonArea.toFixed(2)} acres`}</li>
+              <li>{`Area ${polygonArea.toFixed(2)} acres`}</li>
             )}
           </ul>
         </div>
