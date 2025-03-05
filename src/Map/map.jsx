@@ -181,6 +181,7 @@ const Map = ({
   const handleDrawDelete = (e) => {
     setIsDrawActive(false);
     onDraw({ mode: "delete", e: e });
+    setPolygonArea(0);
   };
   const handleDrawUpdate = (e) => {
     onDraw({ mode: "update", e: e });
