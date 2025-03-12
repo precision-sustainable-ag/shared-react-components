@@ -199,7 +199,7 @@ export const PSAForm = ({
             <PSAButton
               {...button.props}
               onClick={
-                button.action === "submit" ? handleSubmit : button.onClick
+                button.action === "submit" ? submit : button.onClick
               }
               disabled={isSubmitDisabled}
             />
