@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@mui/material";
 import PropTypes from "prop-types";
 
-export function PSASkipContent({ href, text, sx }) {
+export function PSASkipContent({ href, text, sx, ...props }) {
   return (
     <Link
       href={href}
@@ -32,6 +32,7 @@ export function PSASkipContent({ href, text, sx }) {
         },
         ...sx,
       }}
+      {...props}
     >
       {text}
     </Link>
