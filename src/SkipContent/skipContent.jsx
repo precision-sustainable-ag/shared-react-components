@@ -30,6 +30,10 @@ export function PSASkipContent({ href, text, sx, ...props }) {
           color: "black",
           backgroundColor: "#f0f7eb",
         },
+        '&.MuiLink-root.Mui-focusVisible': { 
+          outlineOffset: '5px', 
+          outlineColor: 'black' 
+        },
         ...sx,
       }}
       {...props}
