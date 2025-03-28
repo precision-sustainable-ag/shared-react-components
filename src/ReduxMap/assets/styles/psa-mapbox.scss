@@ -1,0 +1,87 @@
+.mapbox {
+  .mapbox-gl-draw_ctrl-draw-btn.active,
+  #freehand.active {
+    background-color: #aaddaa !important;
+    outline: 2px solid white;
+  }
+
+  .mapbox-gl-draw_ctrl-draw-btn.active:hover,
+  #freehand.active:hover {
+    background-color: #ccffcc !important;
+  }
+
+  .mapboxgl-ctrl-group > .mapbox-gl-draw_trash {
+    display: none;
+  }
+
+  #psa-map:fullscreen .mapboxgl-marker * {
+    width: 4vw !important;
+    height: 4vh !important;
+  }
+
+  .mapboxgl-ctrl-geocoder {
+    min-width: 30rem;
+    max-width: 80%;
+  }
+
+  &.hasclear .mapboxgl-ctrl-geocoder::before {
+    content: '✖';
+    position: absolute;
+    left: calc(100% - 22px);
+    margin-top: 0.5rem;
+  }
+
+  .mapboxgl-ctrl-geocoder.clearHovered::before {
+    cursor: pointer;
+    background-color: #eee;
+    outline: 3px solid #eee;
+    border-radius: 50%;
+  }
+
+  .cursor {
+    display: none;
+    position: fixed;
+    color: #ddd;
+    pointer-events: none;
+    font-weight: bold;
+    font-size: 14px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+    z-index: 9999; /* doesn't work for fullscreen mode */
+  }
+
+  // show lat/lon only when cursor is over map
+  &:hover:not(:has(.popup)):not(:has(.mapboxgl-control-container:hover)):not(:has([class^="_info"]:hover)) .cursor {
+    display: block;
+  }
+
+  .popup div {
+    background: #eee;
+    text-align: center;
+  }
+
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  dialog button {
+    float: right;
+  }
+
+  .mapboxgl-ctrl-compass {
+    display: none;
+  }
+
+  #MapHelp {
+    background: #ddd;
+
+    img {
+      height: 1.5rem;
+      transform: translatey(5px);
+      margin-left: 0.2rem;
+    }
+  }
+
+  // .mapboxgl-ctrl {
+  //   background: #ddd;
+  // }
+}

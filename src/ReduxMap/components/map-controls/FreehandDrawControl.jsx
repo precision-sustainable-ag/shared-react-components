@@ -1,0 +1,157 @@
+import { CustomControl } from "./CustomControl";
+import centroid from "@turf/centroid";
+
+const freehandIcon = `<svg id="polygon-tool" class="mapboxgl-ctrl-icon custom-icon" viewBox="0 0 24 24">
+                    <path d="M3 10 L8 3 L15 5 L19 12 L12 20 L5 15 Z" stroke="#000" stroke-width="2" fill="none"></path>
+                  </svg>`;
+
+export class FreehandDrawControl extends CustomControl {
+  constructor(mapRef, drawerRef, hasDrawing, updateFeatures) {
+    super(() => this.toggleDrawingMode(), "Freehand Draw", freehandIcon);
+
+    this.mapRef = mapRef;
+    this.drawerRef = drawerRef;
+    this.hasDrawing = hasDrawing;
+    this.updateFeatures = updateFeatures;
+
+    this.lineData = this.createNewLine();
+    this.fpolygon = [[]];
+  }
+
+  isFreeHandDrawingActive() {
+    return this.button?.classList?.contains("active");
+  }
+
+  createNewLine() {
+    return {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "LineString",
+            coordinates: [],
+          },
+          properties: {},
+        },
+      ],
+    };
+  }
+
+  /** Toggles freehand drawing mode
+   * (onClick function for CustomControl)
+   */
+  toggleDrawingMode() {
+    this.button.classList.toggle("active");
+    const polygonButton = document.querySelector(".mapbox-gl-draw_polygon");
+
+    if (this.isFreeHandDrawingActive()) {
+      if (this.hasDrawing) {
+        polygonButton.style.display = "none";
+        this.drawerRef.current.changeMode("draw_polygon");
+      }
+      this.mapRef.current.dragPan.disable();
+    } else {
+      if (this.hasDrawing) {
+        polygonButton.style.display = "block";
+        this.drawerRef.current.changeMode("simple_select");
+      }
+      this.mapRef.current.dragPan.enable();
+    }
+  }
+
+  onAdd(map) {
+    const container = super.onAdd(map);
+
+    map.on("style.load", () => {
+      this.mapRef.current.addSource("line", {
+        type: "geojson",
+        data: this.lineData,
+      });
+
+      this.mapRef.current.addLayer({
+        id: "line-layer",
+        type: "line",
+        source: "line",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#fff",
+          "line-width": 3,
+        },
+      });
+
+      this.mapRef.current.on("mousedown", (e) => {
+        if (!this.isFreeHandDrawingActive()) return;
+
+        const lnglat = e.lngLat.wrap();
+        this.lineData = this.createNewLine();
+        this.lineData.features[0].geometry.coordinates.push([
+          lnglat.lng,
+          lnglat.lat,
+        ]);
+        this.fpolygon = [[lnglat.lng, lnglat.lat]];
+      });
+
+      this.mapRef.current.on("mousemove", (e) => {
+        if (!this.isFreeHandDrawingActive() || this.fpolygon[0].length === 0)
+          return;
+
+        const lnglat = e.lngLat.wrap();
+        this.lineData.features[0].geometry.coordinates.push([
+          lnglat.lng,
+          lnglat.lat,
+        ]);
+        this.mapRef.current.getSource("line").setData(this.lineData);
+        this.fpolygon.push([lnglat.lng, lnglat.lat]);
+      });
+
+      this.mapRef.current.on("mouseup", () => {
+        if (!this.isFreeHandDrawingActive()) return;
+
+        const id = `freehand${+new Date()}`;
+        const created = this.fpolygon.length > 1;
+
+        // If polygon created, add it to the map and update lat, lon and reset this.lineData
+        if (created) {
+          this.mapRef.current.addPolygon(id, [this.fpolygon], {
+            "fill-color": "#f00",
+            "fill-opacity": 0.1,
+            "line-width": 1,
+            "line-color": "#ddd",
+          });
+
+          const [newLon, newLat] = centroid(this.lineData.features[0]).geometry
+            .coordinates;
+          this.lineData = this.createNewLine();
+          this.mapRef.current.getSource("line").setData(this.lineData);
+          this.updateFeatures(newLat, newLon);
+        }
+
+        // Deactivate freehand drawing and clean up drawing layers and sources
+        this.button.classList.toggle("active");
+        this.fpolygon = [[]];
+        const { layers } = this.mapRef.current.getStyle();
+        layers.forEach((lay) => {
+          if (lay.source === id) {
+            this.mapRef.current.removeLayer(lay.id);
+          }
+        });
+
+        if (created) {
+          this.mapRef.current.removeSource(id);
+        }
+
+        if (this.hasDrawing) {
+          document.querySelector(".mapbox-gl-draw_polygon").style.display =
+            "block";
+          this.drawerRef.current.changeMode("simple_select");
+        }
+      });
+    });
+
+    return container;
+  }
+}
