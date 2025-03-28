@@ -50,7 +50,7 @@
     "@auth0/auth0-react": "^2.2.4",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^5.16.7",
+    "@mui/icons-material": "^5.16.7 || ^6.0.0",
     "@mui/material": "^5.14.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
