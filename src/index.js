@@ -27,3 +27,4 @@ export { default as PSAStepper } from "./Stepper/index";
 export { default as PSABarChart } from "./BarChart/index";
 export { default as PSALineChart } from "./LineChart/index";
 export { default as PSADataPoint } from "./DataPoint/index";
+export { default as PSASkipContent } from "./SkipContent/index";

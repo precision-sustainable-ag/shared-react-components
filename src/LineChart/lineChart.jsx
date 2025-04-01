@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Highcharts from "highcharts";
+import Highcharts from "../../utils/highchartsConfig";
 import HighchartsReact from "highcharts-react-official";
 import { useTheme } from "@mui/material";
 import PropTypes from "prop-types";

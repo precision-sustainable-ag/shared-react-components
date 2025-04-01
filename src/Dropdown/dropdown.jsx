@@ -11,10 +11,14 @@ export const PSADropdown = ({
   menuSx = {},
 }) => (
   <FormControl sx={formSx} variant={SelectProps.variant}>
-    <InputLabel sx={inputSx} id={`${label}-select`}>
+    <InputLabel sx={inputSx} id={`${label.replaceAll(' ', '-')}-label`}>
       {label}
     </InputLabel>
-    <Select labelId={`${label}-select`} label={label} {...SelectProps}>
+    <Select 
+      labelId={`${label.replaceAll(' ', '-')}-label`} 
+      id={`${label.replaceAll(' ', '-')}-select`} 
+      {...SelectProps}
+    >
       {items.map((item, index) => (
         <MenuItem
           key={index}
