@@ -198,9 +198,7 @@ export const PSAForm = ({
           <Grid key={index} item xs={12}>
             <PSAButton
               {...button.props}
-              onClick={
-                button.action === "submit" ? submit : button.onClick
-              }
+              onClick={button.action === "submit" ? submit : button.onClick}
               disabled={isSubmitDisabled}
             />
           </Grid>
@@ -214,6 +212,7 @@ export const PSAForm = ({
         message={snackbarData.message}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         color={snackbarData.color}
+        data-test="feedback_snackbar"
       />
     </Grid>
   );

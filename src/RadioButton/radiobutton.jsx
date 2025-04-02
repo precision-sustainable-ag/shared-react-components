@@ -65,6 +65,7 @@ export function PSARadioButton({
                   color: "white",
                 },
               }}
+              tabIndex={-1}
             />
           )}
           <Typography

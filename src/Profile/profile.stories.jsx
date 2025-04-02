@@ -13,5 +13,9 @@ const meta = {
 export default meta;
 
 export const DefaultProfile = {
-  args: {},
+  args: {
+    styles: {
+      backgroundColor: "grey",
+    },
+  },
 };
