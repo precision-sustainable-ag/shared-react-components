@@ -561,11 +561,11 @@ ReduxMap.propTypes = {
   /**
    * Initial map container width.
    */
-  initWidth: PropTypes.number,
+  initWidth: PropTypes.string,
   /**
    * Initial map container height.
    */
-  initHeight: PropTypes.number,
+  initHeight: PropTypes.string,
   /**
    * Initial latitude for map center.
    */
