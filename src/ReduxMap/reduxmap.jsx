@@ -392,7 +392,7 @@ const ReduxMap = ({
     };
 
     const handleDoubleClick = (e) => {
-      if (newPolygon) return;
+      if (!hasMarker || newPolygon) return;
       setLat(e.lngLat.lat);
       setLon(e.lngLat.lng);
       setZoom(defaultZoom);
