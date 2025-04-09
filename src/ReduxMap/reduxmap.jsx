@@ -223,8 +223,10 @@ const ReduxMap = ({
   }, [initFeatures]);
 
   useEffect(() => {
-    setLat(initLat);
-    setLon(initLon);
+    if (initLat && initLon && initLat !==0 && initLon !== 0) {
+      setLat(initLat);
+      setLon(initLon);
+    }
   }, [initLat, initLon]);
 
   // Handle bounds changes
