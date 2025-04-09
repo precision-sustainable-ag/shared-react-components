@@ -214,10 +214,18 @@ const ReduxMap = ({
   }, [features, drawerRef.current]);
 
   useEffect(() => {
-    if (initFeatures && JSON.stringify(initFeatures) !== JSON.stringify(features)) {
+    if (
+      initFeatures &&
+      JSON.stringify(initFeatures) !== JSON.stringify(features)
+    ) {
       setFeatures(initFeatures);
     }
   }, [initFeatures]);
+
+  useEffect(() => {
+    setLat(initLat);
+    setLon(initLon);
+  }, [initLat, initLon]);
 
   // Handle bounds changes
   useEffect(() => {
