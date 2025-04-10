@@ -64,7 +64,7 @@ const ReduxMap = ({
   initLat = 0,
   initLon = 0,
   initStartZoom,
-  initFeatures = [],
+  initFeatures = null,
   initBounds,
   initAddress = 'Search for your address ...',
   layer = 'mapbox://styles/mapbox/satellite-streets-v12',
@@ -697,7 +697,7 @@ ReduxMap.propTypes = {
   /**
    * Additional help content.
    */
-  otherHelp: PropTypes.string,
+  otherHelp: PropTypes.node,
   /**
    * Enable scroll zoom.
    */
