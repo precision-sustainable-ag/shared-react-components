@@ -39,7 +39,9 @@ export class CustomControl {
   }
 
   onRemove() {
-    this._container.parentNode.removeChild(this._container);
+    if (this._container && this._container.parentNode) {
+      this._container.parentNode.removeChild(this._container);
+    }
     this._map = undefined;
   }
 }
