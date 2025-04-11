@@ -1,7 +1,7 @@
 export class CustomControl {
-   /**
+  /**
    * Create a new custom map control
-   * 
+   *
    * @param {Function} onClick - Callback function triggered when the control is clicked
    * @param {string} title - Tooltip text for the control button
    * @param {string} icon - Icon to display (can be SVG string or image URL)
@@ -39,7 +39,11 @@ export class CustomControl {
   }
 
   onRemove() {
-    if (this._container && this._container.parentNode) {
+    if (
+      this._container &&
+      this._container.parentNode &&
+      this._container.parentNode.contains(this._container)
+    ) {
       this._container.parentNode.removeChild(this._container);
     }
     this._map = undefined;
