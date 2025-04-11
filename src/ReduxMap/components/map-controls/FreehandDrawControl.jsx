@@ -131,7 +131,7 @@ export class FreehandDrawControl extends CustomControl {
         }
 
         // Deactivate freehand drawing and clean up drawing layers and sources
-        this.button.classList.toggle("active");
+        this.button.classList.remove("active"); // Change toggle to remove to ensure we know the state
         this.fpolygon = [[]];
         const { layers } = this.mapRef.current.getStyle();
         layers.forEach((lay) => {
@@ -143,6 +143,8 @@ export class FreehandDrawControl extends CustomControl {
         if (created) {
           this.mapRef.current.removeSource(id);
         }
+
+        this.mapRef.current.dragPan.enable();
 
         if (this.hasDrawing) {
           document.querySelector(".mapbox-gl-draw_polygon").style.display =
