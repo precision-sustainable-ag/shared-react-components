@@ -39,10 +39,13 @@ export class CustomControl {
   }
 
   onRemove() {
-    try {
+    if (
+      this._container &&
+      this._container.parentNode &&
+      this._container.parentNode.contains(this._container)
+    ) {
       this._container.parentNode.removeChild(this._container);
-    } finally {
-      this._map = undefined;
     }
+    this._map = undefined;
   }
 }
