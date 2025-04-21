@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Box, Card, CardContent, CardActions, Dialog, Typography, Link,
 } from '@mui/material';
-import { PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
+import { Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
 
 export const CropImage = ({
@@ -15,6 +15,8 @@ export const CropImage = ({
   credits,
   creditsSimple = credits,
   inDetails,
+  openDetails,
+  isMobile,
 }) => {
   if (!thumbnail) return null;
   const [open, setOpen] = useState(false);
@@ -31,7 +33,11 @@ export const CropImage = ({
           borderRadius: 2,
           border: '1px solid #ddd',
         }}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          openDetails && window.innerWidth <= 600
+            ? openDetails(true)
+            : setOpen(true)
+        }}
       >
         <Box
           component="img"
@@ -44,7 +50,7 @@ export const CropImage = ({
           }}
           src={thumbnail}
           alt={alt}
-          title="Click to view full size"
+          title={isMobile ? 'Click for details' : 'Click to view full size'}
         />
       </Box>
       {
@@ -106,7 +112,7 @@ export const CropImage = ({
 const Content = ({
   species, scientific, content, cultivar, symbol,
   thumbnail, fullsize = thumbnail, portrait,
-  credits, creditsSimple = credits,
+  credits, creditsSimple = credits, openDetails, isMobile,
 }) => (
   <Box role="presentation" sx={{ fontFamily: 'IBM Plex Sans' }}>
     <Box
@@ -147,6 +153,8 @@ const Content = ({
             creditsSimple={creditsSimple}
             credits={credits}
             portrait={portrait}
+            openDetails={openDetails}
+            isMobile={isMobile}
           />
         </Box>
       )
@@ -262,6 +270,14 @@ export const PSACropCard = ({
   );
 
   const [open, setOpen] = useState(false);
+  
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <Card
@@ -304,15 +320,22 @@ export const PSACropCard = ({
                   portrait={portrait}
                   creditsSimple={creditsSimple}
                   credits={credits}
+                  openDetails={setOpen}
+                  isMobile={isMobile}
                 />
               </CardContent>
-              <CardActions sx={{ justifyContent: 'space-between', marginTop: 'auto' }}>
+              <CardActions sx={{
+                justifyContent: isMobile ? 'center' : 'space-between',
+                marginTop: 'auto'
+              }}>
                 {
                   details
+                  && !isMobile
                   && (
                     <PSAFigmaButton
-                      PlaylistAdd
                       text="DETAILS"
+                      icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
+                      rightIcon
                       textSx={{ fontSize: 12 }}
                       buttonSx={{ borderRadius: '5px' }}
                       onClick={() => setOpen(true)}
@@ -328,7 +351,7 @@ export const PSACropCard = ({
                       variant="color"
                       icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
                       rightIcon
-                      textSx={{ fontSize: 12 }}
+                      textSx={{ fontSize: isMobile ? 18 : 12 }}
                       buttonSx={{ borderRadius: '5px' }}
                       onClick={select}
                     />
