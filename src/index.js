@@ -28,3 +28,4 @@ export { default as PSABarChart } from "./BarChart/index";
 export { default as PSALineChart } from "./LineChart/index";
 export { default as PSADataPoint } from "./DataPoint/index";
 export { default as PSASkipContent } from "./SkipContent/index";
+export { default as PSACropCard } from "./CropCard/index";

@@ -1,0 +1,411 @@
+import React, { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
+
+import {
+  Box, Card, CardContent, CardActions, Dialog, Typography, Link,
+} from '@mui/material';
+import { PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
+import PSAFigmaButton from '../FigmaButton';
+
+export const CropImage = ({
+  alt = 'image',
+  thumbnail,
+  fullsize = thumbnail,
+  portrait,
+  credits,
+  creditsSimple = credits,
+  inDetails,
+}) => {
+  if (!thumbnail) return null;
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Box>
+      <Box
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          height: '140px',
+          width: inDetails ? '260px' : '100%',
+          cursor: 'pointer',
+          borderRadius: 2,
+          border: '1px solid #ddd',
+        }}
+        onClick={() => setOpen(true)}
+      >
+        <Box
+          component="img"
+          sx={{
+            position: 'absolute',
+            top: portrait ? 0 : '50%',
+            left: '50%',
+            transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
+            objectFit: 'cover',
+          }}
+          src={thumbnail}
+          alt={alt}
+          title="Click to view full size"
+        />
+      </Box>
+      {
+        creditsSimple
+        && (
+          <Typography
+            sx={{
+              fontSize: 12,
+              marginLeft: '0.25rem',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+            }}
+            title={credits}
+            onClick={() => setOpen(true)}
+          >
+            {creditsSimple}
+          </Typography>
+        )
+      }
+
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        maxWidth="xl"
+        width="100%"
+        slotProps={{
+          backdrop: {
+            sx: {
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            },
+          },
+        }}
+      >
+        <Box
+          component="img"
+          src={fullsize}
+          alt={alt}
+          sx={{
+            maxHeight: 'calc(100vh - 100px)',
+            display: 'block',
+            border: '25px solid white',
+            borderBottom: 'none',
+          }}
+        />
+        {
+          credits
+          && (
+            <Typography sx={{ fontSize: 14, margin: '0 25px' }}>
+              {credits}
+            </Typography>
+          )
+        }
+      </Dialog>
+    </Box>
+  );
+}; // CropImage
+
+const Content = ({
+  species, scientific, content, cultivar, symbol,
+  thumbnail, fullsize = thumbnail, portrait,
+  credits, creditsSimple = credits,
+}) => (
+  <Box role="presentation" sx={{ fontFamily: 'IBM Plex Sans' }}>
+    <Box
+      sx={{
+        padding: '0.5rem 1rem',
+        background: 'white',
+        minHeight: 50,
+      }}
+      className="heading"
+    >
+      <Typography component="span">
+        {species}
+      </Typography>
+
+      <Typography sx={{ fontStyle: 'italic', fontSize: 12 }}>
+        {scientific}
+      </Typography>
+
+      {
+        cultivar
+        && (
+          <Typography sx={{ fontSize: 14 }} className="cultivar">
+            Cultivar:&nbsp;
+            {cultivar}
+          </Typography>
+        )
+      }
+    </Box>
+    {
+      thumbnail
+      && (
+        <Box>
+          <CropImage
+            alt={scientific}
+            symbol={symbol}
+            thumbnail={thumbnail}
+            fullsize={fullsize}
+            creditsSimple={creditsSimple}
+            credits={credits}
+            portrait={portrait}
+          />
+        </Box>
+      )
+    }
+    {
+      content
+      && (
+        <Box
+          sx={{
+            padding: '0.5rem 1rem',
+            background: 'white',
+            fontSize: 12,
+          }}
+        >
+          {content}
+        </Box>
+      )
+    }
+  </Box>
+); // Content
+
+/**
+ * This is a custom CropCard component.
+ *  Styling is based on [Figma](https://www.figma.com/design/dipljCC6Z3GZBFhJqth7a7/PSI-Design-Work?node-id=1799-21980&p=f&t=iJHZVtdpK3LNpTW8-0).
+  */
+export const PSACropCard = ({
+  species,
+  cultivar,
+  scientific,
+  content,
+  details,
+  thumbnail,
+  fullsize,
+  portrait,
+  externalLink,
+  externalLinkText,
+  externalLinkTitle,
+  credits,
+  creditsSimple,
+  select,
+  remove,
+  sx,
+  ...props
+}) => {
+  const elementRef = useRef(null);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0,
+      },
+    );
+
+    if (elementRef.current) {
+      const c = elementRef.current;
+      setTimeout(() => {
+        observer.observe(c);
+      }, 10);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, [elementRef, elementRef.current]);
+
+  const speciesBox = (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        gap: 0.3,
+      }}
+    >
+      <Typography sx={{ lineHeight: '1.2rem' }}>
+        {species}
+      </Typography>
+      {
+        externalLink
+        && (
+          <Link
+            href={externalLink}
+            title={externalLinkTitle}
+            target="_blank"
+            rel="noreferrer"
+            sx={{
+              fontSize: 13,
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              '&:hover': {
+                textDecoration: 'underline',
+                color: '#1976d2',
+              },
+            }}
+          >
+            {externalLinkText}
+            <OpenInNew sx={{ fontSize: '0.9em' }} />
+          </Link>
+        )
+      }
+    </Box>
+  );
+
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Card
+      sx={[
+        {
+          borderRadius: '17px',
+          width: 260,
+          // minHeight: 300,
+          backgroundColor: '#f5f5f5',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          height: '100%',
+        },
+        sx,
+      ]}
+      {...props}
+      ref={elementRef}
+    >
+      {
+        (!isIntersecting && !remove)
+          ? (
+            <div style={{ color: 'white' }}>
+              {species}
+              {scientific}
+              Cultivar
+              {cultivar}
+            </div>
+          )
+          : (
+            <>
+              <CardContent>
+                <Content
+                  species={speciesBox}
+                  scientific={scientific}
+                  content={content}
+                  cultivar={cultivar}
+                  thumbnail={isIntersecting && thumbnail}
+                  fullsize={isIntersecting && fullsize}
+                  portrait={portrait}
+                  creditsSimple={creditsSimple}
+                  credits={credits}
+                />
+              </CardContent>
+              <CardActions sx={{ justifyContent: 'space-between', marginTop: 'auto' }}>
+                {
+                  details
+                  && (
+                    <PSAFigmaButton
+                      PlaylistAdd
+                      text="DETAILS"
+                      textSx={{ fontSize: 12 }}
+                      buttonSx={{ borderRadius: '5px' }}
+                      onClick={() => setOpen(true)}
+                    />
+                  )
+                }
+
+                {
+                  select
+                  && (
+                    <PSAFigmaButton
+                      text="ADD TO LIST"
+                      variant="color"
+                      icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
+                      rightIcon
+                      textSx={{ fontSize: 12 }}
+                      buttonSx={{ borderRadius: '5px' }}
+                      onClick={select}
+                    />
+                  )
+                }
+                {
+                  remove
+                  && (
+                    <PSAFigmaButton
+                      text="REMOVE"
+                      variant="standard"
+                      icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
+                      rightIcon
+                      textSx={{ fontSize: 12 }}
+                      buttonSx={{ borderRadius: '5px' }}
+                      onClick={remove}
+                    />
+                  )
+                }
+              </CardActions>
+              <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      maxWidth: '90vw',
+                      width: '1200px',
+                    },
+                  },
+                }}
+              >
+                {
+                  open
+                  ? <Typography sx={{ padding: '1rem' }}>{details}</Typography>
+                  : null
+                }
+              </Dialog>
+            </>
+          )
+      }
+    </Card>
+  );
+}; // PSACropCard
+
+/** PropTypes for better type checking */
+PSACropCard.propTypes = {
+  /** Common name for the species (required) */
+  species: PropTypes.string.isRequired,
+  /** The cultivar name. */
+  cultivar: PropTypes.string,
+  /** The scientific name. */
+  scientific: PropTypes.string,
+  /** Brief information about the species, which will appear on the card. */
+  content: PropTypes.node,
+  /** Complete details about the species, which will appear in a modal. */
+  details: PropTypes.node,
+  /** URL to thumbnail image. */
+  thumbnail: PropTypes.string,
+  /** URL to fullsize image. (defaults to thumbnail) */
+  fullsize: PropTypes.string,
+  /** Whether original image is taller than it is wide.  The resulting image will appear in landscape, and this will affect its CSS. */
+  portrait: PropTypes.bool,
+  /** A link to an external site. Used in VegSpec. */
+  externalLink: PropTypes.string,
+  /** The text that should appear for the external link. */
+  externalLinkText: PropTypes.string,
+  /** The title that should appear when hovering over the external link. */
+  externalLinkTitle: PropTypes.string,
+  /** Full credits for the image. */
+  credits: PropTypes.string,
+  /** Simple credits for the image. (defaults to credits) */
+  creditsSimple: PropTypes.string,
+  /** Function to add the species to the selected list. */
+  select: PropTypes.func,
+  /** Function to remove the species from the selected list. */
+  remove: PropTypes.func,
+  /** Styling for the CropCard. */
+  sx: PropTypes.object,
+};
