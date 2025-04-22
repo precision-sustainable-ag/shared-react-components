@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Card, CardContent, CardActions, Dialog, Typography, Link,
+  Box, Card, CardContent, CardActions, Dialog, DialogTitle, IconButton, Typography, Link,
 } from '@mui/material';
-import { Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
+import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
 
 export const CropImage = ({
@@ -85,6 +85,21 @@ export const CropImage = ({
           },
         }}
       >
+        <DialogTitle sx={{ m: 0, p: 2 }}>
+          <IconButton
+            aria-label="close"
+            onClick={() => setOpen(false)}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
+        </DialogTitle>
+
         <Box
           component="img"
           src={fullsize}
@@ -93,6 +108,7 @@ export const CropImage = ({
             maxHeight: 'calc(100vh - 100px)',
             display: 'block',
             border: '25px solid white',
+            borderTop: '10px solid white',
             borderBottom: 'none',
           }}
         />
@@ -365,7 +381,7 @@ export const PSACropCard = ({
                       variant="standard"
                       icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
                       rightIcon
-                      textSx={{ fontSize: 12 }}
+                      textSx={{ fontSize: isMobile ? 18 : 12 }}
                       buttonSx={{ borderRadius: '5px' }}
                       onClick={remove}
                     />
@@ -384,6 +400,21 @@ export const PSACropCard = ({
                   },
                 }}
               >
+                <DialogTitle sx={{ m: 0, p: 2 }}>
+                  <IconButton
+                    aria-label="close"
+                    onClick={() => setOpen(false)}
+                    sx={{
+                      position: 'absolute',
+                      right: 8,
+                      top: 8,
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                  >
+                    <Close />
+                  </IconButton>
+                </DialogTitle>
+
                 {
                   open
                   ? <Typography sx={{ padding: '1rem' }}>{details}</Typography>
