@@ -7,7 +7,7 @@ import {
 import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
 
-export const CropImage = ({
+export const PSACropImage = ({
   alt = 'image',
   thumbnail,
   fullsize = thumbnail,
@@ -123,7 +123,7 @@ export const CropImage = ({
       </Dialog>
     </Box>
   );
-}; // CropImage
+}; // PSACropImage
 
 const Content = ({
   species, scientific, content, cultivar, symbol,
@@ -161,7 +161,7 @@ const Content = ({
       thumbnail
       && (
         <Box>
-          <CropImage
+          <PSACropImage
             alt={scientific}
             symbol={symbol}
             thumbnail={thumbnail}
