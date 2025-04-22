@@ -196,7 +196,7 @@ const Content = ({
  * This is a custom CropCard component.
  *  Styling is based on [Figma](https://www.figma.com/design/dipljCC6Z3GZBFhJqth7a7/PSI-Design-Work?node-id=1799-21980&p=f&t=iJHZVtdpK3LNpTW8-0).
   */
-export default PSACropCard = ({
+export const PSACropCard = ({
   species,
   cultivar,
   scientific,
