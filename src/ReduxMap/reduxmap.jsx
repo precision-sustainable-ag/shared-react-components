@@ -11,7 +11,7 @@ import union from '@turf/union';
 import centroid from '@turf/centroid';
 import { polygon, featureCollection } from '@turf/helpers';
 
-import { addPolygonToMap, calcArea, fitMapToFeatures } from './utils/helpers';
+import { addPolygonToMap, calcArea, findState, fitMapToFeatures } from './utils/helpers';
 import useSafeSelector from "./hooks/useSafeSelector";
 
 import useMapMarker from "./hooks/useMapMarker";
@@ -127,6 +127,7 @@ const ReduxMap = ({
   const [searchBox, setSearchBox] = useState();
   const [dragging, setDragging] = useState(false);
   const [newPolygon, setNewPolygon] = useState(false);
+  const [state, setState] = useState(null);
 
   const map = useRef();
   const mapContainer = useRef();
@@ -178,8 +179,9 @@ const ReduxMap = ({
       bounds,
       address: address ?? {},
       features,
+      state,
     });
-  }, [lat, lon, elevation, zoom, polygonArea, bounds, address, features]);
+  }, [lat, lon, elevation, zoom, polygonArea, bounds, address, features, state]);
 
   useEffect(() => {
     if (searchBox && autoFocus) {
@@ -228,6 +230,11 @@ const ReduxMap = ({
       setLon(initLon);
     }
   }, [initLat, initLon]);
+
+  useEffect(() => {
+    const newState = findState(lon, lat);
+    setState(newState)
+  }, [lat, lon]);
 
   // Handle bounds changes
   useEffect(() => {

@@ -3,6 +3,7 @@ import bbox from "@turf/bbox";
 import { featureCollection, polygon } from "@turf/helpers";
 import union from "@turf/union";
 import wellknown from 'wellknown';
+import boundaries from "../data/us_states-ca_ab-ca_on.json";
 
 /**
  * Handles reverse geocoding from latitude and longitude to an address.
@@ -348,4 +349,61 @@ async function geocodeReverse({
     });
   };
 
-export { geocodeReverse, coordinatesGeocoder, calcArea, getElevation, addPolygonToMap, fitMapToFeatures };
+  /**
+   * Determines whether a point is inside a polygon using the ray casting algorithm.
+   * Based on https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html
+   * 
+   * @param {Array<number>} point - [lon, lat] coordinates of the point to check.
+   * @param {Array<Array<number>>} polygon - An array of [lon, lat] coordinates representing the vertices of the polygon.
+   * @returns {boolean} True if the point is inside the polygon, false otherwise.
+   */
+  const pointInPolygon = (point, polygon) => {
+    const [x, y] = point;
+    let inside = false;
+    
+    // Loop through vertices of the polygon
+    for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
+      const [xi, yi] = polygon[i];
+      const [xj, yj] = polygon[j];
+      
+      // Check if point is within the polygon using ray casting algorithm
+      const intersect = ((yi > y) !== (yj > y)) &&
+          (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  /**
+   * Finds which state/province a given coordinate belongs to based on GeoJSON data.
+   * 
+   * @param {number} lon - The longitude of the coordinate to check.
+   * @param {number} lat - The latitude of the coordinate to check.
+   * @param {Object} geoJson - A GeoJSON FeatureCollection containing state/province boundaries.
+   * @returns {Object|null} The properties object of the matching state/province, or null if no match is found.
+   */
+  const findState = (lon, lat) => {
+    const point = [lon, lat];
+    
+    for (const feature of boundaries.features) {
+      if (feature.geometry.type === "Polygon") {
+        // Check the outer ring of the polygon
+        const coordinates = feature.geometry.coordinates[0];
+        if (pointInPolygon(point, coordinates)) {
+          return feature.properties;
+        }
+      } 
+      else if (feature.geometry.type === "MultiPolygon") {
+        // Check each polygon in the MultiPolygon
+        for (const polygon of feature.geometry.coordinates) {
+          if (pointInPolygon(point, polygon[0])) {
+            return feature.properties;
+          }
+        }
+      }
+    }
+    return null; // Point is not within any state
+  }
+
+export { geocodeReverse, coordinatesGeocoder, calcArea, getElevation, addPolygonToMap, fitMapToFeatures, findState };
