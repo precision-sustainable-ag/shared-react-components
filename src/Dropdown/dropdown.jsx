@@ -17,6 +17,7 @@ export const PSADropdown = ({
     <Select 
       labelId={`${label.replaceAll(' ', '-')}-label`} 
       id={`${label.replaceAll(' ', '-')}-select`} 
+      label={label}
       {...SelectProps}
     >
       {items.map((item, index) => (
