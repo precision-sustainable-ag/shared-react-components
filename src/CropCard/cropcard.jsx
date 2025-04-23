@@ -20,15 +20,14 @@ export const PSACropImage = ({
 }) => {
   if (!thumbnail) return null;
   const [open, setOpen] = useState(false);
-
   return (
     <Box>
       <Box
         sx={{
           position: 'relative',
           overflow: 'hidden',
-          height: '140px',
-          width: inDetails ? '260px' : '100%',
+          width: inDetails ? 260 : '100%',
+          aspectRatio: 260 / 140,
           cursor: 'pointer',
           borderRadius: 2,
           border: '1px solid #ddd',
@@ -45,6 +44,7 @@ export const PSACropImage = ({
             position: 'absolute',
             top: portrait ? 0 : '50%',
             left: '50%',
+            width: '100%',
             transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
             objectFit: 'cover',
           }}
@@ -210,8 +210,10 @@ export const PSACropCard = ({
   externalLinkTitle,
   credits,
   creditsSimple,
-  select,
-  remove,
+  title,
+  onSelect,
+  onRemove,
+  selected,
   sx,
   ...props
 }) => {
@@ -300,13 +302,13 @@ export const PSACropCard = ({
       sx={[
         {
           borderRadius: '17px',
-          width: 260,
-          // minHeight: 300,
+          width: isMobile ? 160 : 260,
+          height: '100%',
+          minHeight: 300,
           backgroundColor: '#f5f5f5',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          height: '100%',
         },
         sx,
       ]}
@@ -314,7 +316,7 @@ export const PSACropCard = ({
       ref={elementRef}
     >
       {
-        (!isIntersecting && !remove)
+        (!isIntersecting && !onRemove)
           ? (
             <div style={{ color: 'white' }}>
               {species}
@@ -325,7 +327,7 @@ export const PSACropCard = ({
           )
           : (
             <>
-              <CardContent>
+              <CardContent sx={{ padding: 0 }}>
                 <Content
                   species={speciesBox}
                   scientific={scientific}
@@ -360,30 +362,30 @@ export const PSACropCard = ({
                 }
 
                 {
-                  select
+                  !selected && onSelect
                   && (
                     <PSAFigmaButton
                       text="ADD TO LIST"
                       variant="color"
                       icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
                       rightIcon
-                      textSx={{ fontSize: isMobile ? 18 : 12 }}
+                      textSx={{ fontSize: isMobile ? 16 : 12 }}
                       buttonSx={{ borderRadius: '5px' }}
-                      onClick={select}
+                      onClick={onSelect}
                     />
                   )
                 }
                 {
-                  remove
+                  selected && onRemove
                   && (
                     <PSAFigmaButton
                       text="REMOVE"
                       variant="standard"
                       icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
                       rightIcon
-                      textSx={{ fontSize: isMobile ? 18 : 12 }}
+                      textSx={{ fontSize: isMobile ? 16 : 12 }}
                       buttonSx={{ borderRadius: '5px' }}
-                      onClick={remove}
+                      onClick={onRemove}
                     />
                   )
                 }
@@ -413,11 +415,12 @@ export const PSACropCard = ({
                   >
                     <Close />
                   </IconButton>
+                  {title}
                 </DialogTitle>
 
                 {
                   open
-                  ? <Typography sx={{ padding: '1rem' }}>{details}</Typography>
+                  ? details
                   : null
                 }
               </Dialog>
@@ -457,9 +460,11 @@ PSACropCard.propTypes = {
   /** Simple credits for the image. (defaults to credits) */
   creditsSimple: PropTypes.string,
   /** Function to add the species to the selected list. */
-  select: PropTypes.func,
+  onSelect: PropTypes.func,
   /** Function to remove the species from the selected list. */
-  remove: PropTypes.func,
+  onRemove: PropTypes.func,
+  /** True if the species has been selected.  Determines whether the **Add To List** or **Remove** button is displayed. */
+  selected: PropTypes.bool,
   /** Styling for the CropCard. */
   sx: PropTypes.object,
 };
