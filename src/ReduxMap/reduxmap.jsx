@@ -161,7 +161,7 @@ const ReduxMap = ({
     });
 
     if (hasSinglePolygon) {
-      newFeatures = [newFeatures[newFeatures.length - 1]];
+      if (newFeatures?.length > 1) newFeatures = [newFeatures[newFeatures.length - 1]];
     }
 
     setFeatures(newFeatures);
