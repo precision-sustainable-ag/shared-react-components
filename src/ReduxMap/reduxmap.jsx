@@ -86,6 +86,7 @@ const ReduxMap = ({
   showCursorCoords = false,
   hasDrawing = false,
   hasFreehand = false,
+  hasSinglePolygon = false,
   hasImport = false,
   hasElevation = false,
   hasHelp = false,
@@ -144,7 +145,7 @@ const ReduxMap = ({
    * @param {number} newLon - Optional new longitude to set
    */
   const updateFeatures = (newLat, newLon) => {
-    const newFeatures = [];
+    let newFeatures = [];
     const { sources } = map.current.getStyle();
     drawerRef?.current?.deleteAll?.();
 
@@ -158,6 +159,10 @@ const ReduxMap = ({
         );
       }
     });
+
+    if (hasSinglePolygon) {
+      newFeatures = [newFeatures[newFeatures.length - 1]];
+    }
 
     setFeatures(newFeatures);
     setPolygonArea(calcArea(newFeatures));
@@ -689,6 +694,10 @@ ReduxMap.propTypes = {
    * Enable freehand drawing.
    */
   hasFreehand: PropTypes.bool,
+  /**
+   * Enable drawing only one polygon.
+   */
+  hasSinglePolygon: PropTypes.bool,
   /**
    * Enable shapefile import.
    */
