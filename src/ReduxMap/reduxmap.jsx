@@ -79,6 +79,7 @@ const ReduxMap = ({
   hasMarkerPopup = false,
   hasMarkerMovable = false,
   markerOptions = {},
+  popupContent,
   hasNavigation = false,
   hasFullScreen = false,
   hasGeolocate = false,
@@ -474,6 +475,7 @@ const ReduxMap = ({
     hasMarkerMovable,
     isDrawActive,
     markerOptions,
+    popupContent,
   });
 
   useMapGeocoder({
@@ -666,6 +668,10 @@ ReduxMap.propTypes = {
    * Custom marker configuration.
    */
   markerOptions: PropTypes.object,
+  /**
+   * Custom HTML content for the popup.
+   */
+  popupContent: PropTypes.node,
   /**
    * Enable navigation controls.
    */
