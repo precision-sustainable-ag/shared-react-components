@@ -15,7 +15,7 @@ export const PSACropImage = ({
   credits,
   creditsSimple = credits,
   inDetails,
-  openDetails,
+  openDetails=() => {},
   isMobile,
 }) => {
   if (!thumbnail) return null;
@@ -32,11 +32,7 @@ export const PSACropImage = ({
           borderRadius: 2,
           border: '1px solid #ddd',
         }}
-        onClick={() => {
-          openDetails && window.innerWidth <= 600
-            ? openDetails(true)
-            : setOpen(true)
-        }}
+        onClick={() => openDetails(true)}
       >
         <Box
           component="img"
@@ -63,8 +59,9 @@ export const PSACropImage = ({
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
+              cursor: 'pointer',
             }}
-            title={credits}
+            title="Click to view full-size image and complete credits"
             onClick={() => setOpen(true)}
           >
             {creditsSimple}

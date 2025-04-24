@@ -2,3 +2,4 @@
 .env
 *storybook.log
 yarn.lock
+run.bat
