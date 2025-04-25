@@ -30,8 +30,8 @@ export const PSAAccordion = ({
 }) => {
   return (
     <Accordion
-      expanded={expanded}
-      onChange={onChange}
+      {...(expanded !== undefined ? { expanded } : {})}
+      {...(onChange !== undefined ? { onChange } : {})}
       sx={{
         boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
         "&.MuiAccordion-root": {
