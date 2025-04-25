@@ -11,7 +11,7 @@ import union from '@turf/union';
 import centroid from '@turf/centroid';
 import { polygon, featureCollection } from '@turf/helpers';
 
-import { addPolygonToMap, calcArea, fitMapToFeatures } from './utils/helpers';
+import { addPolygonToMap, calcArea, findState, fitMapToFeatures } from './utils/helpers';
 import useSafeSelector from "./hooks/useSafeSelector";
 
 import useMapMarker from "./hooks/useMapMarker";
@@ -79,6 +79,7 @@ const ReduxMap = ({
   hasMarkerPopup = false,
   hasMarkerMovable = false,
   markerOptions = {},
+  popupContent,
   hasNavigation = false,
   hasFullScreen = false,
   hasGeolocate = false,
@@ -86,6 +87,7 @@ const ReduxMap = ({
   showCursorCoords = false,
   hasDrawing = false,
   hasFreehand = false,
+  hasSinglePolygon = false,
   hasImport = false,
   hasElevation = false,
   hasHelp = false,
@@ -143,7 +145,7 @@ const ReduxMap = ({
    * @param {number} newLon - Optional new longitude to set
    */
   const updateFeatures = (newLat, newLon) => {
-    const newFeatures = [];
+    let newFeatures = [];
     const { sources } = map.current.getStyle();
     drawerRef?.current?.deleteAll?.();
 
@@ -157,6 +159,10 @@ const ReduxMap = ({
         );
       }
     });
+
+    if (hasSinglePolygon) {
+      if (newFeatures?.length > 1) newFeatures = [newFeatures[newFeatures.length - 1]];
+    }
 
     setFeatures(newFeatures);
     setPolygonArea(calcArea(newFeatures));
@@ -178,6 +184,7 @@ const ReduxMap = ({
       bounds,
       address: address ?? {},
       features,
+      state: findState(lon, lat),
     });
   }, [lat, lon, elevation, zoom, polygonArea, bounds, address, features]);
 
@@ -462,6 +469,7 @@ const ReduxMap = ({
     hasMarkerMovable,
     isDrawActive,
     markerOptions,
+    popupContent,
   });
 
   useMapGeocoder({
@@ -655,6 +663,10 @@ ReduxMap.propTypes = {
    */
   markerOptions: PropTypes.object,
   /**
+   * Custom HTML content for the popup.
+   */
+  popupContent: PropTypes.node,
+  /**
    * Enable navigation controls.
    */
   hasNavigation: PropTypes.bool,
@@ -682,6 +694,10 @@ ReduxMap.propTypes = {
    * Enable freehand drawing.
    */
   hasFreehand: PropTypes.bool,
+  /**
+   * Enable drawing only one polygon.
+   */
+  hasSinglePolygon: PropTypes.bool,
   /**
    * Enable shapefile import.
    */

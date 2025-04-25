@@ -16,6 +16,7 @@ import styles from "../assets/styles/map.module.scss";
  * @param {boolean} params.hasMarkerMovable - Whether the marker is draggable.
  * @param {boolean} params.isDrawActive - Whether the drawing mode is active.
  * @param {Object} [params.markerOptions={}] - Additional Mapbox marker options.
+ * @param {string|React.ReactNode} [params.popupContent] - Custom HTML content for the popup.
  */
 const useMapMarker = ({
   map,
@@ -28,14 +29,16 @@ const useMapMarker = ({
   hasMarkerMovable,
   isDrawActive,
   markerOptions,
+  popupContent
 }) => {
   const markerRef = useRef(null);
   const popupRef = useRef(null);
 
-  const popupContent = (plat, plon) => `
+  const generatePopupContent = (plat, plon) => `
     <div class="popup">
       <div>Click and drag</div>
       ${plat.toFixed(4)}, ${plon.toFixed(4)}
+      ${popupContent ? popupContent : ''}
     </div>
   `;
 
@@ -44,7 +47,7 @@ const useMapMarker = ({
 
     const handleDrag = (event) => {
       const { lat, lng } = event.target.getLngLat();
-      markerRef.current.getPopup()?.setHTML(popupContent(lat, lng));
+      markerRef.current.getPopup()?.setHTML(generatePopupContent(lat, lng));
     };
 
     const handleDragEnd = (event) => {
@@ -62,7 +65,7 @@ const useMapMarker = ({
       markerRef.current.off("drag", handleDrag);
       markerRef.current.off("dragend", handleDragEnd);
     };
-  }, [markerRef.current, hasMarkerMovable]);
+  }, [markerRef.current, hasMarkerMovable, popupContent]);
 
   useEffect(() => {
     if (!hasMarkerPopup || !markerRef.current) return;
@@ -90,7 +93,7 @@ const useMapMarker = ({
       element?.removeEventListener("mouseenter", handleMarkerEnter);
       element?.removeEventListener("mouseleave", handleMarkerLeave);
     };
-  }, [markerRef.current, hasMarkerPopup]);
+  }, [markerRef.current, hasMarkerPopup, popupContent]);
 
   useEffect(() => {
     if (markerRef.current) {
@@ -98,10 +101,10 @@ const useMapMarker = ({
       markerRef.current
         .setLngLat(lngLat)
         .getPopup()
-        ?.setHTML(popupContent(lat, lon));
+        ?.setHTML(generatePopupContent(lat, lon));
       map.current.setCenter(lngLat);
     }
-  }, [lon, lat]);
+  }, [lon, lat, popupContent]);
 
   useEffect(() => {
     if (!map.current || !hasMarker || isDrawActive) return;
@@ -109,7 +112,7 @@ const useMapMarker = ({
     const popup = new mapboxgl.Popup({
       offset: 25,
       closeButton: false,
-    })?.setHTML(popupContent(lat, lon));
+    })?.setHTML(generatePopupContent(lat, lon));
     popupRef.current = popup;
 
     // MARKER CONTROL
@@ -134,7 +137,7 @@ const useMapMarker = ({
         markerRef.current.remove();
       }
     };
-  }, [map.current, lat, lon, hasMarker, hasMarkerMovable, hasMarkerPopup, isDrawActive]);
+  }, [map.current, lat, lon, hasMarker, hasMarkerMovable, hasMarkerPopup, isDrawActive, popupContent]);
 };
 
 export default useMapMarker;
