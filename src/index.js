@@ -30,4 +30,4 @@ export { default as PSADataPoint } from "./DataPoint/index";
 export { default as PSASkipContent } from "./SkipContent/index";
 export { ReduxMap as PSAReduxMap } from "./ReduxMap/index";
 export { RegionSelectorMap as PSARegionSelectorMap } from "./ReduxMap/index";
-export { default as PSAListselector } from "./Listselector/index";
+export { default as PSATagitem } from "./Tagitem/index";

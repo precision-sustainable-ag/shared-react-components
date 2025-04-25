@@ -1,8 +1,8 @@
 import React from "react";
-import { PSAListselector } from "./listselector"; 
+import { PSATagitem } from "./tagitem"; 
 
 const meta = {
-  component: PSAListselector,
+  component: PSATagitem,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
@@ -11,7 +11,7 @@ const meta = {
 
 export default meta;
 
-export const DefaultListselector = { 
+export const DefaultTagitem = { 
   args: {
   },
 };
