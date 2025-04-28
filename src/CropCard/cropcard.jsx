@@ -6,7 +6,6 @@ import {
 } from '@mui/material';
 import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
-import { PSAInfoSheet } from '../InfoSheet';
 
 export const PSACropImage = ({
   alt = 'image',
@@ -209,6 +208,7 @@ export const PSACropCard = ({
   credits,
   creditsSimple,
   title,
+  onShowDetails,
   onSelect,
   onRemove,
   selected,
@@ -285,8 +285,6 @@ export const PSACropCard = ({
     </Box>
   );
 
-  const [open, setOpen] = useState(false);
-  
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   React.useEffect(() => {
@@ -336,7 +334,7 @@ export const PSACropCard = ({
                   portrait={portrait}
                   creditsSimple={creditsSimple}
                   credits={credits}
-                  openDetails={setOpen}
+                  openDetails={onShowDetails}
                   isMobile={isMobile}
                 />
               </CardContent>
@@ -354,7 +352,7 @@ export const PSACropCard = ({
                       rightIcon
                       textSx={{ fontSize: 12 }}
                       buttonSx={{ borderRadius: '5px' }}
-                      onClick={() => setOpen(true)}
+                      onClick={onShowDetails}
                     />
                   )
                 }
@@ -388,18 +386,6 @@ export const PSACropCard = ({
                   )
                 }
               </CardActions>
-              {
-                open
-                  ? (
-                    <PSAInfoSheet
-                      setOpen={setOpen}
-                      open={open}
-                      content={details}
-                      title={title}
-                    />
-                  )
-                  : null
-              }
             </>
           )
       }
