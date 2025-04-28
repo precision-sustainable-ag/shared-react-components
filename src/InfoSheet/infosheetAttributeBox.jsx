@@ -1,10 +1,10 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Typography, Grid } from "@mui/material";
 import PSATooltip from "../Tooltip";
 
 export const PSAInfoSheetAttributeBox = ({
   variant,
-  key,
   description,
   label,
   value,
@@ -20,7 +20,6 @@ export const PSAInfoSheetAttributeBox = ({
           item
           xs={12}
           md={6}
-          key={key}
           className="info-sheet-item"
           sx={{
             wordWrap: "break-word",
@@ -81,4 +80,31 @@ export const PSAInfoSheetAttributeBox = ({
         </Grid>
       );
   }
+};
+
+PSAInfoSheetAttributeBox.propTypes = {
+  /**
+   * State for controlling the open status of the Infosheet
+   */
+  variant: PropTypes.oneOf[("texts", "")],
+
+  /**
+   * Attribute description that will be shown in the tooltip
+   */
+  description: PropTypes.string,
+
+  /**
+   * Label of the attribute
+   */
+  label: PropTypes.node,
+
+  /**
+   * Value of the attribute
+   */
+  value: PropTypes.node,
+
+  /**
+   * Additional stylings that would be applied to the outer grid
+   */
+  sx: PropTypes.node,
 };

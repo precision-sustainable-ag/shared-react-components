@@ -19,7 +19,7 @@ export default {
 };
 
 // Default story
-export const DefaultInfosheet = () => {
+export const DefaultInfoSheet = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,7 +37,7 @@ export const DefaultInfosheet = () => {
   );
 };
 
-export const SampleSelectorInfosheet = () => {
+export const SampleSelectorInfoSheet = () => {
   const [open, setOpen] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(true);
 

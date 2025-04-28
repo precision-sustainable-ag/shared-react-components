@@ -60,7 +60,7 @@ PSAInfoSheet.propTypes = {
   /**
    * Component to render as the title of the Infosheet
    */
-  ttile: PropTypes.node,
+  title: PropTypes.node,
 
   /**
    * Component to render as the content of the Infosheet
