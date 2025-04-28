@@ -401,11 +401,19 @@ const ReduxMap = ({
       }
     };
 
-    const handleZoom = (event) => {
+    const debounce = (fn, delay) => {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn.apply(this, args), delay);
+      };
+    }
+
+    const handleZoom = debounce((event) => {
       if (!event.originalEvent) return;
       setZoom(map.current.getZoom());
       setBounds(false);
-    };
+    }, 250);
 
     const handleDoubleClick = (e) => {
       if (!hasMarker || newPolygon) return;
