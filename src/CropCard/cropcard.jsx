@@ -205,6 +205,7 @@ export const PSACropCard = ({
   onSelect,
   onRemove,
   selected,
+  mobile,
   sx,
   infoSheetProps = {},
   ...props
@@ -281,10 +282,10 @@ export const PSACropCard = ({
 
   const [open, setOpen] = useState(false);
   
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
+  const [isMobile, setIsMobile] = React.useState(mobile || window.innerWidth < 600);
 
   React.useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    const handleResize = () => setIsMobile(mobile || window.innerWidth < 600);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -420,6 +421,8 @@ PSACropCard.propTypes = {
   fullsize: PropTypes.string,
   /** Whether original image is taller than it is wide.  The resulting image will appear in landscape, and this will affect its CSS. */
   portrait: PropTypes.bool,
+  /** Whether the image should be forced to mobile-size */
+  mobile: PropTypes.bool,
   /** A link to an external site. Used in VegSpec. */
   externalLink: PropTypes.string,
   /** The text that should appear for the external link. */
@@ -438,4 +441,6 @@ PSACropCard.propTypes = {
   selected: PropTypes.bool,
   /** Styling for the CropCard. */
   sx: PropTypes.object,
+  /** Props for the InfoSheet */
+  infoSheetProps: PropTypes.object,
 };

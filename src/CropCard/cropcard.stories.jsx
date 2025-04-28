@@ -90,6 +90,12 @@ export const AppalachianBlazingStarPortraitExample = {
 export const AppalachianBlazingStarWithoutPortraitExample = {
   args: {
     ...sharedAppalachianBlazingStarArgs,
-    // no portrait
+  },
+};
+
+export const AppalachianBlazingStarMobile = {
+  args: {
+    ...sharedAppalachianBlazingStarArgs,
+    mobile: true,
   },
 };
