@@ -30,7 +30,7 @@ const sharedConeflowerArgs = {
       Native
     </div>
   ),
-  details: <Typography sx={{ padding: 2 }}>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>,
+  details: <Typography>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>,
   thumbnail: 'https://plants.sc.egov.usda.gov/ImageLibrary/standard/rapi_004_shp.jpg',
   fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/rapi_004_lhp.jpg',
   credits: '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
@@ -38,7 +38,7 @@ const sharedConeflowerArgs = {
   externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/RAPI',
   externalLinkText: 'RAPI',
   externalLinkTitle: 'Open in USDA Plants',
-  title: 'Title',
+  title: 'Pinnate prairie coneflower',
 };
 
 export const ConeflowerExample = { 
@@ -68,11 +68,7 @@ const sharedAppalachianBlazingStarArgs = {
       Native
     </div>
   ),
-  details: (
-    <Typography sx={{ padding: 2 }}>
-      Everything you ever wanted to know about Appalachian blazing star
-    </Typography>
-  ),
+  details: <Typography>Everything you ever wanted to know about Appalachian blazing star</Typography>,
   thumbnail: 'https://plants.sc.egov.usda.gov/ImageLibrary/standard/lisq2_001_svp.jpg',
   fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/lisq2_001_lvp.jpg',
   credits: '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
@@ -80,7 +76,7 @@ const sharedAppalachianBlazingStarArgs = {
   externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/LISQ2',
   externalLinkText: 'LISQ2',
   externalLinkTitle: 'Open in USDA Plants',
-  title: 'Title',
+  title: 'Appalachian blazing star',
   onSelect: () => alert('Adding to list'),
 };
 

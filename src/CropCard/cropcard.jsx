@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
+import { PSAInfoSheet } from '../InfoSheet';
 
 export const PSACropImage = ({
   alt = 'image',
@@ -387,40 +388,18 @@ export const PSACropCard = ({
                   )
                 }
               </CardActions>
-              <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      maxWidth: '90vw',
-                      width: '1200px',
-                    },
-                  },
-                }}
-              >
-                <DialogTitle sx={{ m: 0, p: 2 }}>
-                  <IconButton
-                    aria-label="close"
-                    onClick={() => setOpen(false)}
-                    sx={{
-                      position: 'absolute',
-                      right: 8,
-                      top: 8,
-                      color: (theme) => theme.palette.grey[500],
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-                  {title}
-                </DialogTitle>
-
-                {
-                  open
-                  ? details
+              {
+                open
+                  ? (
+                    <PSAInfoSheet
+                      setOpen={setOpen}
+                      open={open}
+                      content={details}
+                      title={title}
+                    />
+                  )
                   : null
-                }
-              </Dialog>
+              }
             </>
           )
       }
