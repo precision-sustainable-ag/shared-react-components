@@ -10,8 +10,7 @@ export default {
     layout: "centered",
     docs: {
       description: {
-        component: `This is a custom Infosheet dialog for displaying crop details information. 
-        The component is build on the basis of [MUI Dialog](https://mui.com/material-ui/react-dialog/)`,
+        component: `This is a custom attribute box for displaying crop details information in InfoSheet.`,
       },
     },
   },
