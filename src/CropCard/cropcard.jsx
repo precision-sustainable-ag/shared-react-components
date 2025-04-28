@@ -10,7 +10,7 @@ import { PSAInfoSheet } from '../InfoSheet';
 
 export const PSACropImage = ({
   alt = 'image',
-  thumbnail,
+  thumbnail = 'https://placehold.co/260x140?text=Placeholder',
   fullsize = thumbnail,
   portrait,
   credits,
@@ -19,7 +19,6 @@ export const PSACropImage = ({
   openDetails=() => {},
   isMobile,
 }) => {
-  if (!thumbnail) return null;
   const [open, setOpen] = useState(false);
   return (
     <Box>
@@ -135,13 +134,12 @@ const Content = ({
         background: 'white',
         minHeight: 50,
       }}
-      className="heading"
     >
       <Typography component="span">
         {species}
       </Typography>
 
-      <Typography sx={{ fontStyle: 'italic', fontSize: 12 }}>
+      <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>
         {scientific}
       </Typography>
 
@@ -155,24 +153,19 @@ const Content = ({
         )
       }
     </Box>
-    {
-      thumbnail
-      && (
-        <Box>
-          <PSACropImage
-            alt={scientific}
-            symbol={symbol}
-            thumbnail={thumbnail}
-            fullsize={fullsize}
-            creditsSimple={creditsSimple}
-            credits={credits}
-            portrait={portrait}
-            openDetails={openDetails}
-            isMobile={isMobile}
-          />
-        </Box>
-      )
-    }
+    <Box>
+      <PSACropImage
+        alt={scientific}
+        symbol={symbol}
+        thumbnail={thumbnail}
+        fullsize={fullsize}
+        creditsSimple={creditsSimple}
+        credits={credits}
+        portrait={portrait}
+        openDetails={openDetails}
+        isMobile={isMobile}
+      />
+    </Box>
     {
       content
       && (
@@ -213,6 +206,7 @@ export const PSACropCard = ({
   onRemove,
   selected,
   sx,
+  infoSheetProps = {},
   ...props
 }) => {
   const elementRef = useRef(null);
@@ -253,7 +247,7 @@ export const PSACropCard = ({
         gap: 0.3,
       }}
     >
-      <Typography sx={{ lineHeight: '1.2rem' }}>
+      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }}>
         {species}
       </Typography>
       {
@@ -396,6 +390,7 @@ export const PSACropCard = ({
                       open={open}
                       content={details}
                       title={title}
+                      {...infoSheetProps}
                     />
                   )
                   : null
