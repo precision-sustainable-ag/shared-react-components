@@ -1,14 +1,10 @@
 import React from 'react';
-import { Avatar, Chip } from '@mui/material';
-import { PSATooltip } from 'shared-react-components/src';
 import PropTypes from 'prop-types';
+import { Avatar, Chip } from '@mui/material';
+import { PSATooltip } from '../Tooltip/tooltip';
 
-/**
- * A tag component with optional avatar, tooltip, and click behavior
- * that supports a selection limit and analytics.
- */
 export function PSATagitem({
-  goaltTitle,
+  goalTitle,
   goalDescription,
   goal,
   id,
@@ -26,74 +22,71 @@ export function PSATagitem({
     }
 
     const goals = [...selectedGoalsRedux];
-
     if (!goals.includes(item.label)) {
       addSelectedGoals(item.label);
       pirschAnalytics('Goals', { meta: { goal: item.label } });
     } else {
-      const updatedGoals = goals.filter(g => g !== item.label);
-      updateSelectedGoal(updatedGoals);
+      updateSelectedGoal(goals.filter(g => g !== item.label));
     }
   };
 
+  const isSelected = selectedGoalsRedux.includes(goalTitle);
+  const isDisabled = selectedGoalsRedux.length >= 3 && !isSelected;
+  const avatarOrder = isSelected ? selectedGoalsRedux.indexOf(goalTitle) + 1 : null;
+
   return (
     <PSATooltip
-      enterDelay={1000}
-      enterNextDelay={1000}
       id={`tooltip-${id}`}
+      title={goalDescription}
       placement="top"
       arrow
-      title={goalDescription}
-      tooltipContent={(
-        <span>
-          <Chip
-            disabled={selectedGoalsRedux.length >= 3 && !selectedGoalsRedux.includes(goaltTitle)}
-            color={selectedGoalsRedux.includes(goaltTitle) ? 'primary' : 'secondary'}
-            avatar={
-              selectedGoalsRedux.includes(goaltTitle) ? (
-                <Avatar id={`avatar-${id}`}>{selectedGoalsRedux.indexOf(goaltTitle) + 1}</Avatar>
-              ) : null
-            }
-            label={goaltTitle}
-            onClick={() => updateSelectedGoals(goal)}
-            key={`chip-${id}`}
-            id={`chip-${id}`}
-            size="medium"
-            variant="outlined"
-            data-test={`goal-tag-${id}`}
-            sx={{
-              '&.MuiChip-root:focus': {
-                '&.Mui-disabled': {
-                  color: '#757575',
-                },
-              },
-              '&.Mui-disabled': {
-                opacity: 1,
-                color: '#757575',
-              },
-            }}
-          />
-        </span>
-      )}
+      enterDelay={1000}
+      enterNextDelay={1000}
+      tooltipContent={
+        <Chip
+          id={`chip-${id}`}
+          label={goalTitle}
+          disabled={isDisabled}
+          color={isSelected ? 'primary' : 'secondary'}
+          avatar={isSelected ? <Avatar id={`avatar-${id}`}>{avatarOrder}</Avatar> : undefined}
+          onClick={() => updateSelectedGoals(goal)}
+          size="medium"
+          variant="outlined"
+          data-test={`goal-tag-${id}`}
+          sx={{
+            '&.MuiChip-root.Mui-disabled': {
+              opacity: 1,
+              color: '#757575',
+            },
+          }}
+        />
+      }
     />
   );
 }
 
 PSATagitem.propTypes = {
-  goaltTitle: PropTypes.string.isRequired,
+  goalTitle: PropTypes.string.isRequired,
   goalDescription: PropTypes.string,
-  goal: PropTypes.object.isRequired,
+  goal: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    description: PropTypes.string,
+  }).isRequired,
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  selectedGoalsRedux: PropTypes.array.isRequired,
+  selectedGoalsRedux: PropTypes.arrayOf(PropTypes.string).isRequired,
   historyStateRedux: PropTypes.string.isRequired,
   pirschAnalytics: PropTypes.func.isRequired,
   addSelectedGoals: PropTypes.func.isRequired,
   updateSelectedGoal: PropTypes.func.isRequired,
   setHistoryState: PropTypes.func.isRequired,
   historyStateEnum: PropTypes.shape({
-    imported: PropTypes.string,
-    updated: PropTypes.string,
+    imported: PropTypes.string.isRequired,
+    updated: PropTypes.string.isRequired,
   }).isRequired,
+};
+
+PSATagitem.defaultProps = {
+  goalDescription: '',
 };
 
 export default PSATagitem;
