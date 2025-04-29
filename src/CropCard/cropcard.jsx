@@ -24,6 +24,7 @@ export const PSACropImage = ({
     <Box>
       <Box
         sx={{
+          boxSizing: 'border-box',
           position: 'relative',
           overflow: 'hidden',
           width: inDetails ? 260 : '100%',
@@ -122,50 +123,51 @@ export const PSACropImage = ({
   );
 }; // PSACropImage
 
+const Header = ({ species, scientific, cultivar, }) => (
+  <Box
+    sx={{
+      padding: '0.5rem 1rem',
+      background: 'white',
+      minHeight: 50,
+    }}
+  >
+    <Typography component="span">
+      {species}
+    </Typography>
+
+    <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>
+      {scientific}
+    </Typography>
+
+    {
+      cultivar
+      && (
+        <Typography sx={{ fontSize: 14 }} className="cultivar">
+          Cultivar:&nbsp;
+          {cultivar}
+        </Typography>
+      )
+    }
+  </Box>
+); // Header
+
 const Content = ({
-  species, scientific, content, cultivar, symbol,
+  scientific, content, symbol,
   thumbnail, fullsize = thumbnail, portrait,
   credits, creditsSimple = credits, openDetails, isMobile,
 }) => (
   <Box role="presentation" sx={{ fontFamily: 'IBM Plex Sans' }}>
-    <Box
-      sx={{
-        padding: '0.5rem 1rem',
-        background: 'white',
-        minHeight: 50,
-      }}
-    >
-      <Typography component="span">
-        {species}
-      </Typography>
-
-      <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>
-        {scientific}
-      </Typography>
-
-      {
-        cultivar
-        && (
-          <Typography sx={{ fontSize: 14 }} className="cultivar">
-            Cultivar:&nbsp;
-            {cultivar}
-          </Typography>
-        )
-      }
-    </Box>
-    <Box>
-      <PSACropImage
-        alt={scientific}
-        symbol={symbol}
-        thumbnail={thumbnail}
-        fullsize={fullsize}
-        creditsSimple={creditsSimple}
-        credits={credits}
-        portrait={portrait}
-        openDetails={openDetails}
-        isMobile={isMobile}
-      />
-    </Box>
+    <PSACropImage
+      alt={scientific}
+      symbol={symbol}
+      thumbnail={thumbnail}
+      fullsize={fullsize}
+      creditsSimple={creditsSimple}
+      credits={credits}
+      portrait={portrait}
+      openDetails={openDetails}
+      isMobile={isMobile}
+    />
     {
       content
       && (
@@ -205,7 +207,6 @@ export const PSACropCard = ({
   onSelect,
   onRemove,
   selected,
-  mobile,
   sx,
   infoSheetProps = {},
   ...props
@@ -282,10 +283,10 @@ export const PSACropCard = ({
 
   const [open, setOpen] = useState(false);
   
-  const [isMobile, setIsMobile] = React.useState(mobile || window.innerWidth < 600);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   React.useEffect(() => {
-    const handleResize = () => setIsMobile(mobile || window.innerWidth < 600);
+    const handleResize = () => setIsMobile(window.innerWidth < 600);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -297,7 +298,6 @@ export const PSACropCard = ({
           borderRadius: '17px',
           width: isMobile ? 160 : 260,
           height: '100%',
-          minHeight: 300,
           backgroundColor: '#f5f5f5',
           display: 'flex',
           flexDirection: 'column',
@@ -320,82 +320,85 @@ export const PSACropCard = ({
           )
           : (
             <>
-              <CardContent sx={{ padding: 0 }}>
-                <Content
-                  species={speciesBox}
-                  scientific={scientific}
-                  content={content}
-                  cultivar={cultivar}
-                  thumbnail={isIntersecting && thumbnail}
-                  fullsize={isIntersecting && fullsize}
-                  portrait={portrait}
-                  creditsSimple={creditsSimple}
-                  credits={credits}
-                  openDetails={setOpen}
-                  isMobile={isMobile}
-                />
-              </CardContent>
-              <CardActions sx={{
-                justifyContent: isMobile ? 'center' : 'space-between',
-                marginTop: 'auto'
-              }}>
-                {
-                  details
-                  && !isMobile
-                  && (
-                    <PSAFigmaButton
-                      text="DETAILS"
-                      icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
-                      rightIcon
-                      textSx={{ fontSize: 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={() => setOpen(true)}
-                    />
-                  )
-                }
+              <Header species={speciesBox} scientific={scientific} cultivar={cultivar}/>
+              <Box sx={{ marginTop: 'auto' }}>
+                <CardContent sx={{ padding: 0 }}>
+                  <Content
+                    scientific={scientific}
+                    content={content}
+                    thumbnail={isIntersecting && thumbnail}
+                    fullsize={isIntersecting && fullsize}
+                    portrait={portrait}
+                    creditsSimple={creditsSimple}
+                    credits={credits}
+                    openDetails={setOpen}
+                    isMobile={isMobile}
+                  />
+                </CardContent>
+                <CardActions
+                  sx={{
+                    justifyContent: isMobile ? 'center' : 'space-between',
+                    marginTop: 'auto'
+                  }}
+                >
+                  {
+                    details
+                    && !isMobile
+                    && (
+                      <PSAFigmaButton
+                        text="DETAILS"
+                        icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
+                        rightIcon
+                        textSx={{ fontSize: 12 }}
+                        buttonSx={{ borderRadius: '5px' }}
+                        onClick={() => setOpen(true)}
+                      />
+                    )
+                  }
 
+                  {
+                    !selected && onSelect
+                    && (
+                      <PSAFigmaButton
+                        text="ADD TO LIST"
+                        variant="color"
+                        icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
+                        rightIcon
+                        textSx={{ fontSize: isMobile ? 16 : 12 }}
+                        buttonSx={{ borderRadius: '5px' }}
+                        onClick={onSelect}
+                      />
+                    )
+                  }
+                  {
+                    selected && onRemove
+                    && (
+                      <PSAFigmaButton
+                        text="REMOVE"
+                        variant="standard"
+                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
+                        rightIcon
+                        textSx={{ fontSize: isMobile ? 16 : 12 }}
+                        buttonSx={{ borderRadius: '5px' }}
+                        onClick={onRemove}
+                      />
+                    )
+                  }
+                </CardActions>
                 {
-                  !selected && onSelect
-                  && (
-                    <PSAFigmaButton
-                      text="ADD TO LIST"
-                      variant="color"
-                      icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
-                      rightIcon
-                      textSx={{ fontSize: isMobile ? 16 : 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={onSelect}
-                    />
-                  )
+                  open
+                    ? (
+                      <PSAInfoSheet
+                        setOpen={setOpen}
+                        open={open}
+                        content={details}
+                        title={title}
+                        {...infoSheetProps}
+                      />
+                    )
+                    : null
                 }
-                {
-                  selected && onRemove
-                  && (
-                    <PSAFigmaButton
-                      text="REMOVE"
-                      variant="standard"
-                      icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
-                      rightIcon
-                      textSx={{ fontSize: isMobile ? 16 : 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={onRemove}
-                    />
-                  )
-                }
-              </CardActions>
-              {
-                open
-                  ? (
-                    <PSAInfoSheet
-                      setOpen={setOpen}
-                      open={open}
-                      content={details}
-                      title={title}
-                      {...infoSheetProps}
-                    />
-                  )
-                  : null
-              }
+              </Box>
             </>
           )
       }
@@ -421,8 +424,6 @@ PSACropCard.propTypes = {
   fullsize: PropTypes.string,
   /** Whether original image is taller than it is wide.  The resulting image will appear in landscape, and this will affect its CSS. */
   portrait: PropTypes.bool,
-  /** Whether the image should be forced to mobile-size */
-  mobile: PropTypes.bool,
   /** A link to an external site. Used in VegSpec. */
   externalLink: PropTypes.string,
   /** The text that should appear for the external link. */

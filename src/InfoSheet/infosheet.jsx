@@ -23,6 +23,7 @@ export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
         id="infosheet-title"
         sx={{
           backgroundColor: "#2D7B7B",
+          color: "white",
           display: "flex",
           justifyContent: "space-between",
           padding: "8px",
