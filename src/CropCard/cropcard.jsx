@@ -381,11 +381,17 @@ export const PSACropCard = ({
                     && (
                       <PSAFigmaButton
                         text="REMOVE"
-                        variant="standard"
-                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
+                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'white' }} />}
                         rightIcon
-                        textSx={{ fontSize: isMobile ? 16 : 12 }}
-                        buttonSx={{ borderRadius: '5px' }}
+                        textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+                        buttonSx={{
+                          borderRadius: '5px',
+                          background: '#565656',
+                          color: 'white',
+                          '&:hover': {
+                            background: '#999',
+                          },
+                        }}
                         onClick={onRemove}
                       />
                     )
