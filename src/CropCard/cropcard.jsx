@@ -273,9 +273,12 @@ export const PSACropCard = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.25rem',
+              background: '#416782',
+              color: 'white',
+              padding: '0.1rem 0.75rem',
+              borderRadius: 20,
               '&:hover': {
                 textDecoration: 'underline',
-                color: '#1976d2',
               },
             }}
           >
