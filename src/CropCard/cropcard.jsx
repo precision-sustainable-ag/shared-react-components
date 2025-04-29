@@ -179,7 +179,7 @@ const Content = ({
       && (
         <Box
           sx={{
-            padding: '0.5rem 1rem',
+            padding: '0.5rem 0rem',
             background: 'white',
             fontSize: 12,
           }}
