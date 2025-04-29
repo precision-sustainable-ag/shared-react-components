@@ -255,7 +255,7 @@ export const PSACropCard = ({
         gap: 0.3,
       }}
     >
-      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }}>
+      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
         {species}
       </Typography>
       {
