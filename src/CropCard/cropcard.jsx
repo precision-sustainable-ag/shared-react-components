@@ -48,6 +48,9 @@ export const PSACropImage = ({
           src={thumbnail}
           alt={alt}
           title={isMobile ? 'Click for details' : 'Click to view full size'}
+          onError={(e) => {
+            e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
+          }}
         />
       </Box>
       {
@@ -108,6 +111,9 @@ export const PSACropImage = ({
             border: '25px solid white',
             borderTop: '10px solid white',
             borderBottom: 'none',
+          }}
+          onError={(e) => {
+            e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
           }}
         />
         {
