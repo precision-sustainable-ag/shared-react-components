@@ -44,7 +44,7 @@ export const PSAInfoSheetAttributeBox = ({
             <Grid
               item
               xs={isText ? 12 : 6}
-              className="attribute-label"
+              className={`attribute-label${isText ? "-text" : ""}`}
               sx={{
                 textAlign: isText ? "center" : "inherit",
               }}
@@ -66,7 +66,11 @@ export const PSAInfoSheetAttributeBox = ({
               />
             </Grid>
 
-            <Grid item xs={isText ? 12 : 6} className="attribute-value">
+            <Grid
+              item
+              xs={isText ? 12 : 6}
+              className={`attribute-value${isText ? "-text" : ""}`}
+            >
               <Typography
                 sx={{
                   display: "block",
