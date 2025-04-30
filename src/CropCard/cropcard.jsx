@@ -10,7 +10,7 @@ import { PSAInfoSheet } from '../InfoSheet';
 
 export const PSACropImage = ({
   alt = 'image',
-  thumbnail = 'https://placehold.co/260x140?text=Placeholder',
+  thumbnail,
   fullsize = thumbnail,
   portrait,
   credits,
@@ -22,37 +22,42 @@ export const PSACropImage = ({
   const [open, setOpen] = useState(false);
   return (
     <Box>
-      <Box
-        sx={{
-          boxSizing: 'border-box',
-          position: 'relative',
-          overflow: 'hidden',
-          width: inDetails ? 260 : '100%',
-          aspectRatio: 260 / 140,
-          cursor: 'pointer',
-          borderRadius: 2,
-          border: '1px solid #ddd',
-        }}
-        onClick={() => openDetails(true)}
-      >
-        <Box
-          component="img"
-          sx={{
-            position: 'absolute',
-            top: portrait ? 0 : '50%',
-            left: '50%',
-            width: '100%',
-            transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
-            objectFit: 'cover',
-          }}
-          src={thumbnail}
-          alt={alt}
-          title={isMobile ? 'Click for details' : 'Click to view full size'}
-          onError={(e) => {
-            e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
-          }}
-        />
-      </Box>
+      {
+        thumbnail
+        && (
+          <Box
+            sx={{
+              boxSizing: 'border-box',
+              position: 'relative',
+              overflow: 'hidden',
+              width: inDetails ? 260 : '100%',
+              aspectRatio: 260 / 140,
+              cursor: 'pointer',
+              borderRadius: 2,
+              border: '1px solid #ddd',
+            }}
+            onClick={() => openDetails(true)}
+          >
+            <Box
+              component="img"
+              sx={{
+                position: 'absolute',
+                top: portrait ? 0 : '50%',
+                left: '50%',
+                width: '100%',
+                transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
+                objectFit: 'cover',
+              }}
+              src={thumbnail}
+              alt={alt}
+              title={isMobile ? 'Click for details' : 'Click to view full size'}
+              onError={(e) => {
+                e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
+              }}
+            />
+          </Box>
+        )
+      }
       {
         creditsSimple
         && (
