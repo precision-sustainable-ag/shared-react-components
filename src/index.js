@@ -28,7 +28,7 @@ export { default as PSABarChart } from "./BarChart/index";
 export { default as PSALineChart } from "./LineChart/index";
 export { default as PSADataPoint } from "./DataPoint/index";
 export { default as PSASkipContent } from "./SkipContent/index";
-export { PSACropCard, PSACropImage } from './CropCard';
+export { PSACropCard, PSACropImage } from "./CropCard";
 export { ReduxMap as PSAReduxMap } from "./ReduxMap/index";
 export { RegionSelectorMap as PSARegionSelectorMap } from "./ReduxMap/index";
-
+export { default as PSATagitem } from "./Tagitem/index";
