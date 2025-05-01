@@ -1,6 +1,6 @@
 import React from "react";
-import { action } from "@storybook/addon-actions";
-import { PSATagitem } from "./tagitem";
+import { PSATagItem } from "./tagitem";
+import { Avatar } from "@mui/material";
 
 const sampleGoal = {
   label: "Cover Crop",
@@ -8,21 +8,17 @@ const sampleGoal = {
 };
 
 const commonArgs = {
-  id: 1,
-  goal: sampleGoal,
-  goalTitle: sampleGoal.label,
-  goalDescription: sampleGoal.description,
-  historyStateEnum: { imported: "imported", updated: "updated" },
-  historyStateRedux: "imported",
-  pirschAnalytics: action("pirschAnalytics"),
-  addSelectedGoals: action("addSelectedGoals"),
-  updateSelectedGoal: action("updateSelectedGoal"),
-  setHistoryState: action("setHistoryState"),
+  chipId: 1,
+  tooltipText: sampleGoal.description,
+  label: sampleGoal.label,
+  disabled: false,
+  color: "primary",
+  onClick: () => {},
 };
 
 export default {
-  title: "Components/PSATagitem",
-  component: PSATagitem,
+  title: "Inputs/TagItem",
+  component: PSATagItem,
   tags: ["autodocs"],
   parameters: { layout: "centered" },
 };
@@ -30,32 +26,19 @@ export default {
 export const Default = {
   args: {
     ...commonArgs,
-    selectedGoalsRedux: [],
   },
 };
 
-export const Selected = {
+export const Numbered = {
   args: {
     ...commonArgs,
-    selectedGoalsRedux: ["Cover Crop"],
+    avatar: <Avatar>1</Avatar>,
   },
 };
 
 export const Disabled = {
   args: {
-    id: 2,
-    goal: {
-      label: "Soil Health",
-      description: "Improve soil structure and nutrient content.",
-    },
-    goalTitle: "Soil Health",
-    goalDescription: "Improve soil structure and nutrient content.",
-    historyStateEnum: { imported: "imported", updated: "updated" },
-    historyStateRedux: "imported",
-    pirschAnalytics: action("pirschAnalytics"),
-    addSelectedGoals: action("addSelectedGoals"),
-    updateSelectedGoal: action("updateSelectedGoal"),
-    setHistoryState: action("setHistoryState"),
-    selectedGoalsRedux: ["A", "B", "C"],  // length ≥3 → disabled
+    ...commonArgs,
+    disabled: true,
   },
 };

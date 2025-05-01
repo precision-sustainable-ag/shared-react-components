@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Chip } from '@mui/material';
-import { PSATooltip } from '../Tooltip/tooltip';
+import React from "react";
+import PropTypes from "prop-types";
+import { Chip } from "@mui/material";
+import { PSATooltip } from "../Tooltip/tooltip";
 
-export function TagItem({
+export function PSATagItem({
   chipId,
   label,
   tooltipText,
@@ -11,6 +11,7 @@ export function TagItem({
   color,
   avatarContent,
   onClick,
+  ...props
 }) {
   return (
     <PSATooltip
@@ -31,42 +32,48 @@ export function TagItem({
           onClick={onClick}
           size="medium"
           variant="outlined"
-          data-test={`tag-item-${chipId}`}
+          data-test={`goal-tag-${chipId}`}
           sx={{
-            '&.MuiChip-root.Mui-disabled': {
+            "&.MuiChip-root:focus": {
+              "&.Mui-disabled": {
+                color: "#757575",
+              },
+            },
+            "&.Mui-disabled": {
               opacity: 1,
-              color: '#757575',
+              color: "#757575",
             },
           }}
+          {...props}
         />
       }
     />
   );
 }
 
-TagItem.propTypes = {
+PSATagItem.propTypes = {
   /** unique id for DOM/testing hooks */
-  chipId:       PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  chipId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   /** text shown in the chip */
-  label:        PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   /** tooltip content */
-  tooltipText:  PropTypes.string,
+  tooltipText: PropTypes.string,
   /** disable the chip */
-  disabled:     PropTypes.bool,
+  disabled: PropTypes.bool,
   /** MUI chip color: "primary" or "secondary" */
-  color:        PropTypes.oneOf(['primary', 'secondary']),
+  color: PropTypes.oneOf(["primary", "secondary"]),
   /** optional content for the Avatar slot */
   avatarContent: PropTypes.node,
   /** click handler */
-  onClick:      PropTypes.func,
+  onClick: PropTypes.func,
 };
 
-TagItem.defaultProps = {
-  tooltipText:  '',
-  disabled:     false,
-  color:        'secondary',
+PSATagItem.defaultProps = {
+  tooltipText: "",
+  disabled: false,
+  color: "secondary",
   avatarContent: null,
-  onClick:      () => {},
+  onClick: () => {},
 };
 
-export default TagItem;
+export default PSATagItem;
