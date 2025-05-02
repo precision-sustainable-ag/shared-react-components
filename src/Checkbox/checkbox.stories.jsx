@@ -33,13 +33,12 @@ export const CheckboxGroup = () => {
   return (
     <div>
       {options.map((option) => (
-        <div
+        <label
           key={option.value}
           style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
         >
           <PSACheckbox
             checked={comparisonKeys.includes(option.value)}
-            name={option.label}
             color="primary"
             style={{ marginRight: "8px" }}
             dataTest={`${option.value}-checkbox`}
@@ -56,8 +55,8 @@ export const CheckboxGroup = () => {
               handleUpdateComparisonKeys(comparisonKeysCopy);
             }}
           />
-          <label htmlFor={option.label}>{option.label}</label>
-        </div>
+          {option.label}
+        </label>
       ))}
     </div>
   );
