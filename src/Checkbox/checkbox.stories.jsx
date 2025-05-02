@@ -31,34 +31,31 @@ export const CheckboxGroup = () => {
   ];
 
   return (
-    <div>
-      {options.map((option) => (
-        <div
-          key={option.value}
-          style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
-        >
-          <PSACheckbox
-            checked={comparisonKeys.includes(option.value)}
-            name={option.label}
-            color="primary"
-            style={{ marginRight: "8px" }}
-            dataTest={`${option.value}-checkbox`}
-            onChange={() => {
-              const comparisonKeysCopy = [...comparisonKeys];
-              const indexOfValue = comparisonKeysCopy.indexOf(option.value);
+    options.map((option) => (
+      <label
+        key={option.value}
+        style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}
+      >
+        <PSACheckbox
+          checked={comparisonKeys.includes(option.value)}
+          color="primary"
+          style={{ marginRight: "8px" }}
+          dataTest={`${option.value}-checkbox`}
+          onChange={() => {
+            const comparisonKeysCopy = [...comparisonKeys];
+            const indexOfValue = comparisonKeysCopy.indexOf(option.value);
 
-              if (indexOfValue === -1) {
-                comparisonKeysCopy.push(option.value);
-              } else {
-                comparisonKeysCopy.splice(indexOfValue, 1);
-              }
+            if (indexOfValue === -1) {
+              comparisonKeysCopy.push(option.value);
+            } else {
+              comparisonKeysCopy.splice(indexOfValue, 1);
+            }
 
-              handleUpdateComparisonKeys(comparisonKeysCopy);
-            }}
-          />
-          <label htmlFor={option.label}>{option.label}</label>
-        </div>
-      ))}
-    </div>
+            handleUpdateComparisonKeys(comparisonKeysCopy);
+          }}
+        />
+        {option.label}
+      </label>
+    ))
   );
 };
