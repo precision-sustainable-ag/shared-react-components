@@ -32,3 +32,4 @@ export { PSACropCard, PSACropImage } from "./CropCard";
 export { ReduxMap as PSAReduxMap } from "./ReduxMap/index";
 export { RegionSelectorMap as PSARegionSelectorMap } from "./ReduxMap/index";
 export { PSAInfoSheet, PSAInfoSheetAttributeBox } from "./InfoSheet/index";
+export { default as PSATagItem } from "./Tagitem/index";
