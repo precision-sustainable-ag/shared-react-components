@@ -159,7 +159,7 @@ PSAFigmaButton.propTypes = {
   /**
    * Props for rendering texts in the button.
    */
-  text: PropTypes.string,
+  text: PropTypes.node,
   /**
    * Props for disabling the button.
    */

@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
 import PSAFigmaButton from '../FigmaButton';
+import { PSAInfoSheet } from '../InfoSheet';
 
 export const PSACropImage = ({
   alt = 'image',
@@ -18,37 +19,45 @@ export const PSACropImage = ({
   openDetails=() => {},
   isMobile,
 }) => {
-  if (!thumbnail) return null;
   const [open, setOpen] = useState(false);
   return (
     <Box>
-      <Box
-        sx={{
-          position: 'relative',
-          overflow: 'hidden',
-          width: inDetails ? 260 : '100%',
-          aspectRatio: 260 / 140,
-          cursor: 'pointer',
-          borderRadius: 2,
-          border: '1px solid #ddd',
-        }}
-        onClick={() => openDetails(true)}
-      >
-        <Box
-          component="img"
-          sx={{
-            position: 'absolute',
-            top: portrait ? 0 : '50%',
-            left: '50%',
-            width: '100%',
-            transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
-            objectFit: 'cover',
-          }}
-          src={thumbnail}
-          alt={alt}
-          title={isMobile ? 'Click for details' : 'Click to view full size'}
-        />
-      </Box>
+      {
+        thumbnail
+        && (
+          <Box
+            sx={{
+              boxSizing: 'border-box',
+              position: 'relative',
+              overflow: 'hidden',
+              width: inDetails ? 260 : '100%',
+              aspectRatio: 260 / 140,
+              cursor: 'pointer',
+              borderRadius: 2,
+              border: '1px solid #ddd',
+            }}
+            onClick={() => openDetails(true)}
+          >
+            <Box
+              component="img"
+              sx={{
+                position: 'absolute',
+                top: portrait ? 0 : '50%',
+                left: '50%',
+                width: '100%',
+                transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
+                objectFit: 'cover',
+              }}
+              src={thumbnail}
+              alt={alt}
+              title={isMobile ? 'Click for details' : 'Click to view full size'}
+              onError={(e) => {
+                e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
+              }}
+            />
+          </Box>
+        )
+      }
       {
         creditsSimple
         && (
@@ -108,6 +117,9 @@ export const PSACropImage = ({
             borderTop: '10px solid white',
             borderBottom: 'none',
           }}
+          onError={(e) => {
+            e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
+          }}
         />
         {
           credits
@@ -122,62 +134,57 @@ export const PSACropImage = ({
   );
 }; // PSACropImage
 
+const Header = ({ species, scientific, cultivar, }) => (
+  <Box
+    sx={{
+      padding: '0.5rem 1rem',
+      background: 'white',
+      minHeight: 50,
+    }}
+  >
+    <Typography component="span">
+      {species}
+    </Typography>
+
+    <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>
+      {scientific}
+    </Typography>
+
+    {
+      cultivar
+      && (
+        <Typography sx={{ fontSize: 14 }} className="cultivar">
+          Cultivar:&nbsp;
+          {cultivar}
+        </Typography>
+      )
+    }
+  </Box>
+); // Header
+
 const Content = ({
-  species, scientific, content, cultivar, symbol,
+  scientific, content, symbol,
   thumbnail, fullsize = thumbnail, portrait,
   credits, creditsSimple = credits, openDetails, isMobile,
 }) => (
   <Box role="presentation" sx={{ fontFamily: 'IBM Plex Sans' }}>
-    <Box
-      sx={{
-        padding: '0.5rem 1rem',
-        background: 'white',
-        minHeight: 50,
-      }}
-      className="heading"
-    >
-      <Typography component="span">
-        {species}
-      </Typography>
-
-      <Typography sx={{ fontStyle: 'italic', fontSize: 12 }}>
-        {scientific}
-      </Typography>
-
-      {
-        cultivar
-        && (
-          <Typography sx={{ fontSize: 14 }} className="cultivar">
-            Cultivar:&nbsp;
-            {cultivar}
-          </Typography>
-        )
-      }
-    </Box>
-    {
-      thumbnail
-      && (
-        <Box>
-          <PSACropImage
-            alt={scientific}
-            symbol={symbol}
-            thumbnail={thumbnail}
-            fullsize={fullsize}
-            creditsSimple={creditsSimple}
-            credits={credits}
-            portrait={portrait}
-            openDetails={openDetails}
-            isMobile={isMobile}
-          />
-        </Box>
-      )
-    }
+    <PSACropImage
+      alt={scientific}
+      symbol={symbol}
+      thumbnail={thumbnail}
+      fullsize={fullsize}
+      creditsSimple={creditsSimple}
+      credits={credits}
+      portrait={portrait}
+      openDetails={openDetails}
+      isMobile={isMobile}
+    />
     {
       content
       && (
         <Box
           sx={{
-            padding: '0.5rem 1rem',
+            padding: '0.5rem 0rem',
             background: 'white',
             fontSize: 12,
           }}
@@ -212,6 +219,7 @@ export const PSACropCard = ({
   onRemove,
   selected,
   sx,
+  infoSheetProps = {},
   ...props
 }) => {
   const elementRef = useRef(null);
@@ -252,7 +260,7 @@ export const PSACropCard = ({
         gap: 0.3,
       }}
     >
-      <Typography sx={{ lineHeight: '1.2rem' }}>
+      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
         {species}
       </Typography>
       {
@@ -270,9 +278,12 @@ export const PSACropCard = ({
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.25rem',
+              background: '#416782',
+              color: 'white',
+              padding: '0.1rem 0.75rem',
+              borderRadius: 20,
               '&:hover': {
                 textDecoration: 'underline',
-                color: '#1976d2',
               },
             }}
           >
@@ -301,7 +312,6 @@ export const PSACropCard = ({
           borderRadius: '17px',
           width: isMobile ? 160 : 260,
           height: '100%',
-          minHeight: 300,
           backgroundColor: '#f5f5f5',
           display: 'flex',
           flexDirection: 'column',
@@ -324,103 +334,91 @@ export const PSACropCard = ({
           )
           : (
             <>
-              <CardContent sx={{ padding: 0 }}>
-                <Content
-                  species={speciesBox}
-                  scientific={scientific}
-                  content={content}
-                  cultivar={cultivar}
-                  thumbnail={isIntersecting && thumbnail}
-                  fullsize={isIntersecting && fullsize}
-                  portrait={portrait}
-                  creditsSimple={creditsSimple}
-                  credits={credits}
-                  openDetails={setOpen}
-                  isMobile={isMobile}
-                />
-              </CardContent>
-              <CardActions sx={{
-                justifyContent: isMobile ? 'center' : 'space-between',
-                marginTop: 'auto'
-              }}>
-                {
-                  details
-                  && !isMobile
-                  && (
-                    <PSAFigmaButton
-                      text="DETAILS"
-                      icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
-                      rightIcon
-                      textSx={{ fontSize: 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={() => setOpen(true)}
-                    />
-                  )
-                }
+              <Header species={speciesBox} scientific={scientific} cultivar={cultivar}/>
+              <Box sx={{ marginTop: 'auto' }}>
+                <CardContent sx={{ padding: 0 }}>
+                  <Content
+                    scientific={scientific}
+                    content={content}
+                    thumbnail={isIntersecting && thumbnail}
+                    fullsize={isIntersecting && fullsize}
+                    portrait={portrait}
+                    creditsSimple={creditsSimple}
+                    credits={credits}
+                    openDetails={setOpen}
+                    isMobile={isMobile}
+                  />
+                </CardContent>
+                <CardActions
+                  sx={{
+                    justifyContent: isMobile ? 'center' : 'space-between',
+                    marginTop: 'auto'
+                  }}
+                >
+                  {
+                    details
+                    && !isMobile
+                    && (
+                      <PSAFigmaButton
+                        text="DETAILS"
+                        icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
+                        rightIcon
+                        textSx={{ fontSize: 12 }}
+                        buttonSx={{ borderRadius: '5px' }}
+                        onClick={() => setOpen(true)}
+                      />
+                    )
+                  }
 
-                {
-                  !selected && onSelect
-                  && (
-                    <PSAFigmaButton
-                      text="ADD TO LIST"
-                      variant="color"
-                      icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
-                      rightIcon
-                      textSx={{ fontSize: isMobile ? 16 : 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={onSelect}
-                    />
-                  )
-                }
-                {
-                  selected && onRemove
-                  && (
-                    <PSAFigmaButton
-                      text="REMOVE"
-                      variant="standard"
-                      icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'red' }} />}
-                      rightIcon
-                      textSx={{ fontSize: isMobile ? 16 : 12 }}
-                      buttonSx={{ borderRadius: '5px' }}
-                      onClick={onRemove}
-                    />
-                  )
-                }
-              </CardActions>
-              <Dialog
-                open={open}
-                onClose={() => setOpen(false)}
-                slotProps={{
-                  paper: {
-                    sx: {
-                      maxWidth: '90vw',
-                      width: '1200px',
-                    },
-                  },
-                }}
-              >
-                <DialogTitle sx={{ m: 0, p: 2 }}>
-                  <IconButton
-                    aria-label="close"
-                    onClick={() => setOpen(false)}
-                    sx={{
-                      position: 'absolute',
-                      right: 8,
-                      top: 8,
-                      color: (theme) => theme.palette.grey[500],
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-                  {title}
-                </DialogTitle>
-
+                  {
+                    !selected && onSelect
+                    && (
+                      <PSAFigmaButton
+                        text="ADD TO LIST"
+                        variant="color"
+                        icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
+                        rightIcon
+                        textSx={{ fontSize: isMobile ? 16 : 12 }}
+                        buttonSx={{ borderRadius: '5px' }}
+                        onClick={onSelect}
+                      />
+                    )
+                  }
+                  {
+                    selected && onRemove
+                    && (
+                      <PSAFigmaButton
+                        text="REMOVE"
+                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'white' }} />}
+                        rightIcon
+                        textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+                        buttonSx={{
+                          borderRadius: '5px',
+                          background: '#565656',
+                          color: 'white',
+                          '&:hover': {
+                            background: '#999',
+                          },
+                        }}
+                        onClick={onRemove}
+                      />
+                    )
+                  }
+                </CardActions>
                 {
                   open
-                  ? details
-                  : null
+                    ? (
+                      <PSAInfoSheet
+                        setOpen={setOpen}
+                        open={open}
+                        content={details}
+                        title={title}
+                        {...infoSheetProps}
+                      />
+                    )
+                    : null
                 }
-              </Dialog>
+              </Box>
             </>
           )
       }
@@ -464,4 +462,6 @@ PSACropCard.propTypes = {
   selected: PropTypes.bool,
   /** Styling for the CropCard. */
   sx: PropTypes.object,
+  /** Props for the InfoSheet */
+  infoSheetProps: PropTypes.object,
 };
