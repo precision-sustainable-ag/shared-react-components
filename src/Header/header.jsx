@@ -118,7 +118,12 @@ export function PSAHeader({
             <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
               {navContent?.map((item, i) => (
                 <MenuItem
-                  onClick={item.onClick}
+                  onClick={() => {
+                    if (item.type === "button") {
+                      item.onClick();
+                      setAnchor(null);
+                    }
+                  }}
                   key={i}
                   data-test={`navbar-${item.text}`}
                 >
