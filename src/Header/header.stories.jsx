@@ -78,6 +78,7 @@ export const DefaultHeader = {
     subtitle: "",
     council: "",
     onLogoClick: fn(),
+    logoTitle: "Reset and back to home page",
     navContent: navContent,
   },
 };
@@ -88,6 +89,7 @@ export const HeaderWithCustomNavComponent = {
     subtitle: "",
     council: "",
     onLogoClick: fn(),
+    logoTitle: "Reset and back to home page",
     navContent: [...navContent, ...customNavComponent],
   },
 };

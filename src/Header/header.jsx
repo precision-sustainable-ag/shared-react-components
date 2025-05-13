@@ -18,6 +18,7 @@ export function PSAHeader({
   subtitle,
   council,
   onLogoClick,
+  logoTitle,
   navContent,
 }) {
   const theme = useTheme();
@@ -49,6 +50,7 @@ export function PSAHeader({
       >
         <Button
           onClick={onLogoClick}
+          title={logoTitle}
           data-test="header_logo_button"
           aria-label="Reset and go back to home page"
         >
@@ -190,6 +192,10 @@ PSAHeader.propTypes = {
    * The onClick function for the logo image.
    */
   onLogoClick: PropTypes.func,
+  /**
+   * The title for the logo image, which will show when hovering at the logo
+   */
+  logoTitle: PropTypes.string,
   /**
    * Content of the navbar, this should be a list of components with type property `type="button"` or `type="component"`.
    */
