@@ -1,7 +1,7 @@
 /*
   This file contains the Accordion component
 */
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -18,7 +18,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
  *  component is based on [MUI Accordion](https://mui.com/material-ui/react-accordion/).
  */
 export const PSAAccordion = ({
-  expanded,
+  expanded: controlledExpanded,
   onChange,
   sx,
   summaryContent,
@@ -27,11 +27,26 @@ export const PSAAccordion = ({
   summaryProps,
   testId,
   error,
+  defaultExpanded = false,
 }) => {
+  const [internalExpanded, setInternalExpanded] = useState(defaultExpanded);
+
+  const isControlled = controlledExpanded !== undefined;
+  const expanded = isControlled ? controlledExpanded : internalExpanded;
+
+  const handleChange = (event, newExpanded) => {
+    if (!isControlled) {
+      setInternalExpanded(newExpanded);
+    }
+    if (onChange) {
+      onChange(event, newExpanded);
+    }
+  };
+
   return (
     <Accordion
-      {...(expanded !== undefined ? { expanded } : {})}
-      {...(onChange !== undefined ? { onChange } : {})}
+      expanded={expanded}
+      onChange={handleChange}
       sx={{
         boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
         "&.MuiAccordion-root": {
@@ -114,4 +129,6 @@ PSAAccordion.propTypes = {
   testId: PropTypes.string,
   /** Indicates whether the accordion is in an error state */
   error: PropTypes.bool,
+  /** Default expanded state */
+  defaultExpanded: PropTypes.bool,
 };

@@ -88,3 +88,27 @@ ErrorAccordion.args = {
     </Box>
   ),
 };
+
+export const UncontrolledAccordion = {
+  args: {
+    defaultExpanded: true,
+    summaryContent: (
+      <Box
+        sx={{
+          display: "flex",
+          jutifyContent: "center",
+          alignItems: "center",
+          color: "additional.greydark",
+        }}
+      >
+        <GrassIcon />
+        <Typography>Uncontrolled Summary Content</Typography>
+      </Box>
+    ),
+    detailsContent: (
+      <Box height={"100px"}>
+        <Typography>Details content</Typography>
+      </Box>
+    ),
+  },
+};
