@@ -22,7 +22,7 @@ const sharedConeflowerArgs = {
   scientific: 'Ratibida pinnata',
   cultivar: 'Sunglow',
   content: (
-    <div>
+    <div style={{ padding: '0 0.5rem'}}>
       Forb/wildflowers, Legumes
       <br />
       Perennial
@@ -35,7 +35,7 @@ const sharedConeflowerArgs = {
   fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/rapi_004_lhp.jpg',
   credits: '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
   creditsSimple: '© Thomas G. Barnes',
-  externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/RAPI',
+  // externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/RAPI',
   externalLinkText: 'RAPI',
   externalLinkTitle: 'Open in USDA Plants',
   title: 'Pinnate prairie coneflower',
@@ -60,7 +60,7 @@ const sharedAppalachianBlazingStarArgs = {
   species: 'Appalachian blazing star',
   scientific: 'Liatris squarrulosa',
   content: (
-    <div>
+    <div style={{ padding: '0 0.5rem'}}>
       Forb/wildflowers
       <br />
       Perennial
@@ -90,5 +90,12 @@ export const AppalachianBlazingStarPortraitExample = {
 export const AppalachianBlazingStarWithoutPortraitExample = {
   args: {
     ...sharedAppalachianBlazingStarArgs,
+  },
+};
+
+export const AppalachianBlazingStarInDetailsExample = {
+  args: {
+    ...sharedAppalachianBlazingStarArgs,
+    inDetails: true,
   },
 };

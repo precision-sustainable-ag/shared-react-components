@@ -36,7 +36,10 @@ export const PSACropImage = ({
               borderRadius: 2,
               border: '1px solid #ddd',
             }}
-            onClick={() => openDetails(true)}
+            onClick={() => {
+              if (!inDetails) openDetails(true);
+              else setOpen(true);
+            }}
           >
             <Box
               component="img"
@@ -69,6 +72,10 @@ export const PSACropImage = ({
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               cursor: 'pointer',
+              padding: '0.2rem 0',
+              ':hover': {
+                textDecoration: 'underline',
+              },
             }}
             title="Click to view full-size image and complete credits"
             onClick={() => setOpen(true)}
@@ -224,6 +231,8 @@ export const PSACropCard = ({
 }) => {
   const elementRef = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -264,40 +273,48 @@ export const PSACropCard = ({
         {species}
       </Typography>
       {
-        externalLink
+        !selected && onSelect
         && (
-          <Link
-            href={externalLink}
-            title={externalLinkTitle}
-            target="_blank"
-            rel="noreferrer"
-            sx={{
-              fontSize: 13,
-              fontWeight: 'bold',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-              background: '#416782',
+          <PSAFigmaButton
+            text={
+              <>
+                ADD&nbsp;TO<br />LIST&nbsp;<PlaylistAdd sx={{ fontSize: 15, zmarginLeft: '0.5rem', transform: 'translateY(0.2rem)' }} />
+              </>
+            }
+            variant="color"
+            rightIcon
+            textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
+            buttonSx={{ borderRadius: '5px', padding: '5px 7px' }}
+            onClick={onSelect}
+          />
+        )
+      }
+      {
+        selected && onRemove
+        && (
+          <PSAFigmaButton
+            text={
+              <>
+                Remove<br /><PlaylistRemove sx={{ fontSize: 15, zmarginLeft: '0.5rem', transform: 'translateY(0.2rem)' }} />
+              </>
+            }
+            rightIcon
+            textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+            buttonSx={{
+              borderRadius: '5px',
+              padding: '5px 7px',
+              background: '#565656',
               color: 'white',
-              padding: '0.1rem 0.75rem',
-              borderRadius: 20,
               '&:hover': {
-                textDecoration: 'underline',
+                background: '#999',
               },
             }}
-          >
-            {externalLinkText}
-            <OpenInNew sx={{ fontSize: '0.9em' }} />
-          </Link>
+            onClick={onRemove}
+          />
         )
       }
     </Box>
   );
-
-  const [open, setOpen] = useState(false);
-  
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   React.useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 600);
@@ -351,8 +368,8 @@ export const PSACropCard = ({
                 </CardContent>
                 <CardActions
                   sx={{
-                    justifyContent: isMobile ? 'center' : 'space-between',
-                    marginTop: 'auto'
+                    justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
+                    marginTop: 'auto',
                   }}
                 >
                   {
@@ -371,39 +388,35 @@ export const PSACropCard = ({
                   }
 
                   {
-                    !selected && onSelect
+                    externalLink
                     && (
-                      <PSAFigmaButton
-                        text="ADD TO LIST"
-                        variant="color"
-                        icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
-                        rightIcon
-                        textSx={{ fontSize: isMobile ? 16 : 12 }}
-                        buttonSx={{ borderRadius: '5px' }}
-                        onClick={onSelect}
-                      />
-                    )
-                  }
-                  {
-                    selected && onRemove
-                    && (
-                      <PSAFigmaButton
-                        text="REMOVE"
-                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'white' }} />}
-                        rightIcon
-                        textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
-                        buttonSx={{
-                          borderRadius: '5px',
-                          background: '#565656',
+                      <Link
+                        href={externalLink}
+                        title={externalLinkTitle}
+                        target="_blank"
+                        rel="noreferrer"
+                        sx={{
+                          fontSize: 13,
+                          fontWeight: 'bold',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                          background: '#416782',
                           color: 'white',
+                          padding: '0.1rem 0.75rem',
+                          borderRadius: 20,
                           '&:hover': {
-                            background: '#999',
+                            textDecoration: 'underline',
                           },
                         }}
-                        onClick={onRemove}
-                      />
+                      >
+                        {externalLinkText}
+                        <OpenInNew sx={{ fontSize: '0.9em' }} />
+                      </Link>
                     )
                   }
+
                 </CardActions>
                 {
                   open
