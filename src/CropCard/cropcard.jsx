@@ -67,12 +67,12 @@ export const PSACropImage = ({
           <Typography
             sx={{
               fontSize: 12,
-              marginLeft: '0.25rem',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               cursor: 'pointer',
-              padding: '0.2rem 0',
+              padding: '0.2rem',
+              background: '#f0f0f0',
               ':hover': {
                 textDecoration: 'underline',
               },
@@ -332,7 +332,7 @@ export const PSACropCard = ({
           borderRadius: '17px',
           width: isMobile ? 160 : 260,
           height: '100%',
-          backgroundColor: '#f5f5f5',
+          background: 'white',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
