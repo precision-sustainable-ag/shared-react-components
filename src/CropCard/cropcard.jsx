@@ -261,30 +261,20 @@ export const PSACropCard = ({
   }, [elementRef, elementRef.current]);
 
   const speciesBox = (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
-        gap: 0.3,
-      }}
-    >
-      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
-        {species}
-      </Typography>
+    <Box>
       {
         !selected && onSelect
         && (
           <PSAFigmaButton
             text={
               <>
-                ADD&nbsp;TO<br />LIST&nbsp;<PlaylistAdd sx={{ fontSize: 15, zmarginLeft: '0.5rem', transform: 'translateY(0.2rem)' }} />
+                ADD&nbsp;TO<br />LIST&nbsp;<PlaylistAdd sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
               </>
             }
             variant="color"
             rightIcon
             textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
-            buttonSx={{ borderRadius: '5px', padding: '5px 7px' }}
+            buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
             onClick={onSelect}
           />
         )
@@ -295,7 +285,7 @@ export const PSACropCard = ({
           <PSAFigmaButton
             text={
               <>
-                Remove<br /><PlaylistRemove sx={{ fontSize: 15, zmarginLeft: '0.5rem', transform: 'translateY(0.2rem)' }} />
+                Remove<br /><PlaylistRemove sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
               </>
             }
             rightIcon
@@ -305,6 +295,7 @@ export const PSACropCard = ({
               padding: '5px 7px',
               background: '#565656',
               color: 'white',
+              float: 'right',
               '&:hover': {
                 background: '#999',
               },
@@ -313,6 +304,18 @@ export const PSACropCard = ({
           />
         )
       }
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 0.3,
+        }}
+      >
+        <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
+          {species}
+        </Typography>
+      </Box>
     </Box>
   );
 
@@ -396,16 +399,16 @@ export const PSACropCard = ({
                         target="_blank"
                         rel="noreferrer"
                         sx={{
-                          fontSize: 13,
-                          fontWeight: 'bold',
+                          fontSize: 12,
+                          fontFamily: 'IBM Plex Sans',
                           textDecoration: 'none',
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '0.25rem',
-                          background: '#416782',
-                          color: 'white',
-                          padding: '0.1rem 0.75rem',
-                          borderRadius: 20,
+                          background: '#bbffbb',
+                          color: 'black',
+                          padding: '0.3rem 0.7rem',
+                          borderRadius: '5px',
                           '&:hover': {
                             textDecoration: 'underline',
                           },
