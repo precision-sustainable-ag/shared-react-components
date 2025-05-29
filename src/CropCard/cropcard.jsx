@@ -53,7 +53,7 @@ export const PSACropImage = ({
               }}
               src={thumbnail}
               alt={alt}
-              title={isMobile ? 'Click for details' : 'Click to view full size'}
+              title={inDetails ? 'Click to view full size' : 'Click for details'}
               onError={(e) => {
                 e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
               }}
