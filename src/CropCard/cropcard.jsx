@@ -36,7 +36,10 @@ export const PSACropImage = ({
               borderRadius: 2,
               border: '1px solid #ddd',
             }}
-            onClick={() => openDetails(true)}
+            onClick={() => {
+              if (!inDetails) openDetails(true);
+              else setOpen(true);
+            }}
           >
             <Box
               component="img"
@@ -50,7 +53,7 @@ export const PSACropImage = ({
               }}
               src={thumbnail}
               alt={alt}
-              title={isMobile ? 'Click for details' : 'Click to view full size'}
+              title={inDetails ? 'Click to view full size' : 'Click for details'}
               onError={(e) => {
                 e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
               }}
@@ -64,11 +67,15 @@ export const PSACropImage = ({
           <Typography
             sx={{
               fontSize: 12,
-              marginLeft: '0.25rem',
               whiteSpace: 'nowrap',
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               cursor: 'pointer',
+              padding: '0.2rem',
+              background: '#f0f0f0',
+              ':hover': {
+                textDecoration: 'underline',
+              },
             }}
             title="Click to view full-size image and complete credits"
             onClick={() => setOpen(true)}
@@ -224,6 +231,8 @@ export const PSACropCard = ({
 }) => {
   const elementRef = useRef(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -252,52 +261,63 @@ export const PSACropCard = ({
   }, [elementRef, elementRef.current]);
 
   const speciesBox = (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
-        gap: 0.3,
-      }}
-    >
-      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
-        {species}
-      </Typography>
+    <Box>
       {
-        externalLink
+        !selected && onSelect
         && (
-          <Link
-            href={externalLink}
-            title={externalLinkTitle}
-            target="_blank"
-            rel="noreferrer"
-            sx={{
-              fontSize: 13,
-              fontWeight: 'bold',
-              textDecoration: 'none',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.25rem',
-              background: '#416782',
-              color: 'white',
-              padding: '0.1rem 0.75rem',
-              borderRadius: 20,
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-            }}
-          >
-            {externalLinkText}
-            <OpenInNew sx={{ fontSize: '0.9em' }} />
-          </Link>
+          <PSAFigmaButton
+            text={
+              <>
+                ADD&nbsp;TO<br />LIST&nbsp;<PlaylistAdd sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
+              </>
+            }
+            variant="color"
+            rightIcon
+            textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
+            buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
+            onClick={onSelect}
+          />
         )
       }
+      {
+        selected && onRemove
+        && (
+          <PSAFigmaButton
+            text={
+              <>
+                Remove<br /><PlaylistRemove sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
+              </>
+            }
+            rightIcon
+            textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+            buttonSx={{
+              borderRadius: '5px',
+              padding: '5px 7px',
+              background: '#565656',
+              color: 'white',
+              float: 'right',
+              '&:hover': {
+                background: '#999',
+              },
+            }}
+            onClick={onRemove}
+          />
+        )
+      }
+
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: 0.3,
+        }}
+      >
+        <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
+          {species}
+        </Typography>
+      </Box>
     </Box>
   );
-
-  const [open, setOpen] = useState(false);
-  
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   React.useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 600);
@@ -312,7 +332,7 @@ export const PSACropCard = ({
           borderRadius: '17px',
           width: isMobile ? 160 : 260,
           height: '100%',
-          backgroundColor: '#f5f5f5',
+          background: 'white',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -351,8 +371,8 @@ export const PSACropCard = ({
                 </CardContent>
                 <CardActions
                   sx={{
-                    justifyContent: isMobile ? 'center' : 'space-between',
-                    marginTop: 'auto'
+                    justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
+                    marginTop: 'auto',
                   }}
                 >
                   {
@@ -371,39 +391,35 @@ export const PSACropCard = ({
                   }
 
                   {
-                    !selected && onSelect
+                    externalLink
                     && (
-                      <PSAFigmaButton
-                        text="ADD TO LIST"
-                        variant="color"
-                        icon={<PlaylistAdd sx={{ fontSize: 12, marginLeft: '0.3rem' }} />}
-                        rightIcon
-                        textSx={{ fontSize: isMobile ? 16 : 12 }}
-                        buttonSx={{ borderRadius: '5px' }}
-                        onClick={onSelect}
-                      />
-                    )
-                  }
-                  {
-                    selected && onRemove
-                    && (
-                      <PSAFigmaButton
-                        text="REMOVE"
-                        icon={<PlaylistRemove sx={{ fontSize: 12, marginLeft: '0.3rem', color: 'white' }} />}
-                        rightIcon
-                        textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
-                        buttonSx={{
+                      <Link
+                        href={externalLink}
+                        title={externalLinkTitle}
+                        target="_blank"
+                        rel="noreferrer"
+                        sx={{
+                          fontSize: 12,
+                          fontFamily: 'IBM Plex Sans',
+                          textDecoration: 'none',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.25rem',
+                          background: '#bbffbb',
+                          color: 'black',
+                          padding: '0.3rem 0.7rem',
                           borderRadius: '5px',
-                          background: '#565656',
-                          color: 'white',
                           '&:hover': {
-                            background: '#999',
+                            textDecoration: 'underline',
                           },
                         }}
-                        onClick={onRemove}
-                      />
+                      >
+                        {externalLinkText}
+                        <OpenInNew sx={{ fontSize: '0.9em' }} />
+                      </Link>
                     )
                   }
+
                 </CardActions>
                 {
                   open
