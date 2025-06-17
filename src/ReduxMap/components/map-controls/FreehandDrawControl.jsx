@@ -16,6 +16,8 @@ export class FreehandDrawControl extends CustomControl {
 
     this.lineData = this.createNewLine();
     this.fpolygon = [[]];
+
+    this._handleDrawModeChange = this._handleDrawModeChange.bind(this);
   }
 
   isFreeHandDrawingActive() {
@@ -42,26 +44,55 @@ export class FreehandDrawControl extends CustomControl {
    * (onClick function for CustomControl)
    */
   toggleDrawingMode() {
-    this.button.classList.toggle("active");
     const polygonButton = document.querySelector(".mapbox-gl-draw_polygon");
 
-    if (this.isFreeHandDrawingActive()) {
-      if (this.hasDrawing) {
+    if (!this.isFreeHandDrawingActive()) {
+      this.button.classList.add("active");
+      if (this.hasDrawing && polygonButton) {
         polygonButton.style.display = "none";
-        this.drawerRef.current.changeMode("draw_polygon");
+        if (this.drawerRef.current) {
+          this.drawerRef.current.changeMode("draw_polygon");
+        }
       }
-      this.mapRef.current.dragPan.disable();
+      if (this.mapRef.current) {
+        this.mapRef.current.dragPan.disable();
+      }
     } else {
-      if (this.hasDrawing) {
+      this.button.classList.remove("active");
+      if (this.hasDrawing && polygonButton) {
         polygonButton.style.display = "block";
-        this.drawerRef.current.changeMode("simple_select");
+        if (this.drawerRef.current) {
+          this.drawerRef.current.changeMode("simple_select");
+        }
       }
-      this.mapRef.current.dragPan.enable();
+      if (this.mapRef.current) {
+        this.mapRef.current.dragPan.enable();
+      }
+    }
+  }
+
+  _handleDrawModeChange(e) {
+    // If this.button is not available (e.g., control removed before event fires), do nothing.
+    if (!this.button || !this.mapRef || !this.mapRef.current) return;
+
+    if (e.mode === "draw_polygon") {
+      // If MapboxDraw polygon tool is activated, hide the freehand button.
+      this.button.style.display = "none";
+      if (this.isFreeHandDrawingActive()) {
+        this.button.classList.remove("active");
+        this.mapRef.current.dragPan.enable();
+      }
+    } else {
+      this.button.style.display = "block";
     }
   }
 
   onAdd(map) {
     const container = super.onAdd(map);
+
+    if (this.hasDrawing && this.drawerRef.current && this.mapRef.current) {
+      this.mapRef.current.on("draw.modechange", this._handleDrawModeChange);
+    }
 
     map.on("style.load", () => {
       this.mapRef.current.addSource("line", {
@@ -155,5 +186,17 @@ export class FreehandDrawControl extends CustomControl {
     });
 
     return container;
+  }
+
+  onRemove() {
+    // Remove the specific event listener for draw.modechange
+    if (
+      this.mapRef.current &&
+      typeof this._handleDrawModeChange === "function"
+    ) {
+      this.mapRef.current.off("draw.modechange", this._handleDrawModeChange);
+    }
+
+    super.onRemove();
   }
 }
