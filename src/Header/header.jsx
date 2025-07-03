@@ -32,7 +32,7 @@ export function PSAHeader({
       container
       sx={{
         display: "flex",
-        height: underMd ? "85px" : "9.6875rem",
+        height: underMd ? "85px" : "120px",
         boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
       }}
       pl={underMd ? 0 : "1rem"}
@@ -85,19 +85,25 @@ export function PSAHeader({
               {title}
             </Typography>
           </Grid>
-          <Grid item xs={12} sx={{ display: "flex" }}>
-            <Box
-              sx={{ display: "flex", alignItems: "center", height: "2.25rem" }}
-            >
-              <Typography
-                variant="subtitle"
-                fontSize={underMd && "0.75rem"}
-                data-test="header_subtitle"
+          {subtitle && (
+            <Grid item xs={12} sx={{ display: "flex" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "2.25rem",
+                }}
               >
-                {subtitle}
-              </Typography>
-            </Box>
-          </Grid>
+                <Typography
+                  variant="subtitle"
+                  fontSize={underMd && "0.75rem"}
+                  data-test="header_subtitle"
+                >
+                  {subtitle}
+                </Typography>
+              </Box>
+            </Grid>
+          )}
         </Grid>
       </Grid>
 
