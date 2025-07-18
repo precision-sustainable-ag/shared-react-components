@@ -108,9 +108,6 @@ export function PSABarChart({
         ...additionalOptions.series?.[0],
       },
     ],
-    credits: {
-      enabled: false,
-    },
     responsive: {
       rules: [
         {
