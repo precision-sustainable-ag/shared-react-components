@@ -90,7 +90,7 @@ PSAInfoSheetAttributeBox.propTypes = {
   /**
    * State for controlling the open status of the Infosheet
    */
-  variant: PropTypes.oneOf[("texts", "")],
+  variant: PropTypes.oneOf(["texts", ""]),
 
   /**
    * Attribute description that will be shown in the tooltip
