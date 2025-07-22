@@ -2,6 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
+const getIdFromLabel = (label) => {
+  if (typeof label !== "string") return "dropdown";
+  return label.replace(/[^a-zA-Z0-9]/g, "-");
+};
+
 export const PSADropdown = ({
   label,
   items = [],
@@ -11,12 +16,12 @@ export const PSADropdown = ({
   menuSx = {},
 }) => (
   <FormControl sx={formSx} variant={SelectProps.variant}>
-    <InputLabel sx={inputSx} id={`${label?.replaceAll(" ", "-")}-label`}>
+    <InputLabel sx={inputSx} id={`${getIdFromLabel(label)}-label`}>
       {label}
     </InputLabel>
     <Select
-      labelId={`${label?.replaceAll(" ", "-")}-label`}
-      id={`${label?.replaceAll(" ", "-")}-select`}
+      labelId={`${getIdFromLabel(label)}-label`}
+      id={`${getIdFromLabel(label)}-select`}
       label={label}
       {...SelectProps}
     >
