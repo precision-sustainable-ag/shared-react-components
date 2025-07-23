@@ -53,6 +53,11 @@ export const PSAInfoSheetAttributeBox = ({
                 placement="top-end"
                 enterTouchDelay={0}
                 title={description}
+                PopperProps={{
+                  style: {
+                    zIndex: 10000000,
+                  },
+                }}
                 arrow
                 tooltipContent={
                   <Typography
