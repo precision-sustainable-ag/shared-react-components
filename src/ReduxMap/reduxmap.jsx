@@ -11,7 +11,7 @@ import union from '@turf/union';
 import centroid from '@turf/centroid';
 import { polygon, featureCollection } from '@turf/helpers';
 
-import { addPolygonToMap, calcArea, findState, fitMapToFeatures } from './utils/helpers';
+import { addPolygonToMap, calcArea, findState, fitMapToFeatures, isWebGLSupported } from './utils/helpers';
 import useSafeSelector from "./hooks/useSafeSelector";
 
 import useMapMarker from "./hooks/useMapMarker";
@@ -129,6 +129,7 @@ const ReduxMap = ({
   const [searchBox, setSearchBox] = useState();
   const [dragging, setDragging] = useState(false);
   const [newPolygon, setNewPolygon] = useState(false);
+  const [isMapSupported, setIsMapSupported] = useState(true);
 
   const map = useRef();
   const mapContainer = useRef();
@@ -249,6 +250,11 @@ const ReduxMap = ({
   // Initialize map
   useEffect(() => {
     if (!map.current) {
+      if (!isWebGLSupported()) {
+        setIsMapSupported(false);
+        return;
+      }
+
       const Map = new mapboxgl.Map({
         accessToken: MAPBOX_TOKEN,
         container: mapContainer.current,
@@ -323,6 +329,8 @@ const ReduxMap = ({
 
   // Use effect for map configuration and map resize
   useEffect(() => {
+    if (!map.current) return;
+    
     map.current.on("load", () => {
       const mc = mapContainer.current;
       if (!mc) return;
@@ -522,6 +530,21 @@ const ReduxMap = ({
     elevations,
     setElevation,
   });
+
+  if (!isMapSupported) {
+    return (
+      <div 
+        className={`mapbox ${styles.wrapper} ${hasClear ? "hasclear" : ""}`}
+        style={{ width: initWidth || "100%", height: initHeight || "100%" }}
+      >
+        <h2>Map Cannot Be Displayed</h2>
+        <p>
+          We're sorry, but your browser or device doesn't support the technology (WebGL) required to display our interactive map.
+          Please try updating your browser or enabling "Hardware Acceleration" in your browser settings.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div

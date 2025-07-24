@@ -406,4 +406,20 @@ async function geocodeReverse({
     return null; // Point is not within any state
   }
 
-export { geocodeReverse, coordinatesGeocoder, calcArea, getElevation, addPolygonToMap, fitMapToFeatures, findState };
+  /**
+   * Checks if WebGL is supported by the browser.
+   * 
+   * @returns {boolean} True if WebGL is supported, false if not.
+   */
+  const isWebGLSupported = () => {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      return gl && gl instanceof WebGLRenderingContext;
+    } catch (e) {
+      console.error("WebGL not supported.");
+      return false;
+    }
+  }
+
+export { geocodeReverse, coordinatesGeocoder, calcArea, getElevation, addPolygonToMap, fitMapToFeatures, findState, isWebGLSupported };
