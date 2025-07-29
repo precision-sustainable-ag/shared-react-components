@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import freehandIcon from "../assets/icons/freehand.png";
 import fullscreenIcon from "../assets/icons/fullscreen.png";
 import polygonIcon from "../assets/icons/polygon.png";
 import trashcanIcon from "../assets/icons/trashcan.png";
 import uploadIcon from "../assets/icons/upload.png";
+import { PencilIcon } from "../assets/icons/PencilIcon";
 
 /**
  * HelpModal component for displaying help and configuration information
- * 
+ *
  * @component
  * @param {Object} props - The component properties
  * @param {boolean} props.hasMarkerMovable - Allow marker to be moved
@@ -60,9 +60,9 @@ const HelpModal = ({
 
     {hasFreehand ? (
       <p>
-        You can also use the freehand tool to outline the site area and estimate
+        You can also use the pencil tool to outline the site area and estimate
         its acreage:
-        <img className="icon" alt="freehand" src={freehandIcon} />
+        <PencilIcon />
         <br />
         To create the boundary, click on the edge of your field and drag the
         mouse around the perimeter.
