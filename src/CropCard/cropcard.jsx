@@ -230,14 +230,19 @@ export const PSACropCard = ({
   ...props
 }) => {
   const elementRef = useRef(null);
-  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
 
   useEffect(() => {
+    if (!elementRef.current) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setHasLoaded(true);
+          observer.unobserve(elementRef.current);
+        }
       },
       {
         root: null,
@@ -246,19 +251,12 @@ export const PSACropCard = ({
       },
     );
 
-    if (elementRef.current) {
-      const c = elementRef.current;
-      setTimeout(() => {
-        observer.observe(c);
-      }, 10);
-    }
+    observer.observe(elementRef.current);
 
     return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
+      observer.disconnect();
     };
-  }, [elementRef, elementRef.current]);
+  }, []);
 
   const speciesBox = (
     <Box>
@@ -343,7 +341,7 @@ export const PSACropCard = ({
       ref={elementRef}
     >
       {
-        (!isIntersecting && !onRemove)
+        (!hasLoaded && !onRemove)
           ? (
             <div style={{ color: 'white' }}>
               {species}
@@ -360,8 +358,8 @@ export const PSACropCard = ({
                   <Content
                     scientific={scientific}
                     content={content}
-                    thumbnail={isIntersecting && thumbnail}
-                    fullsize={isIntersecting && fullsize}
+                    thumbnail={hasLoaded && thumbnail}
+                    fullsize={hasLoaded && fullsize}
                     portrait={portrait}
                     creditsSimple={creditsSimple}
                     credits={credits}
