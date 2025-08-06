@@ -2,6 +2,19 @@ import { createTheme } from "@mui/material";
 
 const theme = createTheme({
   palette: {
+    primary: {
+      main: "#598445",
+    },
+    secondary: {
+      main: "#27739E",
+    },
+    error: {
+      main: "#DD3804",
+    },
+    text: {
+      primary: "#1F1F1F",
+      secondary: "#565656",
+    },
     main: {
       accent1: "#598445",
       accent2: "#27739E",
@@ -22,7 +35,13 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: "IBM Plex Sans",
+    fontFamily: [
+      '"IBM Plex Sans"',
+      '"Roboto"',
+      '"Helvetica Neue"',
+      '"Arial"',
+      "sans-serif",
+    ].join(","),
     color: "#1F1F1F",
     header: {
       color: "#1F1F1F",
@@ -39,6 +58,9 @@ const theme = createTheme({
       fontStyle: "italic",
       fontWeight: 500,
       lineHeight: "normal",
+    },
+    button: {
+      fontWeight: 600,
     },
   },
 });
