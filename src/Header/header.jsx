@@ -33,7 +33,6 @@ export function PSAHeader({
       sx={{
         display: "flex",
         height: underMd ? "85px" : "120px",
-        boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
       }}
       pl={underMd ? 0 : "1rem"}
       pr={underMd ? 0 : "1rem"}
