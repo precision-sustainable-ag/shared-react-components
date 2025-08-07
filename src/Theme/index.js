@@ -32,6 +32,7 @@ const theme = createTheme({
       support4: "#91643B",
       support5: "#624469",
       error: "#DD3804",
+      border: "#E9E6E0",
     },
   },
   typography: {
