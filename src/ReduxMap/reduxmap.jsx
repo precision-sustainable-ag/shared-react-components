@@ -272,10 +272,17 @@ const ReduxMap = ({
       simpleSelect.dragMove = () => {};
       directSelect.dragFeature = () => {};
 
+      // Prevents selecting the polygon if hasDrawing is false
+      if (!hasDrawing && !hasFreehand) {
+        simpleSelect.onClick = () => {};
+        simpleSelect.onMouseDown = () => {};
+        simpleSelect.onTouchStart = () => {};
+      }
+
       // DRAWER CONTROL
       const Draw = new MapboxDraw({
         displayControlsDefault: false,
-        controls: { polygon: true, trash: true },
+        controls: (hasDrawing || hasFreehand) ? { polygon: true, trash: true } : {}, // Only show the controls if hasDrawing is true
         modes: {
           ...MapboxDraw.modes,
           simple_select: simpleSelect,
@@ -295,7 +302,7 @@ const ReduxMap = ({
       // ADD CONTROLS
       if (hasFullScreen) map.current.addControl(Fullscreen, "top-right");
       if (hasNavigation) map.current.addControl(Navigation, "top-right"); // causes warning
-      if (hasDrawing) map.current.addControl(Draw, "top-right");
+      map.current.addControl(Draw, "top-right");
 
       // CUSTOM CONTROLS
       if (hasFreehand)
