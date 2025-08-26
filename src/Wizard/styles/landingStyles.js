@@ -19,7 +19,7 @@ export const styles = {
             width: 800,
             p: 5,
             marginTop: -20,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: '#fff',
             borderRadius: 3,
         },
         elevation: 3
@@ -47,7 +47,7 @@ export const styles = {
             overflowY: 'auto',
             marginX: -5,
             marginTop: 15,
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            backgroundColor: '#fff',
             borderRadius: 3,
         },
     },
