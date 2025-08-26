@@ -1,3 +1,5 @@
+import zIndex from "@mui/material/styles/zIndex";
+
 // Styles for all the components in the application
 export const styles = {
     boxBackground: {
@@ -6,10 +8,6 @@ export const styles = {
             justifyContent: 'center',
             alignItems: 'center',
             background: '#598444',
-            // backgroundSize: 'cover',
-            // backgroundPosition: 'center',
-            // backgroundRepeat: 'no-repeat',
-            height: '100vh',
             width: '100vw',
         }
     },
@@ -50,7 +48,7 @@ export const styles = {
             overflowY: 'auto',
             marginX: -5,
             marginTop: 15,
-            backgroundColor: 'transparent',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
             borderRadius: 3,
         },
     },
