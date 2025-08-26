@@ -15,12 +15,10 @@ import {
     ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
 import { styles } from './styles/landingStyles';
-import PSAHeader from '../Header';
 import PSAButton from '../Button'
 import PSAFigmaButton from '../FigmaButton';
 import PSAAccordion from '../Accordion';
 import { useTheme } from '@mui/material/styles';
-import { background } from 'storybook/internal/theming';
 
 export const PSAWizard = ({ }) => {
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
