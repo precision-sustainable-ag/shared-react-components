@@ -1,16 +1,13 @@
 // Styles for all the components in the application
 export const styles = {
-    // boxBackground: {
-    //     sx: {
-    //         display: 'flex',
-    //         justifyContent: 'center',
-    //         alignItems: 'center',
-    //         background: '#e3f3d9ff',
-    //         height: '100vh',
-    //         width: '100vw',
-    //         overflow: 'hidden',
-    //     }
-    // },
+    boxBackground: {
+        sx: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: '#e3f3d9ff',
+        }
+    },
     box: {
         sx: {
             display: 'flex',
