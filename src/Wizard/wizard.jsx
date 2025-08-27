@@ -215,7 +215,7 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant={answers[currentQuestionIndex] === 'no' ? "contained" : "outlined"}
                                     onClick={() => handleAnswer('no')}
-                                    startIcon={<CancelIcon color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} />}
+                                    startIcon={<CancelIcon color={answers[currentQuestionIndex] === 'no' ? "white" : "#d32f2f"} />}
                                     buttonType=""
                                     sx={{
                                         background: answers[currentQuestionIndex] === 'no' ? "#d32f2f" : "",
@@ -298,7 +298,7 @@ export const PSAWizard = ({ }) => {
                                     </Typography>
                                 )}
                                 {result.text && (<Link href={result.url} target="_blank" sx={{
-                                    color: '#598444',
+                                    color: 'primary.main',
                                     textDecoration: 'none',
                                     '&:hover': {
                                         textDecoration: 'underline',
@@ -311,7 +311,7 @@ export const PSAWizard = ({ }) => {
                                 </Link>)}
 
                                 {!result.text && (
-                                    <Typography {...styles.resultName}>
+                                    <Typography {...styles.resultName} sx={{ color: '#598444'}}>
                                         No any app matches your criteria
                                     </Typography>
                                 )}
