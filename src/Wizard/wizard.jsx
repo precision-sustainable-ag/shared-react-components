@@ -217,23 +217,23 @@ export const PSAWizard = ({ }) => {
                                     onClick={() => handleAnswer('no')}
                                     startIcon={<CancelIcon color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} />}
                                     buttonType=""
-                                    sx={{
-                                        background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.main : "",
-                                        border: "2px solid #959393ff",
-                                        "&:hover": {
-                                            background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.second : "",
-                                            border: "2px solid #000000",
-                                        },
-                                        "&:focus": {
-                                            outline: "none",
-                                            boxShadow: "none",
-                                            border: "2px solid #959393ff",
-                                            "&:focus-visible": {
-                                                outline: "none",
-                                                boxShadow: "none",
-                                            }
-                                        }
-                                    }}
+                                    // sx={{
+                                    //     background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.main : "",
+                                    //     border: "2px solid #959393ff",
+                                    //     "&:hover": {
+                                    //         background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.second : "",
+                                    //         border: "2px solid #000000",
+                                    //     },
+                                    //     "&:focus": {
+                                    //         outline: "none",
+                                    //         boxShadow: "none",
+                                    //         border: "2px solid #959393ff",
+                                    //         "&:focus-visible": {
+                                    //             outline: "none",
+                                    //             boxShadow: "none",
+                                    //         }
+                                    //     }
+                                    // }}
                                     title={(
                                         <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} sx={{ fontWeight: 'bold' }}>
                                             No
