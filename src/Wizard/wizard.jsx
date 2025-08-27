@@ -165,8 +165,13 @@ export const PSAWizard = ({ }) => {
                         <PSAButton
                             variant="contained"
                             onClick={handleStart}
-                            color="primary"
                             buttonType=""
+                            sx={{
+                                background: "#598444",
+                                "&:hover": {
+                                    background: "#466734",
+                                },
+                            }}
                             title={(
                                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                     Get Started
@@ -215,7 +220,7 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant={answers[currentQuestionIndex] === 'no' ? "contained" : "outlined"}
                                     onClick={() => handleAnswer('no')}
-                                    startIcon={<CancelIcon color={answers[currentQuestionIndex] === 'no' ? "white" : "#d32f2f"} />}
+                                    startIcon={<CancelIcon sx={{ color: answers[currentQuestionIndex] === 'no' ? "" : "#d32f2f" }} />}
                                     buttonType=""
                                     sx={{
                                         background: answers[currentQuestionIndex] === 'no' ? "#d32f2f" : "",
@@ -235,7 +240,7 @@ export const PSAWizard = ({ }) => {
                                         }
                                     }}
                                     title={(
-                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} sx={{ fontWeight: 'bold' }}>
+                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : "#d32f2f"} sx={{ fontWeight: 'bold' }}>
                                             No
                                         </Typography>
                                     )}
@@ -298,20 +303,24 @@ export const PSAWizard = ({ }) => {
                                     </Typography>
                                 )}
                                 {result.text && (<Link href={result.url} target="_blank" sx={{
-                                    color: 'primary.main',
+                                    color: '#1976d2',
                                     textDecoration: 'none',
                                     '&:hover': {
                                         textDecoration: 'underline',
-                                        color: 'primary.dark',
+                                        color: '#115293',
                                     },
                                 }}>
-                                    <Typography {...styles.resultName} sx={{ cursor: 'pointer', color: '#598444' }}>
+                                    <Typography {...styles.resultName} sx={{
+                                        cursor: 'pointer', color: '#598444', '&:hover': {
+                                            color: '#115293',
+                                        },
+                                    }}>
                                         {result.text}
                                     </Typography>
                                 </Link>)}
 
                                 {!result.text && (
-                                    <Typography {...styles.resultName} sx={{ color: '#598444'}}>
+                                    <Typography {...styles.resultName} sx={{ color: '#598444' }}>
                                         No any app matches your criteria
                                     </Typography>
                                 )}
@@ -352,7 +361,11 @@ export const PSAWizard = ({ }) => {
                                                         return (<Stack direction="row" spacing={1} sx={{ marginTop: 1, width: '100%' }}>
                                                             <Box sx={{ width: 170 }}>
                                                                 <Link key={app} href={appData.url} target="_blank" underline="hover">
-                                                                    <Typography variant="body2" sx={{ color: '#598444', cursor: 'pointer' }}>
+                                                                    <Typography variant="body2" sx={{
+                                                                        color: '#598444', '&:hover': {
+                                                                            color: '#115293',
+                                                                        }, cursor: 'pointer'
+                                                                    }}>
                                                                         {appData.text}
                                                                     </Typography>
                                                                 </Link>
@@ -373,8 +386,13 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant="contained"
                                     onClick={resetQuestionnaire}
-                                    color="primary"
                                     buttonType=""
+                                    sx={{
+                                        background: "#598444",
+                                        "&:hover": {
+                                            background: "#466734",
+                                        },
+                                    }}
                                     title={(
                                         <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                                             Start Over
