@@ -187,13 +187,13 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant={answers[currentQuestionIndex] === 'yes' ? "contained" : "outlined"}
                                     onClick={() => handleAnswer('yes')}
-                                    startIcon={<CheckCircleIcon color={answers[currentQuestionIndex] === 'yes' ? "" : "secondary"} />}
+                                    startIcon={<CheckCircleIcon color={answers[currentQuestionIndex] === 'yes' ? "" : "#1976d2"} />}
                                     buttonType=""
                                     sx={{
-                                        background: answers[currentQuestionIndex] === 'yes' ? theme.palette.secondary.main : "",
+                                        background: answers[currentQuestionIndex] === 'yes' ? "#1976d2" : "",
                                         border: "2px solid #959393ff",
                                         "&:hover": {
-                                            background: answers[currentQuestionIndex] === 'yes' ? theme.palette.secondary.second : "",
+                                            background: answers[currentQuestionIndex] === 'yes' ? "#115293" : "",
                                             border: "2px solid #000000",
                                         },
                                         "&:focus": {
@@ -207,7 +207,7 @@ export const PSAWizard = ({ }) => {
                                         }
                                     }}
                                     title={(
-                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'yes' ? "" : "secondary"} sx={{ fontWeight: 'bold' }}>
+                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'yes' ? "" : "#1976d2"} sx={{ fontWeight: 'bold' }}>
                                             Yes
                                         </Typography>
                                     )}
@@ -217,23 +217,23 @@ export const PSAWizard = ({ }) => {
                                     onClick={() => handleAnswer('no')}
                                     startIcon={<CancelIcon color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} />}
                                     buttonType=""
-                                    // sx={{
-                                    //     background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.main : "",
-                                    //     border: "2px solid #959393ff",
-                                    //     "&:hover": {
-                                    //         background: answers[currentQuestionIndex] === 'no' ? theme.palette.red.second : "",
-                                    //         border: "2px solid #000000",
-                                    //     },
-                                    //     "&:focus": {
-                                    //         outline: "none",
-                                    //         boxShadow: "none",
-                                    //         border: "2px solid #959393ff",
-                                    //         "&:focus-visible": {
-                                    //             outline: "none",
-                                    //             boxShadow: "none",
-                                    //         }
-                                    //     }
-                                    // }}
+                                    sx={{
+                                        background: answers[currentQuestionIndex] === 'no' ? "#d32f2f" : "",
+                                        border: "2px solid #959393ff",
+                                        "&:hover": {
+                                            background: answers[currentQuestionIndex] === 'no' ? "#b71c1c" : "",
+                                            border: "2px solid #000000",
+                                        },
+                                        "&:focus": {
+                                            outline: "none",
+                                            boxShadow: "none",
+                                            border: "2px solid #959393ff",
+                                            "&:focus-visible": {
+                                                outline: "none",
+                                                boxShadow: "none",
+                                            }
+                                        }
+                                    }}
                                     title={(
                                         <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : "red"} sx={{ fontWeight: 'bold' }}>
                                             No
@@ -249,10 +249,10 @@ export const PSAWizard = ({ }) => {
                                     leftIcon
                                     icon={<ArrowBackIcon />}
                                     buttonSx={{
-                                        background: theme.palette.primary.main,
+                                        background: "#598444",
                                         border: "2px solid #598444",
                                         "&:hover": {
-                                            background: theme.palette.primary.second,
+                                            background: "#466734",
                                             border: "2px solid #466734",
                                             boxShadow: "0 0 0 2px #466734",
                                         },
@@ -270,7 +270,7 @@ export const PSAWizard = ({ }) => {
                                         },
                                         "&:hover:focus": {
                                             border: "3px solid #466734",
-                                            background: theme.palette.primary.second,
+                                            background: "#466734",
                                         },
                                     }}
                                 />
@@ -288,7 +288,7 @@ export const PSAWizard = ({ }) => {
                                 </Typography>
                                 <Divider sx={{ width: '100%' }} />
                                 {noResultFlag && (
-                                    <Typography {...styles.bodyText} sx={{ color: 'red', marginTop: 2 }}>
+                                    <Typography {...styles.bodyText} sx={{ marginTop: 2 }}>
                                         Based on your answers:
                                     </Typography>
                                 )}
@@ -298,14 +298,14 @@ export const PSAWizard = ({ }) => {
                                     </Typography>
                                 )}
                                 {result.text && (<Link href={result.url} target="_blank" sx={{
-                                    color: 'primary.main',
+                                    color: '#598444',
                                     textDecoration: 'none',
                                     '&:hover': {
                                         textDecoration: 'underline',
                                         color: 'primary.dark',
                                     },
                                 }}>
-                                    <Typography {...styles.resultName} sx={{ cursor: 'pointer', color: 'inherit' }}>
+                                    <Typography {...styles.resultName} sx={{ cursor: 'pointer', color: '#598444' }}>
                                         {result.text}
                                     </Typography>
                                 </Link>)}
@@ -352,7 +352,7 @@ export const PSAWizard = ({ }) => {
                                                         return (<Stack direction="row" spacing={1} sx={{ marginTop: 1, width: '100%' }}>
                                                             <Box sx={{ width: 170 }}>
                                                                 <Link key={app} href={appData.url} target="_blank" underline="hover">
-                                                                    <Typography variant="body2" sx={{ cursor: 'pointer' }}>
+                                                                    <Typography variant="body2" sx={{ color: '#598444', cursor: 'pointer' }}>
                                                                         {appData.text}
                                                                     </Typography>
                                                                 </Link>
