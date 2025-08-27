@@ -8,6 +8,7 @@ export const styles = {
             background: '#e3f3d9ff',
             height: '100vh',
             width: '100vw',
+            overflow: 'hidden',
         }
     },
     box: {
