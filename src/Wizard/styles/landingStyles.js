@@ -5,7 +5,10 @@ export const styles = {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: '#fff',
+            background: '#e3f3d9ff',
+            height: '100vh',
+            width: '100vw',
+            overflow: 'hidden',
         }
     },
     box: {
@@ -33,7 +36,6 @@ export const styles = {
             backgroundColor: 'transparent',
             borderRadius: 3,
         },
-        elevation: 3,
     },
     resultCard: {
         sx: {
