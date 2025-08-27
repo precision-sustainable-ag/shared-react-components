@@ -5,7 +5,7 @@ export const styles = {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: '#c8d5c1ff',
+            background: '#e3f3d9ff',
             height: '100vh',
             width: '100vw',
         }
