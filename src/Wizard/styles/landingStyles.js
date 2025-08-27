@@ -19,6 +19,7 @@ export const styles = {
             height: 400,
             width: 800,
             p: 5,
+            marginTop: -20,
             backgroundColor: '#fff',
             borderRadius: 3,
         },
