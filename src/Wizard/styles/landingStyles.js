@@ -33,6 +33,7 @@ export const styles = {
             backgroundColor: 'transparent',
             borderRadius: 3,
         },
+        elevation: 3,
     },
     resultCard: {
         sx: {
