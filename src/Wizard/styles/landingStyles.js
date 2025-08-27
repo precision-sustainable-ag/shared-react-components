@@ -5,7 +5,7 @@ export const styles = {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: '#e3f3d9ff',
+            background: '#fff',
         }
     },
     box: {
