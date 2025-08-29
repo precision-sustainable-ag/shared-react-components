@@ -36,7 +36,6 @@ export const PSAAccordion = ({
   const expanded = isControlled ? controlledExpanded : internalExpanded;
 
   const handleChange = (event, newExpanded) => {
-    if (!newExpanded && !event.target.closest('.MuiAccordionSummary-expandIconWrapper')) return;
     if (!isControlled) {
       setInternalExpanded(newExpanded);
     }
@@ -55,10 +54,6 @@ export const PSAAccordion = ({
           borderRadius: "1.6875rem",
         },
         backgroundColor: error ? "#f3e2dd" : "additional.background2",
-        ".MuiAccordionSummary-expandIconWrapper": {
-          border: "10px solid transparent",
-          borderRight: 0,
-        },
         ...sx,
       }}
       data-test={testId}
