@@ -22,6 +22,7 @@ export const PSAAccordion = ({
   onChange,
   sx,
   summaryContent,
+  summarySx,
   detailsContent,
   accordionProps,
   summaryProps,
@@ -96,6 +97,7 @@ export const PSAAccordion = ({
           borderTopRightRadius: "1.6875rem",
           borderBottomLeftRadius: expanded ? 0 : "1.6875rem",
           borderBottomRightRadius: expanded ? 0 : "1.6875rem",
+          ...summarySx,
         }}
         data-test="psa-accordion-summary"
         {...summaryProps}
