@@ -38,6 +38,7 @@ const Template = (args) => {
 
 export const DisabledTextField = Template.bind({});
 DisabledTextField.args = {
+  value: 'Disabled text',
   disabled: true,
 };
 
