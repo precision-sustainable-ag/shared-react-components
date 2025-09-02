@@ -125,6 +125,10 @@ const StyledButton = styled(Button, {
       fontSize: "1rem",
       color: "#fff",
     },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
     "&:hover:focus": {
       border: "2px solid #466734",
       background: "#466734",
