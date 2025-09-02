@@ -103,6 +103,30 @@ const StyledButton = styled(Button, {
       }
     }
   }),
+  ...(buttonType === "Back" && {
+    background: "#598444",
+    border: "2px solid #598444",
+    "&:hover": {
+      background: "#466734",
+      border: "2px solid #466734",
+      boxShadow: "0 0 0 2px #466734",
+    },
+    ".MuiButton-icon": {
+      color: "#fff",
+    },
+    ".MuiTypography-root": {
+      fontSize: "1rem",
+      color: "#fff",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:hover:focus": {
+      border: "3px solid #466734",
+      background: "#466734",
+    },
+  }),
   minWidth: "24px",
   minHeight: "24px",
   "&.Mui-disabled": {

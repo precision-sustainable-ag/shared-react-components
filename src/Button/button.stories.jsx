@@ -2,6 +2,7 @@ import React from "react";
 import { PSAButton } from "./button";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const meta = {
   title: "Inputs/Button",
@@ -49,7 +50,7 @@ export const Yes = Template.bind({});
 Yes.args = {
   title: "Yes",
   buttonType: "Yes",
-  startIcon: <CheckCircleIcon color="#49a8ab" />,
+  startIcon: <CheckCircleIcon />,
   selected: true,
 };
 
@@ -57,6 +58,13 @@ export const No = Template.bind({});
 No.args = {
   title: "No",
   buttonType: "No",
-  startIcon: <CancelIcon color="#d32f2f" />,
+  startIcon: <CancelIcon />,
   selected: true,
+};
+
+export const Back = Template.bind({});
+Back.args = {
+  title: "Back",
+  buttonType: "Back",
+  startIcon: <ArrowBackIcon/>,
 };
