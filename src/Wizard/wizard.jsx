@@ -15,10 +15,45 @@ import {
     ArrowBack as ArrowBackIcon,
 } from '@mui/icons-material';
 import { styles } from './styles/landingStyles';
-import PSAButton from '../Button'
-import PSAFigmaButton from '../FigmaButton';
+import PSAButton from '../Button';
 import PSAAccordion from '../Accordion';
-import { useTheme } from '@mui/material/styles';
+import PSATheme from '../Theme';
+import { createTheme } from '@mui/material';
+import { deepmerge } from '@mui/utils';
+
+const theme = createTheme(
+  deepmerge(PSATheme,
+    {
+      palette: {
+        primary: {
+          main: '#598444',
+          second: '#466734',
+        },
+        secondary: {
+          main: '#1976d2',
+          second: '#115293',
+        },
+        red: {
+          main: '#d32f2f',
+          second: '#b71c1c',
+        },
+        grey: {
+          main: '#bdbdbd',
+        },
+        white: {
+          main: '#ffffff',
+        },
+        black: {
+          main: '#000000',
+        },
+        transparent: {
+          main: '#00000000',
+        },
+      },
+      typography: {
+        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      },
+    }));
 
 export const PSAWizard = ({ }) => {
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
@@ -31,7 +66,7 @@ export const PSAWizard = ({ }) => {
     const [multipleResultFlag, setMultipleResultFlag] = useState(false);
 
     const appDetails = {
-        vegspec: { text: "Vegspec App", url: "https://vegspec.org", reason: "if you want solutions based on NRCS conservation practices" },
+        vegspec: { text: "Vegspec App", url: "https://vegspec.org", reason: "If you want solutions based on NRCS conservation practices" },
         selector: { text: "Cover Crop Selector App", url: "https://covercrop-selector.org", reason: "If you want help selecting a species for planting" },
         seedcalc: { text: "Seed Rate Calculator App", url: "https://covercrop-seedcalc.org/", reason: "If you want help choosing a seeding rate for your cover crops" },
         ncalc: { text: "Nitrogen Calculator App", url: "https://covercrop-ncalc.org", reason: "If you want an extimate of the nitrogen released from your cover crops" },
@@ -39,8 +74,6 @@ export const PSAWizard = ({ }) => {
     };
 
     const handleStart = () => setShowQuestionnaire(true);
-
-    const theme = useTheme();
 
     useEffect(() => {
         handleFinish();
@@ -167,9 +200,9 @@ export const PSAWizard = ({ }) => {
                             onClick={handleStart}
                             buttonType=""
                             sx={{
-                                background: "#598444",
+                                background: theme.palette.primary.main,
                                 "&:hover": {
-                                    background: "#466734",
+                                    background: theme.palette.primary.second,
                                 },
                             }}
                             title={(
@@ -192,27 +225,11 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant={answers[currentQuestionIndex] === 'yes' ? "contained" : "outlined"}
                                     onClick={() => handleAnswer('yes')}
-                                    startIcon={<CheckCircleIcon color={answers[currentQuestionIndex] === 'yes' ? "" : "#1976d2"} />}
-                                    buttonType=""
-                                    sx={{
-                                        background: answers[currentQuestionIndex] === 'yes' ? "#1976d2" : "",
-                                        border: "2px solid #959393ff",
-                                        "&:hover": {
-                                            background: answers[currentQuestionIndex] === 'yes' ? "#115293" : "",
-                                            border: "2px solid #000000",
-                                        },
-                                        "&:focus": {
-                                            outline: "none",
-                                            boxShadow: "none",
-                                            border: "2px solid #959393ff",
-                                            "&:focus-visible": {
-                                                outline: "none",
-                                                boxShadow: "none",
-                                            }
-                                        }
-                                    }}
+                                    startIcon={<CheckCircleIcon color={answers[currentQuestionIndex] === 'yes' ? "" : theme.palette.secondary.main} />}
+                                    buttonType="Yes"
+                                    selected={answers[currentQuestionIndex] === 'yes'}
                                     title={(
-                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'yes' ? "" : "#1976d2"} sx={{ fontWeight: 'bold' }}>
+                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'yes' ? "" : theme.palette.secondary.main} sx={{ fontWeight: 'bold' }}>
                                             Yes
                                         </Typography>
                                     )}
@@ -220,64 +237,23 @@ export const PSAWizard = ({ }) => {
                                 <PSAButton
                                     variant={answers[currentQuestionIndex] === 'no' ? "contained" : "outlined"}
                                     onClick={() => handleAnswer('no')}
-                                    startIcon={<CancelIcon sx={{ color: answers[currentQuestionIndex] === 'no' ? "" : "#d32f2f" }} />}
-                                    buttonType=""
-                                    sx={{
-                                        background: answers[currentQuestionIndex] === 'no' ? "#d32f2f" : "",
-                                        border: "2px solid #959393ff",
-                                        "&:hover": {
-                                            background: answers[currentQuestionIndex] === 'no' ? "#b71c1c" : "",
-                                            border: "2px solid #000000",
-                                        },
-                                        "&:focus": {
-                                            outline: "none",
-                                            boxShadow: "none",
-                                            border: "2px solid #959393ff",
-                                            "&:focus-visible": {
-                                                outline: "none",
-                                                boxShadow: "none",
-                                            }
-                                        }
-                                    }}
+                                    startIcon={<CancelIcon sx={{ color: answers[currentQuestionIndex] === 'no' ? "" : theme.palette.red.main }} />}
+                                    buttonType="No"
+                                    selected={answers[currentQuestionIndex] === 'no'}
                                     title={(
-                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : "#d32f2f"} sx={{ fontWeight: 'bold' }}>
+                                        <Typography variant="body2" color={answers[currentQuestionIndex] === 'no' ? "white" : theme.palette.red.main} sx={{ fontWeight: 'bold' }}>
                                             No
                                         </Typography>
                                     )}
                                 />
                             </Stack>
                             <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-                                <PSAFigmaButton
-                                    variant="color"
-                                    text="BACK"
+                                <PSAButton
+                                    variant="contained"
+                                    title="Back"
                                     onClick={handleBack}
-                                    leftIcon
-                                    icon={<ArrowBackIcon />}
-                                    buttonSx={{
-                                        background: "#598444",
-                                        border: "2px solid #598444",
-                                        "&:hover": {
-                                            background: "#466734",
-                                            border: "2px solid #466734",
-                                            boxShadow: "0 0 0 2px #466734",
-                                        },
-                                        ".MuiButton-icon": {
-                                            margin: "-0.2rem",
-                                            color: "#fff",
-                                        },
-                                        ".MuiTypography-root": {
-                                            fontSize: "1rem",
-                                            color: "#fff",
-                                        },
-                                        "&:focus": {
-                                            outline: "none",
-                                            boxShadow: "none",
-                                        },
-                                        "&:hover:focus": {
-                                            border: "3px solid #466734",
-                                            background: "#466734",
-                                        },
-                                    }}
+                                    startIcon={<ArrowBackIcon />}
+                                    buttonType="Back"
                                 />
                             </Box>
                         </CardContent>
@@ -303,16 +279,16 @@ export const PSAWizard = ({ }) => {
                                     </Typography>
                                 )}
                                 {result.text && (<Link href={result.url} target="_blank" sx={{
-                                    color: '#1976d2',
+                                    color: theme.palette.secondary.main,
                                     textDecoration: 'none',
                                     '&:hover': {
                                         textDecoration: 'underline',
-                                        color: '#115293',
+                                        color: theme.palette.secondary.second,
                                     },
                                 }}>
                                     <Typography {...styles.resultName} sx={{
-                                        cursor: 'pointer', color: '#598444', '&:hover': {
-                                            color: '#115293',
+                                        cursor: 'pointer', color: theme.palette.primary.main, '&:hover': {
+                                            color: theme.palette.secondary.second,
                                         },
                                     }}>
                                         {result.text}
@@ -320,7 +296,7 @@ export const PSAWizard = ({ }) => {
                                 </Link>)}
 
                                 {!result.text && (
-                                    <Typography {...styles.resultName} sx={{ color: '#598444' }}>
+                                    <Typography {...styles.resultName} sx={{ color: theme.palette.primary.main }}>
                                         No any app matches your criteria
                                     </Typography>
                                 )}
@@ -362,8 +338,8 @@ export const PSAWizard = ({ }) => {
                                                             <Box sx={{ width: 170 }}>
                                                                 <Link key={app} href={appData.url} target="_blank" underline="hover">
                                                                     <Typography variant="body2" sx={{
-                                                                        color: '#598444', '&:hover': {
-                                                                            color: '#115293',
+                                                                        color: theme.palette.primary.main, '&:hover': {
+                                                                            color: theme.palette.secondary.second,
                                                                         }, cursor: 'pointer'
                                                                     }}>
                                                                         {appData.text}
@@ -388,9 +364,9 @@ export const PSAWizard = ({ }) => {
                                     onClick={resetQuestionnaire}
                                     buttonType=""
                                     sx={{
-                                        background: "#598444",
+                                        background: theme.palette.primary.main,
                                         "&:hover": {
-                                            background: "#466734",
+                                            background: theme.palette.primary.second,
                                         },
                                     }}
                                     title={(

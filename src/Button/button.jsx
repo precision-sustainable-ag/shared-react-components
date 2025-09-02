@@ -71,6 +71,64 @@ const StyledButton = styled(Button, {
       color: selected ? "white" : "#5C8136",
     },
   }),
+  ...(buttonType === "Yes" && {
+    background: selected ? "#1976d2" : "",
+    border: "2px solid #959393ff",
+    "&:hover": {
+      background: selected ? "#115293" : "",
+      border: "2px solid #000000",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+      border: "2px solid #959393ff",
+      "&:focus-visible": {
+        outline: "none",
+        boxShadow: "none",
+      }
+    }
+  }),
+  ...(buttonType === "No" && {
+    background: selected ? "#d32f2f" : "",
+    border: "2px solid #959393ff",
+    "&:hover": {
+      background: selected ? "#b71c1c" : "",
+      border: "2px solid #000000",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+      border: "2px solid #959393ff",
+      "&:focus-visible": {
+        outline: "none",
+        boxShadow: "none",
+      }
+    }
+  }),
+  ...(buttonType === "Back" && {
+    background: "#598444",
+    border: "2px solid #598444",
+    "&:hover": {
+      background: "#466734",
+      border: "2px solid #466734",
+      boxShadow: "0 0 0 2px #466734",
+    },
+    ".MuiButton-icon": {
+      color: "#fff",
+    },
+    ".MuiTypography-root": {
+      fontSize: "1rem",
+      color: "#fff",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:hover:focus": {
+      border: "3px solid #466734",
+      background: "#466734",
+    },
+  }),
   minWidth: "24px",
   minHeight: "24px",
   "&.Mui-disabled": {
@@ -84,7 +142,7 @@ export const PSAButton = ({
   hoverText,
   selected = false,
   transparent = false,
-  onClick = () => {},
+  onClick = () => { },
   ...props
 }) => {
   return (
@@ -117,6 +175,9 @@ PSAButton.propTypes = {
     "ValuesChanged",
     "ModalLink",
     "ToggleOptions",
+    "Yes",
+    "No",
+    "Back",
     "",
   ]),
 
