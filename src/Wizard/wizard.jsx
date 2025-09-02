@@ -13,6 +13,7 @@ import {
     CheckCircle as CheckCircleIcon,
     Cancel as CancelIcon,
     ArrowBack as ArrowBackIcon,
+    ArrowForward as ArrowForwardIcon,
 } from '@mui/icons-material';
 import { styles } from './styles/landingStyles';
 import PSAButton from '../Button';
@@ -22,38 +23,38 @@ import { createTheme } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 
 const theme = createTheme(
-  deepmerge(PSATheme,
-    {
-      palette: {
-        primary: {
-          main: '#598444',
-          second: '#466734',
-        },
-        secondary: {
-          main: '#1976d2',
-          second: '#115293',
-        },
-        red: {
-          main: '#d32f2f',
-          second: '#b71c1c',
-        },
-        grey: {
-          main: '#bdbdbd',
-        },
-        white: {
-          main: '#ffffff',
-        },
-        black: {
-          main: '#000000',
-        },
-        transparent: {
-          main: '#00000000',
-        },
-      },
-      typography: {
-        fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-      },
-    }));
+    deepmerge(PSATheme,
+        {
+            palette: {
+                primary: {
+                    main: '#598444',
+                    second: '#466734',
+                },
+                secondary: {
+                    main: '#1976d2',
+                    second: '#115293',
+                },
+                red: {
+                    main: '#d32f2f',
+                    second: '#b71c1c',
+                },
+                grey: {
+                    main: '#bdbdbd',
+                },
+                white: {
+                    main: '#ffffff',
+                },
+                black: {
+                    main: '#000000',
+                },
+                transparent: {
+                    main: '#00000000',
+                },
+            },
+            typography: {
+                fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            },
+        }));
 
 export const PSAWizard = ({ }) => {
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
@@ -247,7 +248,7 @@ export const PSAWizard = ({ }) => {
                                     )}
                                 />
                             </Stack>
-                            <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                            <Stack {...styles.navStack()}>
                                 <PSAButton
                                     variant="contained"
                                     title="Back"
@@ -255,7 +256,15 @@ export const PSAWizard = ({ }) => {
                                     startIcon={<ArrowBackIcon />}
                                     buttonType="Back"
                                 />
-                            </Box>
+                                <PSAButton
+                                    variant="contained"
+                                    title="Next"
+                                    onClick={handleNext}
+                                    endIcon={<ArrowForwardIcon />}
+                                    buttonType="Next"
+                                    disabled={answers[currentQuestionIndex] === undefined}
+                                />
+                            </Stack>
                         </CardContent>
                     </Card>
                 )}

@@ -16,7 +16,7 @@ const pillBackgroundColor = (selected, transparent) => {
 // Use MUI's styled system to define the button styles
 const StyledButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== "buttonType" && prop !== "transparent",
-})(({ buttonType, selected, transparent }) => ({
+})(({ buttonType, selected, disabled, transparent }) => ({
   ...(buttonType === "LightButton" && {
     backgroundColor: "#e3f2f4",
     borderRadius: "200px",
@@ -91,9 +91,13 @@ const StyledButton = styled(Button, {
   ...(buttonType === "No" && {
     background: selected ? "#d32f2f" : "",
     border: "2px solid #959393ff",
+    color: selected ? "#fff" : "#d32f2f",
     "&:hover": {
       background: selected ? "#b71c1c" : "",
       border: "2px solid #000000",
+    },
+     ".MuiButton-icon": {
+      color: !selected ? "#b71c1c" : "",
     },
     "&:focus": {
       outline: "none",
@@ -108,6 +112,7 @@ const StyledButton = styled(Button, {
   ...(buttonType === "Back" && {
     background: "#598444",
     border: "2px solid #598444",
+    color: "#fff",
     "&:hover": {
       background: "#466734",
       border: "2px solid #466734",
@@ -120,12 +125,37 @@ const StyledButton = styled(Button, {
       fontSize: "1rem",
       color: "#fff",
     },
+    "&:hover:focus": {
+      border: "2px solid #466734",
+      background: "#466734",
+    },
+  }),
+  ...(buttonType === "Next" && {
+    background: "#598444",
+    border: "2px solid #598444",
+    color: "#fff",
+    "&:disabled": {
+      background: "#bdbdbd",
+      border: "1px solid #000000",
+    },
+    "&:hover": {
+      background: "#466734",
+      border: "2px solid #466734",
+      boxShadow: "0 0 0 2px #466734",
+    },
+    ".MuiButton-icon": {
+      color: disabled ? "#000" : "#fff",
+    },
+    ".MuiTypography-root": {
+      fontSize: "1rem",
+      color: disabled ? "#000" : "#fff",
+    },
     "&:focus": {
       outline: "none",
       boxShadow: "none",
     },
     "&:hover:focus": {
-      border: "3px solid #466734",
+      border: "2px solid #466734",
       background: "#466734",
     },
   }),
@@ -178,6 +208,7 @@ PSAButton.propTypes = {
     "Yes",
     "No",
     "Back",
+    "Next",
     "",
   ]),
 

@@ -3,6 +3,7 @@ import { PSAButton } from "./button";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const meta = {
   title: "Inputs/Button",
@@ -65,4 +66,11 @@ Back.args = {
   title: "Back",
   buttonType: "Back",
   startIcon: <ArrowBackIcon/>,
+};
+
+export const Next = Template.bind({});
+Next.args = {
+  title: "Next",
+  buttonType: "Next",
+  endIcon: <ArrowForwardIcon/>,
 };

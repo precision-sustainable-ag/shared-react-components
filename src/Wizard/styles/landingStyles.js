@@ -156,7 +156,7 @@ export const styles = {
         direction: 'row',
         justifyContent: 'space-between',
         sx: {
-            mt: 4
+            mt: 10
         }
     }),
     resultStack: () => ({
