@@ -145,7 +145,6 @@ const StyledButton = styled(Button, {
     "&:hover": {
       background: "#466734",
       border: "2px solid #466734",
-      boxShadow: "0 0 0 2px #466734",
     },
     ".MuiButton-icon": {
       color: disabled ? "#000" : "#fff",
