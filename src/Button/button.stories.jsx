@@ -1,5 +1,7 @@
 import React from "react";
 import { PSAButton } from "./button";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const meta = {
   title: "Inputs/Button",
@@ -40,5 +42,21 @@ export const ToggleOptions = Template.bind({});
 ToggleOptions.args = {
   title: "Toggle Options",
   buttonType: "ToggleOptions",
+  selected: true,
+};
+
+export const Yes = Template.bind({});
+Yes.args = {
+  title: "Yes",
+  buttonType: "Yes",
+  startIcon: <CheckCircleIcon color="#49a8ab" />,
+  selected: true,
+};
+
+export const No = Template.bind({});
+No.args = {
+  title: "No",
+  buttonType: "No",
+  startIcon: <CancelIcon color="#d32f2f" />,
   selected: true,
 };

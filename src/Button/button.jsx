@@ -71,6 +71,38 @@ const StyledButton = styled(Button, {
       color: selected ? "white" : "#5C8136",
     },
   }),
+  ...(buttonType === "Yes" && {
+    border: "2px solid #959393ff",
+    "&:hover": {
+      background: selected ? "#115293" : "",
+      border: "2px solid #000000",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+      border: "2px solid #959393ff",
+      "&:focus-visible": {
+        outline: "none",
+        boxShadow: "none",
+      }
+    }
+  }),
+  ...(buttonType === "No" && {
+    border: "2px solid #959393ff",
+    "&:hover": {
+      background: selected ? "#b71c1c" : "",
+      border: "2px solid #000000",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+      border: "2px solid #959393ff",
+      "&:focus-visible": {
+        outline: "none",
+        boxShadow: "none",
+      }
+    }
+  }),
   minWidth: "24px",
   minHeight: "24px",
   "&.Mui-disabled": {
@@ -84,7 +116,7 @@ export const PSAButton = ({
   hoverText,
   selected = false,
   transparent = false,
-  onClick = () => {},
+  onClick = () => { },
   ...props
 }) => {
   return (
@@ -117,6 +149,7 @@ PSAButton.propTypes = {
     "ValuesChanged",
     "ModalLink",
     "ToggleOptions",
+    "Yes",
     "",
   ]),
 
