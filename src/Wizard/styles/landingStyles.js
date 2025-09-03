@@ -21,7 +21,6 @@ export const styles = {
             p: 5,
             marginTop: -20,
             marginLeft: 10,
-            marginRight: 10,
             backgroundColor: '#fff',
             borderRadius: 3,
         },
@@ -33,8 +32,6 @@ export const styles = {
             height: 400,
             width: 800,
             p: 2,
-            m: -5,
-            paddingRight: 6,
             backgroundColor: 'transparent',
             borderRadius: 3,
         },
@@ -152,7 +149,7 @@ export const styles = {
         justifyContent: 'center',
         sx: {
             my: 3,
-            width: 800,
+            width: 735,
         }
     }),
     navStack: () => ({
@@ -160,7 +157,7 @@ export const styles = {
         justifyContent: 'space-between',
         sx: {
             mt: 10,
-            width: 800,
+            width: 735,
         }
     }),
     resultStack: () => ({
