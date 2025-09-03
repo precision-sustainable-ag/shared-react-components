@@ -149,7 +149,7 @@ export const styles = {
         justifyContent: 'center',
         sx: {
             my: 3,
-            width: 700,
+            width: 650,
         }
     }),
     navStack: () => ({
@@ -157,7 +157,7 @@ export const styles = {
         justifyContent: 'space-between',
         sx: {
             mt: 10,
-            width: 700,
+            width: 650,
         }
     }),
     resultStack: () => ({
