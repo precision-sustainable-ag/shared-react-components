@@ -30,12 +30,11 @@ export const styles = {
     questionCard: {
         sx: {
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             height: 400,
             width: 800,
             p: 2,
             m: -5,
+            paddingRight: 6,
             backgroundColor: 'transparent',
             borderRadius: 3,
         },
@@ -99,7 +98,10 @@ export const styles = {
     },
     questionText: {
         variant: 'h6',
-        paragraph: true
+        paragraph: true,
+        sx: {
+            textAlign: "center",
+        },
     },
     yesButton: (selected) => ({
         variant: selected ? 'contained' : 'outlined',
@@ -149,14 +151,16 @@ export const styles = {
         spacing: 2,
         justifyContent: 'center',
         sx: {
-            my: 3
+            my: 3,
+            width: 800,
         }
     }),
     navStack: () => ({
         direction: 'row',
         justifyContent: 'space-between',
         sx: {
-            mt: 10
+            mt: 10,
+            width: 800,
         }
     }),
     resultStack: () => ({

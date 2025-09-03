@@ -58,7 +58,7 @@ const theme = createTheme(
 
 export const PSAWizard = ({ }) => {
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
     const [result, setResult] = useState(null);
     const [showResult, setShowResult] = useState(false);
@@ -109,7 +109,7 @@ export const PSAWizard = ({ }) => {
 
     const resetQuestionnaire = () => {
         setShowQuestionnaire(false);
-        setCurrentQuestionIndex(-1);
+        setCurrentQuestionIndex(0);
         setAnswers({});
         setShowResult(false);
     };
@@ -175,7 +175,8 @@ export const PSAWizard = ({ }) => {
             setShowResult(true);
         }
         else {
-            handleNext();
+            if(answers[currentQuestionIndex] !== undefined)
+                handleNext();
         }
     };
 
