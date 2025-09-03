@@ -158,7 +158,7 @@ export const styles = {
         sx: {
             mt: 10,
             width: '750px',
-            marginRight: '10px'
+            paddingRight: '10px'
         }
     }),
     resultStack: () => ({
