@@ -21,7 +21,6 @@ export const styles = {
             p: '5px',
             marginTop: -20,
             marginLeft: 10,
-            marginRight: 10,
             backgroundColor: '#fff',
             borderRadius: 3,
         },
@@ -159,6 +158,7 @@ export const styles = {
         sx: {
             mt: 10,
             width: '750px',
+            marginRight: '10px'
         }
     }),
     resultStack: () => ({
