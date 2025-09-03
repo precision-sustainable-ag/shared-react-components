@@ -17,8 +17,8 @@ export const styles = {
             justifyContent: 'center',
             alignItems: 'center',
             height: 400,
-            width: 800,
-            p: 5,
+            width: '800px',
+            p: '5px',
             marginTop: -20,
             marginLeft: 10,
             backgroundColor: '#fff',
@@ -30,8 +30,8 @@ export const styles = {
         sx: {
             display: 'flex',
             height: 400,
-            width: 800,
-            p: 2,
+            width: '790px',
+            p: '10px',
             backgroundColor: 'transparent',
             borderRadius: 3,
         },
@@ -42,7 +42,7 @@ export const styles = {
             justifyContent: 'center',
             alignItems: 'center',
             height: 650,
-            width: 800,
+            width: '800px',
             overflowY: 'auto',
             marginX: -5,
             marginTop: 15,
@@ -149,7 +149,7 @@ export const styles = {
         justifyContent: 'center',
         sx: {
             my: 3,
-            width: 650,
+            width: '750px',
         }
     }),
     navStack: () => ({
@@ -157,7 +157,7 @@ export const styles = {
         justifyContent: 'space-between',
         sx: {
             mt: 10,
-            width: 650,
+            width: '750px',
         }
     }),
     resultStack: () => ({
