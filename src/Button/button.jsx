@@ -78,6 +78,9 @@ const StyledButton = styled(Button, {
       background: selected ? "#115293" : "",
       border: "2px solid #000000",
     },
+    ".MuiButton-icon": {
+      color: !selected ? "#1976d2" : "",
+    },
     "&:focus": {
       outline: "none",
       boxShadow: "none",
