@@ -33,3 +33,4 @@ export { ReduxMap as PSAReduxMap } from "./ReduxMap/index";
 export { RegionSelectorMap as PSARegionSelectorMap } from "./ReduxMap/index";
 export { PSAInfoSheet, PSAInfoSheetAttributeBox } from "./InfoSheet/index";
 export { default as PSATagItem } from "./Tagitem/index";
+export { PSAWizard } from "./Wizard/index";
