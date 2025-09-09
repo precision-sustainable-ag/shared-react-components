@@ -54,3 +54,46 @@
   font-size: x-large;
   font-weight: 600;
 }
+
+.opacityslider {
+  background-color: #eee;
+  border-radius: 15px;
+  z-index: 2;
+  height: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  transform: scaleY(0.6) scaleX(0.8) rotate(-90deg) translate(100px, -90px);
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+}
+
+.rasterlegend {
+  background-color: #eee;
+  border-radius: 5px;
+  z-index: 2;
+  font-size: 10px;
+  padding: 5px;
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+}
+
+.rasterlegendcolor {
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.rasterlegenditem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.rasterlegendvalue {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
