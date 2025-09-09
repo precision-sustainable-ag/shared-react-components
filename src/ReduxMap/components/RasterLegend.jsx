@@ -1,6 +1,16 @@
 import React from 'react';
 import styles from '../assets/styles/map.module.scss';
 
+/**
+ * Displays a color legend and an opacity slider for raster data rendered on a Mapbox map.
+ * 
+ * @component
+ * @param {Object} props - The component properties
+ * @param {Object} props.map - The Mapbox map instance
+ * @param {Array<[number, string]>} props.colorStops - Array of value/color pairs for the raster legend.
+ * @param {string} [props.unit] - Unit of the raster values displayed in the legend.
+ * @param {string} [props.material] - Name of the raster material (used as the source/layer ID in Mapbox).
+ */
 const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' }) => {
   const [opacityValue, setOpacityValue] = React.useState(50);
 

@@ -804,6 +804,22 @@ ReduxMap.propTypes = {
    */
   fitBounds: PropTypes.bool,
   /**
+   * Initial raster object containing the raster data and bounding box.
+   */
+  initRasterObject: PropTypes.object,
+  /**
+   * Color scale range used to map raster values to colors.
+   */
+  rasterColors: PropTypes.array,
+  /**
+   * Unit of the raster values.
+   */
+  unit: PropTypes.string,
+  /**
+   * Name of the raster material
+   */
+  material: PropTypes.string,
+  /**
    * Mapbox API access token.
    */
   mapboxToken: PropTypes.string,

@@ -3,6 +3,17 @@ import turf from "turf";
 import chroma from "chroma-js";
 import mapboxgl from "mapbox-gl";
 
+/**
+ * Custom hook to process raster data as a colored grid on a Mapbox map.
+ *
+ * @param {Object} params - Configuration options for the hook.
+ * @param {React.RefObject} params.map - Reference to the Mapbox map instance.
+ * @param {Object} [params.initRasterObject] - Initial raster object containing the raster data and bounding box.
+ * @param {string[]} [params.rasterColors] - Color scale range used to map raster values to colors.
+ * @param {string} [params.unit] - Unit of the raster values.
+ * @param {string} [params.material] - Name of the raster material (used as the source/layer ID in Mapbox).
+ * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
+ */
 const useRasterData = ({
   map,
   initRasterObject = {},
