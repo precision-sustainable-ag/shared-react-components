@@ -18,12 +18,14 @@ import useMapMarker from "./hooks/useMapMarker";
 import useMapGeocoder from "./hooks/useMapGeocoder";
 import useElevation from "./hooks/useElevation";
 import useMapGeolocate from "./hooks/useMapGeolocate";
+import useRasterData from "./hooks/useRasterData";
 
 import { CustomControl } from './components/map-controls/CustomControl';
 import { ImportShapeControl } from './components/map-controls/ImportShapeControl';
 import { FreehandDrawControl } from './components/map-controls/FreehandDrawControl';
 import HelpModal from "./components/HelpModal";
 import CoordBar from "./components/CoordBar";
+import RasterLegend from "./components/RasterLegend";
 
 import helpIcon from './assets/icons/help.png';
 
@@ -100,6 +102,11 @@ const ReduxMap = ({
   touchZoomRotate = true,
   fitMapToPolygons = false,
   fitBounds = false,
+  initRasterObject = {},
+  rasterColors,
+  unit,
+  material,
+  color_steps,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -130,6 +137,7 @@ const ReduxMap = ({
   const [dragging, setDragging] = useState(false);
   const [newPolygon, setNewPolygon] = useState(false);
   const [isMapSupported, setIsMapSupported] = useState(true);
+  const [rasterColorSteps, setRasterColorSteps] = useState([]);
 
   const map = useRef();
   const mapContainer = useRef();
@@ -538,6 +546,16 @@ const ReduxMap = ({
     setElevation,
   });
 
+  useRasterData({
+    map,
+    initRasterObject,
+    rasterColors,
+    unit,
+    material,
+    setRasterColorSteps,
+    color_steps,
+  })
+
   if (!isMapSupported) {
     return (
       <div 
@@ -593,6 +611,9 @@ const ReduxMap = ({
           showZoom={showZoom}
           zoom={zoom}
         />
+      )}
+      {rasterColorSteps && rasterColorSteps.length > 0 && (
+        <RasterLegend map={map} colorStops={rasterColorSteps} unit={unit} material={material} />
       )}
     </div>
   );
@@ -784,6 +805,26 @@ ReduxMap.propTypes = {
    * Automatically fit map to bounds.
    */
   fitBounds: PropTypes.bool,
+  /**
+   * Initial raster object containing the raster data and bounding box.
+   */
+  initRasterObject: PropTypes.object,
+  /**
+   * Color scale range used to map raster values to colors.
+   */
+  rasterColors: PropTypes.array,
+  /**
+   * Unit of the raster values.
+   */
+  unit: PropTypes.string,
+  /**
+   * Name of the raster material
+   */
+  material: PropTypes.string,
+  /**
+   * Number of steps in the map legend
+   */
+  color_steps: PropTypes.number,
   /**
    * Mapbox API access token.
    */

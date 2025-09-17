@@ -3,6 +3,7 @@ import { fn } from "@storybook/test";
 import ReduxMap from "./reduxmap";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import initRasterObject from "./data/sample-raster-data-response.json";
 
 const mockStore = configureStore({
   reducer: () => ({
@@ -129,5 +130,28 @@ export const MapWithAllFeatures = {
     hasHelp: true,
     fitBounds: true,
     mapboxToken: mapboxToken,
+  },
+};
+
+export const MapWithRasterLayer = {
+  args: {
+    setProperties: fn(),
+    setFeatures: fn(),
+    initWidth: "900px",
+    initHeight: "400px",
+    initLat: 39.023,
+    initLon: -76.913,
+    initStartZoom: 14,
+    hasMarker: true,
+    hasMarkerPopup: true,
+    hasMarkerMovable: true,
+    hasFullScreen: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    initRasterObject: initRasterObject,
+    rasterColors: ["red", "white", "green"],
+    unit: "kg/ha",
+    material: "biomass",
+    color_steps: 5
   },
 };
