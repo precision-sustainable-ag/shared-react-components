@@ -106,6 +106,7 @@ const ReduxMap = ({
   rasterColors,
   unit,
   material,
+  color_steps,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -551,7 +552,8 @@ const ReduxMap = ({
     rasterColors,
     unit,
     material,
-    setRasterColorSteps
+    setRasterColorSteps,
+    color_steps,
   })
 
   if (!isMapSupported) {
@@ -819,6 +821,10 @@ ReduxMap.propTypes = {
    * Name of the raster material
    */
   material: PropTypes.string,
+  /**
+   * Number of steps in the map legend
+   */
+  color_steps: PropTypes.number,
   /**
    * Mapbox API access token.
    */

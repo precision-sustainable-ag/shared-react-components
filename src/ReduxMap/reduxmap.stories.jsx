@@ -4,6 +4,7 @@ import ReduxMap from "./reduxmap";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import initRasterObject from "./data/sample-raster-data-response.json";
+import rasterDataObject from "./data/raster_data.json";
 
 const mockStore = configureStore({
   reducer: () => ({
@@ -151,6 +152,7 @@ export const MapWithRasterLayer = {
     initRasterObject: initRasterObject,
     rasterColors: ["red", "white", "green"],
     unit: "kg/ha",
-    material: "biomass"
+    material: "biomass",
+    color_steps: 5
   },
 };

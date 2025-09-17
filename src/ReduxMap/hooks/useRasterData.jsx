@@ -8,11 +8,12 @@ import mapboxgl from "mapbox-gl";
  *
  * @param {Object} params - Configuration options for the hook.
  * @param {React.RefObject} params.map - Reference to the Mapbox map instance.
- * @param {Object} [params.initRasterObject] - Initial raster object containing the raster data and bounding box.
- * @param {string[]} [params.rasterColors] - Color scale range used to map raster values to colors.
- * @param {string} [params.unit] - Unit of the raster values.
- * @param {string} [params.material] - Name of the raster material (used as the source/layer ID in Mapbox).
+ * @param {Object} params.initRasterObject - Initial raster object containing the raster data and bounding box.
+ * @param {string[]} params.rasterColors - Color scale range used to map raster values to colors.
+ * @param {string} params.unit - Unit of the raster values.
+ * @param {string} params.material - Name of the raster material (used as the source/layer ID in Mapbox).
  * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
+ * @param {number} params.color_steps - Number of steps in the map legend.
  */
 const useRasterData = ({
   map,
@@ -21,8 +22,8 @@ const useRasterData = ({
   unit = "kg/ha",
   material = "biomass",
   setRasterColorSteps,
+  color_steps = 7,
 }) => {
-  const NR_COLOR_STEPS = 7;
 
   const polygonsRef = useRef(turf.featureCollection([]));
 
@@ -118,7 +119,7 @@ const useRasterData = ({
 
       // Setting up the color legend
       var colorValues = [];
-      const step = (biomassMax - biomassMin) / (NR_COLOR_STEPS - 1);
+      const step = (biomassMax - biomassMin) / (color_steps - 1);
       for (var i = biomassMin; i <= biomassMax; i = i + step) {
         colorValues.push(Math.round(i / 10, 0) * 10);
       }
