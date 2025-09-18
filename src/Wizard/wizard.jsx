@@ -56,7 +56,7 @@ const theme = createTheme(
             },
         }));
 
-export const PSAWizard = ({ }) => {
+export const PSAWizard = ({ onFinish }) => {
     const [showQuestionnaire, setShowQuestionnaire] = useState(false);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [answers, setAnswers] = useState({});
@@ -67,11 +67,11 @@ export const PSAWizard = ({ }) => {
     const [multipleResultFlag, setMultipleResultFlag] = useState(false);
 
     const appDetails = {
-        vegspec: { text: "Vegspec App", url: "https://vegspec.org", reason: "If you want solutions based on NRCS conservation practices" },
-        selector: { text: "Cover Crop Selector App", url: "https://covercrop-selector.org", reason: "If you want help selecting a species for planting" },
-        seedcalc: { text: "Seed Rate Calculator App", url: "https://covercrop-seedcalc.org/", reason: "If you want help choosing a seeding rate for your cover crops" },
-        ncalc: { text: "Nitrogen Calculator App", url: "https://covercrop-ncalc.org", reason: "If you want an extimate of the nitrogen released from your cover crops" },
-        econ: { text: "Cover Crop Economic App", url: "https://covercrop-econ.org", reason: "If you want to learn about your cover crops economics" },
+        vegspec: { text: "VegSpec", url: "https://vegspec.org", reason: "If you want solutions based on NRCS conservation practices" },
+        selector: { text: "Cover Crop Selector", url: "https://covercrop-selector.org", reason: "If you want help selecting a species for planting" },
+        seedcalc: { text: "Seed Rate Calculator", url: "https://covercrop-seedcalc.org/", reason: "If you want help choosing a seeding rate for your cover crops" },
+        ncalc: { text: "Cover Crop Nitrogen Calculator", url: "https://covercrop-ncalc.org", reason: "If you want an estimate of the nitrogen released from your cover crops" },
+        econ: { text: "Cover Crop Economic", url: "https://covercrop-econ.org", reason: "If you want to learn about your cover crops economics" },
     };
 
     const handleStart = () => setShowQuestionnaire(true);
@@ -173,9 +173,13 @@ export const PSAWizard = ({ }) => {
         setAllResults(resultObj.all.filter(app => app !== resultObj.prioritized));
         if (resultObj.prioritized || currentQuestionIndex === questions.length - 1) {
             setShowResult(true);
+            if (onFinish) {
+                onFinish(resultObj.display.url);
+            }
+
         }
         else {
-            if(answers[currentQuestionIndex] !== undefined)
+            if (answers[currentQuestionIndex] !== undefined)
                 handleNext();
         }
     };
@@ -185,16 +189,14 @@ export const PSAWizard = ({ }) => {
             <Box {...styles.box}>
                 {!showQuestionnaire && !showResult && (
                     <Stack {...styles.welcomeStack()}>
-                        <Typography {...styles.title}>Welcome to Wizard Application</Typography>
+                        <Typography {...styles.title}>Welcome to the DST Wizard</Typography>
                         <Divider sx={{ width: '100%' }} />
                         <Box sx={styles.descriptionBox}>
                             <Typography {...styles.subtitle}>
-                                Find the Perfect DST App for Your Needs
+                                Looking for the right Decision Support Tool (DST)?
                             </Typography>
                             <Typography {...styles.bodyText}>
-                                DST Wizard helps you discover the best application based on your
-                                preferences and requirements. Answer a few simple questions and
-                                we'll recommend the perfect DST app solution for you.
+                                We will guide you through a few quick questions to match you with the best web-based tool for your goals.
                             </Typography>
                         </Box>
                         <PSAButton
@@ -275,7 +277,7 @@ export const PSAWizard = ({ }) => {
                         <CardContent>
                             <Stack {...styles.resultStack()}>
                                 <Typography {...styles.resultTitle}>
-                                    Your Recommended DST App
+                                    Your Recommended DST
                                 </Typography>
                                 <Divider sx={{ width: '100%' }} />
                                 {noResultFlag && (
@@ -288,7 +290,7 @@ export const PSAWizard = ({ }) => {
                                         Based on your answers, we recommend:
                                     </Typography>
                                 )}
-                                {result.text && (<Link href={result.url} target="_blank" sx={{
+                                {result.text && (<Link href={result.url} sx={{
                                     color: theme.palette.secondary.main,
                                     textDecoration: 'none',
                                     '&:hover': {
@@ -313,17 +315,17 @@ export const PSAWizard = ({ }) => {
 
                                 {!noResultFlag && (
                                     <Typography {...styles.bodyText}>
-                                        This app best matches your needs and preferences.
+                                        This Decision Support Tool best matches your needs and preferences.
                                     </Typography>
                                 )}
                                 {multipleResultFlag && allResults.length > 0 && (
                                     <>
                                         <Divider sx={{ width: '100%', marginY: 2 }} />
                                         {result.text && (<Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginBottom: 10 }}>
-                                            The other apps we offer are:
+                                            The other DSTs we offer are:
                                         </Typography>)}
                                         {!result.text && (<Typography variant="subtitle1" sx={{ fontWeight: 'bold', marginBottom: 10 }}>
-                                            The apps we offer are:
+                                            The DSTs we offer are:
                                         </Typography>)}
                                         <PSAAccordion
                                             defaultExpanded
@@ -336,8 +338,7 @@ export const PSAWizard = ({ }) => {
                                                         color: "additional.greydark",
                                                     }}
                                                 >
-                                                    {result.text && (<Typography>Other Apps</Typography>)}
-                                                    {!result.text && (<Typography>DST Apps</Typography>)}
+                                                    <Typography>DSTs</Typography>
                                                 </Box>
                                             }
                                             detailsContent={
@@ -345,8 +346,8 @@ export const PSAWizard = ({ }) => {
                                                     {allResults.map(app => {
                                                         const appData = appDetails[app];
                                                         return (<Stack direction="row" spacing={1} sx={{ marginTop: 1, width: '100%' }}>
-                                                            <Box sx={{ width: 170 }}>
-                                                                <Link key={app} href={appData.url} target="_blank" underline="hover">
+                                                            <Box sx={{ width: 200 }}>
+                                                                <Link key={app} href={appData.url} underline="hover">
                                                                     <Typography variant="body2" sx={{
                                                                         color: theme.palette.primary.main, '&:hover': {
                                                                             color: theme.palette.secondary.second,
