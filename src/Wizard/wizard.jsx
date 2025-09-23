@@ -69,7 +69,7 @@ export const PSAWizard = ({ onFinish }) => {
     const appDetails = {
         vegspec: { text: "VegSpec", url: "https://vegspec.org", reason: "If you want solutions based on NRCS conservation practices" },
         selector: { text: "Cover Crop Selector", url: "https://covercrop-selector.org", reason: "If you want help selecting a species for planting" },
-        seedcalc: { text: "Seed Rate Calculator", url: "https://covercrop-seedcalc.org/", reason: "If you want help choosing a seeding rate for your cover crops" },
+        seedcalc: { text: "Seeding Rate Calculator", url: "https://covercrop-seedcalc.org/", reason: "If you want help choosing a seeding rate for your cover crops" },
         ncalc: { text: "Cover Crop Nitrogen Calculator", url: "https://covercrop-ncalc.org", reason: "If you want an estimate of the nitrogen released from your cover crops" },
         econ: { text: "Cover Crop Economic", url: "https://covercrop-econ.org", reason: "If you want to learn about your cover crops economics" },
     };
@@ -309,7 +309,7 @@ export const PSAWizard = ({ onFinish }) => {
 
                                 {!result.text && (
                                     <Typography {...styles.resultName} sx={{ color: theme.palette.primary.main }}>
-                                        No any app matches your criteria
+                                        No DST matches your criteria
                                     </Typography>
                                 )}
 
