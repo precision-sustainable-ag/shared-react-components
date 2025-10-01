@@ -189,12 +189,9 @@ export const PSAWizard = ({ onFinish }) => {
             <Box {...styles.box}>
                 {!showQuestionnaire && !showResult && (
                     <Stack {...styles.welcomeStack()}>
-                        <Typography {...styles.title}>Welcome to the DST Wizard</Typography>
+                        <Typography {...styles.title} >Looking for the right Decision Support Tool (DST)?</Typography>
                         <Divider sx={{ width: '100%' }} />
                         <Box sx={styles.descriptionBox}>
-                            <Typography {...styles.subtitle}>
-                                Looking for the right Decision Support Tool (DST)?
-                            </Typography>
                             <Typography {...styles.bodyText}>
                                 We will guide you through a few quick questions to match you with the best web-based tool for your goals.
                             </Typography>
