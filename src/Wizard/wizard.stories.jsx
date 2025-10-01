@@ -15,8 +15,7 @@ export default {
   },
 };
 
-const Template = (args) => <PSAWizard {...args} />;
-
+const Template = (args) => <PSAWizard {...args} />
 
 // Default story
 export const DefaultWizard = Template.bind({});

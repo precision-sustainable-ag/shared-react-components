@@ -6,7 +6,7 @@ export const styles = {
             justifyContent: 'center',
             alignItems: 'center',
             background: '#fff',
-            height: '100vh',
+            height: '800px',
             width: '100%',
             overflow: 'hidden',
         }
@@ -20,7 +20,6 @@ export const styles = {
             width: '800px',
             p: '5px',
             marginTop: -20,
-            marginLeft: 10,
             backgroundColor: '#fff',
             borderRadius: 3,
         },
@@ -60,7 +59,7 @@ export const styles = {
         spacing: 2
     }),
     title: {
-        variant: 'h3',
+        variant: 'h4',
         component: 'h1'
     },
     descriptionBox: {
