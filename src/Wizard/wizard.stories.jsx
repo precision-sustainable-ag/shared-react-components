@@ -15,17 +15,7 @@ export default {
   },
 };
 
-const Template = (args) => (
-  <div
-    style={{
-      height: "800px",
-      overflow: "auto",
-      boxSizing: "border-box",
-    }}
-  >
-    <PSAWizard {...args} />
-  </div>
-);
+const Template = (args) => <PSAWizard {...args} />
 
 // Default story
 export const DefaultWizard = Template.bind({});

@@ -6,7 +6,7 @@ export const styles = {
             justifyContent: 'center',
             alignItems: 'center',
             background: '#fff',
-            height: '100%',
+            height: '800px',
             width: '100%',
             overflow: 'hidden',
         }
