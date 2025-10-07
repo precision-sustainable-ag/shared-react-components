@@ -4,6 +4,8 @@ import ReduxMap from "./reduxmap";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import initRasterObject from "./data/sample-raster-data-response.json";
+import rasterDataObject from "./data/raster_data.json";
+import mgrs_grid from "./data/mgrs_grid.json"
 
 const mockStore = configureStore({
   reducer: () => ({
@@ -152,6 +154,64 @@ export const MapWithRasterLayer = {
     rasterColors: ["red", "white", "green"],
     unit: "kg/ha",
     material: "biomass",
-    color_steps: 5
+    rasterLayers: [
+      {
+        rasterObject: initRasterObject,
+        colors: ["red", "white", "blue"],
+        unit: "kg/ha",
+        material: "nitrogen",
+      },
+    ],
   },
+};
+
+export const MapWithRasterLayer2 = {
+  args: {
+    setProperties: fn(),
+    setFeatures: fn(),
+    initWidth: "900px",
+    initHeight: "400px",
+    initLat: 39.2585,
+    initLon: -75.6421,
+    initStartZoom: 15.7,
+    hasMarker: true,
+    hasMarkerPopup: true,
+    hasMarkerMovable: true,
+    hasFullScreen: true,
+    showCursorCoords: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    initRasterObject: rasterDataObject,
+    rasterColors: ["red", "white", "green"],
+    unit: "kg/ha",
+    material: "biomass",
+    rasterLayers: [
+      {
+        rasterObject: rasterDataObject,
+        colors: ["yellow", "green"],
+        unit: "kg/ha",
+        material: "biomass",
+      },
+    ],
+  },
+};
+
+export const MapWithRasterLayer3 = {
+  args: {
+    setProperties: fn(),
+    setFeatures: fn(),
+    initWidth: "900px",
+    initHeight: "400px",
+    initLat: 39.2585,
+    initLon: -75.6421,
+    initStartZoom: 15.7,
+    hasMarker: true,
+    hasMarkerPopup: true,
+    hasMarkerMovable: true,
+    hasFullScreen: true,
+    showCursorCoords: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    mgrs_layer: mgrs_grid
+  }
 };

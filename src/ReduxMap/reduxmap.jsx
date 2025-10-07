@@ -19,6 +19,7 @@ import useMapGeocoder from "./hooks/useMapGeocoder";
 import useElevation from "./hooks/useElevation";
 import useMapGeolocate from "./hooks/useMapGeolocate";
 import useRasterData from "./hooks/useRasterData";
+import useMGRSgrid from './hooks/useMGRSgrid';
 
 import { CustomControl } from './components/map-controls/CustomControl';
 import { ImportShapeControl } from './components/map-controls/ImportShapeControl';
@@ -107,6 +108,7 @@ const ReduxMap = ({
   unit,
   material,
   color_steps,
+  mgrs_layer,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -554,6 +556,11 @@ const ReduxMap = ({
     material,
     setRasterColorSteps,
     color_steps,
+  })
+
+  useMGRSgrid({
+    map,
+    layer: mgrs_layer
   })
 
   if (!isMapSupported) {
