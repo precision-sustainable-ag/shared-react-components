@@ -163,9 +163,36 @@ const ReduxMap = ({
       if (source.type === "geojson") {
         const data = { ...source._data };
         const f = data.features || [data];
-        newFeatures.push(
-          ...f.filter((feature) => /Polygon/.test(feature.geometry.type))
-        );
+
+        f.forEach((feature) => {
+          if (/Polygon/.test(feature.geometry.type)) {
+            const cleanedCoords = feature.geometry.coordinates.map((ring) => {
+              
+              // Filter out consecutive duplicates - double clicking a point to close a ploygon creates dupicate coords
+              const deduped = ring.filter((pt, i, arr) => {
+                if (i === 0) return true;
+                return !(pt[0] === arr[i - 1][0] && pt[1] === arr[i - 1][1]);
+              });
+
+              // Make sure the polygon is closed
+              const first = deduped[0];
+              const last = deduped[deduped.length - 1];
+              if (first[0] !== last[0] || first[1] !== last[1]) {
+                deduped.push([...first]);
+              }
+
+              return deduped;
+            });
+
+            newFeatures.push({
+              ...feature,
+              geometry: {
+                ...feature.geometry,
+                coordinates: cleanedCoords,
+              },
+            });
+          };
+        });
       }
     });
 
