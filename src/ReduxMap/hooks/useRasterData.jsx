@@ -8,7 +8,7 @@ import mapboxgl from "mapbox-gl";
  *
  * @param {Object} params - Configuration options for the hook.
  * @param {React.RefObject} params.map - Reference to the Mapbox map instance.
- * @param {Object} params.initRasterObject - Initial raster object containing the raster data and bounding box.
+ * @param {Object} params.initRasterObject - Initial raster object containing the geojson object.
  * @param {string[]} params.rasterColors - Color scale range used to map raster values to colors.
  * @param {string} params.unit - Unit of the raster values.
  * @param {string} params.material - Name of the raster material (used as the source/layer ID in Mapbox).
@@ -26,17 +26,12 @@ const useRasterData = ({
 }) => {
 
   const polygonsRef = useRef(turf.featureCollection([]));
-
-  const [biomassData, setBiomassData] = useState(null);
-  const [bbox, setBbox] = useState(null);
+  const [geojsonData, setGeojsonData] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-  const transpose = (m) => m[0].map((x, i) => m.map((x) => x[i]));
-
   useEffect(() => {
-    if (initRasterObject?.data_array?.length > 0 && !biomassData) {
-      setBiomassData(transpose(initRasterObject.data_array));
-      setBbox(initRasterObject.bbox);
+    if (initRasterObject && initRasterObject.features && initRasterObject.features.length > 0) {
+      setGeojsonData(initRasterObject);
     }
   }, [initRasterObject]);
 
@@ -63,59 +58,48 @@ const useRasterData = ({
   }, [map.current]);
 
   useEffect(() => {
-    if (!map.current || !biomassData || !bbox || !isMapLoaded) return;
+    if (!map.current || !geojsonData || !isMapLoaded) return;
+    if (geojsonData.features && geojsonData.features.length > 0) {
 
-    if (biomassData && biomassData.length > 0) {
-      polygonsRef.current = turf.featureCollection([]);
-
-      let flattenedBiomass = biomassData.flat().filter((el) => el !== 0);
       const f = unit === "lb/ac" ? 0.892179 : 1;
-      const biomassMax = f * Math.max(...flattenedBiomass);
-      const biomassMin = f * Math.min(...flattenedBiomass);
+      let biomassMin, biomassMax;
+      if (geojsonData.properties) {
+        biomassMin = f * geojsonData.properties.biomass_min;
+        biomassMax = f * geojsonData.properties.biomass_max;
+      } else {
+        // Calculate from features if not provided
+        const values = geojsonData.features
+          .map(feat => f * feat.properties.value)
+          .filter(val => val > 0);
+        biomassMin = Math.min(...values);
+        biomassMax = Math.max(...values);
+      }
       const range = biomassMax - biomassMin;
-
-      // Setting up pixel polygons
-      const w = biomassData.length;
-      const h = biomassData[0].length;
-      const lon = bbox[0];
-      const lat = bbox[1];
-      const dLon = (bbox[2] - bbox[0]) / w;
-      const dLat = (bbox[1] - bbox[3]) / h;
 
       let scale = chroma.scale(rasterColors);
 
-      // Build turf polygons based on grid size and bbox
-      for (let i = 0; i < w; i++) {
-        for (let j = 0; j < h; j++) {
-          const topLeftCorner = { lon: lon + i * dLon, lat: lat - j * dLat };
-          let biomassVal =
-            f * biomassData[i][j] !== -9999 ? f * biomassData[i][j] : null;
-          const normalizedBiomassVal = range
-            ? (biomassVal - biomassMin) / range
-            : null;
-          biomassVal &&
-            biomassVal > -9998 &&
-            polygonsRef.current.features.push(
-              turf.polygon(
-                [
-                  [
-                    [topLeftCorner.lon, topLeftCorner.lat],
-                    [topLeftCorner.lon + dLon, topLeftCorner.lat],
-                    [topLeftCorner.lon + dLon, topLeftCorner.lat - dLat],
-                    [topLeftCorner.lon, topLeftCorner.lat - dLat],
-                    [topLeftCorner.lon, topLeftCorner.lat],
-                  ],
-                ],
-                {
-                  value: biomassVal,
-                  color: normalizedBiomassVal
-                    ? scale(normalizedBiomassVal).hex()
-                    : null,
-                }
-              )
-            );
+      const featuresWithColors = geojsonData.features.map(feature => {
+      const convertedValue = f * feature.properties.value;
+      const normalizedValue = range > 0 
+        ? (convertedValue - biomassMin) / range 
+        : 0;
+      
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          value: convertedValue,
+          color: scale(normalizedValue).hex()
         }
-      }
+      };
+    });
+
+    const processedGeojson = {
+      type: "FeatureCollection",
+      features: featuresWithColors
+    };
+
+    polygonsRef.current = processedGeojson;
 
       // Setting up the color legend
       var colorValues = [];
@@ -136,7 +120,7 @@ const useRasterData = ({
       if (!map.current.getSource(`${material}Polygons`)) {
         map.current.addSource(`${material}Polygons`, {
           type: "geojson",
-          data: polygonsRef.current,
+          data: processedGeojson,
         });
         map.current.addLayer({
           id: `${material}Polygons`,
@@ -155,7 +139,7 @@ const useRasterData = ({
       } else {
         map.current
           .getSource(`${material}Polygons`)
-          .setData(polygonsRef.current);
+          .setData(processedGeojson);
       }
 
       const handleClick = (e) => {
@@ -181,7 +165,7 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, biomassData, bbox, unit, material, isMapLoaded]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded]);
 };
 
 export default useRasterData;
