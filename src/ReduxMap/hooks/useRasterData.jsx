@@ -115,9 +115,11 @@ const useRasterData = ({
 
       const decimalPlaces = getDecimalPlaces(range);
 
-      for (var i = biomassMin; i <= biomassMax; i = i + step) {
+      for (var i = biomassMin; i < biomassMax; i = i + step) {
         colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
       }
+      colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
+
       var rasterColorsVals = colorValues.map(function (e, i) {
         const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
         const colorV = range ? scale(normalizedBiomassVal).hex() : null;
@@ -157,7 +159,7 @@ const useRasterData = ({
         if (!e.features?.length) return;
 
         const coords = e.features[0].geometry.coordinates.slice();
-        const val = Math.round(e.features[0].properties.value, 0);
+        const val = parseFloat(e.features[0].properties.value.toFixed(decimalPlaces));
 
         new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
           .setLngLat([
