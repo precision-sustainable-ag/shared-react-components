@@ -104,8 +104,19 @@ const useRasterData = ({
       // Setting up the color legend
       var colorValues = [];
       const step = (biomassMax - biomassMin) / (color_steps - 1);
+
+      // Determine appropriate decimal precision based on range
+      const getDecimalPlaces = (range) => {
+        if (range < 1) return 2;
+        if (range < 10) return 1;
+        if (range < 100) return 1;
+        return 0;
+      };
+
+      const decimalPlaces = getDecimalPlaces(range);
+
       for (var i = biomassMin; i <= biomassMax; i = i + step) {
-        colorValues.push(Math.round(i / 10, 0) * 10);
+        colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
       }
       var rasterColorsVals = colorValues.map(function (e, i) {
         const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
