@@ -425,15 +425,18 @@ const ReduxMap = ({
     const handleDrawDelete = () => {
       setIsDrawActive(false);
       setTimeout(updateFeatures, 10);
-      document.querySelector(".mapbox-gl-draw_trash").style.display = "none";
+      const deleteButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
+      if (deleteButton) deleteButton.style.display = "none";
     };
 
     const showHideTrashcan = (e) => {
-      const trashButton = document.querySelector(".mapbox-gl-draw_trash");
-      if (e.features.length > 0) {
-        trashButton.style.display = "block";
-      } else {
-        trashButton.style.display = "none";
+      const trashButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
+      if (trashButton) {
+        if (e.features.length > 0) {
+          trashButton.style.display = "block";
+        } else {
+          trashButton.style.display = "none";
+        }
       }
     };
 
