@@ -302,8 +302,8 @@ const ReduxMap = ({
       setMap(Map);
 
       // Disable dragging and moving polygons and points
-      const simpleSelect = MapboxDraw.modes.simple_select;
-      const directSelect = MapboxDraw.modes.direct_select;
+      const simpleSelect = { ...MapboxDraw.modes.simple_select };
+      const directSelect = { ...MapboxDraw.modes.direct_select };
       simpleSelect.dragMove = () => {};
       directSelect.dragFeature = () => {};
 
