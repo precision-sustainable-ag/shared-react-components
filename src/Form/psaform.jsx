@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import PSAButton from "../Button";
 import PSATextField from "../Textfield";
+import PSADropdown from "../Dropdown";
 
 export const PSAForm = ({
   apiUrl,
@@ -31,6 +32,9 @@ export const PSAForm = ({
   const initialFormData = fields.reduce(
     (acc, field) => {
       if (field.type === "text") acc[field.name] = "";
+      if (field.type === "dropdown") {
+        acc[field.name] = field.props?.value ?? "";
+      }
       return acc;
     },
     { repository: repository, labels: [] }
@@ -48,9 +52,8 @@ export const PSAForm = ({
     if (arr.length === 1) return `The "${arr[0]}" field is blank`;
     if (arr.length === 2)
       return `The "${arr.join('" and "')}" fields are blank`;
-    return `The "${arr.slice(0, -1).join('", "')}", and "${
-      arr[arr.length - 1]
-    }" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]
+      }" fields are blank`;
   };
 
   const checkDisabled = () => {
@@ -60,6 +63,7 @@ export const PSAForm = ({
       if (
         field.required &&
         ((field.type === "text" && formData[field.name] === "") ||
+          (field.type === "dropdown" && formData[field.name] === "") ||
           (field.type === "checkbox" && formData.labels.length === 0))
       ) {
         messageArr.push(field.label);
@@ -74,6 +78,13 @@ export const PSAForm = ({
 
   const handleTextInputChange = (event, name) => {
     setFormData({ ...formData, [name]: event.target.value });
+  };
+
+  const handleDropdownChange = (event, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: event.target.value,
+    }));
   };
 
   const handleCheckboxChange = (event) => {
@@ -108,13 +119,12 @@ export const PSAForm = ({
             message:
               response.status === 201
                 ? submitMessage
-                : `Error ${response.status}. ${
-                    response.status === 400
-                      ? "Bad Request"
-                      : response.status === 422
-                      ? "Unprocessable Entry"
-                      : "Internal Server Error"
-                  }`,
+                : `Error ${response.status}. ${response.status === 400
+                  ? "Bad Request"
+                  : response.status === 422
+                    ? "Unprocessable Entry"
+                    : "Internal Server Error"
+                }`,
             color: response.status === 201 ? "green" : "red",
           });
           return response.json();
@@ -154,12 +164,25 @@ export const PSAForm = ({
             <Typography variant="body1">{field.description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            {field.type === "text" ? (
+            {field.type === "text" && (
               <PSATextField
                 {...field.props}
                 onChange={(event) => handleTextInputChange(event, field.name)}
               />
-            ) : (
+            )}
+            {field.type === "dropdown" && (
+              <PSADropdown
+                {...field.props}
+                items={field.items}
+                SelectProps={{
+                  ...field.props?.SelectProps,
+                  value: formData[field.name] ?? "",
+                  onChange: (event) =>
+                    handleDropdownChange(event, field.name),
+                }}
+              />
+            )}
+            {field.type === "checkbox" && (
               <FormGroup>
                 {field.options.map((checkbox, index) => (
                   <FormControlLabel
@@ -247,9 +270,15 @@ PSAForm.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["text", "checkbox"]),
+      type: PropTypes.oneOf(["text", "checkbox", "dropdown"]),
       required: PropTypes.bool,
       description: PropTypes.string,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string,
+          label: PropTypes.string,
+        })
+      ),
       options: PropTypes.arrayOf(
         PropTypes.shape({
           label: PropTypes.string,

@@ -19,6 +19,33 @@ export default {
 // Template for stories
 const Template = (args) => <PSAForm {...args} />;
 
+const allStates = [
+  { shorthand: "AL", label: "Alabama" },
+  { shorthand: "AK", label: "Alaska" },
+  { shorthand: "AZ", label: "Arizona" },
+];
+
+const menuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: 224,
+      marginTop: '5px',
+    },
+    sx: {
+      '.MuiMenuItem-root': {
+        '&.Mui-selected': {
+          backgroundColor: '#598445',
+          color: 'white',
+        },
+        '&:hover': {
+          backgroundColor: 'rgba(176, 236, 130, 0.3)',
+          color: 'black',
+        },
+      },
+    },
+  },
+};
+
 // Default story
 export const DefaultForm = Template.bind({});
 DefaultForm.args = {
@@ -54,6 +81,87 @@ DefaultForm.args = {
       },
       name: "comments",
       required: true,
+    },
+    {
+      name: "state",
+      label: "State",
+      type: "dropdown",
+      required: false,
+      description: "Select your state",
+      items: allStates.map((state) => ({
+        value: state.shorthand,
+        label: state.label.toUpperCase(),
+      })),
+      props: {
+        label: "STATE",
+        value: allStates[1].shorthand,
+        formSx: { minWidth: 120 },
+        inputSx: {
+          color: "#598445",
+          "&.Mui-focused": {
+            color: "#598445",
+            fontWeight: "medium",
+          },
+        },
+        SelectProps: {
+          variant: "outlined",
+          MenuProps: menuProps,
+          sx: {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "1px",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "2px",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "2.5px",
+            },
+          },
+        },
+      },
+    },
+        {
+      name: "county",
+      label: "County",
+      type: "dropdown",
+      required: true,
+      description: "Select your county",
+      items: allStates.map((state) => ({
+        value: state.shorthand,
+        label: state.label.toUpperCase(),
+      })),
+      props: {
+        label: "COUNTY",
+        formSx: { minWidth: 120 },
+        inputSx: {
+          color: "#598445",
+          "&.Mui-focused": {
+            color: "#598445",
+            fontWeight: "medium",
+          },
+        },
+        SelectProps: {
+          variant: "outlined",
+          MenuProps: menuProps,
+          sx: {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "1px",
+            },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "2px",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#598445",
+              borderWidth: "2.5px",
+            },
+          },
+        },
+      },
     },
     {
       type: "checkbox",
