@@ -135,6 +135,7 @@ DefaultForm.args = {
       })),
       props: {
         label: "COUNTY",
+        value: allStates[1].shorthand,
         formSx: { minWidth: 120 },
         inputSx: {
           color: "#598445",

@@ -122,13 +122,23 @@ export const PSAForm = ({
       return;
     }
 
+    const payload = { ...formData };
+
+    payload.labels = payload.labels || [];
+    if (formData.state) {
+      payload.labels.push(`State: ${formData.state}`);
+    }
+    if (formData.county) {
+      payload.labels.push(`County: ${formData.county}`);
+    }
+
     if (handleSubmit) {
       handleSubmit(formData);
     } else {
       fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       })
         .then((response) => {
           setSnackbarData({
