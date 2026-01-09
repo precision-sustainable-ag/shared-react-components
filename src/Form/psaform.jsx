@@ -20,6 +20,7 @@ export const PSAForm = ({
   fields, // Single prop for both text fields and checkboxes
   buttons,
   handleSubmit,
+  onFormChange,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
@@ -45,6 +46,7 @@ export const PSAForm = ({
   useEffect(() => {
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
+    onFormChange?.(formData);
   }, [formData]);
 
   const convertMessageArr = (arr) => {
