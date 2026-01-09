@@ -49,6 +49,21 @@ export const PSAForm = ({
     onFormChange?.(formData);
   }, [formData]);
 
+  useEffect(() => {
+    fields.forEach((field) => {
+      if (
+        field.type === "dropdown" &&
+        field.props?.value &&
+        formData[field.name] !== field.props.value
+      ) {
+        setFormData((prev) => ({
+          ...prev,
+          [field.name]: field.props.value,
+        }));
+      }
+    });
+  }, [fields]);
+
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return "";
     if (arr.length === 1) return `The "${arr[0]}" field is blank`;
