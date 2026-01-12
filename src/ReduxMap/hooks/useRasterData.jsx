@@ -61,7 +61,8 @@ const useRasterData = ({
     if (!map.current || !geojsonData || !isMapLoaded) return;
     if (geojsonData.features && geojsonData.features.length > 0) {
 
-      const f = unit === "lb/ac" ? 0.892179 : 1;
+      // const f = unit === "lb/ac" ? 0.892179 : 1;
+      const f = 1;
       let biomassMin, biomassMax;
       if (geojsonData.properties) {
         biomassMin = f * geojsonData.properties.biomass_min;
