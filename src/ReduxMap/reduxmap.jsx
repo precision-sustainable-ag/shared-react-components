@@ -163,9 +163,36 @@ const ReduxMap = ({
       if (source.type === "geojson") {
         const data = { ...source._data };
         const f = data.features || [data];
-        newFeatures.push(
-          ...f.filter((feature) => /Polygon/.test(feature.geometry.type))
-        );
+
+        f.forEach((feature) => {
+          if (/Polygon/.test(feature.geometry.type)) {
+            const cleanedCoords = feature.geometry.coordinates.map((ring) => {
+              
+              // Filter out consecutive duplicates - double clicking a point to close a ploygon creates dupicate coords
+              const deduped = ring.filter((pt, i, arr) => {
+                if (i === 0) return true;
+                return !(pt[0] === arr[i - 1][0] && pt[1] === arr[i - 1][1]);
+              });
+
+              // Make sure the polygon is closed
+              const first = deduped[0];
+              const last = deduped[deduped.length - 1];
+              if (first[0] !== last[0] || first[1] !== last[1]) {
+                deduped.push([...first]);
+              }
+
+              return deduped;
+            });
+
+            newFeatures.push({
+              ...feature,
+              geometry: {
+                ...feature.geometry,
+                coordinates: cleanedCoords,
+              },
+            });
+          };
+        });
       }
     });
 
@@ -275,8 +302,8 @@ const ReduxMap = ({
       setMap(Map);
 
       // Disable dragging and moving polygons and points
-      const simpleSelect = MapboxDraw.modes.simple_select;
-      const directSelect = MapboxDraw.modes.direct_select;
+      const simpleSelect = { ...MapboxDraw.modes.simple_select };
+      const directSelect = { ...MapboxDraw.modes.direct_select };
       simpleSelect.dragMove = () => {};
       directSelect.dragFeature = () => {};
 
@@ -398,15 +425,18 @@ const ReduxMap = ({
     const handleDrawDelete = () => {
       setIsDrawActive(false);
       setTimeout(updateFeatures, 10);
-      document.querySelector(".mapbox-gl-draw_trash").style.display = "none";
+      const deleteButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
+      if (deleteButton) deleteButton.style.display = "none";
     };
 
     const showHideTrashcan = (e) => {
-      const trashButton = document.querySelector(".mapbox-gl-draw_trash");
-      if (e.features.length > 0) {
-        trashButton.style.display = "block";
-      } else {
-        trashButton.style.display = "none";
+      const trashButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
+      if (trashButton) {
+        if (e.features.length > 0) {
+          trashButton.style.display = "block";
+        } else {
+          trashButton.style.display = "none";
+        }
       }
     };
 
