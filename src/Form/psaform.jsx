@@ -172,7 +172,7 @@ export const PSAForm = ({
         </Grid>
       </Grid>
 
-      {fields.map((field, index) => (
+      {fields.filter((field) => !(field.type === "dropdown" && field.orientation === "horizontal")).map((field, index) => (
         <Grid
           key={index}
           container
@@ -228,6 +228,45 @@ export const PSAForm = ({
           </Grid>
         </Grid>
       ))}
+
+      {(() => {
+        const horizontalDropdowns = fields.filter(
+          (field) => field.type === "dropdown" && field.orientation === "horizontal"
+        );
+        return (
+          horizontalDropdowns.length > 0 && (
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                {horizontalDropdowns[0].label}
+              </Typography>
+            </Grid>
+          )
+        );
+      })()}
+      <Grid item xs={12}>
+        <Grid container spacing={2} alignItems="center">
+          {fields
+            .filter(
+              (field) =>
+                field.type === "dropdown" &&
+                field.orientation === "horizontal"
+            )
+            .map((field) => (
+              <Grid item key={field.name}>
+                <PSADropdown
+                  {...field.props}
+                  items={field.items}
+                  SelectProps={{
+                    ...field.props?.SelectProps,
+                    value: formData[field.name] ?? "",
+                    onChange: (event) =>
+                      handleDropdownChange(event, field.name),
+                  }}
+                />
+              </Grid>
+            ))}
+        </Grid>
+      </Grid>
 
       <Grid
         container
