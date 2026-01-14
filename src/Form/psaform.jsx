@@ -199,6 +199,8 @@ export const PSAForm = ({
                 onChange={(event) => handleTextInputChange(event, field.name)}
               />
             )}
+
+            {/* Vertical dropdowns */}
             {field.type === "dropdown" && (
               <PSADropdown
                 {...field.props}
@@ -231,6 +233,7 @@ export const PSAForm = ({
         </Grid>
       ))}
 
+      {/* Horizontal dropdowns */}
       {(() => {
         const horizontalDropdowns = fields.filter(
           (field) => field.type === "dropdown" && field.orientation === "horizontal"
