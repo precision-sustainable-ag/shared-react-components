@@ -341,7 +341,7 @@ PSAForm.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["text", "checkbox"]),
+      type: PropTypes.oneOf(["text", "checkbox", "dropdown"]),
       required: PropTypes.bool,
       description: PropTypes.string,
       items: PropTypes.arrayOf(
