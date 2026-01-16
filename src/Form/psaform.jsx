@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import PSAButton from "../Button";
 import PSATextField from "../Textfield";
+import PSADropdown from "../Dropdown";
 
 export const PSAForm = ({
   apiUrl,
@@ -19,6 +20,7 @@ export const PSAForm = ({
   fields, // Single prop for both text fields and checkboxes
   buttons,
   handleSubmit,
+  onFormChange,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
@@ -31,6 +33,9 @@ export const PSAForm = ({
   const initialFormData = fields.reduce(
     (acc, field) => {
       if (field.type === "text") acc[field.name] = "";
+      if (field.type === "dropdown") {
+        acc[field.name] = field.props?.value ?? "";
+      }
       return acc;
     },
     { repository: repository, labels: [] }
@@ -41,7 +46,23 @@ export const PSAForm = ({
   useEffect(() => {
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
+    onFormChange?.(formData);
   }, [formData]);
+
+  useEffect(() => {
+    fields.forEach((field) => {
+      if (
+        field.type === "dropdown" &&
+        field.props?.value &&
+        formData[field.name] !== field.props.value
+      ) {
+        setFormData((prev) => ({
+          ...prev,
+          [field.name]: field.props.value,
+        }));
+      }
+    });
+  }, [fields]);
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return "";
@@ -60,6 +81,7 @@ export const PSAForm = ({
       if (
         field.required &&
         ((field.type === "text" && formData[field.name] === "") ||
+          (field.type === "dropdown" && formData[field.name] === "") ||
           (field.type === "checkbox" && formData.labels.length === 0))
       ) {
         messageArr.push(field.label);
@@ -74,6 +96,13 @@ export const PSAForm = ({
 
   const handleTextInputChange = (event, name) => {
     setFormData({ ...formData, [name]: event.target.value });
+  };
+
+  const handleDropdownChange = (event, name) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: event.target.value,
+    }));
   };
 
   const handleCheckboxChange = (event) => {
@@ -92,6 +121,16 @@ export const PSAForm = ({
     if (state) {
       setSnackbarData({ open: true, message, color: "red" });
       return;
+    }
+
+    const payload = { ...formData };
+
+    payload.labels = payload.labels || [];
+    if (formData.state) {
+      payload.labels.push(`State: ${formData.state}`);
+    }
+    if (formData.county) {
+      payload.labels.push(`County: ${formData.county}`);
     }
 
     if (handleSubmit) {
@@ -135,7 +174,7 @@ export const PSAForm = ({
         </Grid>
       </Grid>
 
-      {fields.map((field, index) => (
+      {fields.filter((field) => !(field.type === "dropdown" && field.orientation === "horizontal")).map((field, index) => (
         <Grid
           key={index}
           container
@@ -154,12 +193,27 @@ export const PSAForm = ({
             <Typography variant="body1">{field.description}</Typography>
           </Grid>
           <Grid item xs={12}>
-            {field.type === "text" ? (
+            {field.type === "text" && (
               <PSATextField
                 {...field.props}
                 onChange={(event) => handleTextInputChange(event, field.name)}
               />
-            ) : (
+            )}
+
+            {/* Vertical dropdowns */}
+            {field.type === "dropdown" && (
+              <PSADropdown
+                {...field.props}
+                items={field.items}
+                SelectProps={{
+                  ...field.props?.SelectProps,
+                  value: formData[field.name] ?? "",
+                  onChange: (event) =>
+                    handleDropdownChange(event, field.name),
+                }}
+              />
+            )}
+            {field.type === "checkbox" && (
               <FormGroup>
                 {field.options.map((checkbox, index) => (
                   <FormControlLabel
@@ -178,6 +232,46 @@ export const PSAForm = ({
           </Grid>
         </Grid>
       ))}
+
+      {/* Horizontal dropdowns */}
+      {(() => {
+        const horizontalDropdowns = fields.filter(
+          (field) => field.type === "dropdown" && field.orientation === "horizontal"
+        );
+        return (
+          horizontalDropdowns.length > 0 && (
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                {horizontalDropdowns[0].label}
+              </Typography>
+            </Grid>
+          )
+        );
+      })()}
+      <Grid item xs={12}>
+        <Grid container spacing={2} alignItems="center">
+          {fields
+            .filter(
+              (field) =>
+                field.type === "dropdown" &&
+                field.orientation === "horizontal"
+            )
+            .map((field) => (
+              <Grid item key={field.name}>
+                <PSADropdown
+                  {...field.props}
+                  items={field.items}
+                  SelectProps={{
+                    ...field.props?.SelectProps,
+                    value: formData[field.name] ?? "",
+                    onChange: (event) =>
+                      handleDropdownChange(event, field.name),
+                  }}
+                />
+              </Grid>
+            ))}
+        </Grid>
+      </Grid>
 
       <Grid
         container
@@ -247,9 +341,15 @@ PSAForm.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["text", "checkbox"]),
+      type: PropTypes.oneOf(["text", "checkbox", "dropdown"]),
       required: PropTypes.bool,
       description: PropTypes.string,
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string,
+          label: PropTypes.string,
+        })
+      ),
       options: PropTypes.arrayOf(
         PropTypes.shape({
           label: PropTypes.string,
