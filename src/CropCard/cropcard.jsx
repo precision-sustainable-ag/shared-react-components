@@ -161,7 +161,7 @@ const Header = ({ species, scientific, cultivar, }) => (
       cultivar
       && (
         <Typography sx={{ fontSize: 14 }} className="cultivar">
-          Cultivar:&nbsp;
+          Selection:&nbsp;
           {cultivar}
         </Typography>
       )
@@ -346,7 +346,7 @@ export const PSACropCard = ({
             <div style={{ color: 'white' }}>
               {species}
               {scientific}
-              Cultivar
+              Selection
               {cultivar}
             </div>
           )
