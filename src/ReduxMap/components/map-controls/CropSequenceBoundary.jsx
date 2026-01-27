@@ -4,7 +4,7 @@ import { fieldIconString } from "../../assets/icons/FieldIcon";
 import { CustomControl } from "./CustomControl";
 
 export class CropSequenceBoundary extends CustomControl {
-  constructor(mapRef, drawerRef, locationRef, updateFeatures) {
+  constructor(mapRef, drawerRef, locationRef, updateFeatures, features) {
     super(
       () => this.findFields(),
       "Search for a Field Boundary",
@@ -15,6 +15,7 @@ export class CropSequenceBoundary extends CustomControl {
     this.drawerRef = drawerRef;
     this.locationRef = locationRef;
     this.updateFeatures = updateFeatures;
+    this.features = features;
   }
 
   showNoFieldModal() {
@@ -23,6 +24,17 @@ export class CropSequenceBoundary extends CustomControl {
   }
 
   findFields() {
+
+    if (this.features && this.features.length > 0) {
+      const userConfirmed = window.confirm(
+        "A boundary is already on the map. Do you want to replace it?"
+      );
+      
+      if (!userConfirmed) {
+        return;
+      }
+    }
+
     // Clear existing polygons before adding the new one.
     if (this.drawerRef.current) {
       this.drawerRef.current.deleteAll();

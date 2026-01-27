@@ -378,7 +378,7 @@ const ReduxMap = ({
 
       if (hasFindField)
         map.current.addControl(
-          new CropSequenceBoundary(map, drawerRef, locationRef, updateFeatures),
+          new CropSequenceBoundary(map, drawerRef, locationRef, updateFeatures, features),
           "top-right"
         );
     }
