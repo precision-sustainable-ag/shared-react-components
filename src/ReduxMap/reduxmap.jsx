@@ -147,6 +147,7 @@ const ReduxMap = ({
   const drawerRef = useRef();
   const cursorRef = useRef();
   const locationRef = useRef( {lat, lon});
+  const featuresRef = useRef(features);
 
   const elevations = {};
 
@@ -281,6 +282,11 @@ const ReduxMap = ({
     locationRef.current = { lat, lon };
   }, [lat, lon]);
 
+  // Update features ref
+  useEffect(() => {
+    featuresRef.current = features;
+  }, [features]);
+
   // Handle bounds changes
   useEffect(() => {
     if (bounds && map.current) {
@@ -378,7 +384,7 @@ const ReduxMap = ({
 
       if (hasFindField)
         map.current.addControl(
-          new CropSequenceBoundary(map, drawerRef, locationRef, updateFeatures, features),
+          new CropSequenceBoundary(map, drawerRef, locationRef, featuresRef, updateFeatures),
           "top-right"
         );
     }
