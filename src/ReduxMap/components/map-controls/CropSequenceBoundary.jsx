@@ -35,11 +35,6 @@ export class CropSequenceBoundary extends CustomControl {
       }
     }
 
-    // Clear existing polygons before adding the new one.
-    if (this.drawerRef.current) {
-      this.drawerRef.current.deleteAll();
-    }
-
     const { lat, lon } = this.locationRef.current;
 
     axios
@@ -48,6 +43,12 @@ export class CropSequenceBoundary extends CustomControl {
       })
       .then((response) => {
         if (response.data && response.data.polygon) {
+
+          // Clear existing polygons before adding the new one.
+          if (this.drawerRef.current) {
+            this.drawerRef.current.deleteAll();
+          }
+
           // The API response is a WKT string - convert it to a GeoJSON
           const geoJSON = wktToGeoJSON(response.data.polygon);
           const featureCollection =
@@ -76,24 +77,26 @@ export class CropSequenceBoundary extends CustomControl {
                   ],
                 };
 
-          const sourceId = "api-field-boundary";
+          setTimeout(() => {
+            const sourceId = "api-field-boundary";
 
-          // Remove existing source if already present
-          if (this.mapRef.current.getSource(sourceId)) {
+            // Remove existing source if already present
+            if (this.mapRef.current.getSource(sourceId)) {
+              this.mapRef.current.removeSource(sourceId);
+            }
+
+            // Add source to the map
+            this.mapRef.current.addSource(sourceId, {
+              type: "geojson",
+              data: featureCollection,
+            });
+
+            // This functions scans all the map sources and adds them into the editable drawing tool
+            this.updateFeatures();
+
+            // Delete the source as it is now added to the drawing tool
             this.mapRef.current.removeSource(sourceId);
-          }
-
-          // Add source to the map
-          this.mapRef.current.addSource(sourceId, {
-            type: "geojson",
-            data: featureCollection,
-          });
-
-          // This functions scans all the map sources and adds them into the editable drawing tool
-          this.updateFeatures();
-
-          // Delete the source as it is now added to the drawing tool
-          this.mapRef.current.removeSource(sourceId);
+          }, 100);
         } else {
           this.showNoFieldModal();
         }
