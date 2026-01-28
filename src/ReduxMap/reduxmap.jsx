@@ -23,7 +23,9 @@ import useRasterData from "./hooks/useRasterData";
 import { CustomControl } from './components/map-controls/CustomControl';
 import { ImportShapeControl } from './components/map-controls/ImportShapeControl';
 import { FreehandDrawControl } from './components/map-controls/FreehandDrawControl';
+import { CropSequenceBoundary } from './components/map-controls/CropSequenceBoundary';
 import HelpModal from "./components/HelpModal";
+import NoFieldFoundModal from './components/NoFieldFoundModal';
 import CoordBar from "./components/CoordBar";
 import RasterLegend from "./components/RasterLegend";
 
@@ -92,6 +94,7 @@ const ReduxMap = ({
   hasSinglePolygon = false,
   hasImport = false,
   hasElevation = false,
+  hasFindField = false,
   hasHelp = false,
   otherHelp,
   scrollZoom = true,
@@ -143,6 +146,8 @@ const ReduxMap = ({
   const mapContainer = useRef();
   const drawerRef = useRef();
   const cursorRef = useRef();
+  const locationRef = useRef( {lat, lon});
+  const featuresRef = useRef(features);
 
   const elevations = {};
 
@@ -272,6 +277,16 @@ const ReduxMap = ({
     }
   }, [initLat, initLon]);
 
+  // Update location ref
+  useEffect(() => {
+    locationRef.current = { lat, lon };
+  }, [lat, lon]);
+
+  // Update features ref
+  useEffect(() => {
+    featuresRef.current = features;
+  }, [features]);
+
   // Handle bounds changes
   useEffect(() => {
     if (bounds && map.current) {
@@ -365,6 +380,12 @@ const ReduxMap = ({
             "Help",
             helpIcon
           )
+        );
+
+      if (hasFindField)
+        map.current.addControl(
+          new CropSequenceBoundary(map, drawerRef, locationRef, featuresRef, updateFeatures),
+          "top-right"
         );
     }
   }, [map.current]);
@@ -615,6 +636,11 @@ const ReduxMap = ({
           otherHelp={otherHelp}
         />
       ) : null}
+
+      {hasFindField ? (
+        <NoFieldFoundModal />
+      ) : null}
+
       <div
         id="psa-map"
         ref={mapContainer}
@@ -795,6 +821,10 @@ ReduxMap.propTypes = {
    * Enable elevation data.
    */
   hasElevation: PropTypes.bool,
+    /**
+   * Enable find field feature.
+   */
+  hasFindField: PropTypes.bool,
   /**
    * Enable help modal.
    */

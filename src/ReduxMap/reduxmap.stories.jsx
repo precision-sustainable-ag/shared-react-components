@@ -127,6 +127,7 @@ export const MapWithAllFeatures = {
     hasFreehand: true,
     hasImport: true,
     hasElevation: true,
+    hasFindField: true,
     hasHelp: true,
     fitBounds: true,
     mapboxToken: mapboxToken,
