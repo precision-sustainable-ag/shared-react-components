@@ -25,16 +25,6 @@ export class CropSequenceBoundary extends CustomControl {
 
   findFields() {
 
-    const features = this.featuresRef.current;
-
-    if (features && features.length > 0) {
-      const userConfirmed = window.confirm("A boundary already exists on the map. Do you want to replace it?");
-
-      if (!userConfirmed) {
-        return;
-      }
-    }
-
     const { lat, lon } = this.locationRef.current;
 
     axios
@@ -43,6 +33,16 @@ export class CropSequenceBoundary extends CustomControl {
       })
       .then((response) => {
         if (response.data && response.data.polygon) {
+
+          const features = this.featuresRef.current;
+
+          if (features && features.length > 0) {
+            const userConfirmed = window.confirm("A boundary already exists on the map. Do you want to replace it?");
+
+            if (!userConfirmed) {
+              return;
+            }
+          }
 
           // Clear existing polygons before adding the new one.
           if (this.drawerRef.current) {
