@@ -55,6 +55,67 @@ const DEFAULT_ZOOM = 15;
 const DEFAULT_PADDING = 20;
 const SEARCH_BAR_PADDING = 50;
 
+const COLORED_DRAW_STYLES = [
+  // 1. POLYGON FILL
+  {
+    'id': 'gl-draw-polygon-fill-inactive',
+    'type': 'fill',
+    'filter': ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+    'paint': {
+      // Priority 1: user_color (from properties)
+      // Priority 2: fallback blue for existing shapes
+      'fill-color': ['coalesce', ['get', 'user_color'], '#3bb2d0'],
+      'fill-outline-color': '#3bb2d0',
+      'fill-opacity': 0.3 // Keeping it light as per your preference
+    }
+  },
+  {
+    'id': 'gl-draw-polygon-fill-active',
+    'type': 'fill',
+    'filter': ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
+    'paint': {
+      'fill-color': '#fbb03b',
+      'fill-outline-color': '#fbb03b',
+      'fill-opacity': 0.1
+    }
+  },
+  // 2. POLYGON STROKE (Dotted lines while drawing)
+  {
+    'id': 'gl-draw-polygon-stroke-inactive',
+    'type': 'line',
+    'filter': ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+    'layout': { 'line-cap': 'round', 'line-join': 'round' },
+    'paint': { 'line-color': '#3bb2d0', 'line-width': 2 }
+  },
+  {
+    'id': 'gl-draw-polygon-stroke-active',
+    'type': 'line',
+    'filter': ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
+    'layout': { 'line-cap': 'round', 'line-join': 'round' },
+    'paint': { 'line-color': '#fbb03b', 'line-dasharray': [0.2, 2], 'line-width': 2 }
+  },
+  // 3. VERTICES (The points you can click/drag)
+  {
+    'id': 'gl-draw-polygon-and-line-vertex-stroke-inactive',
+    'type': 'circle',
+    'filter': ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+    'paint': { 'circle-radius': 5, 'circle-color': '#fff' }
+  },
+  {
+    'id': 'gl-draw-polygon-and-line-vertex-inactive',
+    'type': 'circle',
+    'filter': ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+    'paint': { 'circle-radius': 3, 'circle-color': '#fff' }
+  },
+  // 4. MIDPOINTS (The points between vertices)
+  {
+    'id': 'gl-draw-polygon-midpoint',
+    'type': 'circle',
+    'filter': ['all', ['==', 'meta', 'midpoint'], ['==', '$type', 'Point']],
+    'paint': { 'circle-radius': 3, 'circle-color': '#fbb03b' }
+  }
+];
+
 /**
  * A configurable Mapbox GL React component
  */
@@ -110,6 +171,7 @@ const ReduxMap = ({
   unit,
   material,
   color_steps,
+  userProperties = false,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -332,6 +394,10 @@ const ReduxMap = ({
       // DRAWER CONTROL
       const Draw = new MapboxDraw({
         displayControlsDefault: false,
+        ...(userProperties && {
+          userProperties: userProperties,
+          styles: COLORED_DRAW_STYLES,
+        }),
         controls: (hasDrawing || hasFreehand) ? { polygon: true, trash: true } : {}, // Only show the controls if hasDrawing is true
         modes: {
           ...MapboxDraw.modes,
