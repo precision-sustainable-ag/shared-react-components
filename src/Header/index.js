@@ -1,2 +1,2 @@
-import { PSAHeader } from "./header"; 
+import { PSAHeader } from './header';
 export default PSAHeader;

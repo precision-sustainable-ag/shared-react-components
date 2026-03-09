@@ -1,24 +1,24 @@
-import React from "react";
-import { PSAFigmaButton } from "./figmaButton";
-import { Button, Typography } from "@mui/material";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import PersonIcon from "@mui/icons-material/Person";
-import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import PersonIcon from '@mui/icons-material/Person';
+import { Button, Typography } from '@mui/material';
+import React from 'react';
+import { PSAFigmaButton } from './figmaButton';
 
 const meta = {
-  title: "Inputs/FigmaButton",
+  title: 'Inputs/FigmaButton',
   component: PSAFigmaButton,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   argTypes: {
     variant: {
-      control: "select",
-      options: ["standard", "color", "text"],
+      control: 'select',
+      options: ['standard', 'color', 'text'],
     },
     icon: {
-      control: "select",
+      control: 'select',
       options: {
         arrow: <ArrowForwardIcon />,
         login: <PersonIcon />,
@@ -32,8 +32,8 @@ export default meta;
 
 export const StandardButton = {
   args: {
-    variant: "standard",
-    text: "Next",
+    variant: 'standard',
+    text: 'Next',
     icon: <ArrowForwardIcon />,
     rightIcon: true,
     leftIcon: false,
@@ -42,8 +42,8 @@ export const StandardButton = {
 
 export const StandardDisabledButton = {
   args: {
-    variant: "standard",
-    text: "Next",
+    variant: 'standard',
+    text: 'Next',
     icon: <ArrowForwardIcon />,
     rightIcon: true,
     leftIcon: false,
@@ -53,8 +53,8 @@ export const StandardDisabledButton = {
 
 export const ColorButton = {
   args: {
-    variant: "color",
-    text: "LOGIN",
+    variant: 'color',
+    text: 'LOGIN',
     icon: <PersonIcon />,
     rightIcon: true,
     leftIcon: false,
@@ -63,8 +63,8 @@ export const ColorButton = {
 
 export const TextButton = {
   args: {
-    variant: "text",
-    text: "Text Button",
+    variant: 'text',
+    text: 'Text Button',
     icon: <LocalFloristIcon />,
     rightIcon: true,
     leftIcon: false,
@@ -73,20 +73,20 @@ export const TextButton = {
 
 export const CustomButton = {
   args: {
-    variant: "color",
-    text: "LOGIN",
+    variant: 'color',
+    text: 'LOGIN',
     icon: <PersonIcon />,
     rightIcon: true,
     leftIcon: false,
     disabled: true,
     style: {
-      background: "red",
+      background: 'red',
     },
     buttonSx: {
-      height: "200px",
+      height: '200px',
     },
     textSx: {
-      fontSize: "100px",
+      fontSize: '100px',
     },
   },
 };

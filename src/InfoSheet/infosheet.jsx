@@ -1,13 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import {
-  Box,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-} from "@mui/material";
-import { Close } from "@mui/icons-material";
+import { Close } from '@mui/icons-material';
+import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
   return (
@@ -22,11 +16,11 @@ export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
       <DialogTitle
         id="infosheet-title"
         sx={{
-          backgroundColor: "#2D7B7B",
-          color: "white",
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "8px",
+          backgroundColor: '#2D7B7B',
+          color: 'white',
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '8px',
         }}
         className="no-print"
       >
@@ -34,7 +28,7 @@ export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
         <IconButton
           aria-label="close"
           onClick={() => setOpen(false)}
-          sx={{ color: "white" }}
+          sx={{ color: 'white' }}
           className="modalClose"
         >
           <Close />

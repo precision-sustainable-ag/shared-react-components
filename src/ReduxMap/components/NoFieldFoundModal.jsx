@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const NoFieldFoundModal = () => (
   <dialog id="NoFieldFound">
@@ -7,14 +7,14 @@ const NoFieldFoundModal = () => (
 
     <div>
       <button
-        onClick={(event) => event.target.closest("dialog").close()}
+        onClick={(event) => event.target.closest('dialog').close()}
         style={{
-          padding: "8px 16px",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
+          padding: '8px 16px',
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
         }}
       >
         OK

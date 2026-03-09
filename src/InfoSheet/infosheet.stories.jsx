@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Box, Button, Typography, Grid } from "@mui/material";
-import { PSAInfoSheet, PSAInfoSheetAttributeBox } from "./index";
-import PSAAccordion from "../Accordion";
+import { Box, Button, Grid, Typography } from '@mui/material';
+import React, { useState } from 'react';
+import PSAAccordion from '../Accordion';
+import { PSAInfoSheet, PSAInfoSheetAttributeBox } from './index';
 
 export default {
-  title: "Layout/Infosheet",
+  title: 'Layout/Infosheet',
   component: PSAInfoSheet,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
     docs: {
       description: {
         component: `This is a custom Infosheet dialog for displaying crop details information. 
@@ -28,10 +28,8 @@ export const DefaultInfoSheet = () => {
       <PSAInfoSheet
         open={open}
         setOpen={setOpen}
-        title={<Box sx={{ height: "50px" }}>Title</Box>}
-        content={
-          <Box sx={{ width: "100px", height: "100px" }}>Infosheet content</Box>
-        }
+        title={<Box sx={{ height: '50px' }}>Title</Box>}
+        content={<Box sx={{ width: '100px', height: '100px' }}>Infosheet content</Box>}
       />
     </>
   );
@@ -41,7 +39,7 @@ export const SampleSelectorInfoSheet = () => {
   const [open, setOpen] = useState(false);
   const [accordionOpen, setAccordionOpen] = useState(true);
 
-  console.log("accordionOpen", accordionOpen);
+  console.log('accordionOpen', accordionOpen);
 
   return (
     <>
@@ -49,23 +47,23 @@ export const SampleSelectorInfoSheet = () => {
       <PSAInfoSheet
         open={open}
         setOpen={setOpen}
-        title={<Box sx={{ height: "50px" }}>Title</Box>}
+        title={<Box sx={{ height: '50px' }}>Title</Box>}
         content={
-          <Box sx={{ minWidth: "800px" }}>
+          <Box sx={{ minWidth: '800px' }}>
             <PSAAccordion
               sx={{
-                border: "1px solid #e3e1e1",
-                "& .MuiAccordionDetails-root": {
-                  backgroundColor: { xs: "#F5F5F5", md: "white" },
-                  borderRadius: "0 0 30px 30px",
-                  padding: { xs: "0", md: "8px" },
+                border: '1px solid #e3e1e1',
+                '& .MuiAccordionDetails-root': {
+                  backgroundColor: { xs: '#F5F5F5', md: 'white' },
+                  borderRadius: '0 0 30px 30px',
+                  padding: { xs: '0', md: '8px' },
                 },
               }}
               summaryContent={
                 <Typography
                   className={`infosheetAccordionButton`}
                   variant="h4"
-                  style={{ color: "grey" }}
+                  style={{ color: 'grey' }}
                 >
                   Basic Agronomics
                 </Typography>
@@ -74,16 +72,16 @@ export const SampleSelectorInfoSheet = () => {
                 <Grid container>
                   <PSAInfoSheetAttributeBox
                     key={0}
-                    description={"description"}
-                    label={"sample attribute"}
-                    value={"value"}
+                    description={'description'}
+                    label={'sample attribute'}
+                    value={'value'}
                   />
                   <PSAInfoSheetAttributeBox
-                    variant={"texts"}
+                    variant={'texts'}
                     key={1}
-                    description={"description"}
-                    label={"sample note"}
-                    value={"value"}
+                    description={'description'}
+                    label={'sample note'}
+                    value={'value'}
                   />
                 </Grid>
               }

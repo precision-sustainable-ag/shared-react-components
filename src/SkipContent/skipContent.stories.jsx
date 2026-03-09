@@ -1,10 +1,10 @@
-import React from "react";
-import { PSASkipContent } from "./skipContent";
+import React from 'react';
+import { PSASkipContent } from './skipContent';
 
 const meta = {
-  title: "Inputs/SkipContent",
+  title: 'Inputs/SkipContent',
   component: PSASkipContent,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 export default meta;

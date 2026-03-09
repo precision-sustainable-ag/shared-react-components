@@ -1,2 +1,2 @@
-import { PSASkipContent } from "./skipContent"; 
+import { PSASkipContent } from './skipContent';
 export default PSASkipContent;

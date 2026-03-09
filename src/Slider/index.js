@@ -1,2 +1,2 @@
-import { PSASlider } from "./slider"; 
+import { PSASlider } from './slider';
 export default PSASlider;

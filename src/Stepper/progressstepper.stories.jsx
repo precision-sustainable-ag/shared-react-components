@@ -1,12 +1,12 @@
-import React from "react";
-import { PSAStepper } from "./progressstepper";
+import React from 'react';
+import { PSAStepper } from './progressstepper';
 
 const meta = {
-  title: "Functional/Stepper",
+  title: 'Functional/Stepper',
   component: PSAStepper,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "fullscreen",
+    layout: 'fullscreen',
   },
 };
 
@@ -19,7 +19,7 @@ const Template = (args) => {
 export const NCalc = Template.bind({});
 
 NCalc.args = {
-  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
+  steps: ['Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'],
   stepperProps: {
     activeStep: 0,
   },
@@ -29,8 +29,8 @@ export const SeedCalc = Template.bind({});
 
 SeedCalc.args = {
   maxAvailableStep: 2,
-  strokeColor: "white",
-  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
+  strokeColor: 'white',
+  steps: ['Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'],
   stepperProps: {
     activeStep: 0,
   },
@@ -39,8 +39,8 @@ SeedCalc.args = {
 export const Mobile = Template.bind({});
 
 Mobile.args = {
-  strokeColor: "white",
-  steps: ["Home", "Location", "Soil", "Cover Crop", "Cash Crop", "Output"],
+  strokeColor: 'white',
+  steps: ['Home', 'Location', 'Soil', 'Cover Crop', 'Cash Crop', 'Output'],
   stepperProps: {
     activeStep: 0,
   },

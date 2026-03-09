@@ -1,17 +1,17 @@
-import React, { useRef, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import area from "@turf/area";
-import centroid from "@turf/centroid";
-import PropTypes, { object } from "prop-types";
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import area from '@turf/area';
+import centroid from '@turf/centroid';
+import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import PropTypes, { object } from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { geocodeReverse, coordinatesGeocoder } from "./helpers";
+import { coordinatesGeocoder, geocodeReverse } from './helpers';
 
-import styles from "./map.module.scss";
-import "./mapbox-gl.css";
-import "./mapbox-gl-draw.css";
-import "./mapbox-gl-geocoder.css";
+import styles from './map.module.scss';
+import './mapbox-gl.css';
+import './mapbox-gl-draw.css';
+import './mapbox-gl-geocoder.css';
 
 const acreDiv = 4046.856422;
 const fastFly = {
@@ -27,9 +27,9 @@ const Map = ({
   setZoom = () => {},
   onDraw = () => {},
   initFeatures = [],
-  initWidth = "400px",
-  initHeight = "400px",
-  initAddress = "",
+  initWidth = '400px',
+  initHeight = '400px',
+  initAddress = '',
   initLon = -75,
   initLat = 40,
   initStartZoom = 12,
@@ -87,14 +87,14 @@ const Map = ({
 
   //// GEOCODER CONTROL
   const Geocoder = new MapboxGeocoder({
-    placeholder: initAddress || "Search Your Address ...",
+    placeholder: initAddress || 'Search Your Address ...',
     localGeocoder: coordinatesGeocoder,
     marker: false,
     accessToken: mapboxToken,
     container: map.current,
-    proximity: "ip",
+    proximity: 'ip',
     trackProximity: true,
-    countries: "us",
+    countries: 'us',
   });
   geocoderRef.current = Geocoder;
 
@@ -167,7 +167,7 @@ const Map = ({
   const handlePolyChange = (e) => {
     if (e.features.length > 0) {
       drawerRef.current.add({
-        type: "FeatureCollection",
+        type: 'FeatureCollection',
         features: e.features,
       });
       setFeatures(drawerRef.current.getAll());
@@ -176,19 +176,19 @@ const Map = ({
   };
 
   const handleDrawCreate = (e) => {
-    onDraw({ mode: "add", e: e });
+    onDraw({ mode: 'add', e: e });
   };
   const handleDrawDelete = (e) => {
     setIsDrawActive(false);
-    onDraw({ mode: "delete", e: e });
+    onDraw({ mode: 'delete', e: e });
     setPolygonArea(0);
   };
   const handleDrawUpdate = (e) => {
-    onDraw({ mode: "update", e: e });
+    onDraw({ mode: 'update', e: e });
     handlePolyChange(e);
   };
   const handleDrawSelection = (e) => {
-    onDraw({ mode: "select", e: e });
+    onDraw({ mode: 'select', e: e });
     handlePolyChange(e);
   };
 
@@ -201,7 +201,7 @@ const Map = ({
     if (map.current) return; // initialize map only once
     var Map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [initLon, initLat],
       zoom: initStartZoom,
     });
@@ -214,16 +214,14 @@ const Map = ({
     const Popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
       `<span> click and drag </span>
       <br />
-      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(
-        4
-      )}</span>`
+      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(4)}</span>`,
     );
     popupRef.current = Popup;
 
     //// MARKER CONTROL
     const Marker = new mapboxgl.Marker({
       draggable: hasMarkerMovable,
-      color: "#e63946",
+      color: '#e63946',
       scale: 1,
     })
       .setLngLat([marker.longitude, marker.latitude])
@@ -264,31 +262,30 @@ const Map = ({
     });
 
     //// ADD CONTROLS
-    if (hasFullScreen) map.current.addControl(Fullscreen, "top-right");
-    if (hasNavigation) map.current.addControl(Navigation, "top-right");
-    if (hasGeolocate) map.current.addControl(Geolocate, "top-right");
-    if (hasDrawing) map.current.addControl(Draw, "top-left");
-    if (hasSearchBar) map.current.addControl(Geocoder, "top-left");
+    if (hasFullScreen) map.current.addControl(Fullscreen, 'top-right');
+    if (hasNavigation) map.current.addControl(Navigation, 'top-right');
+    if (hasGeolocate) map.current.addControl(Geolocate, 'top-right');
+    if (hasDrawing) map.current.addControl(Draw, 'top-left');
+    if (hasSearchBar) map.current.addControl(Geocoder, 'top-left');
     if (hasMarker && !isDrawActive) Marker.addTo(map.current);
 
     //// EVENTS
-    Geolocate.on("geolocate", handleGeolocate);
-    Geocoder.on("result", (e) => {
+    Geolocate.on('geolocate', handleGeolocate);
+    Geocoder.on('result', (e) => {
       var streetNum;
       var zipCode;
       if (e && e.result) {
         setGeocodeResult(e.result);
         var fullAddress = e.result.place_name;
-        if (fullAddress.includes("Lat") && fullAddress.includes("Lng")) {
-          let longitude = e.result.geometry.coordinates[0];
-          let latitude = e.result.geometry.coordinates[1];
+        if (fullAddress.includes('Lat') && fullAddress.includes('Lng')) {
+          const longitude = e.result.geometry.coordinates[0];
+          const latitude = e.result.geometry.coordinates[1];
           geocodeReverse({
             apiKey: mapboxToken,
             setterFunc: (address) => {
               if (hasSearchBar) {
-                document.querySelector(
-                  ".mapboxgl-ctrl-geocoder--input"
-                ).placeholder = address().fullAddress;
+                document.querySelector('.mapboxgl-ctrl-geocoder--input').placeholder =
+                  address().fullAddress;
               }
               // Geocoder.setPlaceholder(address().fullAddress);
               setAddress(address);
@@ -297,9 +294,9 @@ const Map = ({
             latitude: latitude,
           });
         } else {
-          const splitted = fullAddress.split(", ");
+          const splitted = fullAddress.split(', ');
           streetNum = splitted[0];
-          const stateZip = splitted[splitted.length - 2].split(" ");
+          const stateZip = splitted[splitted.length - 2].split(' ');
           zipCode = stateZip[stateZip.length - 1];
         }
         if (fullAddress) {
@@ -321,7 +318,7 @@ const Map = ({
       }
     });
     if (hasMarkerMovable) {
-      map.current.on("dblclick", (e) => {
+      map.current.on('dblclick', (e) => {
         setMarker((prev) => ({
           ...prev,
           longitude: e.lngLat.lng,
@@ -329,7 +326,7 @@ const Map = ({
         }));
       });
     }
-    map.current.on("mousemove", (e) => {
+    map.current.on('mousemove', (e) => {
       const lnglat = e.lngLat.wrap();
       setCursorLoc({
         longitude: lnglat.lng.toFixed(4),
@@ -337,7 +334,7 @@ const Map = ({
       });
     });
 
-    map.current.on("load", (e) => {
+    map.current.on('load', (e) => {
       if (!scrollZoom) map.current.scrollZoom.disable();
       if (!dragRotate) map.current.dragRotate.disable();
       if (!dragPan) map.current.dragPan.disable();
@@ -348,25 +345,20 @@ const Map = ({
         markerRef.current.togglePopup();
         setTimeout(() => markerRef.current.togglePopup(), 2000);
       }
-      if (
-        drawerRef.current &&
-        hasDrawing &&
-        initFeatures.length > 0 &&
-        !featuresInitialized
-      ) {
+      if (drawerRef.current && hasDrawing && initFeatures.length > 0 && !featuresInitialized) {
         drawerRef.current.add({
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: initFeatures,
         });
         setFeaturesInitialized(true);
       }
     });
 
-    map.current.on("draw.create", handleDrawCreate);
-    map.current.on("draw.delete", handleDrawDelete);
-    map.current.on("draw.update", handleDrawUpdate);
-    map.current.on("draw.selectionchange", handleDrawSelection);
-    Marker.on("dragend", onDragEnd);
+    map.current.on('draw.create', handleDrawCreate);
+    map.current.on('draw.delete', handleDrawDelete);
+    map.current.on('draw.update', handleDrawUpdate);
+    map.current.on('draw.selectionchange', handleDrawSelection);
+    Marker.on('dragend', onDragEnd);
   }, [map]);
 
   // handle empty initFeature
@@ -374,14 +366,14 @@ const Map = ({
     if (hasDrawing && drawerRef.current && initFeatures.length) {
       drawerRef.current.deleteAll();
       drawerRef.current.add({
-        type: "FeatureCollection",
+        type: 'FeatureCollection',
         features: initFeatures,
       });
 
       if (initFeatures.length === 1) {
-        if (initFeatures[0]?.geometry?.type === "Polygon") {
+        if (initFeatures[0]?.geometry?.type === 'Polygon') {
           handlePolyAreaCalc({ features: initFeatures });
-        } else if (initFeatures[0]?.geometry?.type === "Point") {
+        } else if (initFeatures[0]?.geometry?.type === 'Point') {
           handlePointFocus(initFeatures[0]?.geometry?.coordinates);
         }
       }
@@ -400,7 +392,7 @@ const Map = ({
       setterFunc: (address) => {
         // console.log(address())
         if (hasSearchBar) {
-          document.querySelector(".mapboxgl-ctrl-geocoder--input").placeholder =
+          document.querySelector('.mapboxgl-ctrl-geocoder--input').placeholder =
             address().fullAddress;
         }
         // not sure why setPlaceholder doen't work
@@ -416,9 +408,7 @@ const Map = ({
       popupRef.current.setHTML(
         `<span> click and drag </span>
       <br />
-      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(
-        4
-      )}</span>`
+      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(4)}</span>`,
       );
       markerRef.current.setLngLat(lngLat).setPopup(popupRef.current);
       map.current.flyTo({
@@ -429,7 +419,7 @@ const Map = ({
   }, [marker.longitude, marker.latitude]);
 
   useEffect(() => {
-    map.current.on("zoom", () => {
+    map.current.on('zoom', () => {
       const currentZoom = map.current.getZoom();
       setLastZoom(currentZoom);
       setZoom(currentZoom);
@@ -449,9 +439,7 @@ const Map = ({
           <ul>
             <li>{`Longitude:${cursorLoc.longitude}`}</li>
             <li>{`Latitude:${cursorLoc.latitude}`}</li>
-            {polygonArea > 0 && (
-              <li>{`Area ${polygonArea.toFixed(2)} acres`}</li>
-            )}
+            {polygonArea > 0 && <li>{`Area ${polygonArea.toFixed(2)} acres`}</li>}
           </ul>
         </div>
       )}

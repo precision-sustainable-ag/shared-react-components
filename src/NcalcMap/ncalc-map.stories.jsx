@@ -1,11 +1,11 @@
-import React from "react";
-import { NcalcMap } from "./ncalc-map";
-import initRasterObject from "./sample-response.json";
+import React from 'react';
+import { NcalcMap } from './ncalc-map';
+import initRasterObject from './sample-response.json';
 
 const meta = {
-  title: "Functional/NcalcMap",
+  title: 'Functional/NcalcMap',
   component: NcalcMap,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
@@ -14,14 +14,14 @@ export default meta;
 
 const initLon = -76.913;
 const initLat = 39.022;
-const initHeight = "450px";
-const initWidth = "400px";
+const initHeight = '450px';
+const initWidth = '400px';
 // const initLon = -101.2906
 // const initLat = 40.9417
 
 var featuresSample = [
   {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
       coordinates: [
         [
@@ -33,11 +33,11 @@ var featuresSample = [
           [-80.12590347289976, 37.782425773494836],
         ],
       ],
-      type: "Polygon",
+      type: 'Polygon',
     },
   },
   {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
       coordinates: [
         [
@@ -50,7 +50,7 @@ var featuresSample = [
           [-80.2452403254797, 37.77489071424286],
         ],
       ],
-      type: "Polygon",
+      type: 'Polygon',
     },
   },
 ];
@@ -62,7 +62,7 @@ export const PlainMapWithoutFeatures = {
     initHeight: initHeight,
     initLon: initLon,
     initLat: initLat,
-    rasterColors: ["cyan", "green", "white"],
+    rasterColors: ['cyan', 'green', 'white'],
     initStartZoom: 10,
     mapboxToken: mapboxToken,
   },
@@ -75,7 +75,7 @@ export const MapWithMarker = {
     initHeight: initHeight,
     initLon: initLon,
     initLat: initLat,
-    rasterColors: ["cyan", "green", "white"],
+    rasterColors: ['cyan', 'green', 'white'],
     initStartZoom: 11,
     hasMarker: true,
     hasMarkerPopup: true,
@@ -91,7 +91,7 @@ export const MapWithGeocoder = {
     initHeight: initHeight,
     initLon: initLon,
     initLat: initLat,
-    rasterColors: ["cyan", "green", "white"],
+    rasterColors: ['cyan', 'green', 'white'],
     initStartZoom: 13,
     hasSearchBar: true,
     mapboxToken: mapboxToken,
@@ -106,7 +106,7 @@ export const MapWithAllFeatures = {
     initHeight: initHeight,
     initLon: initLon,
     initLat: initLat,
-    rasterColors: ["cyan", "green", "white"],
+    rasterColors: ['cyan', 'green', 'white'],
     initStartZoom: 11,
     hasSearchBar: true,
     hasMarker: true,

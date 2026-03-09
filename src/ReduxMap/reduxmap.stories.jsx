@@ -1,9 +1,9 @@
-import React from "react";
-import { fn } from "@storybook/test";
-import ReduxMap from "./reduxmap";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
-import initRasterObject from "./data/sample-raster-data-response.json";
+import { configureStore } from '@reduxjs/toolkit';
+import { fn } from 'storybook/test';
+import React from 'react';
+import { Provider } from 'react-redux';
+import initRasterObject from './data/sample-raster-data-response.json';
+import ReduxMap from './reduxmap';
 
 const mockStore = configureStore({
   reducer: () => ({
@@ -16,11 +16,11 @@ const mockStore = configureStore({
 });
 
 const meta = {
-  title: "Functional/ReduxMap",
+  title: 'Functional/ReduxMap',
   component: ReduxMap,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
@@ -39,8 +39,8 @@ export const PlainMapWithoutFeatures = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 12,
@@ -52,8 +52,8 @@ export const MapWithMarker = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 12,
@@ -69,8 +69,8 @@ export const MapWithGeocoder = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 12,
@@ -88,8 +88,8 @@ export const MapWithDraw = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 12,
@@ -106,8 +106,8 @@ export const MapWithAllFeatures = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 12,
@@ -138,8 +138,8 @@ export const MapWithRasterLayer = {
   args: {
     setProperties: fn(),
     setFeatures: fn(),
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 39.023,
     initLon: -76.913,
     initStartZoom: 14,
@@ -150,9 +150,9 @@ export const MapWithRasterLayer = {
     fitBounds: true,
     mapboxToken: mapboxToken,
     initRasterObject: initRasterObject,
-    rasterColors: ["red", "white", "green"],
-    unit: "kg/ha",
-    material: "biomass",
-    color_steps: 5
+    rasterColors: ['red', 'white', 'green'],
+    unit: 'kg/ha',
+    material: 'biomass',
+    color_steps: 5,
   },
 };

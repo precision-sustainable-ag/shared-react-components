@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
-import turf from "turf";
-import chroma from "chroma-js";
-import mapboxgl from "mapbox-gl";
+import chroma from 'chroma-js';
+import mapboxgl from 'mapbox-gl';
+import { useEffect, useRef, useState } from 'react';
+import turf from 'turf';
 
 /**
  * Custom hook to process raster data as a colored grid on a Mapbox map.
@@ -18,13 +18,12 @@ import mapboxgl from "mapbox-gl";
 const useRasterData = ({
   map,
   initRasterObject = {},
-  rasterColors = ["red", "green"],
-  unit = "kg/ha",
-  material = "biomass",
+  rasterColors = ['red', 'green'],
+  unit = 'kg/ha',
+  material = 'biomass',
   setRasterColorSteps,
   color_steps = 7,
 }) => {
-
   const polygonsRef = useRef(turf.featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -47,12 +46,12 @@ const useRasterData = ({
     if (map.current.isStyleLoaded()) {
       setIsMapLoaded(true);
     } else {
-      map.current.on("load", handleMapLoad);
+      map.current.on('load', handleMapLoad);
     }
 
     return () => {
       if (map.current) {
-        map.current.off("load", handleMapLoad);
+        map.current.off('load', handleMapLoad);
       }
     };
   }, [map.current]);
@@ -60,7 +59,6 @@ const useRasterData = ({
   useEffect(() => {
     if (!map.current || !geojsonData || !isMapLoaded) return;
     if (geojsonData.features && geojsonData.features.length > 0) {
-
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;
       let biomassMin, biomassMax;
@@ -70,37 +68,35 @@ const useRasterData = ({
       } else {
         // Calculate from features if not provided
         const values = geojsonData.features
-          .map(feat => f * feat.properties.value)
-          .filter(val => val > 0);
+          .map((feat) => f * feat.properties.value)
+          .filter((val) => val > 0);
         biomassMin = Math.min(...values);
         biomassMax = Math.max(...values);
       }
       const range = biomassMax - biomassMin;
 
-      let scale = chroma.scale(rasterColors);
+      const scale = chroma.scale(rasterColors);
 
-      const featuresWithColors = geojsonData.features.map(feature => {
-      const convertedValue = f * feature.properties.value;
-      const normalizedValue = range > 0 
-        ? (convertedValue - biomassMin) / range 
-        : 0;
-      
-      return {
-        ...feature,
-        properties: {
-          ...feature.properties,
-          value: convertedValue,
-          color: scale(normalizedValue).hex()
-        }
+      const featuresWithColors = geojsonData.features.map((feature) => {
+        const convertedValue = f * feature.properties.value;
+        const normalizedValue = range > 0 ? (convertedValue - biomassMin) / range : 0;
+
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            value: convertedValue,
+            color: scale(normalizedValue).hex(),
+          },
+        };
+      });
+
+      const processedGeojson = {
+        type: 'FeatureCollection',
+        features: featuresWithColors,
       };
-    });
 
-    const processedGeojson = {
-      type: "FeatureCollection",
-      features: featuresWithColors
-    };
-
-    polygonsRef.current = processedGeojson;
+      polygonsRef.current = processedGeojson;
 
       // Setting up the color legend
       var colorValues = [];
@@ -121,7 +117,7 @@ const useRasterData = ({
       }
       colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
 
-      var rasterColorsVals = colorValues.map(function (e, i) {
+      var rasterColorsVals = colorValues.map((e, i) => {
         const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
         const colorV = range ? scale(normalizedBiomassVal).hex() : null;
         return [e, colorV];
@@ -133,27 +129,20 @@ const useRasterData = ({
       // Update map source and layer with the pixel polygon
       if (!map.current.getSource(`${material}Polygons`)) {
         map.current.addSource(`${material}Polygons`, {
-          type: "geojson",
+          type: 'geojson',
           data: processedGeojson,
         });
         map.current.addLayer({
           id: `${material}Polygons`,
-          type: "fill",
+          type: 'fill',
           source: `${material}Polygons`,
           paint: {
-            "fill-opacity": 0.5,
-            "fill-color": [
-              "case",
-              ["!=", ["get", "color"], null],
-              ["get", "color"],
-              "transparent",
-            ],
+            'fill-opacity': 0.5,
+            'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
           },
         });
       } else {
-        map.current
-          .getSource(`${material}Polygons`)
-          .setData(processedGeojson);
+        map.current.getSource(`${material}Polygons`).setData(processedGeojson);
       }
 
       const handleClick = (e) => {
@@ -171,11 +160,11 @@ const useRasterData = ({
           .addTo(map.current);
       };
 
-      map.current.on("click", `${material}Polygons`, handleClick);
+      map.current.on('click', `${material}Polygons`, handleClick);
 
       return () => {
         if (map.current.getLayer(`${material}Polygons`)) {
-          map.current.off("click", `${material}Polygons`, handleClick);
+          map.current.off('click', `${material}Polygons`, handleClick);
         }
       };
     }

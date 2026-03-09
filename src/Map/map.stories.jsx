@@ -1,10 +1,10 @@
-import { fn } from "@storybook/test";
-import { Map } from "./map";
+import { fn } from 'storybook/test';
+import { Map } from './map';
 
 const meta = {
-  title: "Functional/Map",
+  title: 'Functional/Map',
   component: Map,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     mapboxToken: {
       table: { disable: true },
@@ -18,7 +18,7 @@ export default meta;
 
 const featuresSample = [
   {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
       coordinates: [
         [
@@ -30,11 +30,11 @@ const featuresSample = [
           [-80.12590347289976, 37.782425773494836],
         ],
       ],
-      type: "Polygon",
+      type: 'Polygon',
     },
   },
   {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
       coordinates: [
         [
@@ -47,16 +47,16 @@ const featuresSample = [
           [-80.2452403254797, 37.77489071424286],
         ],
       ],
-      type: "Polygon",
+      type: 'Polygon',
     },
   },
 ];
 
 const singlePolygonFeatures = [
   {
-    type: "Feature",
+    type: 'Feature',
     geometry: {
-      type: "Polygon",
+      type: 'Polygon',
       coordinates: [
         [
           [-78.79385987583387, 35.80028988840564],
@@ -78,8 +78,8 @@ export const PlainMapWithoutFeatures = {
   args: {
     setAddress: fn(),
     setFeatures: fn(),
-    initWidth: "400px",
-    initHeight: "300px",
+    initWidth: '400px',
+    initHeight: '300px',
     initLon: -80.16,
     initLat: 37.75,
     initStartZoom: 10,
@@ -109,8 +109,8 @@ export const MapWithMarker = {
     setAddress: fn(),
     setFeatures: fn(),
     setZoom: fn(),
-    initWidth: "400px",
-    initHeight: "300px",
+    initWidth: '400px',
+    initHeight: '300px',
     initLon: -80.16,
     initLat: 37.75,
     initStartZoom: 10,
@@ -140,8 +140,8 @@ export const MapWithGeocoder = {
     setAddress: fn(),
     setFeatures: fn(),
     setZoom: fn(),
-    initWidth: "400px",
-    initHeight: "300px",
+    initWidth: '400px',
+    initHeight: '300px',
     initLon: -80.16,
     initLat: 37.75,
     initStartZoom: 10,
@@ -172,8 +172,8 @@ export const MapWithInitFeatures = {
     setFeatures: fn(),
     setZoom: fn(),
     initFeatures: singlePolygonFeatures,
-    initWidth: "400px",
-    initHeight: "300px",
+    initWidth: '400px',
+    initHeight: '300px',
     initStartZoom: 10,
     initMinZoom: 5,
     initMaxZoom: 16,
@@ -202,8 +202,8 @@ export const MapWithAllFeatures = {
     setFeatures: fn(),
     setZoom: fn(),
     initFeatures: featuresSample,
-    initWidth: "400px",
-    initHeight: "300px",
+    initWidth: '400px',
+    initHeight: '300px',
     initStartZoom: 10,
     initMinZoom: 5,
     initMaxZoom: 16,

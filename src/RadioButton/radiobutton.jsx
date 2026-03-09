@@ -1,7 +1,7 @@
-import React from "react";
-import Radio from "@mui/material/Radio";
-import PropTypes from "prop-types";
-import { Box, Button, SvgIcon, Typography } from "@mui/material";
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import Radio from '@mui/material/Radio';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export function PSARadioButton({
   options,
@@ -9,16 +9,16 @@ export function PSARadioButton({
   onChange,
   row = false,
   sx,
-  size = "small",
+  size = 'small',
   ...props
 }) {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: row ? "row" : "column",
+        display: 'flex',
+        flexDirection: row ? 'row' : 'column',
         gap: 2,
-        width: size === "small" ? "fit-content" : "100%",
+        width: size === 'small' ? 'fit-content' : '100%',
       }}
     >
       {options.map((option) => (
@@ -26,20 +26,19 @@ export function PSARadioButton({
           key={option.value}
           onClick={() => onChange(option.value)}
           sx={{
-            width: "100%",
+            width: '100%',
             padding: 1,
-            textAlign: "left",
-            backgroundColor: selectedValue === option.value && "main.accent2",
-            color: selectedValue === option.value ? "white" : "text.primary",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-start",
+            textAlign: 'left',
+            backgroundColor: selectedValue === option.value && 'main.accent2',
+            color: selectedValue === option.value ? 'white' : 'text.primary',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
             borderRadius: 1,
-            textTransform: "none",
-            boxShadow: "0px 1px 10px 0px #0000001A",
-            "&:hover": {
-              backgroundColor:
-                selectedValue === option.value ? "#2B79B4" : "#e0e0e0",
+            textTransform: 'none',
+            boxShadow: '0px 1px 10px 0px #0000001A',
+            '&:hover': {
+              backgroundColor: selectedValue === option.value ? '#2B79B4' : '#e0e0e0',
             },
           }}
         >
@@ -47,22 +46,20 @@ export function PSARadioButton({
             <SvgIcon
               component={option.icon}
               sx={{
-                color:
-                  selectedValue === option.value ? "white" : "primary.main",
+                color: selectedValue === option.value ? 'white' : 'primary.main',
                 marginRight: 1,
-                padding: "4px",
+                padding: '4px',
               }}
             />
           ) : (
             <Radio
               checked={selectedValue === option.value}
               sx={{
-                color:
-                  selectedValue === option.value ? "white" : "primary.main",
+                color: selectedValue === option.value ? 'white' : 'primary.main',
                 marginRight: 1,
-                padding: "4px",
-                "&.Mui-checked": {
-                  color: "white",
+                padding: '4px',
+                '&.Mui-checked': {
+                  color: 'white',
                 },
               }}
               tabIndex={-1}
@@ -70,9 +67,9 @@ export function PSARadioButton({
           )}
           <Typography
             sx={{
-              fontSize: "14px",
+              fontSize: '14px',
               lineHeight: 1.5,
-              textAlign: "left",
+              textAlign: 'left',
             }}
           >
             {option.label}
@@ -91,17 +88,15 @@ PSARadioButton.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
-      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
       icon: PropTypes.elementType,
-    })
+    }),
   ).isRequired,
 
   /**
    * The currently selected value of the radio group
    */
-  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired,
+  selectedValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 
   /**
    * Callback function triggered when the selection changes
@@ -121,5 +116,5 @@ PSARadioButton.propTypes = {
   /**
    *  Size of the radio button group. 'large' makes it full width, 'small' makes it fit content
    */
-  size: PropTypes.oneOf(["small", "large"]),
+  size: PropTypes.oneOf(['small', 'large']),
 };

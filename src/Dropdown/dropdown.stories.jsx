@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { PSADropdown } from "./dropdown"; // Assuming PSADropdown is the component you are working on
+import React, { useState } from 'react';
+import { PSADropdown } from './dropdown'; // Assuming PSADropdown is the component you are working on
 
 export default {
-  title: "Layout/Dropdown",
+  title: 'Layout/Dropdown',
   component: PSADropdown,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a custom Dropdown component based on MUI's \`FormControl, InputLabel, MenuItem, Select,\`. 
@@ -18,7 +18,7 @@ export default {
 };
 
 const Template = (args) => {
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
 
   return (
     <PSADropdown
@@ -35,131 +35,133 @@ const Template = (args) => {
 // Default story
 export const DefaultDropdown = Template.bind({});
 DefaultDropdown.args = {
-  label: "Default",
+  label: 'Default',
   items: [
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Option 3", value: "option3" },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Option 3', value: 'option3' },
   ],
   formSx: { minWidth: 120 },
   inputSx: {
-    color: "#598445",
-    "&.Mui-focused": {
-      color: "#598445",
-      fontWeight: "medium",
+    color: '#598445',
+    '&.Mui-focused': {
+      color: '#598445',
+      fontWeight: 'medium',
     },
   },
   SelectProps: {
     sx: {
       minWidth: 100,
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "1px",
-        borderRadius: "4px",
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '1px',
+        borderRadius: '4px',
       },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2px",
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2px',
       },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2.5px",
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2.5px',
       },
     },
-    "data-test": "select-option",
+    'data-test': 'select-option',
   },
 };
 
 // Header Option Story
 export const HeaderOption = Template.bind({});
 HeaderOption.args = {
-  label: "Header",
+  label: 'Header',
   items: [
-    { label: "Options Group 1", isHeader: true },
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Options Group 2", isHeader: true },
-    { label: "Option 3", value: "option3" },
+    { label: 'Options Group 1', isHeader: true },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Options Group 2', isHeader: true },
+    { label: 'Option 3', value: 'option3' },
   ],
   formSx: { minWidth: 120 },
   inputSx: {
-    color: "#598445",
-    "&.Mui-focused": {
-      color: "#598445",
-      fontWeight: "medium",
+    color: '#598445',
+    '&.Mui-focused': {
+      color: '#598445',
+      fontWeight: 'medium',
     },
   },
   SelectProps: {
     sx: {
       minWidth: 100,
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "1px",
-        borderRadius: "4px",
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '1px',
+        borderRadius: '4px',
       },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2px",
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2px',
       },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2.5px",
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2.5px',
       },
     },
-    "data-test": "select-option",
+    'data-test': 'select-option',
   },
   menuSx: {
-    fontWeight: "bold", color: "yellow", backgroundColor: "#000080",
-  }
+    fontWeight: 'bold',
+    color: 'yellow',
+    backgroundColor: '#000080',
+  },
 };
 
 // Dropdown with custom styles
 export const StyledDropdown = Template.bind({});
 StyledDropdown.args = {
-  label: "Style",
+  label: 'Style',
   items: [
-    { label: "Options Group 1", isHeader: true },
-    { label: "Option 1", value: "option1" },
-    { label: "Option 2", value: "option2" },
-    { label: "Options Group 2", isHeader: true },
-    { label: "Option 3", value: "option3" },
+    { label: 'Options Group 1', isHeader: true },
+    { label: 'Option 1', value: 'option1' },
+    { label: 'Option 2', value: 'option2' },
+    { label: 'Options Group 2', isHeader: true },
+    { label: 'Option 3', value: 'option3' },
   ],
   formSx: { minWidth: 120 },
   inputSx: {
-    color: "#598445",
-    "&.Mui-focused": {
-      color: "#598445",
-      fontWeight: "medium",
+    color: '#598445',
+    '&.Mui-focused': {
+      color: '#598445',
+      fontWeight: 'medium',
     },
   },
   SelectProps: {
-    variant: "filled",
-    style: { backgroundColor: "lightblue" },
+    variant: 'filled',
+    style: { backgroundColor: 'lightblue' },
     sx: {
       minWidth: 100,
-      "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "1px",
-        borderRadius: "4px",
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '1px',
+        borderRadius: '4px',
       },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2px",
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2px',
       },
-      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-        borderColor: "#598445",
-        borderWidth: "2.5px",
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#598445',
+        borderWidth: '2.5px',
       },
     },
     MenuProps: {
       PaperProps: {
         style: {
-          backgroundColor: "lightgray",
-          color: "black",
+          backgroundColor: 'lightgray',
+          color: 'black',
         },
       },
     },
     error: false,
-    "data-test": "select-option",
+    'data-test': 'select-option',
   },
 };

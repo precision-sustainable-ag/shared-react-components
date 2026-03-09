@@ -13,16 +13,23 @@ const RasterTools = ({ map, colorStops, unit }) => {
   };
 
   return (
-    colorStops && colorStops.length
-    && (
+    colorStops &&
+    colorStops.length && (
       <div>
         <div className={styles.opacityslider}>
-          <input type="range" min="0" max="100" value={opacityValue} className={styles.slider} onChange={handleOpacityChange} id="myRange" />
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={opacityValue}
+            className={styles.slider}
+            onChange={handleOpacityChange}
+            id="myRange"
+          />
         </div>
         <div className={styles.rasterlegend}>
           <span className={styles.rastertitle}>
-            unit:
-            &nbsp;
+            unit: &nbsp;
             {unit}
           </span>
           {colorStops.map((stop, i) => (

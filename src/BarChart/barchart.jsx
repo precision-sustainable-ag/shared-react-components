@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Highcharts from "../../utils/highchartsConfig";
-import HighchartsReact from "highcharts-react-official";
-import { useTheme } from "@mui/material";
-import PSASubContainer from "../SubContainer";
+import { useTheme } from '@mui/material';
+import HighchartsReact from 'highcharts-react-official';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Highcharts from '../../utils/highchartsConfig';
+import PSASubContainer from '../SubContainer';
 
 export function PSABarChart({
   categories,
   data,
-  orientation = "vertical",
+  orientation = 'vertical',
   chartTitle,
-  color = "#4caf50",
+  color = '#4caf50',
   xAxisTitle,
   yAxisTitle,
   loading = false,
@@ -22,18 +22,18 @@ export function PSABarChart({
   Highcharts.setOptions({
     chart: {
       style: {
-        fontFamily: "IBM Plex Sans",
+        fontFamily: 'IBM Plex Sans',
       },
     },
   });
 
-  const chartType = orientation === "horizontal" ? "bar" : "column";
+  const chartType = orientation === 'horizontal' ? 'bar' : 'column';
 
   const chartOptions = {
     chart: {
       type: chartType,
       height,
-      marginRight: orientation === "horizontal" ? 100 : null,
+      marginRight: orientation === 'horizontal' ? 100 : null,
       plotBackgroundColor: theme.palette.additional.background2,
       plotBorderColor: theme.palette.main.background1,
       plotBorderWidth: 2,
@@ -47,14 +47,14 @@ export function PSABarChart({
       title: {
         text: xAxisTitle,
         style: {
-          fontStyle: "italic",
+          fontStyle: 'italic',
           color: theme.palette.additional.grey2,
         },
       },
       labels: {
         style: {
-          fontSize: "13px",
-          color: "black",
+          fontSize: '13px',
+          color: 'black',
         },
         ...additionalOptions.xAxis?.labels,
       },
@@ -65,7 +65,7 @@ export function PSABarChart({
       title: {
         text: yAxisTitle,
         style: {
-          fontStyle: "italic",
+          fontStyle: 'italic',
           color: theme.palette.additional.grey2,
         },
       },
@@ -76,8 +76,8 @@ export function PSABarChart({
       ...additionalOptions.yAxis,
     },
     legend: {
-      align: "center",
-      verticalAlign: "top",
+      align: 'center',
+      verticalAlign: 'top',
       ...additionalOptions.legend,
     },
     plotOptions: {
@@ -85,12 +85,12 @@ export function PSABarChart({
         stacking: additionalOptions.plotOptions?.series?.stacking || null,
         dataLabels: {
           enabled: true,
-          format: "{y}",
+          format: '{y}',
           crop: false,
-          overflow: "justify",
+          overflow: 'justify',
           style: {
-            textOutline: "none",
-            fontSize: "0.9rem",
+            textOutline: 'none',
+            fontSize: '0.9rem',
             ...additionalOptions.plotOptions?.series?.dataLabels?.style,
           },
           ...additionalOptions.plotOptions?.series?.dataLabels,
@@ -102,7 +102,7 @@ export function PSABarChart({
     },
     series: [
       {
-        name: "Value",
+        name: 'Value',
         data,
         color,
         ...additionalOptions.series?.[0],
@@ -136,9 +136,7 @@ export function PSABarChart({
   return (
     <PSASubContainer
       title={chartTitle}
-      content={
-        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-      }
+      content={<HighchartsReact highcharts={Highcharts} options={chartOptions} />}
     />
   );
 }
@@ -157,10 +155,10 @@ PSABarChart.propTypes = {
       PropTypes.shape({
         y: PropTypes.number,
       }),
-    ])
+    ]),
   ),
   /** "vertical" for column chart, "horizontal" for bar chart */
-  orientation: PropTypes.oneOf(["vertical", "horizontal"]),
+  orientation: PropTypes.oneOf(['vertical', 'horizontal']),
   /** The main title of the chart */
   chartTitle: PropTypes.string,
   /** The color of the bars/columns */

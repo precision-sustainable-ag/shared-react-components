@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { PSAModal } from "./modal";
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
+import React, { useState } from 'react';
+import { PSAModal } from './modal';
 
 const meta = {
-  title: "Layout/Modal",
+  title: 'Layout/Modal',
   component: PSAModal,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `A custom modal component that wraps MUI's \`Modal\` component. It accepts all the props from MUI's Modal and can be customized as needed.`,
@@ -27,19 +27,17 @@ export const Default = () => {
   const modalContent = (
     <div
       style={{
-        backgroundColor: "white",
-        padding: "20px",
-        margin: "auto",
-        marginTop: "15%",
-        maxWidth: "500px",
-        borderRadius: "8px",
-        outline: "none",
+        backgroundColor: 'white',
+        padding: '20px',
+        margin: 'auto',
+        marginTop: '15%',
+        maxWidth: '500px',
+        borderRadius: '8px',
+        outline: 'none',
       }}
     >
       <h2>Modal Title</h2>
-      <p>
-        This is the content of the modal. You can place any components here.
-      </p>
+      <p>This is the content of the modal. You can place any components here.</p>
       <Button variant="contained" color="primary" onClick={handleClose}>
         Close Modal
       </Button>
@@ -58,9 +56,9 @@ export const Default = () => {
         closeAfterTransition
         disableEscapeKeyDown={false}
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       />
     </div>

@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import Highcharts from "../../utils/highchartsConfig";
-import HighchartsReact from "highcharts-react-official";
-import { useTheme } from "@mui/material";
-import PropTypes from "prop-types";
-import PSASubContainer from "../SubContainer";
+import { useTheme } from '@mui/material';
+import HighchartsReact from 'highcharts-react-official';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import Highcharts from '../../utils/highchartsConfig';
+import PSASubContainer from '../SubContainer';
 
 export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
   Highcharts.setOptions({
     chart: {
       style: {
-        fontFamily: "IBM Plex Sans",
+        fontFamily: 'IBM Plex Sans',
       },
     },
   });
@@ -27,7 +27,7 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
             title: {
               text: xAxis.title,
               style: {
-                fontStyle: "italic",
+                fontStyle: 'italic',
                 color: theme.palette.additional.grey2,
               },
             },
@@ -37,14 +37,14 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
             title: {
               text: yAxis.title,
               style: {
-                fontStyle: "italic",
+                fontStyle: 'italic',
                 color: theme.palette.additional.grey2,
               },
             },
           },
           series: data,
           chart: {
-            type: "line",
+            type: 'line',
             plotBackgroundColor: theme.palette.additional.background2,
             plotBorderColor: theme.palette.main.background1,
             plotBorderWidth: 2,
@@ -54,9 +54,7 @@ export function PSALineChart({ title, xAxis, yAxis, data, options = null }) {
   return (
     <PSASubContainer
       title={title}
-      content={
-        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-      }
+      content={<HighchartsReact highcharts={Highcharts} options={chartOptions} />}
     />
   );
 }
@@ -88,7 +86,7 @@ PSALineChart.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       data: PropTypes.array,
-    })
+    }),
   ),
   /**
    * A props for custom setting the options of the chart. Default to `null`.

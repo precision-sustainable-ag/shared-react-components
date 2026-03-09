@@ -1,22 +1,22 @@
 /* eslint-disable */
-import React, { useRef, useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
-import MapboxDraw from "@mapbox/mapbox-gl-draw";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import area from "@turf/area";
-import centroid from "@turf/centroid";
-import turf from "turf";
-import chroma from "chroma-js";
-import PropTypes, { object } from "prop-types";
 
-import { geocodeReverse, coordinatesGeocoder } from "./helpers";
-import RasterTools from "./raster-tools";
-import InfoBox from "./info-box";
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import area from '@turf/area';
+import centroid from '@turf/centroid';
+import chroma from 'chroma-js';
+import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import PropTypes, { object } from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import turf from 'turf';
 
-import styles from "./map.module.scss";
-import "./mapbox-gl.css";
-import "./mapbox-gl-draw.css";
-import "./mapbox-gl-geocoder.css";
+import { coordinatesGeocoder, geocodeReverse } from './helpers';
+import InfoBox from './info-box';
+import styles from './map.module.scss';
+import RasterTools from './raster-tools';
+import './mapbox-gl.css';
+import './mapbox-gl-draw.css';
+import './mapbox-gl-geocoder.css';
 
 const NR_COLOR_STEPS = 7;
 
@@ -40,13 +40,13 @@ const NcalcMap = ({
   setMap = () => {},
   onDraw = () => {},
   initRasterObject = {},
-  rasterColors = ["red", "green"],
+  rasterColors = ['red', 'green'],
   initFeatures = [],
-  initWidth = "400px",
-  initHeight = "400px",
-  unit = "kg/ha",
-  material = "biomass",
-  initAddress = "",
+  initWidth = '400px',
+  initHeight = '400px',
+  unit = 'kg/ha',
+  material = 'biomass',
+  initAddress = '',
   initLon = -75,
   initLat = 40,
   initStartZoom = 12,
@@ -107,14 +107,14 @@ const NcalcMap = ({
 
   //// GEOCODER CONTROL
   const Geocoder = new MapboxGeocoder({
-    placeholder: initAddress || "Search Your Address ...",
+    placeholder: initAddress || 'Search Your Address ...',
     localGeocoder: coordinatesGeocoder,
     marker: false,
     accessToken: mapboxToken,
     container: map.current,
-    proximity: "ip",
+    proximity: 'ip',
     trackProximity: true,
-    countries: "us",
+    countries: 'us',
   });
   geocoderRef.current = Geocoder;
 
@@ -152,13 +152,13 @@ const NcalcMap = ({
         flattenedBiomass = biomassData.flat(1).filter((el) => el !== 0);
       }
       var colorValues = [];
-      const f = unit === "lb/ac" ? 0.892179 : 1;
+      const f = unit === 'lb/ac' ? 0.892179 : 1;
       const biomassMax = f * Math.max(...flattenedBiomass);
       const biomassMin = f * Math.min(...flattenedBiomass);
       const range = biomassMax - biomassMin;
 
       /// setting up pixel polygons
-      let scale = chroma.scale(rasterColors);
+      const scale = chroma.scale(rasterColors);
       const w = biomassData.length;
       const h = biomassData[0].length;
       const lon = bbox[0];
@@ -168,11 +168,8 @@ const NcalcMap = ({
       for (let i = 0; i < w; i++) {
         for (let j = 0; j < h; j++) {
           const topLeftCorner = { lon: lon + i * dLon, lat: lat - j * dLat };
-          let biomassVal =
-            f * biomassData[i][j] !== -9999 ? f * biomassData[i][j] : null;
-          const normalizedBiomassVal = range
-            ? (biomassVal - biomassMin) / range
-            : null;
+          const biomassVal = f * biomassData[i][j] !== -9999 ? f * biomassData[i][j] : null;
+          const normalizedBiomassVal = range ? (biomassVal - biomassMin) / range : null;
           biomassVal &&
             biomassVal > -9998 &&
             polygons.features.push(
@@ -189,8 +186,8 @@ const NcalcMap = ({
                 {
                   value: biomassVal,
                   color: range ? scale(normalizedBiomassVal).hex() : null,
-                }
-              )
+                },
+              ),
             );
         }
       }
@@ -200,7 +197,7 @@ const NcalcMap = ({
       for (var i = biomassMin; i <= biomassMax; i = i + step) {
         colorValues.push(Math.round(i / 10, 0) * 10);
       }
-      var rasterColorsVals = colorValues.map(function (e, i) {
+      var rasterColorsVals = colorValues.map((e, i) => {
         const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
         const colorV = range ? scale(normalizedBiomassVal).hex() : null;
         return [e, colorV];
@@ -218,7 +215,7 @@ const NcalcMap = ({
   useEffect(() => {
     if (hasDrawing && drawerRef.current && initFeatures.length) {
       drawerRef.current.add({
-        type: "FeatureCollection",
+        type: 'FeatureCollection',
         features: initFeatures,
       });
     }
@@ -234,8 +231,8 @@ const NcalcMap = ({
     geocodeReverse({
       apiKey: mapboxToken,
       setterFunc: (address) => {
-        if (document.querySelector(".mapboxgl-ctrl-geocoder--input")) {
-          document.querySelector(".mapboxgl-ctrl-geocoder--input").placeholder =
+        if (document.querySelector('.mapboxgl-ctrl-geocoder--input')) {
+          document.querySelector('.mapboxgl-ctrl-geocoder--input').placeholder =
             address().fullAddress;
         }
         // Geocoder.setPlaceholder(address().fullAddress);
@@ -255,9 +252,7 @@ const NcalcMap = ({
       popupRef.current.setHTML(
         `<span> click and drag </span>
       <br />
-      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(
-        4
-      )}</span>`
+      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(4)}</span>`,
       );
       markerRef.current.setLngLat(lngLat).setPopup(popupRef.current);
       map.current.flyTo({
@@ -272,7 +267,7 @@ const NcalcMap = ({
     if (map.current) return; // initialize map only once
     var Map = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      style: 'mapbox://styles/mapbox/satellite-streets-v12',
       center: [initLon, initLat],
       zoom: initStartZoom,
     });
@@ -285,9 +280,7 @@ const NcalcMap = ({
     const Popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
       `<span> click and drag </span>
       <br />
-      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(
-        4
-      )}</span>`
+      <span>${marker.longitude.toFixed(4)}  ${marker.latitude.toFixed(4)}</span>`,
     );
     popupRef.current = Popup;
 
@@ -300,7 +293,7 @@ const NcalcMap = ({
     //// MARKER CONTROL
     const Marker = new mapboxgl.Marker({
       draggable: hasMarkerMovable,
-      color: "#e63946",
+      color: '#e63946',
       scale: 1,
     })
       .setLngLat([marker.longitude, marker.latitude])
@@ -341,11 +334,11 @@ const NcalcMap = ({
     });
 
     //// ADD CONTROLS
-    if (hasFullScreen) map.current.addControl(Fullscreen, "top-right");
-    if (hasNavigation) map.current.addControl(Navigation, "top-right");
-    if (hasGeolocate) map.current.addControl(Geolocate, "top-right");
-    if (hasDrawing) map.current.addControl(Draw, "top-left");
-    if (hasSearchBar) map.current.addControl(Geocoder, "top-left");
+    if (hasFullScreen) map.current.addControl(Fullscreen, 'top-right');
+    if (hasNavigation) map.current.addControl(Navigation, 'top-right');
+    if (hasGeolocate) map.current.addControl(Geolocate, 'top-right');
+    if (hasDrawing) map.current.addControl(Draw, 'top-left');
+    if (hasSearchBar) map.current.addControl(Geocoder, 'top-left');
     if (hasMarker && !isDrawActive) Marker.addTo(map.current);
 
     // if (!initAddress) {
@@ -413,38 +406,37 @@ const NcalcMap = ({
     };
 
     const handleDrawCreate = (e) => {
-      onDraw({ mode: "add", e: e });
+      onDraw({ mode: 'add', e: e });
     };
     const handleDrawDelete = (e) => {
       setIsDrawActive(false);
-      onDraw({ mode: "delete", e: e });
+      onDraw({ mode: 'delete', e: e });
     };
     const handleDrawUpdate = (e) => {
-      onDraw({ mode: "update", e: e });
+      onDraw({ mode: 'update', e: e });
       handlePolyAreaCalc(e);
     };
     const handleDrawSelection = (e) => {
-      onDraw({ mode: "select", e: e });
+      onDraw({ mode: 'select', e: e });
       handlePolyAreaCalc(e);
     };
 
     //// EVENTS
-    Geolocate.on("geolocate", handleGeolocate);
-    Geocoder.on("result", (e) => {
+    Geolocate.on('geolocate', handleGeolocate);
+    Geocoder.on('result', (e) => {
       var streetNum;
       var zipCode;
       if (e && e.result) {
         setGeocodeResult(e.result);
         var fullAddress = e.result.place_name;
-        if (fullAddress.includes("Lat") && fullAddress.includes("Lng")) {
-          let longitude = e.result.geometry.coordinates[0];
-          let latitude = e.result.geometry.coordinates[1];
+        if (fullAddress.includes('Lat') && fullAddress.includes('Lng')) {
+          const longitude = e.result.geometry.coordinates[0];
+          const latitude = e.result.geometry.coordinates[1];
           geocodeReverse({
             apiKey: mapboxToken,
             setterFunc: (address) => {
-              document.querySelector(
-                ".mapboxgl-ctrl-geocoder--input"
-              ).placeholder = address().fullAddress;
+              document.querySelector('.mapboxgl-ctrl-geocoder--input').placeholder =
+                address().fullAddress;
               // Geocoder.setPlaceholder(address().fullAddress);
               setAddress(address);
             },
@@ -452,9 +444,9 @@ const NcalcMap = ({
             latitude: latitude,
           });
         } else {
-          const splitted = fullAddress.split(", ");
+          const splitted = fullAddress.split(', ');
           streetNum = splitted[0];
-          const stateZip = splitted[splitted.length - 2].split(" ");
+          const stateZip = splitted[splitted.length - 2].split(' ');
           zipCode = stateZip[stateZip.length - 1];
         }
         if (fullAddress) {
@@ -476,7 +468,7 @@ const NcalcMap = ({
       }
     });
     if (hasMarkerMovable) {
-      map.current.on("dblclick", (e) => {
+      map.current.on('dblclick', (e) => {
         setMarker((prev) => ({
           ...prev,
           longitude: e.lngLat.lng,
@@ -484,7 +476,7 @@ const NcalcMap = ({
         }));
       });
     }
-    map.current.on("mousemove", (e) => {
+    map.current.on('mousemove', (e) => {
       const lnglat = e.lngLat.wrap();
       setCursorLoc({
         longitude: lnglat.lng.toFixed(4),
@@ -492,11 +484,11 @@ const NcalcMap = ({
       });
     });
 
-    map.current.on("load", (e) => {
+    map.current.on('load', (e) => {
       map.current.addSource(`${material}Polygons`, {
-        type: "geojson",
+        type: 'geojson',
         data: {
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: [],
         },
       });
@@ -507,13 +499,13 @@ const NcalcMap = ({
       }
       map.current.addLayer({
         id: `${material}Polygons`,
-        type: "fill",
+        type: 'fill',
         source: `${material}Polygons`,
         paint: {
-          "fill-opacity": 0.5,
-          "fill-color": {
-            type: "identity",
-            property: "color",
+          'fill-opacity': 0.5,
+          'fill-color': {
+            type: 'identity',
+            property: 'color',
           },
           // "fill-color": {
           //   property: "color",
@@ -532,31 +524,26 @@ const NcalcMap = ({
       //   markerRef.current.togglePopup();
       //   setTimeout(() => markerRef.current.togglePopup(), 2000);
       // }
-      if (
-        drawerRef.current &&
-        hasDrawing &&
-        initFeatures.length > 0 &&
-        !featuresInitialized
-      ) {
+      if (drawerRef.current && hasDrawing && initFeatures.length > 0 && !featuresInitialized) {
         drawerRef.current.add({
-          type: "FeatureCollection",
+          type: 'FeatureCollection',
           features: initFeatures,
         });
         setFeaturesInitialized(true);
       }
 
-      map.current.addPolygon = function (id, polygon, options = {}) {
+      map.current.addPolygon = (id, polygon, options = {}) => {
         const lineId = `${id}-line`;
 
         const polygonStyle = {
-          "fill-color": options["fill-color"] ?? "#000",
-          "fill-opacity": options["fill-opacity"] ?? 1,
+          'fill-color': options['fill-color'] ?? '#000',
+          'fill-opacity': options['fill-opacity'] ?? 1,
         };
 
         const lineStyle = {
-          "line-color": options["line-color"] ?? "#000",
-          "line-opacity": options["line-opacity"] ?? 1,
-          "line-width": options["line-width"] ?? 1,
+          'line-color': options['line-color'] ?? '#000',
+          'line-opacity': options['line-opacity'] ?? 1,
+          'line-width': options['line-width'] ?? 1,
         };
 
         if (map.current.getLayer(id)) {
@@ -572,11 +559,11 @@ const NcalcMap = ({
         }
 
         map.current.addSource(id, {
-          type: "geojson",
+          type: 'geojson',
           data: {
-            type: "Feature",
+            type: 'Feature',
             geometry: {
-              type: "Polygon",
+              type: 'Polygon',
               coordinates: polygon,
             },
           },
@@ -584,36 +571,36 @@ const NcalcMap = ({
 
         map.current.addLayer({
           id,
-          type: "fill",
+          type: 'fill',
           source: id,
           paint: polygonStyle,
         });
 
         map.current.addLayer({
           id: lineId,
-          type: "line",
+          type: 'line',
           source: id,
           paint: lineStyle,
         });
 
-        map.current.on("mouseenter", id, () => {
-          map.current.setPaintProperty(lineId, "line-width", 2);
-          map.current.setPaintProperty(lineId, "line-color", "#aaa");
+        map.current.on('mouseenter', id, () => {
+          map.current.setPaintProperty(lineId, 'line-width', 2);
+          map.current.setPaintProperty(lineId, 'line-color', '#aaa');
 
-          ["fill-color", "fill-opacity"].forEach((prop) => {
+          ['fill-color', 'fill-opacity'].forEach((prop) => {
             if (options.hover?.[prop]) {
               map.current.setPaintProperty(id, prop, options.hover[prop]);
             }
           });
 
-          ["line-width", "line-color", "line-opacity"].forEach((prop) => {
+          ['line-width', 'line-color', 'line-opacity'].forEach((prop) => {
             if (options.hover?.[prop]) {
               map.current.setPaintProperty(lineId, prop, options.hover[prop]);
             }
           });
         });
 
-        map.current.on("mouseleave", id, () => {
+        map.current.on('mouseleave', id, () => {
           Object.entries(polygonStyle).forEach(([property, value]) => {
             map.current.setPaintProperty(id, property, value);
           });
@@ -627,17 +614,17 @@ const NcalcMap = ({
       setMap(map.current);
     });
 
-    map.current.on("draw.create", handleDrawCreate);
-    map.current.on("draw.delete", handleDrawDelete);
-    map.current.on("draw.update", handleDrawUpdate);
-    map.current.on("draw.selectionchange", handleDrawSelection);
-    Marker.on("dragend", onDragEnd);
+    map.current.on('draw.create', handleDrawCreate);
+    map.current.on('draw.delete', handleDrawDelete);
+    map.current.on('draw.update', handleDrawUpdate);
+    map.current.on('draw.selectionchange', handleDrawSelection);
+    Marker.on('dragend', onDragEnd);
 
     // Biomass layer listeners
-    map.current.on("click", `${material}Polygons`, (e) => {
+    map.current.on('click', `${material}Polygons`, (e) => {
       e.preventDefault();
       // // Map overlay (Biomass) popup
-      map.current.getCanvas().style.cursor = "pointer";
+      map.current.getCanvas().style.cursor = 'pointer';
       // Copy coordinates array.
       const coordinates = e.features[0].geometry.coordinates.slice();
       const description = `<div>${material} value: ${Math.round(e.features[0].properties.value, 0)} ${unit}</div>`;
@@ -666,7 +653,7 @@ const NcalcMap = ({
   }, [map, rasterColorSteps, unit]);
 
   useEffect(() => {
-    map.current.on("zoom", () => {
+    map.current.on('zoom', () => {
       const currentZoom = map.current.getZoom();
       setLastZoom(currentZoom);
       setZoom(currentZoom);

@@ -1,2 +1,2 @@
-import { PSAButton } from "./button";
+import { PSAButton } from './button';
 export default PSAButton;

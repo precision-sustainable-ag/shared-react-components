@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Chip } from "@mui/material";
-import { PSATooltip } from "../Tooltip/tooltip";
+import { Chip } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { PSATooltip } from '../Tooltip/tooltip';
 
 export function PSATagItem({
   chipId,
@@ -34,14 +34,14 @@ export function PSATagItem({
           variant="outlined"
           data-test={`goal-tag-${chipId}`}
           sx={{
-            "&.MuiChip-root:focus": {
-              "&.Mui-disabled": {
-                color: "#757575",
+            '&.MuiChip-root:focus': {
+              '&.Mui-disabled': {
+                color: '#757575',
               },
             },
-            "&.Mui-disabled": {
+            '&.Mui-disabled': {
               opacity: 1,
-              color: "#757575",
+              color: '#757575',
             },
           }}
           {...props}
@@ -61,7 +61,7 @@ PSATagItem.propTypes = {
   /** disable the chip */
   disabled: PropTypes.bool,
   /** MUI chip color: "primary" or "secondary" */
-  color: PropTypes.oneOf(["primary", "secondary"]),
+  color: PropTypes.oneOf(['primary', 'secondary']),
   /** optional content for the Avatar slot */
   avatarContent: PropTypes.node,
   /** click handler */
@@ -69,9 +69,9 @@ PSATagItem.propTypes = {
 };
 
 PSATagItem.defaultProps = {
-  tooltipText: "",
+  tooltipText: '',
   disabled: false,
-  color: "secondary",
+  color: 'secondary',
   avatarContent: null,
   onClick: () => {},
 };

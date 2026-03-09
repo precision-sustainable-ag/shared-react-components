@@ -1,7 +1,7 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
-import PropTypes from "prop-types";
-import PSASubContainer from "../SubContainer";
+import { Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+import PSASubContainer from '../SubContainer';
 
 export function PSADataPoint({ title, value, icon, unit, boxSx }) {
   return (
@@ -10,19 +10,19 @@ export function PSADataPoint({ title, value, icon, unit, boxSx }) {
       content={
         <Box
           sx={{
-            minWidth: "300px",
-            minHeight: "155px",
-            display: "flex",
+            minWidth: '300px',
+            minHeight: '155px',
+            display: 'flex',
             ...boxSx,
           }}
         >
-          <Box margin={"auto"}>
+          <Box margin={'auto'}>
             <Typography
               sx={{
-                fontSize: "40px",
+                fontSize: '40px',
                 fontWeight: 600,
-                color: "main.text",
-                textAlign: "center",
+                color: 'main.text',
+                textAlign: 'center',
               }}
             >
               {value}
@@ -30,9 +30,9 @@ export function PSADataPoint({ title, value, icon, unit, boxSx }) {
             </Typography>
             <Typography
               sx={{
-                fontSize: "1rem",
+                fontSize: '1rem',
                 color: `additional.grey1`,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               {unit}

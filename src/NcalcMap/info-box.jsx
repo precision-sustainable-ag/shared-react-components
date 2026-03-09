@@ -9,8 +9,7 @@ const InfoBox = ({ cursorLoc, polygonArea }) => (
       {cursorLoc.longitude}
       {polygonArea > 0 && (
         <>
-          &nbsp;&nbsp;|&nbsp;
-          Area (Acre):
+          &nbsp;&nbsp;|&nbsp; Area (Acre):
           {polygonArea.toFixed(1)}
         </>
       )}

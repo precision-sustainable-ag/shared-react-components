@@ -1,10 +1,7 @@
-import React from "react";
+import React from 'react';
 // import { render } from "@testing-library/react";
-import { BasicFadeAlert } from "./fade-alert.composition";
+import { BasicFadeAlert } from './fade-alert.composition';
 
-it("true is truthy", () => {
-    expect(true).toBe(true);
+it('true is truthy', () => {
+  expect(true).toBe(true);
 });
-
-
-

@@ -1,8 +1,8 @@
-import React from "react";
-import { fn } from "@storybook/test";
-import { RegionSelectorMap } from "./region-selector-map";
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore } from '@reduxjs/toolkit';
+import { fn } from 'storybook/test';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { RegionSelectorMap } from './region-selector-map';
 
 // Mock Redux store
 const mockStore = configureStore({
@@ -17,11 +17,11 @@ const mockStore = configureStore({
 
 // Storybook metadata
 const meta = {
-  title: "Functional/ReduxRegionSelectorMap",
+  title: 'Functional/ReduxRegionSelectorMap',
   component: RegionSelectorMap,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
@@ -37,57 +37,57 @@ const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
 export default meta;
 
 const availableStates = [
-  "Alabama",
-  "Alaska",
-  "Arizona",
-  "Arkansas",
-  "California",
-  "Colorado",
-  "Connecticut",
-  "Delaware",
-  "Florida",
-  "Georgia",
-  "Hawaii",
-  "Idaho",
-  "Illinois",
-  "Indiana",
-  "Iowa",
-  "Kansas",
-  "Kentucky",
-  "Louisiana",
-  "Maine",
-  "Maryland",
-  "Massachusetts",
-  "Michigan",
-  "Minnesota",
-  "Mississippi",
-  "Missouri",
-  "Montana",
-  "Nebraska",
-  "Nevada",
-  "New Hampshire",
-  "New Jersey",
-  "New Mexico",
-  "New York",
-  "North Carolina",
-  "North Dakota",
-  "Ohio",
-  "Oklahoma",
-  "Ontario",
-  "Oregon",
-  "Pennsylvania",
-  "Rhode Island",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
-  "Texas",
-  "Utah",
-  "Vermont",
-  "Virginia",
-  "Washington",
-  "West Virginia",
-  "Wisconsin",
-  "Wyoming",
+  'Alabama',
+  'Alaska',
+  'Arizona',
+  'Arkansas',
+  'California',
+  'Colorado',
+  'Connecticut',
+  'Delaware',
+  'Florida',
+  'Georgia',
+  'Hawaii',
+  'Idaho',
+  'Illinois',
+  'Indiana',
+  'Iowa',
+  'Kansas',
+  'Kentucky',
+  'Louisiana',
+  'Maine',
+  'Maryland',
+  'Massachusetts',
+  'Michigan',
+  'Minnesota',
+  'Mississippi',
+  'Missouri',
+  'Montana',
+  'Nebraska',
+  'Nevada',
+  'New Hampshire',
+  'New Jersey',
+  'New Mexico',
+  'New York',
+  'North Carolina',
+  'North Dakota',
+  'Ohio',
+  'Oklahoma',
+  'Ontario',
+  'Oregon',
+  'Pennsylvania',
+  'Rhode Island',
+  'South Carolina',
+  'South Dakota',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Vermont',
+  'Virginia',
+  'Washington',
+  'West Virginia',
+  'Wisconsin',
+  'Wyoming',
 ];
 
 // Default RegionSelectorMap
@@ -95,8 +95,8 @@ export const MapWithAllStates = {
   args: {
     selectorFunction: fn(),
     availableStates: availableStates,
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     initLat: 41,
     initLon: -90,
     initStartZoom: 2.8,
@@ -107,10 +107,10 @@ export const MapWithAllStates = {
 // RegionSelectorMap with Features
 export const MapWithInitState = {
   args: {
-    initWidth: "900px",
-    initHeight: "400px",
+    initWidth: '900px',
+    initHeight: '400px',
     availableStates: availableStates,
-    selectedState: "North Carolina",
+    selectedState: 'North Carolina',
     initLat: 41,
     initLon: -90,
     initStartZoom: 2.8,

@@ -1,10 +1,10 @@
-import React from "react";
-import { PSATagItem } from "./tagitem";
-import { Avatar } from "@mui/material";
+import { Avatar } from '@mui/material';
+import React from 'react';
+import { PSATagItem } from './tagitem';
 
 const sampleGoal = {
-  label: "Cover Crop",
-  description: "Helps suppress weeds and protect soil moisture.",
+  label: 'Cover Crop',
+  description: 'Helps suppress weeds and protect soil moisture.',
 };
 
 const commonArgs = {
@@ -12,15 +12,15 @@ const commonArgs = {
   tooltipText: sampleGoal.description,
   label: sampleGoal.label,
   disabled: false,
-  color: "primary",
+  color: 'primary',
   onClick: () => {},
 };
 
 export default {
-  title: "Inputs/TagItem",
+  title: 'Inputs/TagItem',
   component: PSATagItem,
-  tags: ["autodocs"],
-  parameters: { layout: "centered" },
+  tags: ['autodocs'],
+  parameters: { layout: 'centered' },
 };
 
 export const Default = {

@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Button, Typography, useTheme } from "@mui/material";
+import { Button, Typography, useTheme } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 /**
  * Custom Button component,
@@ -8,11 +8,11 @@ import { Button, Typography, useTheme } from "@mui/material";
  *  component is based on [MUI Button](https://mui.com/api/button/).
  */
 export function PSAFigmaButton({
-  variant = "standard",
+  variant = 'standard',
   icon,
   rightIcon = false,
   leftIcon = false,
-  text = "Next",
+  text = 'Next',
   disabled = false,
   buttonSx = {},
   textSx = {},
@@ -22,58 +22,58 @@ export function PSAFigmaButton({
 
   const customStyles = () => {
     switch (variant) {
-      case "standard":
+      case 'standard':
         return {
-          padding: "0.20381rem 1.1875rem",
-          background: "#FFF",
-          boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
-          ".MuiButton-icon": {
-            margin: "-0.2rem",
+          padding: '0.20381rem 1.1875rem',
+          background: '#FFF',
+          boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
+          '.MuiButton-icon': {
+            margin: '-0.2rem',
             color: theme.palette.additional.greydark,
           },
-          "&:hover": {
+          '&:hover': {
             backgroundColor: theme.palette.additional.greydark,
-            "& .MuiTypography-root": {
-              color: "#fff",
+            '& .MuiTypography-root': {
+              color: '#fff',
             },
-            ".MuiButton-icon": {
-              color: "#fff",
+            '.MuiButton-icon': {
+              color: '#fff',
             },
           },
         };
-      case "color":
+      case 'color':
         return {
-          padding: "0.16531rem 0.75rem",
-          boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
+          padding: '0.16531rem 0.75rem',
+          boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
           background: theme.palette.main.accent2,
-          "& .MuiTypography-root": {
-            color: "#fff",
+          '& .MuiTypography-root': {
+            color: '#fff',
           },
-          ".MuiButton-icon": {
-            margin: "-0.2rem",
-            color: "#fff",
+          '.MuiButton-icon': {
+            margin: '-0.2rem',
+            color: '#fff',
           },
-          "&:hover": {
+          '&:hover': {
             backgroundColor: theme.palette.additional.greydark,
-            ".MuiButton-icon": {
-              color: "#fff",
+            '.MuiButton-icon': {
+              color: '#fff',
             },
           },
         };
-      case "text":
+      case 'text':
         return {
-          "& .MuiTypography-root": {
-            textDecoration: "underline",
+          '& .MuiTypography-root': {
+            textDecoration: 'underline',
           },
-          ".MuiButton-icon": {
-            margin: "-0.2rem",
+          '.MuiButton-icon': {
+            margin: '-0.2rem',
             color: theme.palette.additional.greydark,
           },
-          "&:hover": {
-            "& .MuiTypography-root": {
+          '&:hover': {
+            '& .MuiTypography-root': {
               color: theme.palette.main.accent2,
             },
-            ".MuiButton-icon": {
+            '.MuiButton-icon': {
               color: theme.palette.main.accent2,
             },
           },
@@ -86,24 +86,24 @@ export function PSAFigmaButton({
   return (
     <Button
       sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "0.375rem",
-        borderRadius: "0.50956rem",
-        textTransform: "none",
-        minWidth: "24px",
-        minHeight: "24px",
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '0.375rem',
+        borderRadius: '0.50956rem',
+        textTransform: 'none',
+        minWidth: '24px',
+        minHeight: '24px',
         ...customStyles(),
         ...(disabled
           ? {
               backgroundColor: theme.palette.additional.grey1,
-              "& .MuiTypography-root": {
-                color: "#fff",
+              '& .MuiTypography-root': {
+                color: '#fff',
               },
-              ".MuiButton-icon": {
-                margin: "-0.2rem",
-                color: "#fff",
+              '.MuiButton-icon': {
+                margin: '-0.2rem',
+                color: '#fff',
               },
             }
           : {}),
@@ -119,11 +119,11 @@ export function PSAFigmaButton({
       <Typography
         sx={{
           color: theme.palette.additional.greydark,
-          fontFamily: "IBM Plex Sans",
-          fontSize: "1.125rem",
-          fontStyle: "normal",
+          fontFamily: 'IBM Plex Sans',
+          fontSize: '1.125rem',
+          fontStyle: 'normal',
           fontWeight: 500,
-          lineHeight: "normal",
+          lineHeight: 'normal',
           ...textSx,
         }}
       >
@@ -141,7 +141,7 @@ PSAFigmaButton.propTypes = {
    *
    *  Options include `standard`, `color`, `text`.
    */
-  variant: PropTypes.oneOf(["standard", "color", "text"]),
+  variant: PropTypes.oneOf(['standard', 'color', 'text']),
   /**
    * Icon used in the button.
    *

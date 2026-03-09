@@ -4,16 +4,15 @@
 
 async function geocodeReverse({ apiKey, setterFunc, zoom, latitude, longitude }) {
   await fetch(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude}%2C%20${latitude}.json?access_token=${apiKey}`
+    `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude}%2C%20${latitude}.json?access_token=${apiKey}`,
   )
     .then((response) => response.json())
     .then((data) => {
       if (data.features && data.features.length > 0) {
         setterFunc((prevVal) => {
-          const value = (parm) => (
-            data.features.filter((feature) => feature.id.includes(parm))[0]?.text
-          );
-          
+          const value = (parm) =>
+            data.features.filter((feature) => feature.id.includes(parm))[0]?.text;
+
           const newVal = {
             ...prevVal,
             fullAddress: data.features[0].place_name,
@@ -25,8 +24,8 @@ async function geocodeReverse({ apiKey, setterFunc, zoom, latitude, longitude })
             zoom,
             latitude,
             longitude,
-          }
-          return newVal
+          };
+          return newVal;
         });
       }
     });
@@ -36,12 +35,10 @@ async function geocodeReverse({ apiKey, setterFunc, zoom, latitude, longitude })
  * returns the matching geographic coordinate(s)
  * as search results in carmen geojson format,
  * https://github.com/mapbox/carmen/blob/master/carmen-geojson.md */
-const coordinatesGeocoder = function (query) {
+const coordinatesGeocoder = (query) => {
   // Match anything which looks like
   // decimal degrees coordinate pair.
-  const matches = query.match(
-    /^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i
-  );
+  const matches = query.match(/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i);
   if (!matches) {
     return null;
   }

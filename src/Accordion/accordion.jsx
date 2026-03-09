@@ -1,16 +1,12 @@
 /*
   This file contains the Accordion component
 */
-import React, { useState } from "react";
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-} from "@mui/material";
-import PropTypes from "prop-types";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 /**
  * This is a custom Accordion component,
@@ -49,11 +45,11 @@ export const PSAAccordion = ({
       expanded={expanded}
       onChange={handleChange}
       sx={{
-        boxShadow: "0px 1px 10px 0px rgba(0, 0, 0, 0.10)",
-        "&.MuiAccordion-root": {
-          borderRadius: "1.6875rem",
+        boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
+        '&.MuiAccordion-root': {
+          borderRadius: '1.6875rem',
         },
-        backgroundColor: error ? "#f3e2dd" : "additional.background2",
+        backgroundColor: error ? '#f3e2dd' : 'additional.background2',
         ...sx,
       }}
       data-test={testId}
@@ -63,40 +59,40 @@ export const PSAAccordion = ({
         expandIcon={
           <Typography
             sx={{
-              textDecoration: "underline",
-              display: "flex",
-              alignItems: "center",
-              color: "main.text",
+              textDecoration: 'underline',
+              display: 'flex',
+              alignItems: 'center',
+              color: 'main.text',
             }}
           >
-            {expanded ? "Hide " : "Show "}
+            {expanded ? 'Hide ' : 'Show '}
             {expanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </Typography>
         }
         sx={{
-          ".MuiAccordionSummary-expandIconWrapper": {
-            transform: "none",
-            WebkitTransform: "none",
-            transition: "none",
-            WebkitTransition: "none",
-            "&.Mui-expanded": {
-              transform: "none",
-              WebkitTransform: "none",
+          '.MuiAccordionSummary-expandIconWrapper': {
+            transform: 'none',
+            WebkitTransform: 'none',
+            transition: 'none',
+            WebkitTransition: 'none',
+            '&.Mui-expanded': {
+              transform: 'none',
+              WebkitTransform: 'none',
             },
           },
-          ".MuiAccordionSummary-content p": {
-            fontFamily: "IBM PLex Sans",
-            fontSize: "1.5626rem",
+          '.MuiAccordionSummary-content p': {
+            fontFamily: 'IBM PLex Sans',
+            fontSize: '1.5626rem',
             fontWeight: 600,
-            paddingLeft: "0.5rem",
+            paddingLeft: '0.5rem',
           },
-          height: "70px",
+          height: '70px',
           // backgroundColor: "main.accent2",
 
-          borderTopLeftRadius: "1.6875rem",
-          borderTopRightRadius: "1.6875rem",
-          borderBottomLeftRadius: expanded ? 0 : "1.6875rem",
-          borderBottomRightRadius: expanded ? 0 : "1.6875rem",
+          borderTopLeftRadius: '1.6875rem',
+          borderTopRightRadius: '1.6875rem',
+          borderBottomLeftRadius: expanded ? 0 : '1.6875rem',
+          borderBottomRightRadius: expanded ? 0 : '1.6875rem',
           ...summarySx,
         }}
         data-test="psa-accordion-summary"
@@ -104,9 +100,7 @@ export const PSAAccordion = ({
       >
         {summaryContent}
       </AccordionSummary>
-      <AccordionDetails data-test="psa-accordion-details">
-        {detailsContent}
-      </AccordionDetails>
+      <AccordionDetails data-test="psa-accordion-details">{detailsContent}</AccordionDetails>
     </Accordion>
   );
 };

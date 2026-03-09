@@ -1,12 +1,12 @@
-import React from "react";
-import { PSAAuthButton } from "./authbutton";
+import React from 'react';
+import { PSAAuthButton } from './authbutton';
 
 const meta = {
-  title: "Inputs/AuthButton",
+  title: 'Inputs/AuthButton',
   component: PSAAuthButton,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
@@ -19,11 +19,11 @@ export const DefaultAuthButton = {
 export const CustomAuthButton = {
   args: {
     buttonSx: {
-      height: "100px",
-      backgroundColor: "main.accent1",
+      height: '100px',
+      backgroundColor: 'main.accent1',
     },
     textSx: {
-      fontSize: "2rem",
+      fontSize: '2rem',
     },
   },
 };

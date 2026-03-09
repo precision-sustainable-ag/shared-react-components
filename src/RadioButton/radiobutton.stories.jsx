@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { PSARadioButton } from "./radiobutton";
-import StarIcon from "@mui/icons-material/Star";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import StarIcon from '@mui/icons-material/Star';
+import React, { useState } from 'react';
+import { PSARadioButton } from './radiobutton';
 
 const meta = {
-  title: "Inputs/RadioButton",
+  title: 'Inputs/RadioButton',
   component: PSARadioButton,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a custom RadioGroup component based on MUI's RadioGroup component. It supports dynamic options and handles selection state.`,
@@ -20,11 +20,11 @@ const meta = {
 export default meta;
 
 export const SmallRadioButtonColumn = () => {
-  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const [selectedValue, setSelectedValue] = useState('lb/ac');
 
   const options = [
-    { label: "lb/ac", value: "lb/ac" },
-    { label: "kg/ha", value: "kg/ha" },
+    { label: 'lb/ac', value: 'lb/ac' },
+    { label: 'kg/ha', value: 'kg/ha' },
   ];
 
   const handleChange = (value) => {
@@ -44,11 +44,11 @@ export const SmallRadioButtonColumn = () => {
 };
 
 export const SmallRadioButtonRow = () => {
-  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const [selectedValue, setSelectedValue] = useState('lb/ac');
 
   const options = [
-    { label: "lb/ac", value: "lb/ac" },
-    { label: "kg/ha", value: "kg/ha" },
+    { label: 'lb/ac', value: 'lb/ac' },
+    { label: 'kg/ha', value: 'kg/ha' },
   ];
 
   const handleChange = (value) => {
@@ -59,7 +59,7 @@ export const SmallRadioButtonRow = () => {
     <PSARadioButton
       options={options}
       selectedValue={selectedValue}
-      sx={{ marginLeft: "1em", display: "inline-block" }}
+      sx={{ marginLeft: '1em', display: 'inline-block' }}
       onChange={handleChange}
       row
       aria-label="unit selection"
@@ -69,11 +69,11 @@ export const SmallRadioButtonRow = () => {
 };
 
 export const LargeRadioButtonColumn = () => {
-  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const [selectedValue, setSelectedValue] = useState('lb/ac');
 
   const options = [
-    { label: "lb/ac", value: "lb/ac" },
-    { label: "kg/ha", value: "kg/ha" },
+    { label: 'lb/ac', value: 'lb/ac' },
+    { label: 'kg/ha', value: 'kg/ha' },
   ];
 
   const handleChange = (value) => {
@@ -81,7 +81,7 @@ export const LargeRadioButtonColumn = () => {
   };
 
   return (
-    <div style={{ width: "500px" }}>
+    <div style={{ width: '500px' }}>
       <PSARadioButton
         options={options}
         selectedValue={selectedValue}
@@ -96,11 +96,11 @@ export const LargeRadioButtonColumn = () => {
 };
 
 export const LargeRadioButtonRow = () => {
-  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const [selectedValue, setSelectedValue] = useState('lb/ac');
 
   const options = [
-    { label: "lb/ac", value: "lb/ac" },
-    { label: "kg/ha", value: "kg/ha" },
+    { label: 'lb/ac', value: 'lb/ac' },
+    { label: 'kg/ha', value: 'kg/ha' },
   ];
 
   const handleChange = (value) => {
@@ -108,7 +108,7 @@ export const LargeRadioButtonRow = () => {
   };
 
   return (
-    <div style={{ width: "600px" }}>
+    <div style={{ width: '600px' }}>
       <PSARadioButton
         options={options}
         selectedValue={selectedValue}
@@ -123,11 +123,11 @@ export const LargeRadioButtonRow = () => {
 };
 
 export const IconRadioButton = () => {
-  const [selectedValue, setSelectedValue] = useState("lb/ac");
+  const [selectedValue, setSelectedValue] = useState('lb/ac');
   const options = [
-    { label: "lb/ac", value: "lb/ac", icon: StarIcon },
-    { label: "kg/ha", value: "kg/ha" },
-    { label: "mg/ac", value: "mg/ac", icon: CalendarTodayIcon },
+    { label: 'lb/ac', value: 'lb/ac', icon: StarIcon },
+    { label: 'kg/ha', value: 'kg/ha' },
+    { label: 'mg/ac', value: 'mg/ac', icon: CalendarTodayIcon },
   ];
 
   const handleChange = (value) => {
@@ -135,7 +135,7 @@ export const IconRadioButton = () => {
   };
 
   return (
-    <div style={{ width: "600px" }}>
+    <div style={{ width: '600px' }}>
       <PSARadioButton
         options={options}
         selectedValue={selectedValue}

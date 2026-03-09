@@ -1,10 +1,10 @@
-import { pencilIconString } from "../../assets/icons/PencilIcon";
-import { CustomControl } from "./CustomControl";
-import centroid from "@turf/centroid";
+import centroid from '@turf/centroid';
+import { pencilIconString } from '../../assets/icons/PencilIcon';
+import { CustomControl } from './CustomControl';
 
 export class FreehandDrawControl extends CustomControl {
   constructor(mapRef, drawerRef, hasDrawing, updateFeatures) {
-    super(() => this.toggleDrawingMode(), "Freehand Draw", pencilIconString);
+    super(() => this.toggleDrawingMode(), 'Freehand Draw', pencilIconString);
 
     this.mapRef = mapRef;
     this.drawerRef = drawerRef;
@@ -18,17 +18,17 @@ export class FreehandDrawControl extends CustomControl {
   }
 
   isFreeHandDrawingActive() {
-    return this.button?.classList?.contains("active");
+    return this.button?.classList?.contains('active');
   }
 
   createNewLine() {
     return {
-      type: "FeatureCollection",
+      type: 'FeatureCollection',
       features: [
         {
-          type: "Feature",
+          type: 'Feature',
           geometry: {
-            type: "LineString",
+            type: 'LineString',
             coordinates: [],
           },
           properties: {},
@@ -41,25 +41,25 @@ export class FreehandDrawControl extends CustomControl {
    * (onClick function for CustomControl)
    */
   toggleDrawingMode() {
-    const polygonButton = document.querySelector(".mapbox-gl-draw_polygon");
+    const polygonButton = document.querySelector('.mapbox-gl-draw_polygon');
 
     if (!this.isFreeHandDrawingActive()) {
-      this.button.classList.add("active");
+      this.button.classList.add('active');
       if (this.hasDrawing && polygonButton) {
-        polygonButton.style.display = "none";
+        polygonButton.style.display = 'none';
         if (this.drawerRef.current) {
-          this.drawerRef.current.changeMode("draw_polygon");
+          this.drawerRef.current.changeMode('draw_polygon');
         }
       }
       if (this.mapRef.current) {
         this.mapRef.current.dragPan.disable();
       }
     } else {
-      this.button.classList.remove("active");
+      this.button.classList.remove('active');
       if (this.hasDrawing && polygonButton) {
-        polygonButton.style.display = "block";
+        polygonButton.style.display = 'block';
         if (this.drawerRef.current) {
-          this.drawerRef.current.changeMode("simple_select");
+          this.drawerRef.current.changeMode('simple_select');
         }
       }
       if (this.mapRef.current) {
@@ -72,15 +72,15 @@ export class FreehandDrawControl extends CustomControl {
     // If this.button is not available (e.g., control removed before event fires), do nothing.
     if (!this.button || !this.mapRef || !this.mapRef.current) return;
 
-    if (e.mode === "draw_polygon") {
+    if (e.mode === 'draw_polygon') {
       // If MapboxDraw polygon tool is activated, hide the freehand button.
-      this.button.style.display = "none";
+      this.button.style.display = 'none';
       if (this.isFreeHandDrawingActive()) {
-        this.button.classList.remove("active");
+        this.button.classList.remove('active');
         this.mapRef.current.dragPan.enable();
       }
     } else {
-      this.button.style.display = "block";
+      this.button.style.display = 'block';
     }
   }
 
@@ -88,55 +88,48 @@ export class FreehandDrawControl extends CustomControl {
     const container = super.onAdd(map);
 
     if (this.hasDrawing && this.drawerRef.current && this.mapRef.current) {
-      this.mapRef.current.on("draw.modechange", this._handleDrawModeChange);
+      this.mapRef.current.on('draw.modechange', this._handleDrawModeChange);
     }
 
-    map.on("style.load", () => {
-      this.mapRef.current.addSource("line", {
-        type: "geojson",
+    map.on('style.load', () => {
+      this.mapRef.current.addSource('line', {
+        type: 'geojson',
         data: this.lineData,
       });
 
       this.mapRef.current.addLayer({
-        id: "line-layer",
-        type: "line",
-        source: "line",
+        id: 'line-layer',
+        type: 'line',
+        source: 'line',
         layout: {
-          "line-join": "round",
-          "line-cap": "round",
+          'line-join': 'round',
+          'line-cap': 'round',
         },
         paint: {
-          "line-color": "#fff",
-          "line-width": 3,
+          'line-color': '#fff',
+          'line-width': 3,
         },
       });
 
-      this.mapRef.current.on("mousedown", (e) => {
+      this.mapRef.current.on('mousedown', (e) => {
         if (!this.isFreeHandDrawingActive()) return;
 
         const lnglat = e.lngLat.wrap();
         this.lineData = this.createNewLine();
-        this.lineData.features[0].geometry.coordinates.push([
-          lnglat.lng,
-          lnglat.lat,
-        ]);
+        this.lineData.features[0].geometry.coordinates.push([lnglat.lng, lnglat.lat]);
         this.fpolygon = [[lnglat.lng, lnglat.lat]];
       });
 
-      this.mapRef.current.on("mousemove", (e) => {
-        if (!this.isFreeHandDrawingActive() || this.fpolygon[0].length === 0)
-          return;
+      this.mapRef.current.on('mousemove', (e) => {
+        if (!this.isFreeHandDrawingActive() || this.fpolygon[0].length === 0) return;
 
         const lnglat = e.lngLat.wrap();
-        this.lineData.features[0].geometry.coordinates.push([
-          lnglat.lng,
-          lnglat.lat,
-        ]);
-        this.mapRef.current.getSource("line").setData(this.lineData);
+        this.lineData.features[0].geometry.coordinates.push([lnglat.lng, lnglat.lat]);
+        this.mapRef.current.getSource('line').setData(this.lineData);
         this.fpolygon.push([lnglat.lng, lnglat.lat]);
       });
 
-      this.mapRef.current.on("mouseup", () => {
+      this.mapRef.current.on('mouseup', () => {
         if (!this.isFreeHandDrawingActive()) return;
 
         const id = `freehand${+new Date()}`;
@@ -145,21 +138,20 @@ export class FreehandDrawControl extends CustomControl {
         // If polygon created, add it to the map and update lat, lon and reset this.lineData
         if (created) {
           this.mapRef.current.addPolygon(id, [this.fpolygon], {
-            "fill-color": "#f00",
-            "fill-opacity": 0.1,
-            "line-width": 1,
-            "line-color": "#ddd",
+            'fill-color': '#f00',
+            'fill-opacity': 0.1,
+            'line-width': 1,
+            'line-color': '#ddd',
           });
 
-          const [newLon, newLat] = centroid(this.lineData.features[0]).geometry
-            .coordinates;
+          const [newLon, newLat] = centroid(this.lineData.features[0]).geometry.coordinates;
           this.lineData = this.createNewLine();
-          this.mapRef.current.getSource("line").setData(this.lineData);
+          this.mapRef.current.getSource('line').setData(this.lineData);
           this.updateFeatures(newLat, newLon);
         }
 
         // Deactivate freehand drawing and clean up drawing layers and sources
-        this.button.classList.remove("active"); // Change toggle to remove to ensure we know the state
+        this.button.classList.remove('active'); // Change toggle to remove to ensure we know the state
         this.fpolygon = [[]];
         const { layers } = this.mapRef.current.getStyle();
         layers.forEach((lay) => {
@@ -175,9 +167,8 @@ export class FreehandDrawControl extends CustomControl {
         this.mapRef.current.dragPan.enable();
 
         if (this.hasDrawing) {
-          document.querySelector(".mapbox-gl-draw_polygon").style.display =
-            "block";
-          this.drawerRef.current.changeMode("simple_select");
+          document.querySelector('.mapbox-gl-draw_polygon').style.display = 'block';
+          this.drawerRef.current.changeMode('simple_select');
         }
       });
     });
@@ -187,11 +178,8 @@ export class FreehandDrawControl extends CustomControl {
 
   onRemove() {
     // Remove the specific event listener for draw.modechange
-    if (
-      this.mapRef.current &&
-      typeof this._handleDrawModeChange === "function"
-    ) {
-      this.mapRef.current.off("draw.modechange", this._handleDrawModeChange);
+    if (this.mapRef.current && typeof this._handleDrawModeChange === 'function') {
+      this.mapRef.current.off('draw.modechange', this._handleDrawModeChange);
     }
 
     super.onRemove();

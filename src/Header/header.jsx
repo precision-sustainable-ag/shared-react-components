@@ -1,28 +1,21 @@
-import React, { useState, Fragment } from "react";
-import PropTypes from "prop-types";
-import { PSALogoDisplayer, PSAFigmaButton } from "../index";
+import MenuIcon from '@mui/icons-material/Menu';
 import {
   Box,
-  Typography,
-  Grid,
   Button,
-  useMediaQuery,
-  useTheme,
+  Grid,
   Menu,
   MenuItem,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { Fragment, useState } from 'react';
+import { PSAFigmaButton, PSALogoDisplayer } from '../index';
 
-export function PSAHeader({
-  title,
-  subtitle,
-  council,
-  onLogoClick,
-  logoTitle,
-  navContent,
-}) {
+export function PSAHeader({ title, subtitle, council, onLogoClick, logoTitle, navContent }) {
   const theme = useTheme();
-  const underMd = useMediaQuery(theme.breakpoints.down("md"));
+  const underMd = useMediaQuery(theme.breakpoints.down('md'));
 
   const [anchor, setAnchor] = useState(null);
   const open = Boolean(anchor);
@@ -31,20 +24,20 @@ export function PSAHeader({
     <Grid
       container
       sx={{
-        display: "flex",
-        height: underMd ? "85px" : "120px",
+        display: 'flex',
+        height: underMd ? '85px' : '120px',
       }}
-      pl={underMd ? 0 : "1rem"}
-      pr={underMd ? 0 : "1rem"}
+      pl={underMd ? 0 : '1rem'}
+      pr={underMd ? 0 : '1rem'}
     >
       <Grid
         item
         xs={10}
         md={6}
         sx={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
         }}
       >
         <Button
@@ -53,49 +46,49 @@ export function PSAHeader({
           data-test="header_logo_button"
           aria-label="Reset and go back to home page"
         >
-          <Box sx={{ width: underMd ? "100px" : "150px" }}>
+          <Box sx={{ width: underMd ? '100px' : '150px' }}>
             <PSALogoDisplayer
               council={council}
               alt={council}
               style={{
-                maxWidth: underMd ? "100px" : "150px",
-                maxHeight: underMd ? "60px" : "80px",
+                maxWidth: underMd ? '100px' : '150px',
+                maxHeight: underMd ? '60px' : '80px',
               }}
             />
           </Box>
         </Button>
 
-        <Grid item sx={{ display: "flex", flexDirection: "column" }}>
+        <Grid item sx={{ display: 'flex', flexDirection: 'column' }}>
           <Grid
             item
             xs={12}
             sx={{
-              display: "flex",
-              alignItems: "flex-end",
-              height: "2.25rem",
+              display: 'flex',
+              alignItems: 'flex-end',
+              height: '2.25rem',
               flex: 1,
             }}
           >
             <Typography
               variant="header"
-              fontSize={underMd ? "1.25rem" : "2.5rem"}
+              fontSize={underMd ? '1.25rem' : '2.5rem'}
               data-test="header_title"
             >
               {title}
             </Typography>
           </Grid>
           {subtitle && (
-            <Grid item xs={12} sx={{ display: "flex" }}>
+            <Grid item xs={12} sx={{ display: 'flex' }}>
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  height: "2.25rem",
+                  display: 'flex',
+                  alignItems: 'center',
+                  height: '2.25rem',
                 }}
               >
                 <Typography
                   variant="subtitle"
-                  fontSize={underMd && "0.75rem"}
+                  fontSize={underMd && '0.75rem'}
                   data-test="header_subtitle"
                 >
                   {subtitle}
@@ -111,10 +104,10 @@ export function PSAHeader({
         xs={2}
         md={6}
         sx={{
-          display: "flex",
-          justifyContent: underMd ? "center" : "flex-end",
-          alignItems: "center",
-          gap: "0.5rem",
+          display: 'flex',
+          justifyContent: underMd ? 'center' : 'flex-end',
+          alignItems: 'center',
+          gap: '0.5rem',
         }}
       >
         {underMd ? (
@@ -126,7 +119,7 @@ export function PSAHeader({
               {navContent?.map((item, i) => (
                 <MenuItem
                   onClick={() => {
-                    if (item.type === "button") {
+                    if (item.type === 'button') {
                       item.onClick();
                       setAnchor(null);
                     }
@@ -135,12 +128,12 @@ export function PSAHeader({
                   data-test={`navbar-${item.text}`}
                 >
                   {/* if type is button, return text menuItem, else return component directly */}
-                  {item.type === "button" ? (
+                  {item.type === 'button' ? (
                     <Typography
                       sx={{
-                        fontSize: "0.875rem",
-                        fontWeight: "bold",
-                        color: "main.text",
+                        fontSize: '0.875rem',
+                        fontWeight: 'bold',
+                        color: 'main.text',
                       }}
                     >
                       {item.text}
@@ -155,7 +148,7 @@ export function PSAHeader({
         ) : (
           navContent.map((item, i) => (
             <Fragment key={i}>
-              {item.type === "button" ? (
+              {item.type === 'button' ? (
                 <PSAFigmaButton
                   variant={item.variant}
                   icon={item.icon}
@@ -164,7 +157,7 @@ export function PSAHeader({
                   key={i}
                   onClick={item.onClick}
                   buttonSx={item.buttonSx}
-                  textSx={{ ...item.textSx, fontSize: "1rem" }}
+                  textSx={{ ...item.textSx, fontSize: '1rem' }}
                   data-test={`navbar-${item.text}`}
                 />
               ) : (
@@ -206,8 +199,8 @@ PSAHeader.propTypes = {
    */
   navContent: PropTypes.arrayOf(
     PropTypes.shape({
-      type: PropTypes.oneOf(["button", "component"]),
-      variant: PropTypes.oneOf(["standard", "color", "text"]),
+      type: PropTypes.oneOf(['button', 'component']),
+      variant: PropTypes.oneOf(['standard', 'color', 'text']),
       icon: PropTypes.node,
       rightIcon: PropTypes.bool,
       leftIcon: PropTypes.bool,
@@ -216,6 +209,6 @@ PSAHeader.propTypes = {
       buttonSx: PropTypes.object,
       textSx: PropTypes.object,
       component: PropTypes.node,
-    })
+    }),
   ),
 };

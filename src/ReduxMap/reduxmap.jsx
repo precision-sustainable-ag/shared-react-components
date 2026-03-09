@@ -1,37 +1,37 @@
 /* eslint-disable react/prop-types */
 
-import React, { useRef, useEffect, useState } from 'react';
-import PropTypes from "prop-types";
-import mapboxgl from 'mapbox-gl';
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-
 import area from '@turf/area';
 import bbox from '@turf/bbox';
-import union from '@turf/union';
 import centroid from '@turf/centroid';
-import { polygon, featureCollection } from '@turf/helpers';
-
-import { addPolygonToMap, calcArea, findState, fitMapToFeatures, isWebGLSupported } from './utils/helpers';
-import useSafeSelector from "./hooks/useSafeSelector";
-
-import useMapMarker from "./hooks/useMapMarker";
-import useMapGeocoder from "./hooks/useMapGeocoder";
-import useElevation from "./hooks/useElevation";
-import useMapGeolocate from "./hooks/useMapGeolocate";
-import useRasterData from "./hooks/useRasterData";
-
-import { CustomControl } from './components/map-controls/CustomControl';
-import { ImportShapeControl } from './components/map-controls/ImportShapeControl';
-import { FreehandDrawControl } from './components/map-controls/FreehandDrawControl';
-import { CropSequenceBoundary } from './components/map-controls/CropSequenceBoundary';
-import HelpModal from "./components/HelpModal";
-import NoFieldFoundModal from './components/NoFieldFoundModal';
-import CoordBar from "./components/CoordBar";
-import RasterLegend from "./components/RasterLegend";
-
+import { featureCollection, polygon } from '@turf/helpers';
+import union from '@turf/union';
+import mapboxgl from 'mapbox-gl';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
 import helpIcon from './assets/icons/help.png';
-
 import styles from './assets/styles/map.module.scss';
+import CoordBar from './components/CoordBar';
+import HelpModal from './components/HelpModal';
+import { CropSequenceBoundary } from './components/map-controls/CropSequenceBoundary';
+import { CustomControl } from './components/map-controls/CustomControl';
+import { FreehandDrawControl } from './components/map-controls/FreehandDrawControl';
+import { ImportShapeControl } from './components/map-controls/ImportShapeControl';
+import NoFieldFoundModal from './components/NoFieldFoundModal';
+import RasterLegend from './components/RasterLegend';
+import useElevation from './hooks/useElevation';
+import useMapGeocoder from './hooks/useMapGeocoder';
+import useMapGeolocate from './hooks/useMapGeolocate';
+import useMapMarker from './hooks/useMapMarker';
+import useRasterData from './hooks/useRasterData';
+import useSafeSelector from './hooks/useSafeSelector';
+import {
+  addPolygonToMap,
+  calcArea,
+  findState,
+  fitMapToFeatures,
+  isWebGLSupported,
+} from './utils/helpers';
 import './assets/styles/mapbox-gl.css';
 import './assets/styles/mapbox-gl-draw.css';
 import './assets/styles/mapbox-gl-geocoder.css';
@@ -113,7 +113,7 @@ const ReduxMap = ({
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
-    (typeof process !== "undefined"
+    (typeof process !== 'undefined'
       ? // eslint-disable-next-line no-undef
         process.env.REACT_APP_MAPBOX_API_KEY
       : import.meta.env.VITE_MAPBOX_API_KEY) || mapboxToken;
@@ -121,7 +121,7 @@ const ReduxMap = ({
   const boundsPadding = hasSearchBar ? SEARCH_BAR_PADDING : DEFAULT_PADDING;
 
   const getBounds = (bounds) => {
-    if (bounds === 'conus') return CONUS_BOUNDS ;
+    if (bounds === 'conus') return CONUS_BOUNDS;
     return bounds;
   };
 
@@ -146,7 +146,7 @@ const ReduxMap = ({
   const mapContainer = useRef();
   const drawerRef = useRef();
   const cursorRef = useRef();
-  const locationRef = useRef( {lat, lon});
+  const locationRef = useRef({ lat, lon });
   const featuresRef = useRef(features);
 
   const elevations = {};
@@ -165,14 +165,13 @@ const ReduxMap = ({
 
     Object.keys(sources).forEach((sourceName) => {
       const source = map.current.getSource(sourceName);
-      if (source.type === "geojson") {
+      if (source.type === 'geojson') {
         const data = { ...source._data };
         const f = data.features || [data];
 
         f.forEach((feature) => {
           if (/Polygon/.test(feature.geometry.type)) {
             const cleanedCoords = feature.geometry.coordinates.map((ring) => {
-              
               // Filter out consecutive duplicates - double clicking a point to close a ploygon creates dupicate coords
               const deduped = ring.filter((pt, i, arr) => {
                 if (i === 0) return true;
@@ -196,7 +195,7 @@ const ReduxMap = ({
                 coordinates: cleanedCoords,
               },
             });
-          };
+          }
         });
       }
     });
@@ -244,7 +243,7 @@ const ReduxMap = ({
         if (Array.isArray(features[0])) {
           features.forEach((f) => {
             drawerRef.current.add({
-              type: "FeatureCollection",
+              type: 'FeatureCollection',
               f,
             });
           });
@@ -262,16 +261,13 @@ const ReduxMap = ({
   }, [features, drawerRef.current]);
 
   useEffect(() => {
-    if (
-      initFeatures &&
-      JSON.stringify(initFeatures) !== JSON.stringify(features)
-    ) {
+    if (initFeatures && JSON.stringify(initFeatures) !== JSON.stringify(features)) {
       setFeatures(initFeatures);
     }
   }, [initFeatures]);
 
   useEffect(() => {
-    if (initLat && initLon && initLat !==0 && initLon !== 0) {
+    if (initLat && initLon && initLat !== 0 && initLon !== 0) {
       setLat(initLat);
       setLon(initLon);
     }
@@ -332,7 +328,7 @@ const ReduxMap = ({
       // DRAWER CONTROL
       const Draw = new MapboxDraw({
         displayControlsDefault: false,
-        controls: (hasDrawing || hasFreehand) ? { polygon: true, trash: true } : {}, // Only show the controls if hasDrawing is true
+        controls: hasDrawing || hasFreehand ? { polygon: true, trash: true } : {}, // Only show the controls if hasDrawing is true
         modes: {
           ...MapboxDraw.modes,
           simple_select: simpleSelect,
@@ -350,42 +346,36 @@ const ReduxMap = ({
       const Fullscreen = new mapboxgl.FullscreenControl();
 
       // ADD CONTROLS
-      if (hasFullScreen) map.current.addControl(Fullscreen, "top-right");
-      if (hasNavigation) map.current.addControl(Navigation, "top-right"); // causes warning
-      map.current.addControl(Draw, "top-right");
+      if (hasFullScreen) map.current.addControl(Fullscreen, 'top-right');
+      if (hasNavigation) map.current.addControl(Navigation, 'top-right'); // causes warning
+      map.current.addControl(Draw, 'top-right');
 
       // CUSTOM CONTROLS
       if (hasFreehand)
         map.current.addControl(
-          new FreehandDrawControl(map, drawerRef, hasDrawing, updateFeatures), 'top-right'
+          new FreehandDrawControl(map, drawerRef, hasDrawing, updateFeatures),
+          'top-right',
         );
       if (hasImport)
         map.current.addControl(
-          new ImportShapeControl(
-            turf,
-            setFeatures,
-            setBounds,
-            setPolygonArea,
-            setLat,
-            setLon
-          ),
-          "top-right"
+          new ImportShapeControl(turf, setFeatures, setBounds, setPolygonArea, setLat, setLon),
+          'top-right',
         );
       if (hasHelp)
         map.current.addControl(
           new CustomControl(
             () => {
-              document.querySelector("#MapHelp").showModal();
+              document.querySelector('#MapHelp').showModal();
             },
-            "Help",
-            helpIcon
-          )
+            'Help',
+            helpIcon,
+          ),
         );
 
       if (hasFindField)
         map.current.addControl(
           new CropSequenceBoundary(map, drawerRef, locationRef, featuresRef, updateFeatures),
-          "top-right"
+          'top-right',
         );
     }
   }, [map.current]);
@@ -393,12 +383,12 @@ const ReduxMap = ({
   // Use effect for map configuration and map resize
   useEffect(() => {
     if (!map.current) return;
-    
-    map.current.on("load", () => {
+
+    map.current.on('load', () => {
       const mc = mapContainer.current;
       if (!mc) return;
 
-      setSearchBox(mc.querySelector(".mapboxgl-ctrl-geocoder--input"));
+      setSearchBox(mc.querySelector('.mapboxgl-ctrl-geocoder--input'));
 
       // Disable map interactions
       if (!scrollZoom) map.current.scrollZoom.disable();
@@ -408,7 +398,7 @@ const ReduxMap = ({
       if (!doubleClickZoom) map.current.doubleClickZoom.disable();
       if (!touchZoomRotate) map.current.touchZoomRotate.disable();
     });
-    
+
     // Attach polygon utility method
     map.current.addPolygon = addPolygonToMap(map, boundsPadding);
 
@@ -420,7 +410,7 @@ const ReduxMap = ({
       fitBounds,
       boundsPadding,
       initWidth,
-      initHeight
+      initHeight,
     );
   }, [map.current, features]);
 
@@ -446,17 +436,17 @@ const ReduxMap = ({
     const handleDrawDelete = () => {
       setIsDrawActive(false);
       setTimeout(updateFeatures, 10);
-      const deleteButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
-      if (deleteButton) deleteButton.style.display = "none";
+      const deleteButton = mapContainer.current.querySelector('.mapbox-gl-draw_trash');
+      if (deleteButton) deleteButton.style.display = 'none';
     };
 
     const showHideTrashcan = (e) => {
-      const trashButton = mapContainer.current.querySelector(".mapbox-gl-draw_trash");
+      const trashButton = mapContainer.current.querySelector('.mapbox-gl-draw_trash');
       if (trashButton) {
         if (e.features.length > 0) {
-          trashButton.style.display = "block";
+          trashButton.style.display = 'block';
         } else {
-          trashButton.style.display = "none";
+          trashButton.style.display = 'none';
         }
       }
     };
@@ -484,11 +474,11 @@ const ReduxMap = ({
 
     const debounce = (fn, delay) => {
       let timeout;
-      return function(...args) {
+      return function (...args) {
         clearTimeout(timeout);
         timeout = setTimeout(() => fn.apply(this, args), delay);
       };
-    }
+    };
 
     const handleZoom = debounce((event) => {
       if (!event.originalEvent) return;
@@ -511,27 +501,27 @@ const ReduxMap = ({
     };
 
     // EVENT HANDLERS
-    map.current.on("dragstart", () => setDragging(true));
-    map.current.on("dragend", handleDragEnd);
-    map.current.on("mousemove", handleMouseMove);
-    map.current.on("draw.create", handleDrawCreate);
-    map.current.on("draw.delete", handleDrawDelete);
-    map.current.on("draw.selectionchange", showHideTrashcan);
-    map.current.on("zoom", handleZoom);
-    map.current.on("dblclick", handleDoubleClick);
-    map.current.on("click", handleClick);
+    map.current.on('dragstart', () => setDragging(true));
+    map.current.on('dragend', handleDragEnd);
+    map.current.on('mousemove', handleMouseMove);
+    map.current.on('draw.create', handleDrawCreate);
+    map.current.on('draw.delete', handleDrawDelete);
+    map.current.on('draw.selectionchange', showHideTrashcan);
+    map.current.on('zoom', handleZoom);
+    map.current.on('dblclick', handleDoubleClick);
+    map.current.on('click', handleClick);
 
     return () => {
       if (map.current) {
-        map.current.off("dragstart");
-        map.current.off("dragend", handleDragEnd);
-        map.current.off("mousemove", handleMouseMove);
-        map.current.off("draw.create", handleDrawCreate);
-        map.current.off("draw.delete", handleDrawDelete);
-        map.current.off("draw.selectionchange", showHideTrashcan);
-        map.current.off("zoom", handleZoom);
-        map.current.off("dblclick", handleDoubleClick);
-        map.current.off("click", handleClick);
+        map.current.off('dragstart');
+        map.current.off('dragend', handleDragEnd);
+        map.current.off('mousemove', handleMouseMove);
+        map.current.off('draw.create', handleDrawCreate);
+        map.current.off('draw.delete', handleDrawDelete);
+        map.current.off('draw.selectionchange', showHideTrashcan);
+        map.current.off('zoom', handleZoom);
+        map.current.off('dblclick', handleDoubleClick);
+        map.current.off('click', handleClick);
       }
     };
   }, [map.current, lat, newPolygon]);
@@ -605,18 +595,19 @@ const ReduxMap = ({
     material,
     setRasterColorSteps,
     color_steps,
-  })
+  });
 
   if (!isMapSupported) {
     return (
-      <div 
-        className={`mapbox ${styles.wrapper} ${hasClear ? "hasclear" : ""}`}
-        style={{ width: initWidth || "100%", height: initHeight || "100%" }}
+      <div
+        className={`mapbox ${styles.wrapper} ${hasClear ? 'hasclear' : ''}`}
+        style={{ width: initWidth || '100%', height: initHeight || '100%' }}
       >
         <h2>Map Cannot Be Displayed</h2>
         <p>
-          We're sorry, but your browser or device doesn't support the technology (WebGL) required to display our interactive map.
-          Please try updating your browser or enabling "Hardware Acceleration" in your browser settings.
+          We're sorry, but your browser or device doesn't support the technology (WebGL) required to
+          display our interactive map. Please try updating your browser or enabling "Hardware
+          Acceleration" in your browser settings.
         </p>
       </div>
     );
@@ -624,8 +615,8 @@ const ReduxMap = ({
 
   return (
     <div
-      className={`mapbox ${styles.wrapper} ${hasClear ? "hasclear" : ""}`}
-      style={{ width: initWidth || "100%", height: initHeight || "100%" }}
+      className={`mapbox ${styles.wrapper} ${hasClear ? 'hasclear' : ''}`}
+      style={{ width: initWidth || '100%', height: initHeight || '100%' }}
     >
       {hasHelp ? (
         <HelpModal
@@ -637,25 +628,21 @@ const ReduxMap = ({
         />
       ) : null}
 
-      {hasFindField ? (
-        <NoFieldFoundModal />
-      ) : null}
+      {hasFindField ? <NoFieldFoundModal /> : null}
 
       <div
         id="psa-map"
         ref={mapContainer}
         className={styles.map}
         style={{
-          width: initWidth || "100%",
-          height: initHeight || "100%",
+          width: initWidth || '100%',
+          height: initHeight || '100%',
           ...mapStyles,
         }}
       />
       {showCursorCoords && (
         <div className="cursor" ref={cursorRef}>
-          {cursorLoc.latitude && !dragging
-            ? `${cursorLoc.latitude},${cursorLoc.longitude}`
-            : null}
+          {cursorLoc.latitude && !dragging ? `${cursorLoc.latitude},${cursorLoc.longitude}` : null}
         </div>
       )}
       {hasCoordBar && (
@@ -821,7 +808,7 @@ ReduxMap.propTypes = {
    * Enable elevation data.
    */
   hasElevation: PropTypes.bool,
-    /**
+  /**
    * Enable find field feature.
    */
   hasFindField: PropTypes.bool,

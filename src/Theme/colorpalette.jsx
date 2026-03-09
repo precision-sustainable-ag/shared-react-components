@@ -1,26 +1,26 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Box, Typography, IconButton, Tooltip } from "@mui/material";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import CheckIcon from "@mui/icons-material/Check";
-import theme from ".";
+import CheckIcon from '@mui/icons-material/Check';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import { Box, IconButton, Tooltip, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import theme from '.';
 
 export function PSAColorpalette() {
-  const [copiedHex, setCopiedHex] = useState("");
-  const [copiedPath, setCopiedPath] = useState("");
+  const [copiedHex, setCopiedHex] = useState('');
+  const [copiedPath, setCopiedPath] = useState('');
 
   const copyToClipboard = (text, type) => {
     navigator.clipboard.writeText(text).then(() => {
-      if (type === "hex") {
+      if (type === 'hex') {
         setCopiedHex(text);
-        setCopiedPath(""); // Reset JS Path copied state
+        setCopiedPath(''); // Reset JS Path copied state
       } else {
         setCopiedPath(text);
-        setCopiedHex(""); // Reset HEX copied state
+        setCopiedHex(''); // Reset HEX copied state
       }
       setTimeout(() => {
-        setCopiedHex("");
-        setCopiedPath("");
+        setCopiedHex('');
+        setCopiedPath('');
       }, 2000); // Reset after 2 seconds
     });
   };
@@ -37,10 +37,10 @@ export function PSAColorpalette() {
         justifyContent="space-between"
         justifyItems="center"
         sx={{
-          border: "1px solid #ddd",
+          border: '1px solid #ddd',
           p: 2,
           borderRadius: 2,
-          backgroundColor: "#f9f9f9",
+          backgroundColor: '#f9f9f9',
           mb: 1.5,
         }}
       >
@@ -51,7 +51,7 @@ export function PSAColorpalette() {
               height: 40,
               backgroundColor: hex,
               borderRadius: 1,
-              border: "1px solid #ccc",
+              border: '1px solid #ccc',
             }}
           />
           <Box>
@@ -66,15 +66,8 @@ export function PSAColorpalette() {
               <Typography variant="caption" mr={1}>
                 {hex}
               </Typography>
-              <IconButton
-                onClick={() => copyToClipboard(hex, "hex")}
-                color="primary"
-              >
-                {isHexCopied ? (
-                  <CheckIcon color="success" />
-                ) : (
-                  <ContentCopyIcon />
-                )}
+              <IconButton onClick={() => copyToClipboard(hex, 'hex')} color="primary">
+                {isHexCopied ? <CheckIcon color="success" /> : <ContentCopyIcon />}
               </IconButton>
             </Box>
           </Tooltip>
@@ -85,15 +78,8 @@ export function PSAColorpalette() {
               <Typography variant="caption" mr={1}>
                 {jsPath}
               </Typography>
-              <IconButton
-                onClick={() => copyToClipboard(jsPath, "path")}
-                color="primary"
-              >
-                {isPathCopied ? (
-                  <CheckIcon color="success" />
-                ) : (
-                  <ContentCopyIcon />
-                )}
+              <IconButton onClick={() => copyToClipboard(jsPath, 'path')} color="primary">
+                {isPathCopied ? <CheckIcon color="success" /> : <ContentCopyIcon />}
               </IconButton>
             </Box>
           </Tooltip>

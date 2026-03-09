@@ -1,2 +1,2 @@
-import { PSACheckbox } from "./checkbox"; 
+import { PSACheckbox } from './checkbox';
 export default PSACheckbox;

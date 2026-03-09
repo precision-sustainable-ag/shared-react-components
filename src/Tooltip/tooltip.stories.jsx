@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { PSATooltip } from "./tooltip";
-import { Button } from "@mui/material";
+import { Button } from '@mui/material';
+import React, { useState } from 'react';
+import { PSATooltip } from './tooltip';
 
 const meta = {
-  title: "Feedback/Tooltip",
+  title: 'Feedback/Tooltip',
   component: PSATooltip,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a custom Tooltip component based on MUI's \`Tooltip\`. 
@@ -22,10 +22,10 @@ export const PlacementExample = () => (
   <>
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "50px",
-        width: "300px",
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '50px',
+        width: '300px',
       }}
     >
       <PSATooltip
@@ -41,9 +41,9 @@ export const PlacementExample = () => (
 
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "50px",
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '50px',
       }}
     >
       <PSATooltip
@@ -59,14 +59,14 @@ export const PlacementExample = () => (
   </>
 );
 
-const dynamic_tooltip = "Dynamic Value";
+const dynamic_tooltip = 'Dynamic Value';
 export const TitlesExample = () => (
   <>
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "50px",
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '50px',
       }}
     >
       <PSATooltip
@@ -78,9 +78,9 @@ export const TitlesExample = () => (
 
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "50px",
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '50px',
       }}
     >
       <PSATooltip
@@ -107,16 +107,12 @@ export const TooltipContentExample = () => (
   <>
     <div
       style={{
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "50px",
+        display: 'flex',
+        justifyContent: 'space-around',
+        padding: '50px',
       }}
     >
-      <PSATooltip
-        title={<p>Tooltip Tile</p>}
-        placement="top"
-        tooltipContent={tooltipContent()}
-      />
+      <PSATooltip title={<p>Tooltip Tile</p>} placement="top" tooltipContent={tooltipContent()} />
     </div>
   </>
 );
@@ -125,16 +121,16 @@ export const customEventExample = () => {
   const [hovering, setHovering] = useState(false);
 
   const tooltipTitle = () => {
-    return "This is the tooltip content";
+    return 'This is the tooltip content';
   };
 
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "50px",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '50px',
       }}
     >
       <PSATooltip
@@ -149,8 +145,8 @@ export const customEventExample = () => {
           </Button>
         }
       />
-      <div style={{ marginTop: "20px", fontSize: "18px" }}>
-        {hovering ? "Mouse is over the button" : "Mouse is not over the button"}
+      <div style={{ marginTop: '20px', fontSize: '18px' }}>
+        {hovering ? 'Mouse is over the button' : 'Mouse is not over the button'}
       </div>
     </div>
   );

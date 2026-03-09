@@ -2,12 +2,7 @@
   Handles reverse geocoding from lat lon to asci address
 */
 
-async function geocodeReverse({
-  apiKey,
-  setterFunc,
-  latitude,
-  longitude,
-}) {
+async function geocodeReverse({ apiKey, setterFunc, latitude, longitude }) {
   await fetch(
     `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude}%2C%20${latitude}.json?access_token=${apiKey}`,
   )
@@ -15,9 +10,7 @@ async function geocodeReverse({
     .then((data) => {
       if (data.features && data.features.length > 0) {
         setterFunc((prevVal) => {
-          const value = (parm) => (
-            data.features.filter((feature) => feature.id.includes(parm))[0]
-          );
+          const value = (parm) => data.features.filter((feature) => feature.id.includes(parm))[0];
           const newVal = {
             ...prevVal,
             fullAddress: data.features[0].place_name,
@@ -38,12 +31,10 @@ async function geocodeReverse({
  * returns the matching geographic coordinate(s)
  * as search results in carmen geojson format,
  * https://github.com/mapbox/carmen/blob/master/carmen-geojson.md */
-const coordinatesGeocoder = function (query) {
+const coordinatesGeocoder = (query) => {
   // Match anything which looks like
   // decimal degrees coordinate pair.
-  const matches = query.match(
-    /^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i,
-  );
+  const matches = query.match(/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i);
   if (!matches) {
     return null;
   }
