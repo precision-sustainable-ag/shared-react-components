@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSAProfile } from './profile';
 
 const meta = {

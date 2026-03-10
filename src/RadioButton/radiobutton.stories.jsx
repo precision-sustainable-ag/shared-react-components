@@ -1,6 +1,6 @@
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import StarIcon from '@mui/icons-material/Star';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PSARadioButton } from './radiobutton';
 
 const meta = {

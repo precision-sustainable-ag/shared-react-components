@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSAStepper } from './progressstepper';
 
 const meta = {

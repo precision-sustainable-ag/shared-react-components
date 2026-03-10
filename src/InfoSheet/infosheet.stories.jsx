@@ -1,5 +1,5 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PSAAccordion from '../Accordion';
 import { PSAInfoSheet, PSAInfoSheetAttributeBox } from './index';
 
@@ -37,7 +37,7 @@ export const DefaultInfoSheet = () => {
 
 export const SampleSelectorInfoSheet = () => {
   const [open, setOpen] = useState(false);
-  const [accordionOpen, setAccordionOpen] = useState(true);
+  const [accordionOpen, _setAccordionOpen] = useState(true);
 
   console.log('accordionOpen', accordionOpen);
 

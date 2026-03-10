@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSAPiechart } from './piechart';
 
 const meta = {

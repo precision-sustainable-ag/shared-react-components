@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { deepmerge } from '@mui/utils';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PSAAccordion from '../Accordion';
 import PSAButton from '../Button';
 import PSATheme from '../Theme';

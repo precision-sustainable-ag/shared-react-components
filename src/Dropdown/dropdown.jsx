@@ -1,6 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 const getIdFromLabel = (label) => {
   if (typeof label !== 'string') return 'dropdown';

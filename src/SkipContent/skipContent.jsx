@@ -1,6 +1,5 @@
 import { Link } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export function PSASkipContent({ href, text, sx, ...props }) {
   return (

@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PSAFigmaButton from '../FigmaButton';
 
 const StepLight = ({ strokeColor }) => (

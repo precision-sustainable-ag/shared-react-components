@@ -10,7 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { PSAFigmaButton, PSALogoDisplayer } from '../index';
 
 export function PSAHeader({ title, subtitle, council, onLogoClick, logoTitle, navContent }) {

@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
 import fullscreenIcon from '../assets/icons/fullscreen.png';
 import { PencilIcon } from '../assets/icons/PencilIcon';
 import polygonIcon from '../assets/icons/polygon.png';

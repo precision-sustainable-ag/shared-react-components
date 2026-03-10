@@ -1,4 +1,3 @@
-import React from 'react';
 import { NcalcMap } from './ncalc-map';
 import initRasterObject from './sample-response.json';
 

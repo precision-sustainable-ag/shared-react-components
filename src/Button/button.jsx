@@ -1,6 +1,5 @@
 import { Button, styled } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 // Reuse the pillBackgroundColor function
 const pillBackgroundColor = (selected, transparent) => {

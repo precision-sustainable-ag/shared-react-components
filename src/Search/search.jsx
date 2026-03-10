@@ -1,6 +1,5 @@
 import { Box, InputAdornment, styled } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { PSATextField } from '../Textfield/textfield';
 
 const StyledBox = styled(Box)(({ type }) => ({

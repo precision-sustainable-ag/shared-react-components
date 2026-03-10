@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 export const FieldIcon = ({ size = 18, color = '#000', className = 'field-icon' }) => (

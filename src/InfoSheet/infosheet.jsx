@@ -1,7 +1,6 @@
 import { Close } from '@mui/icons-material';
 import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
   return (

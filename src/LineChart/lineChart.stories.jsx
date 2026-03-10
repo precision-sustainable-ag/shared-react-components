@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSALineChart } from './lineChart';
 
 const meta = {

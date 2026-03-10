@@ -1,8 +1,6 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import PersonIcon from '@mui/icons-material/Person';
-import { Button, Typography } from '@mui/material';
-import React from 'react';
 import { PSAFigmaButton } from './figmaButton';
 
 const meta = {

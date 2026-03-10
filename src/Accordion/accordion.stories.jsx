@@ -1,6 +1,6 @@
 import GrassIcon from '@mui/icons-material/Grass';
 import { Box, Typography } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PSAAccordion } from './accordion';
 
 const meta = {

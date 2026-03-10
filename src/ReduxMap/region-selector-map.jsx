@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './assets/styles/map.module.scss';
 import boundaries from './data/us_states-ca_ab-ca_on.json';
 import './assets/styles/mapbox-gl.css';

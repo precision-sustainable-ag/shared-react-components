@@ -1,13 +1,12 @@
 import { Grid, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 import PSATooltip from '../Tooltip';
 
 export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, sx }) => {
   const isText = variant === 'texts';
 
   switch (variant) {
-    case 'texts':
+    // case 'texts':
     default:
       return (
         <Grid

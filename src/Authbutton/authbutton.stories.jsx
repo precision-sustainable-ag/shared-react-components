@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSAAuthButton } from './authbutton';
 
 const meta = {

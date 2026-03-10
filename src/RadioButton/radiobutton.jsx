@@ -1,7 +1,6 @@
 import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export function PSARadioButton({
   options,

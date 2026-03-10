@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSALogoDisplayer } from './LogoDisplayer';
 
 const meta = {

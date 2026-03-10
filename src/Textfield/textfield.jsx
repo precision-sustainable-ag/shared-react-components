@@ -1,5 +1,4 @@
 import { styled, TextField } from '@mui/material';
-import React from 'react';
 
 /**
  * This component is based on [MUI TextField](https://mui.com/material-ui/react-text-field/) component.

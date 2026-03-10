@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSASearch } from './search';
 
 const meta = {

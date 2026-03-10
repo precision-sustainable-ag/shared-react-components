@@ -1,5 +1,3 @@
-import React from 'react';
-
 const NoFieldFoundModal = () => (
   <dialog id="NoFieldFound">
     <h3 style={{ marginTop: 0 }}>No Field Found</h3>

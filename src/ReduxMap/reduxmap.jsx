@@ -8,7 +8,7 @@ import { featureCollection, polygon } from '@turf/helpers';
 import union from '@turf/union';
 import mapboxgl from 'mapbox-gl';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import helpIcon from './assets/icons/help.png';
 import styles from './assets/styles/map.module.scss';
 import CoordBar from './components/CoordBar';

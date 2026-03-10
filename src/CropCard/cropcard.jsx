@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PSAFigmaButton from '../FigmaButton';
 import { PSAInfoSheet } from '../InfoSheet';
 
@@ -24,7 +24,6 @@ export const PSACropImage = ({
   creditsSimple = credits,
   inDetails,
   openDetails = () => {},
-  isMobile,
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -223,7 +222,7 @@ export const PSACropCard = ({
   const elementRef = useRef(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     if (!elementRef.current) return;
@@ -307,7 +306,7 @@ export const PSACropCard = ({
     </Box>
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 600);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import PersonIcon from '@mui/icons-material/Person';
 import PropTypes from 'prop-types';
-import React from 'react';
 import PSAFigmaButton from '../FigmaButton';
 
 /**

@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 export const PencilIcon = ({ size = 18, color = '#000', className = 'pencil-icon' }) => (

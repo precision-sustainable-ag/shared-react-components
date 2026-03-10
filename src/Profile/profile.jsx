@@ -1,7 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export function PSAProfile({ styles }) {
   const { user, isAuthenticated } = useAuth0();

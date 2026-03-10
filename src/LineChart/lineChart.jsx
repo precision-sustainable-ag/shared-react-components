@@ -1,7 +1,7 @@
 import { useTheme } from '@mui/material';
 import HighchartsReact from 'highcharts-react-official';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Highcharts from '../../utils/highchartsConfig';
 import PSASubContainer from '../SubContainer';
 

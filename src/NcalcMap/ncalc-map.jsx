@@ -7,7 +7,7 @@ import centroid from '@turf/centroid';
 import chroma from 'chroma-js';
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import PropTypes, { object } from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import turf from 'turf';
 
 import { coordinatesGeocoder, geocodeReverse } from './helpers';

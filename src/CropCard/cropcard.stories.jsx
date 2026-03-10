@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import React from 'react';
 import { PSACropCard } from './cropcard';
 
 const meta = {
@@ -12,10 +11,6 @@ const meta = {
 };
 
 export default meta;
-
-export const DefaultCropCard = {
-  args: {},
-};
 
 const sharedConeflowerArgs = {
   species: 'Pinnate prairie coneflower',
@@ -104,4 +99,8 @@ export const AppalachianBlazingStarInDetailsExample = {
     ...sharedAppalachianBlazingStarArgs,
     inDetails: true,
   },
+};
+
+export const DefaultCropCard = {
+  args: {},
 };

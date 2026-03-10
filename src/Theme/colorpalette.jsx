@@ -1,8 +1,7 @@
 import CheckIcon from '@mui/icons-material/Check';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { Box, IconButton, Tooltip, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import theme from '.';
 
 export function PSAColorpalette() {

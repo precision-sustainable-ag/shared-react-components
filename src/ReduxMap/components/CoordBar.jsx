@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
 import styles from '../assets/styles/map.module.scss';
 
 /**

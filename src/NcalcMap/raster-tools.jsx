@@ -1,8 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
 import styles from './map.module.scss';
 
 const RasterTools = ({ map, colorStops, unit }) => {
-  const [opacityValue, setOpacityValue] = React.useState(50);
+  const [opacityValue, setOpacityValue] = useState(50);
 
   const handleOpacityChange = (event) => {
     const { value: val } = event.target;

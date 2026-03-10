@@ -1,5 +1,4 @@
 import { Typography } from '@mui/material';
-import React from 'react';
 import { PSAInfoSheetAttributeBox } from './index';
 
 export default {
@@ -16,6 +15,20 @@ export default {
   },
 };
 
+export const InfoSheetAttributeBoxWithTexts = {
+  args: {
+    variant: 'texts',
+    description: 'Description',
+    label: 'Label',
+    value: Array.from({ length: 5 }, (_, index) => `Value ${index + 1}`).map((item) => (
+      <Typography key={item}>{item}</Typography>
+    )),
+    sx: {
+      minWidth: '200px',
+    },
+  },
+};
+
 // Default story
 export const DefaultInfoSheetAttributeBox = {
   args: {
@@ -23,20 +36,6 @@ export const DefaultInfoSheetAttributeBox = {
     description: 'Description',
     label: 'Label',
     value: 'Value',
-    sx: {
-      minWidth: '200px',
-    },
-  },
-};
-
-export const InfoSheetAttributeBoxWithTexts = {
-  args: {
-    variant: 'texts',
-    description: 'Description',
-    label: 'Label',
-    value: Array.from({ length: 5 }, (_, index) => `Value ${index + 1}`).map((item) => (
-      <Typography>{item}</Typography>
-    )),
     sx: {
       minWidth: '200px',
     },

@@ -1,4 +1,3 @@
-import React from 'react';
 import { PSAForm } from './psaform';
 
 export default {

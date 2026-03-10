@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import PropTypes, { string } from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './map.module.scss';
 import boundaries from './us_states-ca_ab-ca_on.json';
 import './mapbox-gl.css';

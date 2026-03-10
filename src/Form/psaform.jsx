@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PSAButton from '../Button';
 import PSADropdown from '../Dropdown';
 import PSATextField from '../Textfield';

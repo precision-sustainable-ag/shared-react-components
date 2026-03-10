@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PSADropdown } from './dropdown'; // Assuming PSADropdown is the component you are working on
 
 export default {

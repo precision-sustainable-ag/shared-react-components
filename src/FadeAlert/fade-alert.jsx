@@ -1,6 +1,5 @@
 import { Alert, Fade } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
 
 export function FadeAlert({
   showAlert = true,
