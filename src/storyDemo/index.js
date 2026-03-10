@@ -15,7 +15,7 @@ import * as Form from '../Form/psaform.stories.jsx';
 import * as Header from '../Header/header.stories.jsx';
 import * as InfoSheet from '../InfoSheet/infosheet.stories.jsx';
 import * as InfoSheetAttributeBox from '../InfoSheet/infosheetAttributeBox.stories.jsx';
-import * as LineChart from '../LineChart/lineChart.stories.jsx';
+// import * as LineChart from '../LineChart/lineChart.stories.jsx';
 import * as LoadingSpinner from '../LoadingSpinner/loadingspinner.stories.jsx';
 import * as LogoDisplayer from '../LogoDisplayer/LogoDisplayer.stories.jsx';
 import * as Map from '../Map/map.stories.jsx';
@@ -56,7 +56,7 @@ export {
   Header,
   InfoSheet,
   InfoSheetAttributeBox,
-  LineChart,
+  // LineChart,
   LoadingSpinner,
   LogoDisplayer,
   Map,
