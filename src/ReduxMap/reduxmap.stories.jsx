@@ -30,7 +30,7 @@ const meta = {
   ],
 };
 
-const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN;
+const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN || import.meta.env.VITE_MAPBOX_API_KEY;
 
 export default meta;
 

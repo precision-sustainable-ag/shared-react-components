@@ -116,7 +116,7 @@ const ReduxMap = ({
     (typeof process !== 'undefined'
       ? // eslint-disable-next-line no-undef
         process.env.REACT_APP_MAPBOX_API_KEY
-      : import.meta.env.VITE_MAPBOX_API_KEY) || mapboxToken;
+      : import.meta.env.VITE_MAPBOX_API_KEY || import.meta.env.VITE_MAPBOX_TOKEN) || mapboxToken;
 
   const boundsPadding = hasSearchBar ? SEARCH_BAR_PADDING : DEFAULT_PADDING;
 
