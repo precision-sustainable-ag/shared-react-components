@@ -21,7 +21,7 @@ import * as LogoDisplayer from '../LogoDisplayer/LogoDisplayer.stories.jsx';
 import * as Map from '../Map/map.stories.jsx';
 import * as Modal from '../Modal/modal.stories.jsx';
 import * as NcalcMap from '../NcalcMap/ncalc-map.stories.jsx';
-import * as Piechart from '../Piechart/piechart.stories.jsx';
+// import * as Piechart from '../Piechart/piechart.stories.jsx';
 import * as Profile from '../Profile/profile.stories.jsx';
 import * as RadioButton from '../RadioButton/radiobutton.stories.jsx';
 import * as ReduxMap from '../ReduxMap/reduxmap.stories.jsx';
@@ -62,7 +62,7 @@ export {
   Map,
   Modal,
   NcalcMap,
-  Piechart,
+  // Piechart,
   Profile,
   RadioButton,
   ReduxMap,
