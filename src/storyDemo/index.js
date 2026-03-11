@@ -1,6 +1,6 @@
 import * as Accordion from '../Accordion/accordion.stories';
 import * as Authbutton from '../Authbutton/authbutton.stories';
-// import * as Barchart from '../Barchart/barchart.stories';
+import * as Barchart from '../Barchart/barchart.stories';
 import * as Button from '../Button/button.stories';
 import * as Checkbox from '../Checkbox/checkbox.stories';
 import * as CropCard from '../CropCard/cropcard.stories';
@@ -42,7 +42,7 @@ import * as Wizard from '../Wizard/wizard.stories.jsx';
 export {
   Accordion,
   Authbutton,
-  // Barchart,
+  Barchart,
   Button,
   Checkbox,
   CropCard,
