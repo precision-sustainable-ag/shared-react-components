@@ -1,9 +1,10 @@
-import * as AccordionStories from '../Accordion/accordion.stories';
-import * as AuthbuttonStories from '../Authbutton/authbutton.stories';
-// import * as BarchartStories from '../Barchart/barchart.stories';
-import * as ButtonStories from '../Button/button.stories';
-import * as CheckboxStories from '../Checkbox/checkbox.stories';
-import * as DataPointStories from '../DataPoint/dataPoint.stories';
+import * as Accordion from '../Accordion/accordion.stories';
+import * as Authbutton from '../Authbutton/authbutton.stories';
+// import * as Barchart from '../Barchart/barchart.stories';
+import * as Button from '../Button/button.stories';
+import * as Checkbox from '../Checkbox/checkbox.stories';
+import * as CropCard from '../CropCard/cropcard.stories';
+import * as DataPoint from '../DataPoint/dataPoint.stories';
 import * as Dropdown from '../Dropdown/dropdown.stories.jsx';
 import * as ExampleButton from '../Examples/Button.stories.js';
 import * as ExampleHeader from '../Examples/Header.stories.js';
@@ -39,12 +40,13 @@ import * as Tooltip from '../Tooltip/tooltip.stories.jsx';
 import * as Wizard from '../Wizard/wizard.stories.jsx';
 
 export {
-  AccordionStories,
-  AuthbuttonStories,
-  // BarchartStories,
-  ButtonStories,
-  CheckboxStories,
-  DataPointStories,
+  Accordion,
+  Authbutton,
+  // Barchart,
+  Button,
+  Checkbox,
+  CropCard,
+  DataPoint,
   Dropdown,
   ExampleButton,
   ExampleHeader,
