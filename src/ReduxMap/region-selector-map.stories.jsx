@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 import { Provider } from 'react-redux';
 import { RegionSelectorMap } from './region-selector-map';
 
@@ -92,7 +92,7 @@ const availableStates = [
 // Default RegionSelectorMap
 export const MapWithAllStates = {
   args: {
-    selectorFunction: fn(),
+    // selectorFunction: fn(),
     availableStates: availableStates,
     initWidth: '900px',
     initHeight: '400px',

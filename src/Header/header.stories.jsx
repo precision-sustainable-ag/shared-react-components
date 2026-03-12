@@ -1,5 +1,5 @@
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 import PSAAuthButton from '../Authbutton';
 import PSADropdown from '../Dropdown';
 import { PSAHeader } from './header';
@@ -28,7 +28,7 @@ const navContent = [
     text: 'Release Notes',
     icon: <ChatBubbleOutlineIcon />,
     rightIcon: true,
-    onClick: fn(),
+    // onClick: fn(),
     style: { fontSize: '1rem' },
   },
   {
@@ -37,7 +37,7 @@ const navContent = [
     text: 'About',
     icon: <ChatBubbleOutlineIcon />,
     rightIcon: true,
-    onClick: fn(),
+    // onClick: fn(),
   },
   {
     type: 'button',
@@ -45,7 +45,7 @@ const navContent = [
     text: 'Feedback',
     icon: <ChatBubbleOutlineIcon />,
     rightIcon: true,
-    onClick: fn(),
+    // onClick: fn(),
   },
 ];
 
@@ -76,7 +76,7 @@ export const DefaultHeader = {
     title: 'Seeding Rate Calculator',
     subtitle: '',
     council: '',
-    onLogoClick: fn(),
+    // onLogoClick: fn(),
     logoTitle: 'Reset and back to home page',
     navContent: navContent,
   },
@@ -87,7 +87,7 @@ export const HeaderWithCustomNavComponent = {
     title: 'Seeding Rate Calculator',
     subtitle: '',
     council: '',
-    onLogoClick: fn(),
+    // onLogoClick: fn(),
     logoTitle: 'Reset and back to home page',
     navContent: [...navContent, ...customNavComponent],
   },

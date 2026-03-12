@@ -1,4 +1,4 @@
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 import { RegionSelectorMap } from './region-selector-map';
 
 const meta = {
@@ -18,7 +18,7 @@ export default meta;
 
 export const BasicMap = {
   args: {
-    selectorFunction: fn(),
+    // selectorFunction: fn(),
     selectedState: '',
     availableStates: [
       'Alabama',
@@ -71,7 +71,7 @@ export const BasicMap = {
 
 export const WithInitRegionMap = {
   args: {
-    selectorFunction: fn(),
+    // selectorFunction: fn(),
     selectedState: 'North Carolina',
     availableStates: [
       'Alabama',

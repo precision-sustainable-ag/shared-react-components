@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { fn } from '@storybook/test';
+// import { fn } from '@storybook/test';
 import { Provider } from 'react-redux';
 import initRasterObject from './data/sample-raster-data-response.json';
 import ReduxMap from './reduxmap';
@@ -36,8 +36,8 @@ export default meta;
 
 export const PlainMapWithoutFeatures = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 41,
@@ -49,8 +49,8 @@ export const PlainMapWithoutFeatures = {
 
 export const MapWithMarker = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 41,
@@ -66,8 +66,8 @@ export const MapWithMarker = {
 
 export const MapWithGeocoder = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 41,
@@ -85,8 +85,8 @@ export const MapWithGeocoder = {
 
 export const MapWithDraw = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 41,
@@ -103,8 +103,8 @@ export const MapWithDraw = {
 
 export const MapWithAllFeatures = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 41,
@@ -135,8 +135,8 @@ export const MapWithAllFeatures = {
 
 export const MapWithRasterLayer = {
   args: {
-    setProperties: fn(),
-    setFeatures: fn(),
+    // setProperties: fn(),
+    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
     initLat: 39.023,
