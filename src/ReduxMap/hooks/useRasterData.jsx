@@ -1,7 +1,7 @@
+import { featureCollection } from '@turf/helpers';
 import chroma from 'chroma-js';
 import mapboxgl from 'mapbox-gl';
 import { useEffect, useRef, useState } from 'react';
-import turf from 'turf';
 
 /**
  * Custom hook to process raster data as a colored grid on a Mapbox map.
@@ -24,7 +24,7 @@ const useRasterData = ({
   setRasterColorSteps,
   color_steps = 7,
 }) => {
-  const polygonsRef = useRef(turf.featureCollection([]));
+  const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 

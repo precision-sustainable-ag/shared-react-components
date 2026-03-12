@@ -51,7 +51,6 @@
     "proj4": "^2.15.0",
     "recharts": "^2.13.3",
     "shapefile": "^0.6.6",
-    "turf": "^3.0.14",
     "wellknown": "^0.5.0"
   },
   "peerDependencies": {
