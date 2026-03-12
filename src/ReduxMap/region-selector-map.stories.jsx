@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { fn } from 'storybook/test';
+import { fn } from '@storybook/test';
 import { Provider } from 'react-redux';
 import { RegionSelectorMap } from './region-selector-map';
 

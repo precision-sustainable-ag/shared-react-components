@@ -1,5 +1,5 @@
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import { fn } from 'storybook/test';
+import { fn } from '@storybook/test';
 import PSAAuthButton from '../Authbutton';
 import PSADropdown from '../Dropdown';
 import { PSAHeader } from './header';

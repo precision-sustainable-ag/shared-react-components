@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { fn } from 'storybook/test';
+import { fn } from '@storybook/test';
 import { Provider } from 'react-redux';
 import initRasterObject from './data/sample-raster-data-response.json';
 import ReduxMap from './reduxmap';
