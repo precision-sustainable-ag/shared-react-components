@@ -11,6 +11,9 @@ const config = {
     name: '@storybook/react-vite',
     options: {},
   },
+  docs: {
+    autodocs: 'tag',
+  },
   viteFinal: async (config) => {
     config.esbuild = { jsx: 'automatic' };
     return config;

@@ -1,7 +1,7 @@
 import { PSAWizard } from './wizard';
 
 export default {
-  title: 'Functional/Wizard Application',
+  title: 'Functional/Wizard',
   component: PSAWizard,
   tags: ['autodocs'],
   parameters: {
