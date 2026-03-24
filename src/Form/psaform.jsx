@@ -7,6 +7,9 @@ import {
   Checkbox,
   FormGroup,
   FormControlLabel,
+  Dialog,
+  DialogContent,
+  Alert,
 } from "@mui/material";
 import PSAButton from "../Button";
 import PSATextField from "../Textfield";
@@ -26,10 +29,10 @@ export const PSAForm = ({
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [snackbarData, setSnackbarData] = useState({
+  const [alertData, setAlertData] = useState({
     open: false,
     message: "",
-    color: "",
+    severity: "success",
   });
 
   const initialFormData = fields.reduce(
@@ -120,7 +123,7 @@ export const PSAForm = ({
   const submit = async () => {
     const { state, message } = checkDisabled();
     if (state) {
-      setSnackbarData({ open: true, message, color: "red" });
+      setAlertData({ open: true, message, severity: "error" });
       return;
     }
 
@@ -145,7 +148,7 @@ export const PSAForm = ({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        setSnackbarData({
+        setAlertData({
           open: true,
           message:
             response.status === 201
@@ -156,7 +159,7 @@ export const PSAForm = ({
                   ? "Unprocessable Entry"
                   : "Internal Server Error"
               }`,
-          color: response.status === 201 ? "green" : "red",
+          severity: response.status === 201 ? "success" : "error",
         });
         if (response.status === 201) {
           setFormData(initialFormData);
@@ -329,15 +332,19 @@ export const PSAForm = ({
         </Grid>
       )}
 
-      <Snackbar
-        open={snackbarData.open}
-        autoHideDuration={5000}
-        onClose={() => setSnackbarData({ ...snackbarData, open: false })}
-        message={snackbarData.message}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        color={snackbarData.color}
-        data-test="feedback_snackbar"
-      />
+      <Dialog
+        open={alertData.open}
+        onClose={() => setAlertData({ ...alertData, open: false })}
+      >
+        <DialogContent>
+          <Alert
+            severity={alertData.severity}
+            onClose={() => setAlertData({ ...alertData, open: false })}
+          >
+            {alertData.message}
+          </Alert>
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };
