@@ -11,6 +11,7 @@ import {
 import PSAButton from "../Button";
 import PSATextField from "../Textfield";
 import PSADropdown from "../Dropdown";
+import PSALoadingSpinner from "../LoadingSpinner";
 
 export const PSAForm = ({
   apiUrl,
@@ -23,6 +24,7 @@ export const PSAForm = ({
   onFormChange,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [snackbarData, setSnackbarData] = useState({
     open: false,
@@ -69,9 +71,8 @@ export const PSAForm = ({
     if (arr.length === 1) return `The "${arr[0]}" field is blank`;
     if (arr.length === 2)
       return `The "${arr.join('" and "')}" fields are blank`;
-    return `The "${arr.slice(0, -1).join('", "')}", and "${
-      arr[arr.length - 1]
-    }" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]
+      }" fields are blank`;
   };
 
   const checkDisabled = () => {
@@ -116,12 +117,14 @@ export const PSAForm = ({
     }));
   };
 
-  const submit = () => {
+  const submit = async () => {
     const { state, message } = checkDisabled();
     if (state) {
       setSnackbarData({ open: true, message, color: "red" });
       return;
     }
+
+    setIsSubmitting(true);
 
     const payload = { ...formData };
 
@@ -133,32 +136,36 @@ export const PSAForm = ({
       payload.labels.push(`County: ${formData.county}`);
     }
 
-    if (handleSubmit) {
-      handleSubmit(formData);
-    } else {
-      fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      })
-        .then((response) => {
-          setSnackbarData({
-            open: true,
-            message:
-              response.status === 201
-                ? submitMessage
-                : `Error ${response.status}. ${
-                    response.status === 400
-                      ? "Bad Request"
-                      : response.status === 422
-                      ? "Unprocessable Entry"
-                      : "Internal Server Error"
-                  }`,
-            color: response.status === 201 ? "green" : "red",
-          });
-          return response.json();
-        })
-        .catch((error) => console.error(error));
+    try {
+      if (handleSubmit) {
+        await handleSubmit(formData);
+      } else {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        setSnackbarData({
+          open: true,
+          message:
+            response.status === 201
+              ? submitMessage
+              : `Error ${response.status}. ${response.status === 400
+                ? "Bad Request"
+                : response.status === 422
+                  ? "Unprocessable Entry"
+                  : "Internal Server Error"
+              }`,
+          color: response.status === 201 ? "green" : "red",
+        });
+        if (response.status === 201) {
+          setFormData(initialFormData);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -196,6 +203,7 @@ export const PSAForm = ({
             {field.type === "text" && (
               <PSATextField
                 {...field.props}
+                value={formData[field.name] || ""}
                 onChange={(event) => handleTextInputChange(event, field.name)}
               />
             )}
@@ -221,6 +229,9 @@ export const PSAForm = ({
                     control={
                       <Checkbox
                         {...checkbox.props}
+                        checked={(formData.labels || []).includes(
+                          checkbox.props.name
+                        )}
                         onChange={handleCheckboxChange}
                       />
                     }
@@ -293,11 +304,30 @@ export const PSAForm = ({
             <PSAButton
               {...button.props}
               onClick={button.action === "submit" ? submit : button.onClick}
-              disabled={isSubmitDisabled}
+              disabled={isSubmitDisabled || isSubmitting}
             />
           </Grid>
         ))}
       </Grid>
+
+      {isSubmitting && (
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(255,255,255,0.6)",
+            zIndex: 9999,
+          }}
+        >
+          <PSALoadingSpinner />
+        </Grid>
+      )}
 
       <Snackbar
         open={snackbarData.open}
