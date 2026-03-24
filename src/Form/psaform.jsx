@@ -126,16 +126,15 @@ export const PSAForm = ({
 
     setIsSubmitting(true);
 
-    // const payload = { ...formData };
+    const payload = { ...formData };
 
-    // payload.labels = payload.labels || [];
-    // if (formData.state) {
-    //   payload.labels.push(`State: ${formData.state}`);
-    // }
-    // if (formData.county) {
-    //   payload.labels.push(`County: ${formData.county}`);
-    // }
-    // payload.labels.push(`Repository: ${repository}`);
+    payload.labels = payload.labels || [];
+    if (formData.state) {
+      payload.labels.push(`State: ${formData.state}`);
+    }
+    if (formData.county) {
+      payload.labels.push(`County: ${formData.county}`);
+    }
 
     try {
       if (handleSubmit) {
@@ -144,7 +143,7 @@ export const PSAForm = ({
         const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(payload),
         });
         setSnackbarData({
           open: true,
