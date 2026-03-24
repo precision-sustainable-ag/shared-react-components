@@ -126,16 +126,16 @@ export const PSAForm = ({
 
     setIsSubmitting(true);
 
-    const payload = { ...formData };
+    // const payload = { ...formData };
 
-    payload.labels = payload.labels || [];
-    if (formData.state) {
-      payload.labels.push(`State: ${formData.state}`);
-    }
-    if (formData.county) {
-      payload.labels.push(`County: ${formData.county}`);
-    }
-    payload.labels.push(`Repository: ${repository}`);
+    // payload.labels = payload.labels || [];
+    // if (formData.state) {
+    //   payload.labels.push(`State: ${formData.state}`);
+    // }
+    // if (formData.county) {
+    //   payload.labels.push(`County: ${formData.county}`);
+    // }
+    // payload.labels.push(`Repository: ${repository}`);
 
     try {
       if (handleSubmit) {
