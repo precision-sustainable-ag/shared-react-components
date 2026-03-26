@@ -1,10 +1,9 @@
-import React from "react";
-import { PSAColorpalette } from "./colorpalette";
+import { PSAColorpalette } from './colorpalette';
 
 const meta = {
-  title: "Theme/ColorPalette",
+  title: 'Theme/ColorPalette',
   component: PSAColorpalette,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 };
 
 export default meta;

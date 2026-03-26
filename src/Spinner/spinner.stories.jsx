@@ -1,18 +1,18 @@
-import { Spinner } from "./spinner";
+import { Spinner } from './spinner';
 
 const meta = {
-  title: "Feedback/Spinner",
+  title: 'Feedback/Spinner',
   component: Spinner,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   argTypes: {
     color: {
-      control: "color",
+      control: 'color',
     },
     backgroundColor: {
-      control: "color",
+      control: 'color',
     },
   },
 };
@@ -23,13 +23,13 @@ export const Basic = {};
 
 export const CustomSize = {
   args: {
-    size: "150px",
+    size: '150px',
   },
 };
 
 export const CustomColor = {
   args: {
-    color: "red",
-    backgroundColor: "black",
+    color: 'red',
+    backgroundColor: 'black',
   },
 };

@@ -37,9 +37,9 @@ This repository contains a collection of reusable React components which is used
 
 3. Start Storybook
 
-   To begin developing and previewing your components, start the Storybook development server with `npm run storybook` or `yarn storybook`.
+   To begin developing and previewing your components, start the Storybook development server with `npm start`.
 
-   This will open Storybook in your default browser at http://localhost:3000, where you can explore and interact with all the components in the library.
+   This will open Storybook in your default browser at http://localhost:3001, where you can explore and interact with all the components in the library.
 
 ## Development
 

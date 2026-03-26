@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useSafeSelector = (fallbackValue, parm, getter, setter) => {
   const dispatch = useDispatch();
@@ -9,13 +9,10 @@ const useSafeSelector = (fallbackValue, parm, getter, setter) => {
   const [localState, setLocalState] = useState(selectedValue);
 
   useEffect(() => {
-    if (
-      parm === "features" &&
-      JSON.stringify(fallbackValue) === JSON.stringify(selectedValue)
-    ) {
+    if (parm === 'features' && JSON.stringify(fallbackValue) === JSON.stringify(selectedValue)) {
       return;
     }
-    if (parm === "address" && !fallbackValue) {
+    if (parm === 'address' && !fallbackValue) {
       setLocalState({});
     } else if (fallbackValue && !getter?.[parm]) {
       setLocalState(fallbackValue);
@@ -30,7 +27,7 @@ const useSafeSelector = (fallbackValue, parm, getter, setter) => {
         setter((currentMap) => ({
           ...currentMap,
           [parm]: newValue,
-        }))
+        })),
       );
     }
   };

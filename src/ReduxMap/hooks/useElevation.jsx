@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { geocodeReverse, getElevation } from "../utils/helpers";
+import { useEffect } from 'react';
+import { geocodeReverse, getElevation } from '../utils/helpers';
 
 /**
  * Custom hook to fetch and manage elevation & address data.
@@ -32,11 +32,9 @@ const useElevation = ({
         setAddress(addr());
 
         // Update search box place holder
-        const searchBox = document.querySelector(
-          ".mapboxgl-ctrl-geocoder--input"
-        );
+        const searchBox = document.querySelector('.mapboxgl-ctrl-geocoder--input');
         if (searchBox) {
-          searchBox.value = "";
+          searchBox.value = '';
           searchBox.placeholder = addr().fullAddress;
         }
       },

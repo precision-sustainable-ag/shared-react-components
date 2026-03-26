@@ -1,10 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const getIdFromLabel = (label) => {
-  if (typeof label !== "string") return "dropdown";
-  return label.replace(/[^a-zA-Z0-9]/g, "-");
+  if (typeof label !== 'string') return 'dropdown';
+  return label.replace(/[^a-zA-Z0-9]/g, '-');
 };
 
 export const PSADropdown = ({
@@ -29,7 +28,7 @@ export const PSADropdown = ({
         <MenuItem
           key={index}
           value={item.value}
-          data-test={`${SelectProps["data-test"]}-${item.label}`}
+          data-test={`${SelectProps['data-test']}-${item.label}`}
           disabled={item.isHeader}
           style={item.isHeader ? menuSx : {}}
         >
@@ -53,7 +52,7 @@ PSADropdown.propTypes = {
     PropTypes.shape({
       label: PropTypes.string,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    })
+    }),
   ),
 
   /**
@@ -71,13 +70,13 @@ PSADropdown.propTypes = {
    */
   SelectProps: PropTypes.shape({
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(["standard", "outlined", "filled"]),
+    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
     onChange: PropTypes.func,
     MenuProps: PropTypes.object,
     style: PropTypes.object,
     sx: PropTypes.object,
     error: PropTypes.bool,
-    "data-test": PropTypes.string,
+    'data-test': PropTypes.string,
   }),
 
   /**

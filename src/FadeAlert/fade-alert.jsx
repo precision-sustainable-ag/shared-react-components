@@ -1,13 +1,12 @@
-import React from "react";
-import { Alert, Fade } from "@mui/material";
-import PropTypes from "prop-types";
+import { Alert, Fade } from '@mui/material';
+import PropTypes from 'prop-types';
 
 export function FadeAlert({
   showAlert = true,
-  variant = "standard",
-  severity = "error",
+  variant = 'standard',
+  severity = 'error',
   action = null,
-  message = "",
+  message = '',
 }) {
   return (
     <Fade in={showAlert}>
@@ -26,11 +25,11 @@ FadeAlert.propTypes = {
   /**
    * controls the variant of the component
    */
-  variant: PropTypes.oneOf(["filled", "outlined", "standard"]),
+  variant: PropTypes.oneOf(['filled', 'outlined', 'standard']),
   /**
    * defines the color and icon used
    */
-  severity: PropTypes.oneOf(["error", "warning", "info", "success"]),
+  severity: PropTypes.oneOf(['error', 'warning', 'info', 'success']),
   /**
    * action to display, renders after the message, at the end of the alert.
    */

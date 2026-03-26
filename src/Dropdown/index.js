@@ -1,2 +1,2 @@
-import { PSADropdown } from "./dropdown";
+import { PSADropdown } from './dropdown';
 export default PSADropdown;

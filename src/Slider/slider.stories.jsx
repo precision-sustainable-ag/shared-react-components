@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { PSASlider } from "./slider";
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
+import { useState } from 'react';
+import { PSASlider } from './slider';
 
 const meta = {
-  title: "Inputs/Slider",
+  title: 'Inputs/Slider',
   component: PSASlider,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a custom Slider component based on MUI's \`Slider\`. 
@@ -29,12 +29,7 @@ const Template = (args) => {
 
   return (
     <Box width={300}>
-      <PSASlider
-        {...args}
-        value={value}
-        onChange={handleChange}
-        aria-label="PSA Slider"
-      />
+      <PSASlider {...args} value={value} onChange={handleChange} aria-label="PSA Slider" />
     </Box>
   );
 };
@@ -45,7 +40,7 @@ DefaultSlider.args = {
   max: 100,
   step: 1,
   value: 50,
-  valueLabelDisplay: "auto",
+  valueLabelDisplay: 'auto',
 };
 
 export const DisabledSlider = Template.bind({});
@@ -60,7 +55,7 @@ SmallStepSlider.args = {
   min: 0,
   max: 10,
   value: 5,
-  valueLabelDisplay: "auto",
+  valueLabelDisplay: 'auto',
 };
 
 export const LargeRangeSlider = Template.bind({});
@@ -69,5 +64,5 @@ LargeRangeSlider.args = {
   max: 1000,
   step: 10,
   value: 500,
-  valueLabelDisplay: "on",
+  valueLabelDisplay: 'on',
 };

@@ -1,10 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-
+import { Close, Info, OpenInNew, PlaylistAdd, PlaylistRemove } from '@mui/icons-material';
 import {
-  Box, Card, CardContent, CardActions, Dialog, DialogTitle, IconButton, Typography, Link,
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  Link,
+  Typography,
 } from '@mui/material';
-import { Close, Info, PlaylistAdd, PlaylistRemove, OpenInNew } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import { useEffect, useRef, useState } from 'react';
 import PSAFigmaButton from '../FigmaButton';
 import { PSAInfoSheet } from '../InfoSheet';
 
@@ -16,74 +23,67 @@ export const PSACropImage = ({
   credits,
   creditsSimple = credits,
   inDetails,
-  openDetails=() => {},
-  isMobile,
+  openDetails = () => {},
 }) => {
   const [open, setOpen] = useState(false);
   return (
     <Box>
-      {
-        thumbnail
-        && (
+      {thumbnail && (
+        <Box
+          sx={{
+            boxSizing: 'border-box',
+            position: 'relative',
+            overflow: 'hidden',
+            width: inDetails ? 260 : '100%',
+            aspectRatio: 260 / 140,
+            cursor: 'pointer',
+            borderRadius: 2,
+            border: '1px solid #ddd',
+          }}
+          onClick={() => {
+            if (!inDetails) openDetails(true);
+            else setOpen(true);
+          }}
+        >
           <Box
+            component="img"
             sx={{
-              boxSizing: 'border-box',
-              position: 'relative',
-              overflow: 'hidden',
-              width: inDetails ? 260 : '100%',
-              aspectRatio: 260 / 140,
-              cursor: 'pointer',
-              borderRadius: 2,
-              border: '1px solid #ddd',
+              position: 'absolute',
+              top: portrait ? 0 : '50%',
+              left: '50%',
+              width: '100%',
+              transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
+              objectFit: 'cover',
             }}
-            onClick={() => {
-              if (!inDetails) openDetails(true);
-              else setOpen(true);
+            src={thumbnail}
+            alt={alt}
+            title={inDetails ? 'Click to view full size' : 'Click for details'}
+            onError={(e) => {
+              e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
             }}
-          >
-            <Box
-              component="img"
-              sx={{
-                position: 'absolute',
-                top: portrait ? 0 : '50%',
-                left: '50%',
-                width: '100%',
-                transform: portrait ? 'translate(-50%, -25%)' : 'translate(-50%, -50%)',
-                objectFit: 'cover',
-              }}
-              src={thumbnail}
-              alt={alt}
-              title={inDetails ? 'Click to view full size' : 'Click for details'}
-              onError={(e) => {
-                e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
-              }}
-            />
-          </Box>
-        )
-      }
-      {
-        creditsSimple
-        && (
-          <Typography
-            sx={{
-              fontSize: 12,
-              whiteSpace: 'nowrap',
-              textOverflow: 'ellipsis',
-              overflow: 'hidden',
-              cursor: 'pointer',
-              padding: '0.2rem',
-              background: '#f0f0f0',
-              ':hover': {
-                textDecoration: 'underline',
-              },
-            }}
-            title="Click to view full-size image and complete credits"
-            onClick={() => setOpen(true)}
-          >
-            {creditsSimple}
-          </Typography>
-        )
-      }
+          />
+        </Box>
+      )}
+      {creditsSimple && (
+        <Typography
+          sx={{
+            fontSize: 12,
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            cursor: 'pointer',
+            padding: '0.2rem',
+            background: '#f0f0f0',
+            ':hover': {
+              textDecoration: 'underline',
+            },
+          }}
+          title="Click to view full-size image and complete credits"
+          onClick={() => setOpen(true)}
+        >
+          {creditsSimple}
+        </Typography>
+      )}
 
       <Dialog
         open={open}
@@ -128,20 +128,13 @@ export const PSACropImage = ({
             e.currentTarget.src = 'https://placehold.co/260x140?text=Placeholder';
           }}
         />
-        {
-          credits
-          && (
-            <Typography sx={{ fontSize: 14, margin: '0 25px' }}>
-              {credits}
-            </Typography>
-          )
-        }
+        {credits && <Typography sx={{ fontSize: 14, margin: '0 25px' }}>{credits}</Typography>}
       </Dialog>
     </Box>
   );
 }; // PSACropImage
 
-const Header = ({ species, scientific, cultivar, }) => (
+const Header = ({ species, scientific, cultivar }) => (
   <Box
     sx={{
       padding: '0.5rem 1rem',
@@ -149,30 +142,30 @@ const Header = ({ species, scientific, cultivar, }) => (
       minHeight: 50,
     }}
   >
-    <Typography component="span">
-      {species}
-    </Typography>
+    <Typography component="span">{species}</Typography>
 
-    <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>
-      {scientific}
-    </Typography>
+    <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>{scientific}</Typography>
 
-    {
-      cultivar
-      && (
-        <Typography sx={{ fontSize: 14 }} className="cultivar">
-          Selection:&nbsp;
-          {cultivar}
-        </Typography>
-      )
-    }
+    {cultivar && (
+      <Typography sx={{ fontSize: 14 }} className="cultivar">
+        Selection:&nbsp;
+        {cultivar}
+      </Typography>
+    )}
   </Box>
 ); // Header
 
 const Content = ({
-  scientific, content, symbol,
-  thumbnail, fullsize = thumbnail, portrait,
-  credits, creditsSimple = credits, openDetails, isMobile,
+  scientific,
+  content,
+  symbol,
+  thumbnail,
+  fullsize = thumbnail,
+  portrait,
+  credits,
+  creditsSimple = credits,
+  openDetails,
+  isMobile,
 }) => (
   <Box role="presentation" sx={{ fontFamily: 'IBM Plex Sans' }}>
     <PSACropImage
@@ -186,27 +179,24 @@ const Content = ({
       openDetails={openDetails}
       isMobile={isMobile}
     />
-    {
-      content
-      && (
-        <Box
-          sx={{
-            padding: '0.5rem 0rem',
-            background: 'white',
-            fontSize: 12,
-          }}
-        >
-          {content}
-        </Box>
-      )
-    }
+    {content && (
+      <Box
+        sx={{
+          padding: '0.5rem 0rem',
+          background: 'white',
+          fontSize: 12,
+        }}
+      >
+        {content}
+      </Box>
+    )}
   </Box>
 ); // Content
 
 /**
  * This is a custom CropCard component.
  *  Styling is based on [Figma](https://www.figma.com/design/dipljCC6Z3GZBFhJqth7a7/PSI-Design-Work?node-id=1799-21980&p=f&t=iJHZVtdpK3LNpTW8-0).
-  */
+ */
 export const PSACropCard = ({
   species,
   cultivar,
@@ -232,7 +222,7 @@ export const PSACropCard = ({
   const elementRef = useRef(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isMobile, setIsMobile] = React.useState(window.innerWidth < 600);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     if (!elementRef.current) return;
@@ -260,48 +250,47 @@ export const PSACropCard = ({
 
   const speciesBox = (
     <Box>
-      {
-        !selected && onSelect
-        && (
-          <PSAFigmaButton
-            text={
-              <>
-                ADD&nbsp;TO<br />LIST&nbsp;<PlaylistAdd sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
-              </>
-            }
-            variant="color"
-            rightIcon
-            textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
-            buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
-            onClick={onSelect}
-          />
-        )
-      }
-      {
-        selected && onRemove
-        && (
-          <PSAFigmaButton
-            text={
-              <>
-                Remove<br /><PlaylistRemove sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
-              </>
-            }
-            rightIcon
-            textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
-            buttonSx={{
-              borderRadius: '5px',
-              padding: '5px 7px',
-              background: '#565656',
-              color: 'white',
-              float: 'right',
-              '&:hover': {
-                background: '#999',
-              },
-            }}
-            onClick={onRemove}
-          />
-        )
-      }
+      {!selected && onSelect && (
+        <PSAFigmaButton
+          text={
+            <>
+              ADD&nbsp;TO
+              <br />
+              LIST&nbsp;
+              <PlaylistAdd sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
+            </>
+          }
+          variant="color"
+          rightIcon
+          textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
+          buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
+          onClick={onSelect}
+        />
+      )}
+      {selected && onRemove && (
+        <PSAFigmaButton
+          text={
+            <>
+              Remove
+              <br />
+              <PlaylistRemove sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
+            </>
+          }
+          rightIcon
+          textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+          buttonSx={{
+            borderRadius: '5px',
+            padding: '5px 7px',
+            background: '#565656',
+            color: 'white',
+            float: 'right',
+            '&:hover': {
+              background: '#999',
+            },
+          }}
+          onClick={onRemove}
+        />
+      )}
 
       <Box
         sx={{
@@ -317,7 +306,7 @@ export const PSACropCard = ({
     </Box>
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 600);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -340,102 +329,90 @@ export const PSACropCard = ({
       {...props}
       ref={elementRef}
     >
-      {
-        (!hasLoaded && !onRemove)
-          ? (
-            <div style={{ color: 'white' }}>
-              {species}
-              {scientific}
-              Selection
-              {cultivar}
-            </div>
-          )
-          : (
-            <>
-              <Header species={speciesBox} scientific={scientific} cultivar={cultivar}/>
-              <Box sx={{ marginTop: 'auto' }}>
-                <CardContent sx={{ padding: 0 }}>
-                  <Content
-                    scientific={scientific}
-                    content={content}
-                    thumbnail={hasLoaded && thumbnail}
-                    fullsize={hasLoaded && fullsize}
-                    portrait={portrait}
-                    creditsSimple={creditsSimple}
-                    credits={credits}
-                    openDetails={setOpen}
-                    isMobile={isMobile}
-                  />
-                </CardContent>
-                <CardActions
+      {!hasLoaded && !onRemove ? (
+        <div style={{ color: 'white' }}>
+          {species}
+          {scientific}
+          Selection
+          {cultivar}
+        </div>
+      ) : (
+        <>
+          <Header species={speciesBox} scientific={scientific} cultivar={cultivar} />
+          <Box sx={{ marginTop: 'auto' }}>
+            <CardContent sx={{ padding: 0 }}>
+              <Content
+                scientific={scientific}
+                content={content}
+                thumbnail={hasLoaded && thumbnail}
+                fullsize={hasLoaded && fullsize}
+                portrait={portrait}
+                creditsSimple={creditsSimple}
+                credits={credits}
+                openDetails={setOpen}
+                isMobile={isMobile}
+              />
+            </CardContent>
+            <CardActions
+              sx={{
+                justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
+                marginTop: 'auto',
+              }}
+            >
+              {details && !isMobile && (
+                <PSAFigmaButton
+                  text="DETAILS"
+                  icon={
+                    <Info
+                      sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }}
+                    />
+                  }
+                  rightIcon
+                  textSx={{ fontSize: 12 }}
+                  buttonSx={{ borderRadius: '5px' }}
+                  onClick={() => setOpen(true)}
+                />
+              )}
+
+              {externalLink && (
+                <Link
+                  href={externalLink}
+                  title={externalLinkTitle}
+                  target="_blank"
+                  rel="noreferrer"
                   sx={{
-                    justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
-                    marginTop: 'auto',
+                    fontSize: 12,
+                    fontFamily: 'IBM Plex Sans',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    background: '#bbffbb',
+                    color: 'black',
+                    padding: '0.3rem 0.7rem',
+                    borderRadius: '5px',
+                    '&:hover': {
+                      textDecoration: 'underline',
+                    },
                   }}
                 >
-                  {
-                    details
-                    && !isMobile
-                    && (
-                      <PSAFigmaButton
-                        text="DETAILS"
-                        icon={<Info sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }} />}
-                        rightIcon
-                        textSx={{ fontSize: 12 }}
-                        buttonSx={{ borderRadius: '5px' }}
-                        onClick={() => setOpen(true)}
-                      />
-                    )
-                  }
-
-                  {
-                    externalLink
-                    && (
-                      <Link
-                        href={externalLink}
-                        title={externalLinkTitle}
-                        target="_blank"
-                        rel="noreferrer"
-                        sx={{
-                          fontSize: 12,
-                          fontFamily: 'IBM Plex Sans',
-                          textDecoration: 'none',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          background: '#bbffbb',
-                          color: 'black',
-                          padding: '0.3rem 0.7rem',
-                          borderRadius: '5px',
-                          '&:hover': {
-                            textDecoration: 'underline',
-                          },
-                        }}
-                      >
-                        {externalLinkText}
-                        <OpenInNew sx={{ fontSize: '0.9em' }} />
-                      </Link>
-                    )
-                  }
-
-                </CardActions>
-                {
-                  open
-                    ? (
-                      <PSAInfoSheet
-                        setOpen={setOpen}
-                        open={open}
-                        content={details}
-                        title={title}
-                        {...infoSheetProps}
-                      />
-                    )
-                    : null
-                }
-              </Box>
-            </>
-          )
-      }
+                  {externalLinkText}
+                  <OpenInNew sx={{ fontSize: '0.9em' }} />
+                </Link>
+              )}
+            </CardActions>
+            {open ? (
+              <PSAInfoSheet
+                setOpen={setOpen}
+                open={open}
+                content={details}
+                title={title}
+                {...infoSheetProps}
+              />
+            ) : null}
+          </Box>
+        </>
+      )}
     </Card>
   );
 }; // PSACropCard

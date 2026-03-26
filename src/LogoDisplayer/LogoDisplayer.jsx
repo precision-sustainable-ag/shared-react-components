@@ -1,28 +1,28 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
 
 export const PSALogoDisplayer = ({ council, alt, style }) => {
   const logoRef = useRef(null);
-  const faviconRef = useRef(document.getElementById("favicon"));
+  const faviconRef = useRef(document.getElementById('favicon'));
 
   // useEffect to update favicon
   useEffect(() => {
     if (faviconRef.current) {
       switch (council) {
-        case "NECCC":
-          faviconRef.current.href = "favicons/neccc-favicon.ico";
+        case 'NECCC':
+          faviconRef.current.href = 'favicons/neccc-favicon.ico';
           break;
-        case "SCCC":
-          faviconRef.current.href = "favicons/sccc-favicon.ico";
+        case 'SCCC':
+          faviconRef.current.href = 'favicons/sccc-favicon.ico';
           break;
-        case "MCCC":
-          faviconRef.current.href = "favicons/mccc-favicon.ico";
+        case 'MCCC':
+          faviconRef.current.href = 'favicons/mccc-favicon.ico';
           break;
-        case "WCCC":
-          faviconRef.current.href = "favicons/wccc-favicon.ico";
+        case 'WCCC':
+          faviconRef.current.href = 'favicons/wccc-favicon.ico';
           break;
         default:
-          faviconRef.current.href = "favicons/psa-favicon.ico";
+          faviconRef.current.href = 'favicons/psa-favicon.ico';
           break;
       }
     }
@@ -32,20 +32,20 @@ export const PSALogoDisplayer = ({ council, alt, style }) => {
   useEffect(() => {
     if (logoRef.current) {
       switch (council) {
-        case "NECCC":
-          logoRef.current.src = "images/neccc_logo.png";
+        case 'NECCC':
+          logoRef.current.src = 'images/neccc_logo.png';
           break;
-        case "SCCC":
-          logoRef.current.src = "images/sccc_logo.png";
+        case 'SCCC':
+          logoRef.current.src = 'images/sccc_logo.png';
           break;
-        case "MCCC":
-          logoRef.current.src = "images/mwccc_logo.png";
+        case 'MCCC':
+          logoRef.current.src = 'images/mwccc_logo.png';
           break;
-        case "WCCC":
-          logoRef.current.src = "images/wccc_logo.png";
+        case 'WCCC':
+          logoRef.current.src = 'images/wccc_logo.png';
           break;
         default:
-          logoRef.current.src = "images/PSA_logo.png";
+          logoRef.current.src = 'images/PSA_logo.png';
           break;
       }
     }

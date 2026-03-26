@@ -1,36 +1,28 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Grid,
-  Typography,
-  Button,
-  Snackbar,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-} from "@mui/material";
-import PSAButton from "../Button";
-import PSATextField from "../Textfield";
+import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import PSAButton from '../Button';
+import PSATextField from '../Textfield';
 export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
   const [snackbarData, setSnackbarData] = useState({
     open: false,
-    message: "",
-    color: "",
+    message: '',
+    color: '',
   });
 
   const [feedbackData, setFeedbackData] = useState({
-    repository: "dst-feedback", //Repo-name
-    title: "",
-    comments: "",
+    repository: 'dst-feedback', //Repo-name
+    title: '',
+    comments: '',
     labels: [],
     // screenshot: null,
-    name: "",
-    email: "",
+    name: '',
+    email: '',
   });
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) {
-      return "";
+      return '';
     }
     if (arr.length === 1) {
       return `The "${arr[0]}" field is blank`;
@@ -38,37 +30,35 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
     if (arr.length === 2) {
       return `The "${arr.join('" and "')}" fields are blank`;
     }
-    return `The "${arr.slice(0, -1).join('", "')}", and "${
-      arr[arr.length - 1]
-    }" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]}" fields are blank`;
   };
 
   const checkDisabled = () => {
-    const titleMissing = feedbackData.title === "";
-    const commentsMissing = feedbackData.comments === "";
+    const titleMissing = feedbackData.title === '';
+    const commentsMissing = feedbackData.comments === '';
     const labelsMissing = feedbackData.labels.length === 0;
     const messageArr = [];
 
     if (titleMissing) {
-      messageArr.push("Title");
+      messageArr.push('Title');
     }
     if (commentsMissing) {
-      messageArr.push("Message");
+      messageArr.push('Message');
     }
     if (labelsMissing) {
-      messageArr.push("Topic");
+      messageArr.push('Topic');
     }
     const messageStr = convertMessageArr(messageArr);
     if (titleMissing || commentsMissing || labelsMissing) {
       return { state: true, message: messageStr };
     }
-    return { state: false, message: "" };
+    return { state: false, message: '' };
   };
   useEffect(() => {
-    pirschAnalytics("Visited Page", { meta: { visited: "Feedback" } });
+    pirschAnalytics('Visited Page', { meta: { visited: 'Feedback' } });
   }, [consentRedux]);
   useEffect(() => {
-    document.title = "Feedback";
+    document.title = 'Feedback';
   }, []);
 
   const handleTextInputChange = (event, propertyName) => {
@@ -102,10 +92,10 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
   };
 
   const handleSubmit = () => {
-    fetch("https://developfeedback.covercrop-data.org/v1/issues", {
-      method: "POST",
+    fetch('https://developfeedback.covercrop-data.org/v1/issues', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...feedbackData,
@@ -116,26 +106,26 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         if (response.status === 201) {
           setSnackbarData({
             open: true,
-            message: "Feedback Successfully Submitted!",
-            color: "green",
+            message: 'Feedback Successfully Submitted!',
+            color: 'green',
           });
         } else if (response.status === 400) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Bad Request`,
-            color: "red",
+            color: 'red',
           });
         } else if (response.status === 422) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Unprocessable Entry`,
-            color: "red",
+            color: 'red',
           });
         } else if (response.status === 500) {
           setSnackbarData({
             open: true,
             message: `Error ${response.status}. Internal Server Error`,
-            color: "red",
+            color: 'red',
           });
         }
         return response.json();
@@ -151,11 +141,11 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
       container
       rowSpacing={5}
       style={{
-        paddingLeft: "10%",
-        paddingRight: "10%",
-        paddingTop: "3%",
-        paddingBottom: "3%",
-        textAlign: "left",
+        paddingLeft: '10%',
+        paddingRight: '10%',
+        paddingTop: '3%',
+        paddingBottom: '3%',
+        textAlign: 'left',
       }}
     >
       {/* Title */}
@@ -166,65 +156,42 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
       </Grid>
 
       {/* Feedback Title */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography variant="h6" display="inline-block">
             Title
           </Typography>
-          <Typography
-            variant="h6"
-            display="inline-block"
-            style={{ color: "red" }}
-          >
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
             *
           </Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="body1">
-            Give your feedback a short descriptive title.
-          </Typography>
+          <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
         </Grid>
         <Grid item xs={12}>
           <PSATextField
             placeholder="Enter Your Title"
             variant="outlined"
-            onChange={(event) => handleTextInputChange(event, "title")}
+            onChange={(event) => handleTextInputChange(event, 'title')}
             data-test="feedback_title"
           />
         </Grid>
       </Grid>
 
       {/* Feedback Messsage */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography variant="h6" display="inline-block">
-            Message{" "}
+            Message{' '}
           </Typography>
-          <Typography
-            variant="h6"
-            display="inline-block"
-            style={{ color: "red" }}
-          >
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
             *
           </Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body1">
-            Explain your feedback as thoroughly as you can. Your feedback will
-            help us improve the species selection experience. You can attach a
-            screenshot of your feedback below.
+            Explain your feedback as thoroughly as you can. Your feedback will help us improve the
+            species selection experience. You can attach a screenshot of your feedback below.
           </Typography>
         </Grid>
         <Grid item xs={12}>
@@ -234,29 +201,19 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             variant="outlined"
             fullWidth
             minRows={3}
-            onChange={(event) => handleTextInputChange(event, "comments")}
+            onChange={(event) => handleTextInputChange(event, 'comments')}
             data-test="feedback_message"
           />
         </Grid>
       </Grid>
 
       {/* Feedback Topic */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography variant="h6" display="inline-block">
-            Topic{" "}
+            Topic{' '}
           </Typography>
-          <Typography
-            variant="h6"
-            display="inline-block"
-            style={{ color: "red" }}
-          >
+          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
             *
           </Typography>
         </Grid>
@@ -287,11 +244,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             />
             <FormControlLabel
               control={
-                <Checkbox
-                  onChange={handleCheckboxChange}
-                  name="Other"
-                  data-test="feedback_other"
-                />
+                <Checkbox onChange={handleCheckboxChange} name="Other" data-test="feedback_other" />
               }
               label="Other"
             />
@@ -300,13 +253,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
       </Grid>
 
       {/* Name */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography variant="h6">Name </Typography>
         </Grid>
@@ -314,20 +261,14 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
           <PSATextField
             placeholder="Enter Name"
             variant="outlined"
-            onChange={(event) => handleTextInputChange(event, "name")}
+            onChange={(event) => handleTextInputChange(event, 'name')}
             data-test="feedback_name"
           />
         </Grid>
       </Grid>
 
       {/* Email */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         <Grid item xs={12}>
           <Typography variant="h6">Email </Typography>
         </Grid>
@@ -335,29 +276,18 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
           <PSATextField
             placeholder="Enter Email"
             variant="outlined"
-            onChange={(event) => handleTextInputChange(event, "email")}
+            onChange={(event) => handleTextInputChange(event, 'email')}
             data-test="feedback_email"
           />
         </Grid>
       </Grid>
 
       {/* Submit */}
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         {checkDisabled().state && (
           <Grid item xs={12}>
-            <Typography
-              variant="body1"
-              style={{ color: "red" }}
-              data-test="feedback_alert"
-            >
-              {checkDisabled().message}. Please fill all required fields before
-              submitting.
+            <Typography variant="body1" style={{ color: 'red' }} data-test="feedback_alert">
+              {checkDisabled().message}. Please fill all required fields before submitting.
             </Typography>
           </Grid>
         )}
@@ -378,7 +308,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         autoHideDuration={5000}
         onClose={handleSnackbarClose}
         message={snackbarData.message}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         color={snackbarData.color}
         data-test="feedback_snackbar"
       />

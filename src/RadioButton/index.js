@@ -1,2 +1,2 @@
-import { PSARadioButton } from "./radiobutton";
+import { PSARadioButton } from './radiobutton';
 export default PSARadioButton;

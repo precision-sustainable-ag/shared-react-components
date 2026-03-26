@@ -1,2 +1,2 @@
-import { PSAPiechart } from "./piechart"; 
+import { PSAPiechart } from './piechart';
 export default PSAPiechart;

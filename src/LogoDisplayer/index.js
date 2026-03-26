@@ -1,2 +1,2 @@
-import { PSALogoDisplayer } from "./LogoDisplayer";
+import { PSALogoDisplayer } from './LogoDisplayer';
 export default PSALogoDisplayer;

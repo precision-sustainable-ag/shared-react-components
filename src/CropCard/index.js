@@ -1,1 +1,1 @@
-export { PSACropImage, PSACropCard } from './cropcard';
+export { PSACropCard, PSACropImage } from './cropcard';

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { PSAAccordion } from "./accordion";
-import { Box, Typography } from "@mui/material";
-import GrassIcon from "@mui/icons-material/Grass";
+import GrassIcon from '@mui/icons-material/Grass';
+import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { PSAAccordion } from './accordion';
 
 const meta = {
-  title: "Layout/Accordion",
+  title: 'Layout/Accordion',
   component: PSAAccordion,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {},
 };
 
@@ -21,10 +21,10 @@ const Template = (args) => {
       summaryContent={
         <Box
           sx={{
-            display: "flex",
-            jutifyContent: "center",
-            alignItems: "center",
-            color: "additional.greydark",
+            display: 'flex',
+            jutifyContent: 'center',
+            alignItems: 'center',
+            color: 'additional.greydark',
           }}
         >
           <GrassIcon />
@@ -32,7 +32,7 @@ const Template = (args) => {
         </Box>
       }
       detailsContent={
-        <Box height={"100px"}>
+        <Box height={'100px'}>
           <Typography>Details content</Typography>
         </Box>
       }
@@ -47,24 +47,24 @@ DefaultAccordion.args = {};
 export const ColoredAccordion = Template.bind({});
 ColoredAccordion.args = {
   sx: {
-    ".MuiAccordionSummary-root": {
-      backgroundColor: "main.accent2",
-      ".MuiAccordionSummary-expandIconWrapper p": {
-        color: "white",
+    '.MuiAccordionSummary-root': {
+      backgroundColor: 'main.accent2',
+      '.MuiAccordionSummary-expandIconWrapper p': {
+        color: 'white',
       },
     },
   },
   summaryContent: (
     <Box
       sx={{
-        display: "flex",
-        jutifyContent: "center",
-        alignItems: "center",
-        color: "white",
+        display: 'flex',
+        jutifyContent: 'center',
+        alignItems: 'center',
+        color: 'white',
       }}
     >
       <GrassIcon />
-      <Typography fontSize={"1.5625rem"} fontWeight={600} pl={"0.5rem"}>
+      <Typography fontSize={'1.5625rem'} fontWeight={600} pl={'0.5rem'}>
         White Summary Content
       </Typography>
     </Box>
@@ -77,10 +77,10 @@ ErrorAccordion.args = {
   summaryContent: (
     <Box
       sx={{
-        display: "flex",
-        jutifyContent: "center",
-        alignItems: "center",
-        color: "additional.greydark",
+        display: 'flex',
+        jutifyContent: 'center',
+        alignItems: 'center',
+        color: 'additional.greydark',
       }}
     >
       <GrassIcon />
@@ -95,10 +95,10 @@ export const UncontrolledAccordion = {
     summaryContent: (
       <Box
         sx={{
-          display: "flex",
-          jutifyContent: "center",
-          alignItems: "center",
-          color: "additional.greydark",
+          display: 'flex',
+          jutifyContent: 'center',
+          alignItems: 'center',
+          color: 'additional.greydark',
         }}
       >
         <GrassIcon />
@@ -106,7 +106,7 @@ export const UncontrolledAccordion = {
       </Box>
     ),
     detailsContent: (
-      <Box height={"100px"}>
+      <Box height={'100px'}>
         <Typography>Details content</Typography>
       </Box>
     ),

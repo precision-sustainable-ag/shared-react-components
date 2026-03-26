@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { GeolocateControl } from "mapbox-gl";
+import { GeolocateControl } from 'mapbox-gl';
+import { useEffect } from 'react';
 
 /**
  * A custom React hook that adds and manages a geolocate control for a Mapbox map.
- * 
+ *
  * @param {Object} params - The configuration parameters for the geolocate hook
  * @param {Object} params.map - React ref containing the Mapbox map instance
  * @param {boolean} params.hasGeolocate - Flag to enable/disable geolocate control
@@ -28,36 +28,34 @@ const useMapGeolocate = ({
   setPolygonArea,
   drawerRef,
 }) => {
-
   useEffect(() => {
     if (!map.current || !hasGeolocate) return;
 
     const Geolocate = new GeolocateControl({ container: map.current });
 
-    if (map && !map.current.hasControl(Geolocate))
-        map.current.addControl(Geolocate, 'top-right');
+    if (map && !map.current.hasControl(Geolocate)) map.current.addControl(Geolocate, 'top-right');
 
     const handleGeolocate = (e) => {
-        const lngLat = e.target._userLocationDotMarker._lngLat;
+      const lngLat = e.target._userLocationDotMarker._lngLat;
 
-        setLat(lngLat.lat);
-        setLon(lngLat.lng);
-        setZoom(map.current.getZoom());
-        setBounds(false);
-        setPolygonArea(0);
-        setFeatures([]);
-        if (hasDrawing && drawerRef.current) {
-          drawerRef?.current?.deleteAll();
-        }
-      };
+      setLat(lngLat.lat);
+      setLon(lngLat.lng);
+      setZoom(map.current.getZoom());
+      setBounds(false);
+      setPolygonArea(0);
+      setFeatures([]);
+      if (hasDrawing && drawerRef.current) {
+        drawerRef?.current?.deleteAll();
+      }
+    };
 
-      Geolocate.on('geolocate', handleGeolocate);
+    Geolocate.on('geolocate', handleGeolocate);
 
-      Geolocate.on('error', (error) => {
-        if (error.code === error.PERMISSION_DENIED) {
-          alert('Geolocation access denied. Please enable location services.');
-        }
-      });
+    Geolocate.on('error', (error) => {
+      if (error.code === error.PERMISSION_DENIED) {
+        alert('Geolocation access denied. Please enable location services.');
+      }
+    });
 
     return () => {
       if (map && hasGeolocate && map.current.hasControl(Geolocate)) {

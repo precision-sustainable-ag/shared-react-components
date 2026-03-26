@@ -1,12 +1,11 @@
-import React from "react";
-import { PSAWizard } from "./wizard";
+import { PSAWizard } from './wizard';
 
 export default {
-  title: "Functional/Wizard Application",
+  title: 'Functional/Wizard',
   component: PSAWizard,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a wizard application component.`,
@@ -15,8 +14,8 @@ export default {
   },
 };
 
-const Template = (args) => <PSAWizard {...args} />
+const Template = (args) => <PSAWizard {...args} />;
 
 // Default story
 export const DefaultWizard = Template.bind({});
-DefaultWizard.args = {}
+DefaultWizard.args = {};

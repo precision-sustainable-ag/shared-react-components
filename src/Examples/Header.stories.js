@@ -1,5 +1,5 @@
+// import { fn } from '@storybook/test';
 import { Header } from './Header';
-import { fn } from '@storybook/test';
 
 export default {
   title: 'Example/Header',
@@ -11,9 +11,9 @@ export default {
     layout: 'fullscreen',
   },
   args: {
-    onLogin: fn(),
-    onLogout: fn(),
-    onCreateAccount: fn(),
+    // onLogin: fn(),
+    // onLogout: fn(),
+    // onCreateAccount: fn(),
   },
 };
 

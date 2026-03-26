@@ -1,4 +1,5 @@
 .mapbox {
+
   .mapbox-gl-draw_ctrl-draw-btn.active,
   #freehand.active {
     background-color: #aaddaa !important;
@@ -10,7 +11,7 @@
     background-color: #ccffcc !important;
   }
 
-  .mapboxgl-ctrl-group > .mapbox-gl-draw_trash {
+  .mapboxgl-ctrl-group>.mapbox-gl-draw_trash {
     display: none;
   }
 
@@ -47,7 +48,8 @@
     font-weight: bold;
     font-size: 14px;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
-    z-index: 9999; /* doesn't work for fullscreen mode */
+    z-index: 9999;
+    /* doesn't work for fullscreen mode */
   }
 
   // show lat/lon only when cursor is over map

@@ -1,12 +1,11 @@
-import React from "react";
-import { PSAProfile } from "./profile";
+import { PSAProfile } from './profile';
 
 const meta = {
-  title: "Layout/Profile",
+  title: 'Layout/Profile',
   component: PSAProfile,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
@@ -15,7 +14,7 @@ export default meta;
 export const DefaultProfile = {
   args: {
     styles: {
-      backgroundColor: "grey",
+      backgroundColor: 'grey',
     },
   },
 };

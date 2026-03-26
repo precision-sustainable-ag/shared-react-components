@@ -1,46 +1,45 @@
-import React from "react";
-import PropTypes from "prop-types";
-import Highcharts from "../../utils/highchartsConfig";
-import HighchartsReact from "highcharts-react-official";
-import PSASubContainer from "../SubContainer";
+import HighchartsReact from 'highcharts-react-official';
+import PropTypes from 'prop-types';
+import Highcharts from '../../utils/highchartsConfig';
+import PSASubContainer from '../SubContainer';
 
 export const PSAPiechart = ({ chartData, label, donut = true }) => {
   const options = {
     chart: {
-      type: "pie",
+      type: 'pie',
       height: 200,
     },
     title: {
       text: undefined,
     },
     tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>',
     },
     accessibility: {
       point: {
-        valueSuffix: "%",
+        valueSuffix: '%',
       },
     },
     legend: {
       margin: -10,
       padding: 0,
-      layout: "vertical",
-      align: "right",
-      verticalAlign: "middle",
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
     },
     plotOptions: {
       pie: {
         allowPointSelect: true,
-        cursor: "pointer",
-        innerSize: donut ? "80%" : "0%",
+        cursor: 'pointer',
+        innerSize: donut ? '80%' : '0%',
         dataLabels: {
           enabled: true,
-          format: "{point.percentage:.1f}%",
+          format: '{point.percentage:.1f}%',
           connectorWidth: 0,
           distance: 0,
           style: {
-            fontSize: "14px",
-            fontWeight: "normal",
+            fontSize: '14px',
+            fontWeight: 'normal',
           },
         },
         showInLegend: true,
@@ -48,7 +47,7 @@ export const PSAPiechart = ({ chartData, label, donut = true }) => {
     },
     series: [
       {
-        name: "Share",
+        name: 'Share',
         colorByPoint: true,
         data: chartData.map((data) => ({
           name: data.name,
@@ -65,15 +64,15 @@ export const PSAPiechart = ({ chartData, label, donut = true }) => {
           },
           chartOptions: {
             legend: {
-              layout: "vertical",
-              align: "center",
-              verticalAlign: "bottom",
+              layout: 'vertical',
+              align: 'center',
+              verticalAlign: 'bottom',
               maxHeight: 60,
             },
             plotOptions: {
               pie: {
                 dataLabels: {
-                  format: "{point.percentage:.0f}%",
+                  format: '{point.percentage:.0f}%',
                 },
               },
             },
@@ -97,7 +96,7 @@ PSAPiechart.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.number,
-    })
+    }),
   ),
   /** Title of the chart */
   label: PropTypes.string,

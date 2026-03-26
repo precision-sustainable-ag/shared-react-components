@@ -1,19 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Typography, Grid } from "@mui/material";
-import PSATooltip from "../Tooltip";
+import { Grid, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import PSATooltip from '../Tooltip';
 
-export const PSAInfoSheetAttributeBox = ({
-  variant,
-  description,
-  label,
-  value,
-  sx,
-}) => {
-  const isText = variant === "texts";
+export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, sx }) => {
+  const isText = variant === 'texts';
 
   switch (variant) {
-    case "texts":
+    // case 'texts':
     default:
       return (
         <Grid
@@ -22,31 +15,31 @@ export const PSAInfoSheetAttributeBox = ({
           md={6}
           className="info-sheet-item"
           sx={{
-            wordWrap: "break-word",
-            padding: { xs: 0, md: "8px", lg: "8px 16px" },
+            wordWrap: 'break-word',
+            padding: { xs: 0, md: '8px', lg: '8px 16px' },
             ...sx,
           }}
         >
           <Grid
             container
             sx={{
-              display: "flex",
-              alignItems: isText ? "flex-start" : "center",
-              backgroundColor: "#F5F5F5",
-              borderTop: { xs: "1px solid #e6e3e3", md: "" },
-              borderRadius: { xs: "0 0 30px 30px", md: "30px" },
-              boxShadow: { xs: "", md: "0px 2px 4px rgba(0, 0, 0, 0.1)" },
-              padding: "6px 16px",
-              minHeight: "50px",
-              height: "100%",
+              display: 'flex',
+              alignItems: isText ? 'flex-start' : 'center',
+              backgroundColor: '#F5F5F5',
+              borderTop: { xs: '1px solid #e6e3e3', md: '' },
+              borderRadius: { xs: '0 0 30px 30px', md: '30px' },
+              boxShadow: { xs: '', md: '0px 2px 4px rgba(0, 0, 0, 0.1)' },
+              padding: '6px 16px',
+              minHeight: '50px',
+              height: '100%',
             }}
           >
             <Grid
               item
               xs={isText ? 12 : 6}
-              className={`attribute-label${isText ? "-text" : ""}`}
+              className={`attribute-label${isText ? '-text' : ''}`}
               sx={{
-                textAlign: isText ? "center" : "inherit",
+                textAlign: isText ? 'center' : 'inherit',
               }}
             >
               <PSATooltip
@@ -60,26 +53,18 @@ export const PSAInfoSheetAttributeBox = ({
                 }}
                 arrow
                 tooltipContent={
-                  <Typography
-                    sx={{ fontWeight: "bold" }}
-                    variant="body1"
-                    tabIndex="0"
-                  >
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
                     {label}
                   </Typography>
                 }
               />
             </Grid>
 
-            <Grid
-              item
-              xs={isText ? 12 : 6}
-              className={`attribute-value${isText ? "-text" : ""}`}
-            >
+            <Grid item xs={isText ? 12 : 6} className={`attribute-value${isText ? '-text' : ''}`}>
               <Typography
                 sx={{
-                  display: "block",
-                  textAlign: isText ? "center" : "right",
+                  display: 'block',
+                  textAlign: isText ? 'center' : 'right',
                 }}
               >
                 {value}
@@ -95,7 +80,7 @@ PSAInfoSheetAttributeBox.propTypes = {
   /**
    * State for controlling the open status of the Infosheet
    */
-  variant: PropTypes.oneOf(["texts", ""]),
+  variant: PropTypes.oneOf(['texts', '']),
 
   /**
    * Attribute description that will be shown in the tooltip
