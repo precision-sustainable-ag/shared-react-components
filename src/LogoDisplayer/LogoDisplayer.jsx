@@ -1,57 +1,45 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
+
+import mccc from '../assets/images/mwccc_logo.png';
+import mcccIcon from '../assets/favicons/mccc-favicon.ico';
+import neccc from '../assets/images/neccc_logo.png';
+import necccIcon from '../assets/favicons/neccc-favicon.ico';
+import psa from '../assets/images/PSA_logo.png';
+import psaIcon from '../assets/favicons/PSA-favicon.ico';
+import sccc from '../assets/images/sccc_logo.png';
+import scccIcon from '../assets/favicons/sccc-favicon.ico';
+import usda from '../assets/images/usda_logo.png';
+import usdaIcon from '../assets/favicons/usda-favicon.ico';
+import wccc from '../assets/images/wccc_logo.png';
+import wcccIcon from '../assets/favicons/wccc-favicon.ico';
 
 export const PSALogoDisplayer = ({ council, alt, style }) => {
-  const logoRef = useRef(null);
-  const faviconRef = useRef(document.getElementById('favicon'));
-
-  // useEffect to update favicon
-  useEffect(() => {
-    if (faviconRef.current) {
-      switch (council) {
-        case 'NECCC':
-          faviconRef.current.href = 'favicons/neccc-favicon.ico';
-          break;
-        case 'SCCC':
-          faviconRef.current.href = 'favicons/sccc-favicon.ico';
-          break;
-        case 'MCCC':
-          faviconRef.current.href = 'favicons/mccc-favicon.ico';
-          break;
-        case 'WCCC':
-          faviconRef.current.href = 'favicons/wccc-favicon.ico';
-          break;
-        default:
-          faviconRef.current.href = 'favicons/psa-favicon.ico';
-          break;
-      }
+  const { logo, favicon } = useMemo(() => {
+    switch (council) {
+      case 'NECCC':
+        return { logo: neccc, favicon: necccIcon };
+      case 'SCCC':
+        return { logo: sccc, favicon: scccIcon };
+      case 'MCCC':
+        return { logo: mccc, favicon: mcccIcon };
+      case 'WCCC':
+        return { logo: wccc, favicon: wcccIcon };
+      case 'USDA':
+        return { logo: usda, favicon: usdaIcon };
+      default:
+        return { logo: psa, favicon: psaIcon };
     }
   }, [council]);
 
-  // useEffect to update logo image
   useEffect(() => {
-    if (logoRef.current) {
-      switch (council) {
-        case 'NECCC':
-          logoRef.current.src = 'images/neccc_logo.png';
-          break;
-        case 'SCCC':
-          logoRef.current.src = 'images/sccc_logo.png';
-          break;
-        case 'MCCC':
-          logoRef.current.src = 'images/mwccc_logo.png';
-          break;
-        case 'WCCC':
-          logoRef.current.src = 'images/wccc_logo.png';
-          break;
-        default:
-          logoRef.current.src = 'images/PSA_logo.png';
-          break;
-      }
+    const faviconEl = document.getElementById('favicon');
+    if (faviconEl) {
+      faviconEl.href = favicon;
     }
-  }, [council]);
+  }, [favicon]);
 
-  return <img ref={logoRef} alt={alt} style={style} />;
+  return <img src={logo} alt={alt} style={style} />;
 };
 
 PSALogoDisplayer.propTypes = {
