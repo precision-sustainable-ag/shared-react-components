@@ -1,20 +1,21 @@
 import PropTypes from 'prop-types';
 import { useEffect, useMemo } from 'react';
 
-import mccc from '../assets/images/mwccc_logo.png';
 import mcccIcon from '../assets/favicons/mccc-favicon.ico';
-import neccc from '../assets/images/neccc_logo.png';
 import necccIcon from '../assets/favicons/neccc-favicon.ico';
-import psa from '../assets/images/PSA_logo.png';
 import psaIcon from '../assets/favicons/PSA-favicon.ico';
-import sccc from '../assets/images/sccc_logo.png';
 import scccIcon from '../assets/favicons/sccc-favicon.ico';
-import usda from '../assets/images/usda_logo.png';
 import usdaIcon from '../assets/favicons/usda-favicon.ico';
-import wccc from '../assets/images/wccc_logo.png';
 import wcccIcon from '../assets/favicons/wccc-favicon.ico';
 
-export const PSALogoDisplayer = ({ council, alt, style }) => {
+import mccc from '../assets/images/mwccc_logo.png';
+import neccc from '../assets/images/neccc_logo.png';
+import psa from '../assets/images/PSA_logo.png';
+import sccc from '../assets/images/sccc_logo.png';
+import usda from '../assets/images/usda_logo.png';
+import wccc from '../assets/images/wccc_logo.png';
+
+export const PSALogoDisplayer = ({ council, alt, style, onLoad }) => {
   const { logo, favicon } = useMemo(() => {
     switch (council) {
       case 'NECCC':
@@ -39,7 +40,7 @@ export const PSALogoDisplayer = ({ council, alt, style }) => {
     }
   }, [favicon]);
 
-  return <img src={logo} alt={alt} style={style} />;
+  return <img src={logo} alt={alt} style={style} onLoad={onLoad} role="presentation" />;
 };
 
 PSALogoDisplayer.propTypes = {

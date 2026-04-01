@@ -50,7 +50,7 @@ PSADropdown.propTypes = {
    */
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string,
+      label: PropTypes.node,
       value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }),
   ),

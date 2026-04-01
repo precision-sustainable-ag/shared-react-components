@@ -37,83 +37,43 @@ export const PSAHeader = ({
   onLogoClick,
   logoTitle,
   navContent = [],
-  aboutLink,
-  helpLink,
-  feedbackLink,
-  wizardLink,
-  releaseLink,
   loadHistory,
   getStore,
 }) => {
   const navigate = useNavigate();
-  if (!navContent) {
-    navContent = [];
 
-    if (aboutLink !== false) {
-      navContent.push(
-        aboutLink || {
-          type: 'button',
-          variant: 'text',
-          text: 'About',
-          icon: <InfoOutlined />,
-          rightIcon: true,
-          onClick: () => navigate('/About'),
-        },
-      );
+  const menu = (text, icon, path, item) => ({
+    type: 'button',
+    variant: 'text',
+    text,
+    rightIcon: true,
+    icon,
+    onClick: () => {
+      if (item?.dialog) {
+        setDialog(item.dialog);
+      } else {
+        navigate(path);
+      }
+    },
+  });
+
+  navContent = navContent.map((item) => {
+    if (item === 'About' || item.text === 'About') {
+      return menu('About', <InfoOutlined />, '/About', item);
+    } else if (item === 'Help' || item.text === 'Help') {
+      return menu('Help', <HelpOutline />, '/Help', item);
+    } else if (item === 'Feedback' || item.text === 'Feedback') {
+      return menu('Feedback', <ChatBubbleOutline />, '/Feedback', item);
+    } else if (item === 'Wizard' || item.text === 'Wizard') {
+      return menu('Wizard', <AutoFixHighOutlined />, '/Wizard', {
+        dialog: item.dialog || <PSAWizard />,
+      });
+    } else if (item === 'Notes' || item.text === 'Notes') {
+      return menu('Release Notes', <TextSnippetOutlined />, '/Notes', item);
     }
 
-    if (helpLink !== false) {
-      navContent.push(
-        helpLink || {
-          type: 'button',
-          variant: 'text',
-          text: 'Help',
-          icon: <HelpOutline />,
-          rightIcon: true,
-          onClick: () => navigate('/Help'),
-        },
-      );
-    }
-
-    if (feedbackLink !== false) {
-      navContent.push(
-        feedbackLink || {
-          type: 'button',
-          variant: 'text',
-          text: 'Feedback',
-          icon: <ChatBubbleOutline />,
-          rightIcon: true,
-          onClick: () => navigate('/Feedback'),
-        },
-      );
-    }
-
-    if (wizardLink !== false) {
-      navContent.push(
-        wizardLink || {
-          type: 'button',
-          variant: 'text',
-          text: 'Wizard',
-          icon: <AutoFixHighOutlined />,
-          rightIcon: true,
-          onClick: () => setDialog(<PSAWizard />),
-        },
-      );
-    }
-
-    if (releaseLink !== false) {
-      navContent.push(
-        releaseLink || {
-          type: 'button',
-          variant: 'text',
-          text: 'Release Notes',
-          icon: <TextSnippetOutlined />,
-          rightIcon: true,
-          onClick: () => navigate('/Notes'),
-        },
-      );
-    }
-  }
+    return item;
+  });
 
   const theme = useTheme();
   const mainRef = useRef(null);
@@ -144,6 +104,7 @@ export const PSAHeader = ({
     setCompact(false);
     setReady(false);
     setHeight(null);
+    setAnchor(null);
     breakWidthRef.current = 0;
   }, [title]);
 
@@ -164,6 +125,7 @@ export const PSAHeader = ({
     };
 
     compute();
+    setAnchor(null);
 
     window.addEventListener('resize', compute);
     return () => window.removeEventListener('resize', compute);
@@ -447,13 +409,4 @@ PSAHeader.propTypes = {
       component: PropTypes.node,
     }),
   ),
-
-  /**
-   * false = hide, object = custom item, otherwise default link
-   */
-  aboutLink: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  helpLink: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  feedbackLink: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  wizardLink: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  releaseLink: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
 };

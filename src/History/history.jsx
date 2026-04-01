@@ -74,7 +74,7 @@ export const PSAHistory = ({
   inMenu,
   setAnchor = () => {},
 }) => {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [histories, setHistories] = useState([]);
   const [label, setLabel] = useState('');
   const [id, setId] = useState('');
@@ -110,7 +110,6 @@ export const PSAHistory = ({
 
     if (firstTime && data.length) {
       const first = data[0];
-      console.log(first);
       loadHistory(first.json.history);
       setFirstTime(false);
       setLabel(first.label);
@@ -318,8 +317,7 @@ export const PSAHistory = ({
                   value: d.id,
                 }))}
                 formSx={{ mt: 1, minWidth: '12rem' }}
-                SelectProps={{ value: targetId }}
-                onChange={(e) => setTargetId(e.target.value)}
+                SelectProps={{ value: targetId, onChange: (e) => setTargetId(e.target.value) }}
               />
             ) : null}
             <FormControlLabel value="new" control={<Radio />} label="Save as new history" />
@@ -378,17 +376,18 @@ export const PSAHistory = ({
                 ml: 2,
                 mr: 2,
                 div: { p: '0.2rem !important' },
-                'div div div': { display: 'none !important' },
                 button: { display: 'none' },
                 '.date': { display: 'none' },
               }}
-              SelectProps={{ value: id }}
-              onChange={(e) => {
-                const selected = histories.find((d) => d.id === e.target.value);
-                loadHistory(selected.json.history);
-                setLabel(selected.label);
-                setId(selected.id);
-                setAnchor(null);
+              SelectProps={{
+                value: id,
+                onChange: (e) => {
+                  const selected = histories.find((d) => d.id === e.target.value);
+                  loadHistory(selected.json.history);
+                  setLabel(selected.label);
+                  setId(selected.id);
+                  setAnchor(null);
+                },
               }}
             />
           ) : null}
@@ -424,12 +423,14 @@ export const PSAHistory = ({
                 button: { display: 'none' },
                 '.date': { display: 'none' },
               }}
-              SelectProps={{ value: id }}
-              onChange={(e) => {
-                const selected = histories.find((d) => d.id === e.target.value);
-                loadHistory(selected.json.history);
-                setLabel(selected.label);
-                setId(selected.id);
+              SelectProps={{
+                value: id,
+                onChange: (e) => {
+                  const selected = histories.find((d) => d.id === e.target.value);
+                  loadHistory(selected.json.history);
+                  setLabel(selected.label);
+                  setId(selected.id);
+                },
               }}
             />
           ) : null}
@@ -439,20 +440,18 @@ export const PSAHistory = ({
           {isAuthenticated ? (
             <Box
               sx={{
-                img: { maxWidth: 30, maxHeight: 30 },
                 cursor: 'pointer',
-                'div div div': { display: 'none !important' },
-                // background: 'brown',
-                // width: 30,
-                // height: 30,
-                // borderRadius: '50%',
+                background: '#3B82F6',
+                width: 30,
+                height: 30,
+                borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
               onClick={() => setSaveOpenProfile(true)}
             >
-              <PSAProfile styles={{ m: 0 }} />
+              {user?.name?.[0]}
             </Box>
           ) : null}
         </Box>
