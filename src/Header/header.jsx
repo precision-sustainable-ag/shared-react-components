@@ -43,10 +43,7 @@ export const PSAHeader = ({
   const navigate = useNavigate();
 
   const menu = (text, icon, path, item) => ({
-    type: 'button',
-    variant: 'text',
     text,
-    rightIcon: true,
     icon,
     onClick: () => {
       if (item?.dialog) {
@@ -57,7 +54,7 @@ export const PSAHeader = ({
     },
   });
 
-  navContent = navContent.map((item) => {
+  const items = navContent.map((item) => {
     if (item === 'About' || item.text === 'About') {
       return menu('About', <InfoOutlined />, '/About', item);
     } else if (item === 'Help' || item.text === 'Help') {
@@ -184,21 +181,21 @@ export const PSAHeader = ({
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
       {loadHistory && <PSAHistory loadHistory={loadHistory} getStore={getStore} />}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {navContent.map((item) => (
+        {items.map((item) => (
           <Fragment key={item.text}>
-            {item.type === 'button' ? (
+            {item.component ? (
+              item.component
+            ) : (
               <PSAFigmaButton
-                variant={item.variant}
+                variant={item.variant ?? 'text'}
                 icon={item.icon}
-                rightIcon={item.rightIcon}
+                rightIcon={item.rightIcon ?? true}
                 text={item.text}
                 onClick={item.onClick}
                 buttonSx={item.buttonSx}
-                textSx={{ ...item.textSx, fontSize: '1rem' }}
+                textSx={{ fontSize: '1rem', ...item.textSx }}
                 data-test={`navbar-${item.text}`}
               />
-            ) : (
-              item.component
             )}
           </Fragment>
         ))}
@@ -331,10 +328,10 @@ export const PSAHeader = ({
                   />
                 )}
 
-                {navContent?.map((item) => (
+                {items?.map((item) => (
                   <MenuItem
                     onClick={() => {
-                      if (item.type === 'button') {
+                      if (!item.component) {
                         item.onClick();
                         setAnchor(null);
                       }
@@ -342,8 +339,9 @@ export const PSAHeader = ({
                     key={item.text}
                     data-test={`navbar-${item.text}`}
                   >
-                    {/* if type is button, return text menuItem, else return component directly */}
-                    {item.type === 'button' ? (
+                    {item.component ? (
+                      item.component
+                    ) : (
                       <Typography
                         sx={{
                           fontSize: '0.875rem',
@@ -353,8 +351,6 @@ export const PSAHeader = ({
                       >
                         {item.text}
                       </Typography>
-                    ) : (
-                      item.component
                     )}
                   </MenuItem>
                 ))}
@@ -393,20 +389,24 @@ PSAHeader.propTypes = {
    */
   logoTitle: PropTypes.string,
   /**
-   * Content of the navbar, this should be a list of components with type property `type="button"` or `type="component"`.
+   * Navigation items for the header
    */
   navContent: PropTypes.arrayOf(
     PropTypes.shape({
-      type: PropTypes.oneOf(['button', 'component']),
-      variant: PropTypes.oneOf(['standard', 'color', 'text']),
-      icon: PropTypes.node,
-      rightIcon: PropTypes.bool,
-      leftIcon: PropTypes.bool,
       text: PropTypes.string,
+      icon: PropTypes.node,
+      onClick: PropTypes.func,
       props: PropTypes.object,
       buttonSx: PropTypes.object,
       textSx: PropTypes.object,
       component: PropTypes.node,
+      dialog: PropTypes.node,
+
+      /**
+       * Optional overrides.
+       */
+      variant: PropTypes.oneOf(['standard', 'color', 'text']),
+      rightIcon: PropTypes.bool,
     }),
   ),
 };
