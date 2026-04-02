@@ -236,24 +236,27 @@ const ReduxMap = ({
 
   // Sync features with drawing tool
   useEffect(() => {
-    if (drawerRef.current && features?.length) {
+    if (drawerRef.current) {
       try {
         drawerRef.current?.deleteAll?.();
 
-        if (Array.isArray(features[0])) {
-          features.forEach((f) => {
-            drawerRef.current.add({
-              type: 'FeatureCollection',
-              f,
+        if (features && features.length > 0) {
+          if (Array.isArray(features[0])) {
+            features.forEach((f) => {
+              drawerRef.current.add({
+                type: 'FeatureCollection',
+                f,
+              });
             });
-          });
-        } else {
-          features.forEach((feature) => {
-            drawerRef.current.add(feature);
-          });
-        }
-
-        setPolygonArea(calcArea(features));
+          } else {
+            features.forEach((feature) => {
+              drawerRef.current.add(feature);
+            });
+          }
+          setPolygonArea(calcArea(features));
+      } else {
+        setPolygonArea(0);
+      }
       } catch {
         // Silently handle failures (happens when importing shapefile without setter)
       }
