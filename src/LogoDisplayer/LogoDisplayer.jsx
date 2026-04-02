@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 
 import mcccIcon from '../assets/favicons/mccc-favicon.ico';
 import necccIcon from '../assets/favicons/neccc-favicon.ico';
-import psaIcon from '../assets/favicons/PSA-favicon.ico';
+import psaIcon from '../assets/favicons/psa-favicon.ico';
 import scccIcon from '../assets/favicons/sccc-favicon.ico';
 import usdaIcon from '../assets/favicons/usda-favicon.ico';
 import wcccIcon from '../assets/favicons/wccc-favicon.ico';
