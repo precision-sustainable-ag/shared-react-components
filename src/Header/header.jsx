@@ -31,7 +31,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
 import PSALogoDisplayer from '../LogoDisplayer';
@@ -47,7 +47,6 @@ export const PSAHeader = ({
   loadHistory,
   getStore,
 }) => {
-  const navigate = useNavigate();
   const theme = useTheme();
 
   const menu = (text, icon, path, item) => ({
@@ -57,7 +56,8 @@ export const PSAHeader = ({
       if (item?.dialog) {
         setDialog(item.dialog);
       } else {
-        navigate(path);
+        window.history.pushState({}, '', path);
+        window.dispatchEvent(new PopStateEvent('popstate'));
       }
     },
   });
