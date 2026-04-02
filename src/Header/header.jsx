@@ -11,6 +11,7 @@ import {
 import {
   Box,
   Button,
+  ClickAwayListener,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -366,27 +367,31 @@ export const PSAHeader = ({
             ml: 'auto',
           }}
         >
-          {compact && (
-            <Button
-              onClick={(e) => setAnchor(anchor ? null : e.currentTarget)}
-              data-test="open_menu"
-            >
-              <MenuIcon style={{ color: theme.palette.main.accent1 }} />
-            </Button>
-          )}
+          <ClickAwayListener onClickAway={() => setAnchor(null)}>
+            <Box sx={{ position: 'relative' }}>
+              {compact && (
+                <Button
+                  onClick={(e) => setAnchor(anchor ? null : e.currentTarget)}
+                  data-test="open_menu"
+                >
+                  <MenuIcon style={{ color: theme.palette.main.accent1 }} />
+                </Button>
+              )}
 
-          <Box
-            sx={{
-              display: compact ? (open ? 'block' : 'none') : 'block',
-              position: compact ? 'absolute' : 'static',
-              top: compact ? '100%' : 'auto',
-              right: compact ? 0 : 'auto',
-              mt: compact ? 1 : 0,
-              zIndex: compact ? 1300 : 'auto',
-            }}
-          >
-            {navPanel}
-          </Box>
+              <Box
+                sx={{
+                  display: compact ? (open ? 'block' : 'none') : 'block',
+                  position: compact ? 'absolute' : 'static',
+                  top: compact ? '100%' : 'auto',
+                  right: compact ? 0 : 'auto',
+                  mt: compact ? 1 : 0,
+                  zIndex: compact ? 1300 : 'auto',
+                }}
+              >
+                {navPanel}
+              </Box>
+            </Box>
+          </ClickAwayListener>
         </Grid2>
       </Grid2>
     </>
