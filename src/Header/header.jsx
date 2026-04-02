@@ -16,14 +16,20 @@ import {
   DialogTitle,
   Grid2,
   IconButton,
-  Menu,
-  MenuItem,
   Typography,
   useTheme,
 } from '@mui/material';
 
 import PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  Fragment,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
@@ -41,6 +47,7 @@ export const PSAHeader = ({
   getStore,
 }) => {
   const navigate = useNavigate();
+  const theme = useTheme();
 
   const menu = (text, icon, path, item) => ({
     text,
@@ -56,23 +63,22 @@ export const PSAHeader = ({
 
   const items = navContent.map((item) => {
     if (item === 'About' || item.text === 'About') {
-      return menu('About', <InfoOutlined />, '/About', item);
+      return menu('About', item.icon ?? <InfoOutlined />, '/About', item);
     } else if (item === 'Help' || item.text === 'Help') {
-      return menu('Help', <HelpOutline />, '/Help', item);
+      return menu('Help', item.icon ?? <HelpOutline />, '/Help', item);
     } else if (item === 'Feedback' || item.text === 'Feedback') {
-      return menu('Feedback', <ChatBubbleOutline />, '/Feedback', item);
+      return menu('Feedback', item.icon ?? <ChatBubbleOutline />, '/Feedback', item);
     } else if (item === 'Wizard' || item.text === 'Wizard') {
-      return menu('Wizard', <AutoFixHighOutlined />, '/Wizard', {
+      return menu('Wizard', item.icon ?? <AutoFixHighOutlined />, '/Wizard', {
         dialog: item.dialog || <PSAWizard />,
       });
     } else if (item === 'Notes' || item.text === 'Notes') {
-      return menu('Release Notes', <TextSnippetOutlined />, '/Notes', item);
+      return menu('Release Notes', item.icon ?? <TextSnippetOutlined />, '/Notes', item);
     }
 
     return item;
   });
 
-  const theme = useTheme();
   const mainRef = useRef(null);
   const leftRef = useRef(null);
   const rightRef = useRef(null);
@@ -115,10 +121,9 @@ export const PSAHeader = ({
 
     const compute = () => {
       const { nw, nh } = natural;
-
       const scale = Math.sqrt((window.innerWidth ** 0.9 * 20) / (nw * nh));
-      const height = Math.max(50, Math.min(nh * scale, 70));
-      setHeight(height);
+      const newHeight = Math.max(50, Math.min(nh * scale, 70));
+      setHeight(newHeight);
     };
 
     compute();
@@ -152,9 +157,9 @@ export const PSAHeader = ({
 
     const ro = new ResizeObserver(checkOverlap);
 
-    ro.observe(leftRef.current);
-    ro.observe(rightRef.current);
-    ro.observe(leftRef.current.parentElement);
+    ro.observe(leftEl);
+    ro.observe(rightEl);
+    ro.observe(parentEl);
 
     const handleImageLoad = () => {
       requestAnimationFrame(() => {
@@ -177,29 +182,77 @@ export const PSAHeader = ({
     };
   }, [checkOverlap]);
 
-  const fullNav = (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 1 }}>
-      {loadHistory && <PSAHistory loadHistory={loadHistory} getStore={getStore} />}
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        {items.map((item) => (
-          <Fragment key={item.text}>
-            {item.component ? (
-              item.component
-            ) : (
-              <PSAFigmaButton
-                variant={item.variant ?? 'text'}
-                icon={item.icon}
-                rightIcon={item.rightIcon ?? true}
-                text={item.text}
-                onClick={item.onClick}
-                buttonSx={item.buttonSx}
-                textSx={{ fontSize: '1rem', ...item.textSx }}
-                data-test={`navbar-${item.text}`}
-              />
-            )}
-          </Fragment>
-        ))}
-      </Box>
+  const navButtons = (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: compact ? 'column' : 'row',
+        alignItems: compact ? 'stretch' : 'center',
+        gap: compact ? 0.5 : 0,
+      }}
+    >
+      {items.map((item) => (
+        <Fragment key={item.key ?? item.text}>
+          {isValidElement(item) ? (
+            item
+          ) : item.component ? (
+            item.component
+          ) : (
+            <PSAFigmaButton
+              variant={item.variant ?? 'text'}
+              icon={item.icon}
+              rightIcon={item.rightIcon ?? true}
+              leftIcon={!(item.rightIcon ?? true)}
+              text={item.text}
+              onClick={() => {
+                item.onClick?.();
+                if (compact) setAnchor(null);
+              }}
+              buttonSx={{
+                justifyContent: compact ? 'flex-start' : undefined,
+                width: compact ? '100%' : undefined,
+                ...item.buttonSx,
+              }}
+              textSx={{
+                fontSize: compact ? '0.9rem' : '1rem',
+                fontWeight: compact ? 'bold' : '',
+                textDecoration: compact ? 'none !important' : '',
+                ...item.textSx,
+              }}
+              data-test={`navbar-${item.text}`}
+            />
+          )}
+        </Fragment>
+      ))}
+    </Box>
+  );
+
+  const navPanel = (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: compact ? 'stretch' : 'flex-end',
+        gap: 1,
+        p: compact ? 1.5 : 0,
+        minWidth: compact ? 220 : 'auto',
+        backgroundColor: compact ? 'background.paper' : 'transparent',
+        boxShadow: compact ? 3 : 'none',
+        borderRadius: compact ? 1 : 0,
+      }}
+    >
+      {loadHistory ? (
+        <Box sx={{ order: compact ? 999 : 0 }}>
+          <PSAHistory
+            loadHistory={loadHistory}
+            getStore={getStore}
+            compact={compact}
+            setAnchor={setAnchor}
+          />
+        </Box>
+      ) : null}
+
+      {navButtons}
     </Box>
   );
 
@@ -221,6 +274,7 @@ export const PSAHeader = ({
         </DialogTitle>
         <DialogContent>{dialog}</DialogContent>
       </Dialog>
+
       <Grid2
         ref={mainRef}
         container
@@ -237,7 +291,6 @@ export const PSAHeader = ({
             display: 'flex',
             alignItems: 'center',
             minWidth: 0,
-            // outline: '1px solid red',
           }}
         >
           {council ? (
@@ -306,59 +359,34 @@ export const PSAHeader = ({
         <Grid2
           ref={rightRef}
           sx={{
+            position: 'relative',
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             flexShrink: 0,
             ml: 'auto',
-            // outline: '1px solid blue',
           }}
         >
-          {compact ? (
-            <>
-              <Button onClick={(e) => setAnchor(e.currentTarget)} data-test="open_menu">
-                <MenuIcon style={{ color: theme.palette.main.accent1 }} />
-              </Button>
-              <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)}>
-                {loadHistory && (
-                  <PSAHistory
-                    loadHistory={loadHistory}
-                    getStore={getStore}
-                    inMenu
-                    setAnchor={setAnchor}
-                  />
-                )}
-
-                {items?.map((item) => (
-                  <MenuItem
-                    onClick={() => {
-                      if (!item.component) {
-                        item.onClick();
-                        setAnchor(null);
-                      }
-                    }}
-                    key={item.text}
-                    data-test={`navbar-${item.text}`}
-                  >
-                    {item.component ? (
-                      item.component
-                    ) : (
-                      <Typography
-                        sx={{
-                          fontSize: '0.875rem',
-                          fontWeight: 'bold',
-                          color: 'main.text',
-                        }}
-                      >
-                        {item.text}
-                      </Typography>
-                    )}
-                  </MenuItem>
-                ))}
-              </Menu>
-            </>
-          ) : (
-            fullNav
+          {compact && (
+            <Button
+              onClick={(e) => setAnchor(anchor ? null : e.currentTarget)}
+              data-test="open_menu"
+            >
+              <MenuIcon style={{ color: theme.palette.main.accent1 }} />
+            </Button>
           )}
+
+          <Box
+            sx={{
+              display: compact ? (open ? 'block' : 'none') : 'block',
+              position: compact ? 'absolute' : 'static',
+              top: compact ? '100%' : 'auto',
+              right: compact ? 0 : 'auto',
+              mt: compact ? 1 : 0,
+              zIndex: compact ? 1300 : 'auto',
+            }}
+          >
+            {navPanel}
+          </Box>
         </Grid2>
       </Grid2>
     </>
@@ -409,4 +437,6 @@ PSAHeader.propTypes = {
       rightIcon: PropTypes.bool,
     }),
   ),
+  loadHistory: PropTypes.func,
+  getStore: PropTypes.func,
 };

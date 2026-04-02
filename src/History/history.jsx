@@ -9,10 +9,10 @@ import {
   DialogTitle,
   FormControlLabel,
   IconButton,
-  MenuItem,
   Radio,
   RadioGroup,
   TextField,
+  useTheme,
 } from '@mui/material';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PSAAuthButton from '../Authbutton';
@@ -71,9 +71,10 @@ export const PSAHistory = ({
   loadHistory = () => {},
   getStore = () => {},
   sx = {},
-  inMenu,
+  compact = false,
   setAnchor = () => {},
 }) => {
+  const theme = useTheme();
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [histories, setHistories] = useState([]);
   const [label, setLabel] = useState('');
@@ -138,7 +139,7 @@ export const PSAHistory = ({
     };
 
     return await (await fetch(url, config)).json();
-  }; // createHistory
+  };
 
   const updateHistory = async (saveId, saveLabel) => {
     const token = await getAccessTokenSilently();
@@ -158,7 +159,7 @@ export const PSAHistory = ({
     };
 
     return await (await fetch(url, config)).json();
-  }; // updateHistory
+  };
 
   const deleteHistory = async (deleteId) => {
     const token = await getAccessTokenSilently();
@@ -172,7 +173,8 @@ export const PSAHistory = ({
       },
     };
 
-    const results = await (await fetch(url, config)).json();
+    await fetch(url, config);
+
     const remaining = histories.filter((history) => history.id !== deleteId);
     setHistories(remaining);
 
@@ -190,9 +192,7 @@ export const PSAHistory = ({
         setNewLabel('');
       }
     }
-
-    console.log(results);
-  }; // deleteHistory
+  };
 
   useEffect(() => {
     getHistories();
@@ -244,25 +244,19 @@ export const PSAHistory = ({
     let savedLabel = label;
 
     if (saveMode === 'overwriteCurrent') {
-      if (!id) {
-        return;
-      }
+      if (!id) return;
       await updateHistory(id, label);
       savedId = id;
       savedLabel = label;
     } else if (saveMode === 'overwriteExisting') {
       const selected = histories.find((d) => d.id === targetId);
-      if (!selected) {
-        return;
-      }
+      if (!selected) return;
       await updateHistory(selected.id, selected.label);
       savedId = selected.id;
       savedLabel = selected.label;
     } else if (saveMode === 'new') {
       const trimmed = newLabel.trim();
-      if (!trimmed) {
-        return;
-      }
+      if (!trimmed) return;
 
       await createHistory(trimmed);
       savedLabel = trimmed;
@@ -302,6 +296,7 @@ export const PSAHistory = ({
                 label={`Overwrite current${label ? ` (${label})` : ''}`}
               />
             ) : null}
+
             {histories.length > 1 ? (
               <FormControlLabel
                 value="overwriteExisting"
@@ -309,6 +304,7 @@ export const PSAHistory = ({
                 label="Overwrite different saved history"
               />
             ) : null}
+
             {saveMode === 'overwriteExisting' ? (
               <PSADropdown
                 label="Replace"
@@ -320,6 +316,7 @@ export const PSAHistory = ({
                 SelectProps={{ value: targetId, onChange: (e) => setTargetId(e.target.value) }}
               />
             ) : null}
+
             <FormControlLabel value="new" control={<Radio />} label="Save as new history" />
           </RadioGroup>
 
@@ -342,6 +339,7 @@ export const PSAHistory = ({
           </Button>
         </DialogActions>
       </Dialog>
+
       <Dialog open={saveOpenProfile} onClose={() => setSaveOpenProfile(false)} fullWidth>
         <DialogContent>
           <PSAProfile />
@@ -351,93 +349,87 @@ export const PSAHistory = ({
         </DialogActions>
       </Dialog>
 
-      {inMenu ? (
-        <>
-          <ConfirmDialog />
-          <MenuItem>
-            <PSAAuthButton />
-          </MenuItem>
-          {isAuthenticated && (
-            <MenuItem
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: compact ? 'column' : 'row',
+          alignItems: compact ? 'stretch' : 'center',
+          gap: 1,
+          minWidth: compact ? 200 : 'auto',
+          height: compact ? 'auto' : 30,
+          ...sx,
+        }}
+      >
+        <ConfirmDialog />
+        {histories.length ? (
+          <PSADropdown
+            label={compact ? undefined : 'Saved'}
+            items={items}
+            formSx={{
+              width: compact ? '100%' : '8rem',
+              minWidth: compact ? '100%' : '8rem',
+              div: { p: '0.2rem !important' },
+              button: { display: 'none' },
+              '.date': { display: 'none' },
+              pl: compact ? 0.8 : undefined,
+              pr: compact ? 0.8 : undefined,
+            }}
+            SelectProps={{
+              value: id,
+              onChange: (e) => {
+                const selected = histories.find((d) => d.id === e.target.value);
+                if (!selected) return;
+                loadHistory(selected.json.history);
+                setLabel(selected.label);
+                setId(selected.id);
+                if (compact) setAnchor(null);
+              },
+            }}
+          />
+        ) : null}
+        {isAuthenticated ? (
+          <Button
+            sx={{
+              fontFamily: 'IBM Plex Sans',
+              fontSize: compact ? '0.9rem' : '1rem',
+              fontWeight: compact ? 'bold' : '',
+              borderRadius: '8px',
+              pt: 0,
+              pb: 0,
+              justifyContent: compact ? 'flex-start' : 'center',
+              textTransform: compact ? 'none' : 'uppercase',
+              color: compact ? theme.palette.additional.greydark : '',
+            }}
+            variant={compact ? 'text' : 'contained'}
+            endIcon={<Save />}
+            onClick={openSaveDialog}
+            fullWidth={compact}
+          >
+            Save
+          </Button>
+        ) : null}
+        {isAuthenticated ? (
+          compact ? (
+            <Button
               onClick={() => {
                 setSaveOpenProfile(true);
+                setAnchor(null);
               }}
-            >
-              Profile
-            </MenuItem>
-          )}
-          {isAuthenticated && <MenuItem onClick={openSaveDialog}>Save</MenuItem>}
-
-          {histories.length ? (
-            <PSADropdown
-              items={items}
-              formSx={{
-                width: '10rem',
-                ml: 2,
-                mr: 2,
-                div: { p: '0.2rem !important' },
-                button: { display: 'none' },
-                '.date': { display: 'none' },
-              }}
-              SelectProps={{
-                value: id,
-                onChange: (e) => {
-                  const selected = histories.find((d) => d.id === e.target.value);
-                  loadHistory(selected.json.history);
-                  setLabel(selected.label);
-                  setId(selected.id);
-                  setAnchor(null);
-                },
-              }}
-            />
-          ) : null}
-        </>
-      ) : (
-        <Box sx={{ display: 'flex', height: 30, gap: 1, ...sx }}>
-          <ConfirmDialog />
-          {isAuthenticated ? (
-            <Button
+              fullWidth
               sx={{
+                justifyContent: 'flex-start',
+                color: theme.palette.additional.greydark,
+                textTransform: 'none',
                 fontFamily: 'IBM Plex Sans',
-                fontSize: '1rem',
-                borderRadius: '8px',
+                fontSize: compact ? '0.9rem' : '1rem',
+                fontWeight: compact ? 'bold' : '',
                 pt: 0,
                 pb: 0,
               }}
-              variant="contained"
-              endIcon={<Save />}
-              onClick={openSaveDialog}
             >
-              Save
+              Profile
             </Button>
-          ) : null}
-
-          {histories.length ? (
-            <PSADropdown
-              label="Saved"
-              items={items}
-              formSx={{
-                width: '8rem',
-                minWidth: '8rem',
-                div: { p: '0.2rem !important' },
-                button: { display: 'none' },
-                '.date': { display: 'none' },
-              }}
-              SelectProps={{
-                value: id,
-                onChange: (e) => {
-                  const selected = histories.find((d) => d.id === e.target.value);
-                  loadHistory(selected.json.history);
-                  setLabel(selected.label);
-                  setId(selected.id);
-                },
-              }}
-            />
-          ) : null}
-
-          <PSAAuthButton />
-
-          {isAuthenticated ? (
+          ) : (
             <Box
               sx={{
                 cursor: 'pointer',
@@ -453,9 +445,12 @@ export const PSAHistory = ({
             >
               {user?.name?.[0]}
             </Box>
-          ) : null}
+          )
+        ) : null}
+        <Box sx={{ order: 999 }}>
+          <PSAAuthButton />
         </Box>
-      )}
+      </Box>
     </>
   );
-}; // PSAHistory
+};
