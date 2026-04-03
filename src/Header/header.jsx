@@ -52,6 +52,8 @@ export const PSAHeader = ({
 }) => {
   const theme = useTheme();
 
+  const showHistory = !!loadHistory;
+
   const menu = (text, icon, path, item) => ({
     text,
     icon,
@@ -204,7 +206,7 @@ export const PSAHeader = ({
         display: 'flex',
         flexDirection: compact ? 'column' : 'row',
         alignItems: compact ? 'stretch' : 'center',
-        gap: compact ? 0.5 : 0,
+        gap: 0.5,
       }}
     >
       {items.map((item) => (
@@ -248,7 +250,9 @@ export const PSAHeader = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: compact ? 'stretch' : 'flex-end',
+        alignItems: compact ? 'stretch' : 'center',
+        justifyContent: compact ? 'flex-start' : showHistory ? 'flex-start' : 'center',
+        flex: compact ? '0 0 auto' : '1 1 auto',
         gap: 1,
         p: compact ? 1.5 : 0,
         minWidth: compact ? 220 : 'auto',
@@ -257,8 +261,8 @@ export const PSAHeader = ({
         borderRadius: compact ? 1 : 0,
       }}
     >
-      {loadHistory ? (
-        <Box sx={{ order: compact ? 999 : 0 }}>
+      {showHistory ? (
+        <Box sx={{ order: compact ? 999 : 0, alignSelf: 'flex-end' }}>
           <PSAHistory
             loadHistory={loadHistory}
             getStore={getStore}
@@ -294,7 +298,7 @@ export const PSAHeader = ({
       <Grid2
         ref={mainRef}
         container
-        alignItems="flex-start"
+        alignItems="stretch"
         wrap="nowrap"
         sx={{
           visibility: ready ? 'visible' : 'hidden',
@@ -377,13 +381,21 @@ export const PSAHeader = ({
           sx={{
             position: 'relative',
             display: 'flex',
-            alignItems: 'flex-start',
+            alignItems: 'stretch',
             flexShrink: 0,
             ml: 'auto',
+            zIndex: compact ? 1300 : 'auto',
           }}
         >
           <ClickAwayListener onClickAway={() => setAnchor(null)}>
-            <Box sx={{ position: 'relative' }}>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'stretch',
+                height: '100%',
+              }}
+            >
               {compact && (
                 <Button
                   onClick={(e) => setAnchor(anchor ? null : e.currentTarget)}
@@ -392,15 +404,14 @@ export const PSAHeader = ({
                   <MenuIcon style={{ color: theme.palette.main.accent1 }} />
                 </Button>
               )}
-
               <Box
                 sx={{
-                  display: compact ? (open ? 'block' : 'none') : 'block',
+                  display: compact ? (open ? 'block' : 'none') : 'flex',
                   position: compact ? 'absolute' : 'static',
                   top: compact ? '100%' : 'auto',
                   right: compact ? 0 : 'auto',
                   mt: compact ? 1 : 0,
-                  zIndex: compact ? 1300 : 'auto',
+                  alignItems: 'stretch',
                 }}
               >
                 {navPanel}
