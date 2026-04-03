@@ -15,11 +15,12 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  Grid2,
   IconButton,
   Typography,
   useTheme,
 } from '@mui/material';
+
+import Grid2 from '@mui/material/Unstable_Grid2';
 
 import PropTypes from 'prop-types';
 import {
@@ -40,7 +41,7 @@ import { PSAWizard } from '../Wizard';
 export const PSAHeader = ({
   title,
   subtitle,
-  council,
+  council = 'PSA',
   onLogoClick,
   logoTitle,
   navContent = [],
