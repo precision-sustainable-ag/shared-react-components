@@ -8,6 +8,10 @@ import {
   TextSnippetOutlined,
 } from '@mui/icons-material';
 
+import * as MUI from '@mui/material';
+
+const Grid2 = MUI.Grid2 || MUI.Unstable_Grid2;
+
 import {
   Box,
   Button,
@@ -19,8 +23,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-
-import Grid2 from '@mui/material/Unstable_Grid2';
 
 import PropTypes from 'prop-types';
 import {
