@@ -104,6 +104,18 @@ export const PSAHeader = ({
   );
 
   useEffect(() => {
+    if (!compact || !open) return;
+    const handleKey = (e) => {
+      if (e.key === 'Escape') {
+        setAnchor(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [compact, open]);
+
+  useEffect(() => {
     void title;
     setCompact(false);
     setReady(false);
