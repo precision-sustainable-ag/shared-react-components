@@ -43,7 +43,7 @@ import { PSAWizard } from '../Wizard';
 export const PSAHeader = ({
   title,
   subtitle,
-  council = 'PSA',
+  council,
   onLogoClick,
   logoTitle,
   navContent = [],
@@ -51,6 +51,7 @@ export const PSAHeader = ({
   getStore,
 }) => {
   const theme = useTheme();
+  council = council || 'PSA';
 
   const showHistory = !!loadHistory;
 
