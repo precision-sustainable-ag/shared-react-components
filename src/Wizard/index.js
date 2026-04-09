@@ -1,2 +1,2 @@
-import { PSAWizard } from "./wizard"; 
+import { PSAWizard } from './wizard';
 export { PSAWizard };

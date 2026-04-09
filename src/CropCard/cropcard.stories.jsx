@@ -1,28 +1,23 @@
-import React from "react";
-import { PSACropCard } from "./cropcard"; 
-import { Typography } from "@mui/material";
+import { Typography } from '@mui/material';
+import { PSACropCard } from './cropcard';
 
 const meta = {
   title: 'Layout/CropCard',
   component: PSACropCard,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
 export default meta;
-
-export const DefaultCropCard = {
-  args: {}
-};
 
 const sharedConeflowerArgs = {
   species: 'Pinnate prairie coneflower',
   scientific: 'Ratibida pinnata',
   cultivar: 'Sunglow',
   content: (
-    <div style={{ padding: '0 0.5rem'}}>
+    <div style={{ padding: '0 0.5rem' }}>
       Forb/wildflowers, Legumes
       <br />
       Perennial
@@ -30,10 +25,13 @@ const sharedConeflowerArgs = {
       Native
     </div>
   ),
-  details: <Typography>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>,
+  details: (
+    <Typography>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>
+  ),
   thumbnail: 'https://plants.sc.egov.usda.gov/ImageLibrary/standard/rapi_004_shp.jpg',
   fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/rapi_004_lhp.jpg',
-  credits: '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
+  credits:
+    '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
   creditsSimple: '© Thomas G. Barnes',
   // externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/RAPI',
   externalLinkText: 'RAPI',
@@ -41,26 +39,26 @@ const sharedConeflowerArgs = {
   title: 'Pinnate prairie coneflower',
 };
 
-export const ConeflowerExample = { 
+export const ConeflowerExample = {
   args: {
     ...sharedConeflowerArgs,
     onSelect: () => alert('Adding to list'),
-  }
+  },
 };
 
-export const ConeflowerSelectedExample = { 
+export const ConeflowerSelectedExample = {
   args: {
     ...sharedConeflowerArgs,
     selected: true,
     onRemove: () => alert('Removing from list'),
-  }
+  },
 };
 
 const sharedAppalachianBlazingStarArgs = {
   species: 'Appalachian blazing star',
   scientific: 'Liatris squarrulosa',
   content: (
-    <div style={{ padding: '0 0.5rem'}}>
+    <div style={{ padding: '0 0.5rem' }}>
       Forb/wildflowers
       <br />
       Perennial
@@ -68,10 +66,13 @@ const sharedAppalachianBlazingStarArgs = {
       Native
     </div>
   ),
-  details: <Typography>Everything you ever wanted to know about Appalachian blazing star</Typography>,
+  details: (
+    <Typography>Everything you ever wanted to know about Appalachian blazing star</Typography>
+  ),
   thumbnail: 'https://plants.sc.egov.usda.gov/ImageLibrary/standard/lisq2_001_svp.jpg',
   fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/lisq2_001_lvp.jpg',
-  credits: '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
+  credits:
+    '© Thomas G. Barnes. Barnes, T.G., and S.W. Francis. 2004, Wildflowers and ferns of Kentucky',
   creditsSimple: '© Thomas G. Barnes',
   externalLink: 'https://plants.sc.egov.usda.gov/plant-profile/LISQ2',
   externalLinkText: 'LISQ2',
@@ -98,4 +99,8 @@ export const AppalachianBlazingStarInDetailsExample = {
     ...sharedAppalachianBlazingStarArgs,
     inDetails: true,
   },
+};
+
+export const DefaultCropCard = {
+  args: {},
 };

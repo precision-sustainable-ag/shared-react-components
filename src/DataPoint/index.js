@@ -1,2 +1,2 @@
-import { PSADataPoint } from "./dataPoint"; 
+import { PSADataPoint } from './dataPoint';
 export default PSADataPoint;

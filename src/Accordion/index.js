@@ -1,2 +1,2 @@
-import { PSAAccordion } from "./accordion"; 
+import { PSAAccordion } from './accordion';
 export default PSAAccordion;

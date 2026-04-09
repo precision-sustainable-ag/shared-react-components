@@ -1,15 +1,11 @@
-import axios from "axios";
-import { wktToGeoJSON } from "@terraformer/wkt";
-import { fieldIconString } from "../../assets/icons/FieldIcon";
-import { CustomControl } from "./CustomControl";
+import { wktToGeoJSON } from '@terraformer/wkt';
+import axios from 'axios';
+import { fieldIconString } from '../../assets/icons/FieldIcon';
+import { CustomControl } from './CustomControl';
 
 export class CropSequenceBoundary extends CustomControl {
   constructor(mapRef, drawerRef, locationRef, featuresRef, updateFeatures) {
-    super(
-      () => this.findFields(),
-      "Search for a Field Boundary",
-      fieldIconString
-    );
+    super(() => this.findFields(), 'Search for a Field Boundary', fieldIconString);
 
     this.mapRef = mapRef;
     this.drawerRef = drawerRef;
@@ -19,25 +15,25 @@ export class CropSequenceBoundary extends CustomControl {
   }
 
   showNoFieldModal() {
-    const modal = document.getElementById("NoFieldFound");
+    const modal = document.getElementById('NoFieldFound');
     if (modal) modal.showModal();
   }
 
   findFields() {
-
     const { lat, lon } = this.locationRef.current;
 
     axios
-      .get("https://polygons.vegspec.org/csb", {
+      .get('https://polygons.vegspec.org/csb', {
         params: { lat, lon },
       })
       .then((response) => {
         if (response.data && response.data.polygon) {
-
           const features = this.featuresRef.current;
 
           if (features && features.length > 0) {
-            const userConfirmed = window.confirm("A boundary already exists on the map. Do you want to replace it?");
+            const userConfirmed = window.confirm(
+              'A boundary already exists on the map. Do you want to replace it?',
+            );
 
             if (!userConfirmed) {
               return;
@@ -52,25 +48,25 @@ export class CropSequenceBoundary extends CustomControl {
           // The API response is a WKT string - convert it to a GeoJSON
           const geoJSON = wktToGeoJSON(response.data.polygon);
           const featureCollection =
-            geoJSON.type === "MultiPolygon"
+            geoJSON.type === 'MultiPolygon'
               ? {
-                  type: "FeatureCollection",
+                  type: 'FeatureCollection',
                   features: geoJSON.coordinates.map((coords, i) => ({
-                    type: "Feature",
+                    type: 'Feature',
                     id: `api-poly-${i}`,
                     properties: {},
                     geometry: {
-                      type: "Polygon",
+                      type: 'Polygon',
                       coordinates: coords,
                     },
                   })),
                 }
               : {
-                  type: "FeatureCollection",
+                  type: 'FeatureCollection',
                   features: [
                     {
-                      type: "Feature",
-                      id: "api-poly-0",
+                      type: 'Feature',
+                      id: 'api-poly-0',
                       properties: {},
                       geometry: geoJSON,
                     },
@@ -78,7 +74,7 @@ export class CropSequenceBoundary extends CustomControl {
                 };
 
           setTimeout(() => {
-            const sourceId = "api-field-boundary";
+            const sourceId = 'api-field-boundary';
 
             // Remove existing source if already present
             if (this.mapRef.current.getSource(sourceId)) {
@@ -87,7 +83,7 @@ export class CropSequenceBoundary extends CustomControl {
 
             // Add source to the map
             this.mapRef.current.addSource(sourceId, {
-              type: "geojson",
+              type: 'geojson',
               data: featureCollection,
             });
 
@@ -102,7 +98,7 @@ export class CropSequenceBoundary extends CustomControl {
         }
       })
       .catch((error) => {
-        console.log("Error: ", error);
+        console.log('Error: ', error);
         this.showNoFieldModal();
       });
   }

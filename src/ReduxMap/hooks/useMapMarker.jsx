@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
-import styles from "../assets/styles/map.module.scss";
+import mapboxgl from 'mapbox-gl';
+import { useEffect, useRef } from 'react';
+import styles from '../assets/styles/map.module.scss';
 
 /**
  * Custom hook to manage a Mapbox marker on a given map instance.
@@ -29,7 +29,7 @@ const useMapMarker = ({
   hasMarkerMovable,
   isDrawActive,
   markerOptions,
-  popupContent
+  popupContent,
 }) => {
   const markerRef = useRef(null);
   const popupRef = useRef(null);
@@ -56,14 +56,14 @@ const useMapMarker = ({
       setLon(lngLat.lng);
     };
 
-    markerRef.current.on("drag", handleDrag);
-    markerRef.current.on("dragend", handleDragEnd);
+    markerRef.current.on('drag', handleDrag);
+    markerRef.current.on('dragend', handleDragEnd);
 
     return () => {
       if (!markerRef.current) return;
 
-      markerRef.current.off("drag", handleDrag);
-      markerRef.current.off("dragend", handleDragEnd);
+      markerRef.current.off('drag', handleDrag);
+      markerRef.current.off('dragend', handleDragEnd);
     };
   }, [markerRef.current, hasMarkerMovable, popupContent]);
 
@@ -83,25 +83,22 @@ const useMapMarker = ({
     };
 
     const markerElement = markerRef.current.getElement();
-    markerElement.addEventListener("mouseenter", handleMarkerEnter);
-    markerElement.addEventListener("mouseleave", handleMarkerLeave);
+    markerElement.addEventListener('mouseenter', handleMarkerEnter);
+    markerElement.addEventListener('mouseleave', handleMarkerLeave);
 
     return () => {
       if (!markerRef.current) return;
 
       const element = markerRef.current.getElement();
-      element?.removeEventListener("mouseenter", handleMarkerEnter);
-      element?.removeEventListener("mouseleave", handleMarkerLeave);
+      element?.removeEventListener('mouseenter', handleMarkerEnter);
+      element?.removeEventListener('mouseleave', handleMarkerLeave);
     };
   }, [markerRef.current, hasMarkerPopup, popupContent]);
 
   useEffect(() => {
     if (markerRef.current) {
       const lngLat = [lon, lat];
-      markerRef.current
-        .setLngLat(lngLat)
-        .getPopup()
-        ?.setHTML(generatePopupContent(lat, lon));
+      markerRef.current.setLngLat(lngLat).getPopup()?.setHTML(generatePopupContent(lat, lon));
       map.current.setCenter(lngLat);
     }
   }, [lon, lat, popupContent]);
@@ -118,7 +115,7 @@ const useMapMarker = ({
     // MARKER CONTROL
     const marker = new mapboxgl.Marker({
       draggable: hasMarkerMovable,
-      color: "#e63946",
+      color: '#e63946',
       scale: 1,
       ...markerOptions,
     })
@@ -137,7 +134,16 @@ const useMapMarker = ({
         markerRef.current.remove();
       }
     };
-  }, [map.current, lat, lon, hasMarker, hasMarkerMovable, hasMarkerPopup, isDrawActive, popupContent]);
+  }, [
+    map.current,
+    lat,
+    lon,
+    hasMarker,
+    hasMarkerMovable,
+    hasMarkerPopup,
+    isDrawActive,
+    popupContent,
+  ]);
 };
 
 export default useMapMarker;

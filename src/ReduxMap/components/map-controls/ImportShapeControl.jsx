@@ -1,9 +1,10 @@
-import proj4 from "proj4";
-import * as shapefile from "shapefile";
-import { CustomControl } from "./CustomControl";
+import proj4 from 'proj4';
+import * as shapefile from 'shapefile';
+import { CustomControl } from './CustomControl';
 
 const acreDiv = 4046.856422;
-import uploadIcon from "../../assets/icons/upload.png";
+
+import uploadIcon from '../../assets/icons/upload.png';
 
 const isLikelyWGS84 = (coords) => {
   if (!Array.isArray(coords) || coords.length === 0) return false;
@@ -15,24 +16,22 @@ const isLikelyWGS84 = (coords) => {
 };
 
 const convertToWGS84 = (coords, fromCRS) => {
-  if (!fromCRS || fromCRS === "EPSG:4326") return coords;
+  if (!fromCRS || fromCRS === 'EPSG:4326') return coords;
 
   const projStrings = {
-    "EPSG:3857": "EPSG:4326", // Web Mercator to WGS84
+    'EPSG:3857': 'EPSG:4326', // Web Mercator to WGS84
   };
 
-  if (fromCRS.startsWith("EPSG:269")) {
+  if (fromCRS.startsWith('EPSG:269')) {
     const zone = fromCRS.slice(-2);
-    projStrings[
-      fromCRS
-    ] = `+proj=utm +zone=${zone} +datum=NAD83 +units=m +no_defs`;
+    projStrings[fromCRS] = `+proj=utm +zone=${zone} +datum=NAD83 +units=m +no_defs`;
   }
 
-  return proj4(projStrings[fromCRS], "EPSG:4326", coords);
+  return proj4(projStrings[fromCRS], 'EPSG:4326', coords);
 };
 
 const parsePRJ = (prjText) => {
-  console.log("📄 .prj File Contents:\n", prjText);
+  console.log('📄 .prj File Contents:\n', prjText);
 
   // Match UTM zone from PROJCS["NAD_1983_UTM_Zone_XXN"]
   const match = prjText.match(/NAD_1983_UTM_Zone_(\d+)N/);
@@ -45,7 +44,7 @@ const parsePRJ = (prjText) => {
     return epsgCode;
   }
 
-  console.warn("⚠️ Could not determine projection from .prj file.");
+  console.warn('⚠️ Could not determine projection from .prj file.');
   return null;
 };
 
@@ -65,19 +64,19 @@ const loadShapeFile = (
   setBounds,
   setPolygonArea,
   setLat,
-  setLon
+  setLon,
 ) => {
   const files = event.target.files;
   let shpFile = null,
     prjFile = null;
 
-  for (let file of files) {
-    if (file.name.endsWith(".shp")) shpFile = file;
-    if (file.name.endsWith(".prj")) prjFile = file;
+  for (const file of files) {
+    if (file.name.endsWith('.shp')) shpFile = file;
+    if (file.name.endsWith('.prj')) prjFile = file;
   }
 
   if (!shpFile) {
-    alert("Please upload a .shp file.");
+    alert('Please upload a .shp file.');
     return;
   }
 
@@ -93,10 +92,10 @@ const loadShapeFile = (
       try {
         const prjText = await prjFile.text();
         projection = parsePRJ(prjText);
-        console.log("📌 Detected Projection:", projection);
+        console.log('📌 Detected Projection:', projection);
       } catch (error) {
         console.warn(
-          `⚠️ Could not read .prj file. Defaulting to automatic detection.  Error: ${error.message}`
+          `⚠️ Could not read .prj file. Defaulting to automatic detection.  Error: ${error.message}`,
         );
       }
     }
@@ -112,51 +111,38 @@ const loadShapeFile = (
 
             // ✅ Step 1: If coordinates are already WGS84, no transformation is needed
             if (isLikelyWGS84(geometry.coordinates)) {
-              console.log("✅ Data is already in WGS84, skipping projection.");
+              console.log('✅ Data is already in WGS84, skipping projection.');
             } else {
               // ⚠️ Step 2: Use `.prj` file if available, otherwise ask user
               if (!projection) {
                 const userZone = prompt(
-                  "⚠️ No .prj file detected.\n\nPlease enter the correct UTM zone\n(e.g., 10 for Zone 10, 11 for Zone 11):"
+                  '⚠️ No .prj file detected.\n\nPlease enter the correct UTM zone\n(e.g., 10 for Zone 10, 11 for Zone 11):',
                 );
 
                 if (userZone && userZone.match(/^\d{1,2}$/)) {
                   projection = `EPSG:269${userZone}`;
-                  console.log(
-                    `✅ User selected UTM Zone: ${userZone} (EPSG:${projection})`
-                  );
+                  console.log(`✅ User selected UTM Zone: ${userZone} (EPSG:${projection})`);
                 } else {
-                  alert("Invalid UTM zone. Unable to determine CRS.");
+                  alert('Invalid UTM zone. Unable to determine CRS.');
                   return;
                 }
               }
 
               // Convert coordinates to WGS84
-              if (geometry.type === "MultiPolygon") {
+              if (geometry.type === 'MultiPolygon') {
                 geometry.coordinates = geometry.coordinates.map((polygon) =>
-                  polygon.map((ring) =>
-                    ring.map((coord) => convertToWGS84(coord, projection))
-                  )
+                  polygon.map((ring) => ring.map((coord) => convertToWGS84(coord, projection))),
                 );
-              } else if (
-                geometry.type === "Polygon" ||
-                geometry.type === "MultiLineString"
-              ) {
+              } else if (geometry.type === 'Polygon' || geometry.type === 'MultiLineString') {
                 geometry.coordinates = geometry.coordinates.map((ring) =>
-                  ring.map((coord) => convertToWGS84(coord, projection))
+                  ring.map((coord) => convertToWGS84(coord, projection)),
                 );
-              } else if (
-                geometry.type === "LineString" ||
-                geometry.type === "MultiPoint"
-              ) {
+              } else if (geometry.type === 'LineString' || geometry.type === 'MultiPoint') {
                 geometry.coordinates = geometry.coordinates.map((coord) =>
-                  convertToWGS84(coord, projection)
+                  convertToWGS84(coord, projection),
                 );
-              } else if (geometry.type === "Point") {
-                geometry.coordinates = convertToWGS84(
-                  geometry.coordinates,
-                  projection
-                );
+              } else if (geometry.type === 'Point') {
+                geometry.coordinates = convertToWGS84(geometry.coordinates, projection);
               }
             }
 
@@ -170,7 +156,7 @@ const loadShapeFile = (
             map.getContainer().scrollIntoView();
 
             const fc = {
-              type: "FeatureCollection",
+              type: 'FeatureCollection',
               features: layers,
             };
             const [avgLon, avgLat] = turf.centroid(fc).geometry.coordinates;
@@ -195,18 +181,18 @@ export class ImportShapeControl extends CustomControl {
   constructor(turf, setFeatures, setBounds, setPolygonArea, setLat, setLon) {
     super(
       () => {
-        const fileInput = document.createElement("input");
-        fileInput.type = "file";
-        fileInput.accept = ".shp, .prj"; // Accept only .shp and .prj files
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.shp, .prj'; // Accept only .shp and .prj files
         fileInput.multiple = true;
-        fileInput.style.display = "none";
+        fileInput.style.display = 'none';
 
         // Append to the body and trigger click
         document.body.appendChild(fileInput);
         fileInput.click();
 
         // Handle file selection
-        fileInput.addEventListener("change", (event) => {
+        fileInput.addEventListener('change', (event) => {
           loadShapeFile(
             event,
             turf,
@@ -215,13 +201,13 @@ export class ImportShapeControl extends CustomControl {
             setBounds,
             setPolygonArea,
             setLat,
-            setLon
+            setLon,
           );
           document.body.removeChild(fileInput); // Remove input after use
         });
       },
-      "Import a shape file",
-      uploadIcon
+      'Import a shape file',
+      uploadIcon,
     );
   }
 }

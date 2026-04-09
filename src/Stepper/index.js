@@ -1,2 +1,2 @@
-import { PSAStepper } from "./progressstepper"; 
+import { PSAStepper } from './progressstepper';
 export default PSAStepper;

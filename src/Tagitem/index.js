@@ -1,2 +1,2 @@
-import { PSATagItem } from "./tagitem";
+import { PSATagItem } from './tagitem';
 export default PSATagItem;

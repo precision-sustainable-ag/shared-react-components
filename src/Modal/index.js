@@ -1,2 +1,2 @@
-import { PSAModal } from "./modal"; 
+import { PSAModal } from './modal';
 export default PSAModal;

@@ -1,2 +1,2 @@
-import { PSATooltip } from "./tooltip"; 
+import { PSATooltip } from './tooltip';
 export default PSATooltip;

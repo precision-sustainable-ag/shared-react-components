@@ -1,9 +1,9 @@
-import React from 'react';
 import styles from '../assets/styles/map.module.scss';
+import { useState } from 'react';
 
 /**
  * Displays a color legend and an opacity slider for raster data rendered on a Mapbox map.
- * 
+ *
  * @component
  * @param {Object} props - The component properties
  * @param {Object} props.map - The Mapbox map instance
@@ -12,7 +12,7 @@ import styles from '../assets/styles/map.module.scss';
  * @param {string} [props.material] - Name of the raster material (used as the source/layer ID in Mapbox).
  */
 const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' }) => {
-  const [opacityValue, setOpacityValue] = React.useState(50);
+  const [opacityValue, setOpacityValue] = useState(50);
 
   const handleOpacityChange = (event) => {
     const { value: val } = event.target;
@@ -23,16 +23,23 @@ const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' })
   };
 
   return (
-    colorStops && colorStops.length
-    && (
+    colorStops &&
+    colorStops.length && (
       <div>
         <div className={styles.opacityslider}>
-          <input type="range" min="0" max="100" value={opacityValue} className={styles.slider} onChange={handleOpacityChange} id="myRange" />
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={opacityValue}
+            className={styles.slider}
+            onChange={handleOpacityChange}
+            id="myRange"
+          />
         </div>
         <div className={styles.rasterlegend}>
           <span className={styles.rastertitle}>
-            unit:
-            &nbsp;
+            unit: &nbsp;
             {unit}
           </span>
           {colorStops.map((stop, i) => (

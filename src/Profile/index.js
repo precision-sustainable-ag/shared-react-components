@@ -1,2 +1,2 @@
-import { PSAProfile } from "./profile"; 
+import { PSAProfile } from './profile';
 export default PSAProfile;

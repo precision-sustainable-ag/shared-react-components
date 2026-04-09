@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import {
-  Grid,
-  Typography,
-  Snackbar,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Dialog,
-  DialogContent,
-  Alert,
-} from "@mui/material";
-import PSAButton from "../Button";
-import PSATextField from "../Textfield";
-import PSADropdown from "../Dropdown";
+import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import PSAButton from '../Button';
+import PSADropdown from '../Dropdown';
 import PSALoadingSpinner from "../LoadingSpinner";
+import PSATextField from '../Textfield';
 
 export const PSAForm = ({
   apiUrl,
@@ -37,13 +27,13 @@ export const PSAForm = ({
 
   const initialFormData = fields.reduce(
     (acc, field) => {
-      if (field.type === "text") acc[field.name] = "";
-      if (field.type === "dropdown") {
-        acc[field.name] = field.props?.value ?? "";
+      if (field.type === 'text') acc[field.name] = '';
+      if (field.type === 'dropdown') {
+        acc[field.name] = field.props?.value ?? '';
       }
       return acc;
     },
-    { repository: repository, labels: [] }
+    { repository: repository, labels: [] },
   );
 
   const [formData, setFormData] = useState(initialFormData);
@@ -57,7 +47,7 @@ export const PSAForm = ({
   useEffect(() => {
     fields.forEach((field) => {
       if (
-        field.type === "dropdown" &&
+        field.type === 'dropdown' &&
         field.props?.value &&
         formData[field.name] !== field.props.value
       ) {
@@ -70,12 +60,10 @@ export const PSAForm = ({
   }, [fields]);
 
   const convertMessageArr = (arr) => {
-    if (arr.length === 0) return "";
+    if (arr.length === 0) return '';
     if (arr.length === 1) return `The "${arr[0]}" field is blank`;
-    if (arr.length === 2)
-      return `The "${arr.join('" and "')}" fields are blank`;
-    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]
-      }" fields are blank`;
+    if (arr.length === 2) return `The "${arr.join('" and "')}" fields are blank`;
+    return `The "${arr.slice(0, -1).join('", "')}", and "${arr[arr.length - 1]}" fields are blank`;
   };
 
   const checkDisabled = () => {
@@ -84,9 +72,9 @@ export const PSAForm = ({
     fields.forEach((field) => {
       if (
         field.required &&
-        ((field.type === "text" && formData[field.name] === "") ||
-          (field.type === "dropdown" && formData[field.name] === "") ||
-          (field.type === "checkbox" && formData.labels.length === 0))
+        ((field.type === 'text' && formData[field.name] === '') ||
+          (field.type === 'dropdown' && formData[field.name] === '') ||
+          (field.type === 'checkbox' && formData.labels.length === 0))
       ) {
         messageArr.push(field.label);
       }
@@ -95,7 +83,7 @@ export const PSAForm = ({
     const messageStr = convertMessageArr(messageArr);
     return messageArr.length > 0
       ? { state: true, message: messageStr }
-      : { state: false, message: "" };
+      : { state: false, message: '' };
   };
 
   const handleTextInputChange = (event, name) => {
@@ -114,9 +102,7 @@ export const PSAForm = ({
     const { name, checked } = event.target;
     setFormData((prev) => ({
       ...prev,
-      labels: checked
-        ? [...(prev.labels || []), name]
-        : remove(prev.labels || [], name),
+      labels: checked ? [...(prev.labels || []), name] : remove(prev.labels || [], name),
     }));
   };
 
@@ -132,6 +118,7 @@ export const PSAForm = ({
     const payload = { ...formData };
 
     payload.labels = payload.labels || [];
+    payload.labels.push(`${formData.repository}`);
     if (formData.state) {
       payload.labels.push(`State: ${formData.state}`);
     }
@@ -173,11 +160,7 @@ export const PSAForm = ({
   };
 
   return (
-    <Grid
-      container
-      rowSpacing={5}
-      style={{ padding: "3% 10%", textAlign: "left" }}
-    >
+    <Grid container rowSpacing={5} style={{ padding: '3% 10%', textAlign: 'left' }}>
       <Grid container item spacing={1} justifyContent="center">
         <Grid item xs={12}>
           <Typography variant="h3">{headerTitle}</Typography>
@@ -244,20 +227,17 @@ export const PSAForm = ({
               </FormGroup>
             )}
           </Grid>
-        </Grid>
-      ))}
+        ))}
 
       {/* Horizontal dropdowns */}
       {(() => {
         const horizontalDropdowns = fields.filter(
-          (field) => field.type === "dropdown" && field.orientation === "horizontal"
+          (field) => field.type === 'dropdown' && field.orientation === 'horizontal',
         );
         return (
           horizontalDropdowns.length > 0 && (
             <Grid item xs={12}>
-              <Typography variant="h6">
-                {horizontalDropdowns[0].label}
-              </Typography>
+              <Typography variant="h6">{horizontalDropdowns[0].label}</Typography>
             </Grid>
           )
         );
@@ -265,11 +245,7 @@ export const PSAForm = ({
       <Grid item xs={12}>
         <Grid container spacing={2} alignItems="center">
           {fields
-            .filter(
-              (field) =>
-                field.type === "dropdown" &&
-                field.orientation === "horizontal"
-            )
+            .filter((field) => field.type === 'dropdown' && field.orientation === 'horizontal')
             .map((field) => (
               <Grid item key={field.name}>
                 <PSADropdown
@@ -277,9 +253,8 @@ export const PSAForm = ({
                   items={field.items}
                   SelectProps={{
                     ...field.props?.SelectProps,
-                    value: formData[field.name] ?? "",
-                    onChange: (event) =>
-                      handleDropdownChange(event, field.name),
+                    value: formData[field.name] ?? '',
+                    onChange: (event) => handleDropdownChange(event, field.name),
                   }}
                 />
               </Grid>
@@ -287,18 +262,11 @@ export const PSAForm = ({
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        item
-        spacing={1}
-        justifyContent="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
         {isSubmitDisabled && (
           <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: "red" }}>
-              {checkDisabled().message}. Please fill all required fields before
-              submitting.
+            <Typography variant="body1" style={{ color: 'red' }}>
+              {checkDisabled().message}. Please fill all required fields before submitting.
             </Typography>
           </Grid>
         )}
@@ -378,23 +346,23 @@ PSAForm.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       label: PropTypes.string,
-      type: PropTypes.oneOf(["text", "checkbox", "dropdown"]),
+      type: PropTypes.oneOf(['text', 'checkbox', 'dropdown']),
       required: PropTypes.bool,
       description: PropTypes.string,
       items: PropTypes.arrayOf(
         PropTypes.shape({
           value: PropTypes.string,
           label: PropTypes.string,
-        })
+        }),
       ),
       options: PropTypes.arrayOf(
         PropTypes.shape({
           label: PropTypes.string,
           props: PropTypes.object,
-        })
+        }),
       ),
       props: PropTypes.object,
-    })
+    }),
   ),
 
   /**
@@ -408,7 +376,7 @@ PSAForm.propTypes = {
       action: PropTypes.string,
       onClick: PropTypes.func,
       props: PropTypes.object,
-    })
+    }),
   ),
 
   /**

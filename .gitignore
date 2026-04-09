@@ -3,4 +3,9 @@
 *storybook.log
 yarn.lock
 run.bat
-.vscode
+/storybook-static/assets
+/storybook-static/favicons
+/storybook-static/images
+/storybook-static/sb-addons
+iframe.html
+vite-inject-mocker-entry.js

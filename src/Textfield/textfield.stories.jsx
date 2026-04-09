@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { PSATextField } from "./textfield";
+import { useState } from 'react';
+import { PSATextField } from './textfield';
 
 const meta = {
-  title: "Inputs/TextField",
+  title: 'Inputs/TextField',
   component: PSATextField,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
         component: `This is a custom TextField component based on MUI's \`TextField\`. 
@@ -20,7 +20,7 @@ const meta = {
 export default meta;
 
 const Template = (args) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   return (
     <PSATextField
@@ -52,22 +52,22 @@ ErrorTextField.args = {
 export const FocusedTextField = Template.bind({});
 FocusedTextField.args = {
   autoFocus: true,
-  value: "1.1",
-  label: "Focus",
+  value: '1.1',
+  label: 'Focus',
 };
 
 export const MultilineTextField = Template.bind({});
 MultilineTextField.args = {
   multiline: true,
   minRows: 3,
-  label: "Resizable Multiline",
-  placeholder: "Enter text here...",
-  variant: "outlined",
+  label: 'Resizable Multiline',
+  placeholder: 'Enter text here...',
+  variant: 'outlined',
   fullWidth: true,
   sx: {
-    "& .MuiOutlinedInput-input": {
-      resize: "both",
-      overflow: "auto",
+    '& .MuiOutlinedInput-input': {
+      resize: 'both',
+      overflow: 'auto',
     },
   },
 };

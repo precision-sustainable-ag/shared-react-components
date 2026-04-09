@@ -1,12 +1,11 @@
-import React from "react";
-import { PSASearch } from "./search";
+import { PSASearch } from './search';
 
 const meta = {
-  title: "Inputs/Search",
+  title: 'Inputs/Search',
   component: PSASearch,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
@@ -16,14 +15,14 @@ const Template = (args) => <PSASearch {...args} />;
 
 export const DefaultSearch = Template.bind({});
 DefaultSearch.args = {
-  boxType: "",
-  label: "label",
-  value: "",
+  boxType: '',
+  label: 'label',
+  value: '',
 };
 
 export const PaperSearch = Template.bind({});
 PaperSearch.args = {
-  boxType: "Paper",
-  label: "label",
-  value: "",
+  boxType: 'Paper',
+  label: 'label',
+  value: '',
 };

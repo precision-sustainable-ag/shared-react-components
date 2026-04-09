@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useRef } from "react";
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import { coordinatesGeocoder } from "../utils/helpers";
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import { useCallback, useEffect, useRef } from 'react';
+import { coordinatesGeocoder } from '../utils/helpers';
 
 /**
  * Custom hook to setup and manage a Mapbox Geocoder with event handling
@@ -33,7 +33,7 @@ const useMapGeocoder = ({
   MAPBOX_TOKEN,
   initLon,
   initLat,
-  initAddress = "Search for your address ...",
+  initAddress = 'Search for your address ...',
   defaultZoom,
   hasSearchBar,
   hasClear,
@@ -57,7 +57,7 @@ const useMapGeocoder = ({
         setFeatures([]);
       }
     },
-    [hasDrawing, drawerRef, setPolygonArea, setFeatures]
+    [hasDrawing, drawerRef, setPolygonArea, setFeatures],
   );
 
   useEffect(() => {
@@ -69,16 +69,15 @@ const useMapGeocoder = ({
       marker: false,
       accessToken: MAPBOX_TOKEN,
       container: map.current,
-      proximity: "ip",
+      proximity: 'ip',
       trackProximity: true,
-      countries: "us",
+      countries: 'us',
     });
     geocoderRef.current = Geocoder;
 
-    if (map && !map.current.hasControl(Geocoder))
-      map.current.addControl(Geocoder, "top-left");
+    if (map && !map.current.hasControl(Geocoder)) map.current.addControl(Geocoder, 'top-left');
 
-    Geocoder.on("result", (e) => {
+    Geocoder.on('result', (e) => {
       if (e?.result?.place_name) {
         deleteFeatures(e.result);
         setLat(e.result.center[1]);
@@ -111,7 +110,7 @@ const useMapGeocoder = ({
   useEffect(() => {
     if (!map || !hasSearchBar) return;
 
-    const geocoderContainer = document.querySelector(".mapboxgl-ctrl-geocoder");
+    const geocoderContainer = document.querySelector('.mapboxgl-ctrl-geocoder');
     if (!geocoderContainer) return;
 
     const handleClick = (event) => {
@@ -123,15 +122,15 @@ const useMapGeocoder = ({
         setLon(initLon);
         setPolygonArea(0);
         setAddress({
-          fullAddress: "",
-          city: "",
-          county: "",
-          state: "",
-          stateCode: "",
-          zipCode: "",
+          fullAddress: '',
+          city: '',
+          county: '',
+          state: '',
+          stateCode: '',
+          zipCode: '',
         });
         setFeatures([]);
-        setBounds("conus");
+        setBounds('conus');
       }
     };
 
@@ -139,15 +138,15 @@ const useMapGeocoder = ({
       const target = event.currentTarget;
       const rect = target.getBoundingClientRect();
       const clickX = event.clientX - rect.left;
-      target.classList.toggle("clearHovered", rect.width - clickX <= 20);
+      target.classList.toggle('clearHovered', rect.width - clickX <= 20);
     };
 
-    geocoderContainer.addEventListener("click", handleClick);
-    geocoderContainer.addEventListener("mousemove", handleMouseMove);
+    geocoderContainer.addEventListener('click', handleClick);
+    geocoderContainer.addEventListener('mousemove', handleMouseMove);
 
     return () => {
-      geocoderContainer.removeEventListener("click", handleClick);
-      geocoderContainer.removeEventListener("mousemove", handleMouseMove);
+      geocoderContainer.removeEventListener('click', handleClick);
+      geocoderContainer.removeEventListener('mousemove', handleMouseMove);
     };
   }, [map.current]);
 };

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 // Function to convert string to Pascal Case
 function toPascalCase(str) {
   return str
     .split(/[\s-_]+/) // Split by spaces, hyphens, or underscores
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
-    .join(""); // Join words back together
+    .join(''); // Join words back together
 }
 
 // Function to convert string to camelCase
@@ -21,7 +21,7 @@ function toCamelCase(str) {
       }
       return word.charAt(0).toUpperCase() + word.slice(1); // Capitalize subsequent words
     })
-    .join(""); // Join words back together
+    .join(''); // Join words back together
 }
 
 // Function to create template
@@ -34,7 +34,7 @@ function createTemplate(name) {
   const camelCaseName = toCamelCase(lowerCaseName);
 
   // Define the folder path in the src directory
-  const folderPath = path.join(__dirname, "..", "src", pascalCaseName);
+  const folderPath = path.join(__dirname, '..', 'src', pascalCaseName);
 
   // Create the folder
   fs.mkdirSync(folderPath, { recursive: true });
@@ -44,7 +44,7 @@ function createTemplate(name) {
     `${camelCaseName}.jsx`,
     `${camelCaseName}.spec.jsx`,
     `${camelCaseName}.stories.jsx`,
-    "index.js",
+    'index.js',
   ];
 
   // Content template for the JSX file
@@ -90,19 +90,19 @@ export default PSA${pascalCaseName};`;
 
     // Check if the file is the JSX file, stories file, or index file to add content
     if (file === `${camelCaseName}.jsx`) {
-      fs.writeFileSync(filePath, jsxContent, "utf8");
+      fs.writeFileSync(filePath, jsxContent, 'utf8');
     } else if (file === `${camelCaseName}.stories.jsx`) {
-      fs.writeFileSync(filePath, storiesContent, "utf8");
-    } else if (file === "index.js") {
-      fs.writeFileSync(filePath, indexContent, "utf8");
+      fs.writeFileSync(filePath, storiesContent, 'utf8');
+    } else if (file === 'index.js') {
+      fs.writeFileSync(filePath, indexContent, 'utf8');
     } else {
-      fs.writeFileSync(filePath, "", "utf8"); // Create empty files for others
+      fs.writeFileSync(filePath, '', 'utf8'); // Create empty files for others
     }
   });
 
-  const indexFilePath = path.join(__dirname, "..", "src", "index.js");
+  const indexFilePath = path.join(__dirname, '..', 'src', 'index.js');
   const writeContent = `export { default as PSA${pascalCaseName} } from "./${pascalCaseName}/index";\n`;
-  fs.appendFileSync(indexFilePath, writeContent, "utf8");
+  fs.appendFileSync(indexFilePath, writeContent, 'utf8');
 
   console.log(`Created folder and files for: ${pascalCaseName}`);
 }
@@ -111,12 +111,12 @@ export default PSA${pascalCaseName};`;
 const args = process.argv.slice(2);
 
 // Extract the name argument
-const nameArg = args.find((arg) => arg.startsWith("--name="));
+const nameArg = args.find((arg) => arg.startsWith('--name='));
 if (!nameArg) {
-  console.error("Please provide a name using the --name flag.");
+  console.error('Please provide a name using the --name flag.');
   process.exit(1);
 }
 
 // Get the name value
-const componentName = nameArg.split("=")[1];
+const componentName = nameArg.split('=')[1];
 createTemplate(componentName);

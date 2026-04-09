@@ -1,14 +1,9 @@
-import React from "react";
-import { PSATextField } from "../Textfield/textfield";
-import {
-  Box,
-  styled,
-  InputAdornment,
-} from "@mui/material";
-import PropTypes from "prop-types";
+import { Box, InputAdornment, styled } from '@mui/material';
+import PropTypes from 'prop-types';
+import { PSATextField } from '../Textfield/textfield';
 
 const StyledBox = styled(Box)(({ type }) => ({
-  ...(type === "Paper" && {
+  ...(type === 'Paper' && {
     boxShadow: 2,
     borderRadius: '.2rem',
     backgroundColor: 'white',
@@ -28,17 +23,18 @@ export const PSASearch = ({
   label,
   InputLabelProps,
   boxType,
-  variant="standard",
+  variant = 'standard',
   testId,
-  }) => {
-    return (
+}) => {
+  return (
     <StyledBox
-     type={boxType}
-     sx={{              
-      width: '80%',
-      paddingBottom: '.1rem',
-      ...boxProps
-    }}>
+      type={boxType}
+      sx={{
+        width: '80%',
+        paddingBottom: '.1rem',
+        ...boxProps,
+      }}
+    >
       <PSATextField
         color={color}
         value={value}
@@ -56,28 +52,24 @@ export const PSASearch = ({
           ...InputLabelProps,
         }}
         InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              {adornmentContent}
-            </InputAdornment>
-          ),
+          endAdornment: <InputAdornment position="end">{adornmentContent}</InputAdornment>,
           ...inputProps,
         }}
         data-test={testId}
       />
     </StyledBox>
   );
-}
+};
 
 /** PropTypes for better type checking */
 /** Search Prop Types */
-PSASearch.propTypes = { 
+PSASearch.propTypes = {
   /** The Styled Type of the Box container */
-  boxType: PropTypes.oneOf(["Paper"]),
+  boxType: PropTypes.oneOf(['Paper']),
 
   /** The properties of the Box container */
   boxProps: PropTypes.object,
-  
+
   /** The value displayed on the Textfield */
   value: PropTypes.string,
 
@@ -104,5 +96,4 @@ PSASearch.propTypes = {
 
   /** The content or icon that will appear at the end of the search */
   adornmentContent: PropTypes.node,
-
 };
