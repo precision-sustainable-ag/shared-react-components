@@ -106,6 +106,7 @@ const ReduxMap = ({
   fitMapToPolygons = false,
   fitBounds = false,
   initRasterObject = {},
+  valueKey = 'value',
   rasterColors,
   unit,
   material,
@@ -594,6 +595,7 @@ const ReduxMap = ({
   useRasterData({
     map,
     initRasterObject,
+    valueKey,
     rasterColors,
     unit,
     material,
@@ -861,6 +863,10 @@ ReduxMap.propTypes = {
    * Initial raster object containing the raster data and bounding box.
    */
   initRasterObject: PropTypes.object,
+  /**
+   * The GeoJSON feature property key to read raster values from. Defaults to 'value'.
+   */
+  valueKey: PropTypes.string,
   /**
    * Color scale range used to map raster values to colors.
    */
