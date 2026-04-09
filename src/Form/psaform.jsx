@@ -114,6 +114,7 @@ export const PSAForm = ({
     const payload = { ...formData };
 
     payload.labels = payload.labels || [];
+    payload.labels.push(`${formData.repository}`);
     if (formData.state) {
       payload.labels.push(`State: ${formData.state}`);
     }
