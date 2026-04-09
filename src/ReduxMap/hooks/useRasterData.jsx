@@ -9,26 +9,31 @@ import { useEffect, useRef, useState } from 'react';
  * @param {Object} params - Configuration options for the hook.
  * @param {React.RefObject} params.map - Reference to the Mapbox map instance.
  * @param {Object} params.initRasterObject - Initial raster object containing the geojson object.
+ * @param {string} params.valueKey - The feature property key to read the raster value from.
  * @param {string[]} params.rasterColors - Color scale range used to map raster values to colors.
  * @param {string} params.unit - Unit of the raster values.
  * @param {string} params.material - Name of the raster material (used as the source/layer ID in Mapbox).
  * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
  * @param {number} params.color_steps - Number of steps in the map legend.
+ * @param {Object} params.discreteLabels - Optional mapping of discrete raster values to human-readable labels, with an optional `_colors` key for pinned colors.
  */
 const useRasterData = ({
   map,
   initRasterObject = {},
+  valueKey = 'value',
   rasterColors = ['red', 'green'],
   unit = 'kg/ha',
   material = 'biomass',
   setRasterColorSteps,
   color_steps = 7,
+  discreteLabels = null,
 }) => {
   const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
+    setGeojsonData(null);
     if (initRasterObject && initRasterObject.features && initRasterObject.features.length > 0) {
       setGeojsonData(initRasterObject);
     }
@@ -56,9 +61,103 @@ const useRasterData = ({
     };
   }, [map.current]);
 
+  const removeLayerAndSource = (layerId) => {
+    if (!map.current) return;
+    if (map.current.getLayer(layerId)) {
+      map.current.removeLayer(layerId);
+    }
+    if (map.current.getSource(layerId)) {
+      map.current.removeSource(layerId);
+    }
+  };
+
   useEffect(() => {
     if (!map.current || !geojsonData || !isMapLoaded) return;
-    if (geojsonData.features && geojsonData.features.length > 0) {
+    if (!geojsonData.features || geojsonData.features.length === 0) return;
+
+    const layerId = `${material}Polygons_${valueKey}`;
+
+    if (discreteLabels) {
+    const knownValues = Object.keys(discreteLabels)
+      .filter((k) => k !== '_colors')
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    const pinnedColors = discreteLabels._colors || {};
+
+    // Auto-assign colors from the rasterColors scale for values without a pinned color.
+    const scale = chroma.scale(rasterColors).colors(knownValues.length);
+    const valueColorMap = {};
+    knownValues.forEach((val, idx) => {
+      valueColorMap[val] = pinnedColors[val] || scale[idx];
+    });
+
+    const featuresWithColors = geojsonData.features.map((feature) => {
+      const rawVal = feature.properties[valueKey];
+      const discreteVal = Math.round(rawVal);
+      const color = valueColorMap[discreteVal] || 'transparent';
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          value: discreteVal,
+          color,
+        },
+      };
+    });
+
+    const processedGeojson = {
+      type: 'FeatureCollection',
+      features: featuresWithColors,
+    };
+    polygonsRef.current = processedGeojson;
+
+    const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
+    setRasterColorSteps(rasterColorsVals);
+
+    if (!map.current.getSource(layerId)) {
+      map.current.addSource(layerId, {
+        type: 'geojson',
+        data: processedGeojson,
+      });
+      map.current.addLayer({
+        id: layerId,
+        type: 'fill',
+        source: layerId,
+        paint: {
+          'fill-opacity': 0.5,
+          'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
+        },
+      });
+    } else {
+      map.current.getSource(layerId).setData(processedGeojson);
+    }
+
+    const handleClick = (e) => {
+      if (!e.features?.length) return;
+
+      const coords = e.features[0].geometry.coordinates.slice();
+      const val = e.features[0].properties[valueKey];
+      const label = discreteLabels[val] ?? val;
+
+      new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
+        .setLngLat([
+          (coords[0][0][0] + coords[0][2][0]) / 2,
+          (coords[0][0][1] + coords[0][2][1]) / 2,
+        ])
+        .setHTML(`<div>${material}: ${label}</div>`)
+        .addTo(map.current);
+    };
+
+    map.current.on('click', layerId, handleClick);
+
+    return () => {
+      if (map.current) {
+        map.current.off('click', layerId, handleClick);
+        removeLayerAndSource(layerId);
+      }
+    };
+    } else {
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;
       let biomassMin, biomassMax;
@@ -68,7 +167,7 @@ const useRasterData = ({
       } else {
         // Calculate from features if not provided
         const values = geojsonData.features
-          .map((feat) => f * feat.properties.value)
+          .map((feat) => f * feat.properties[valueKey])
           .filter((val) => val > 0);
         biomassMin = Math.min(...values);
         biomassMax = Math.max(...values);
@@ -78,7 +177,7 @@ const useRasterData = ({
       const scale = chroma.scale(rasterColors);
 
       const featuresWithColors = geojsonData.features.map((feature) => {
-        const convertedValue = f * feature.properties.value;
+        const convertedValue = f * feature.properties[valueKey];
         const normalizedValue = range > 0 ? (convertedValue - biomassMin) / range : 0;
 
         return {
@@ -127,29 +226,29 @@ const useRasterData = ({
       setRasterColorSteps(rasterColorsVals);
 
       // Update map source and layer with the pixel polygon
-      if (!map.current.getSource(`${material}Polygons`)) {
-        map.current.addSource(`${material}Polygons`, {
+      if (!map.current.getSource(layerId)) {
+        map.current.addSource(layerId, {
           type: 'geojson',
           data: processedGeojson,
         });
         map.current.addLayer({
-          id: `${material}Polygons`,
+          id: layerId,
           type: 'fill',
-          source: `${material}Polygons`,
+          source: layerId,
           paint: {
             'fill-opacity': 0.5,
             'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
           },
         });
       } else {
-        map.current.getSource(`${material}Polygons`).setData(processedGeojson);
+        map.current.getSource(layerId).setData(processedGeojson);
       }
 
       const handleClick = (e) => {
         if (!e.features?.length) return;
 
         const coords = e.features[0].geometry.coordinates.slice();
-        const val = parseFloat(e.features[0].properties.value.toFixed(decimalPlaces));
+        const val = parseFloat(e.features[0].properties[valueKey].toFixed(decimalPlaces));
 
         new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
           .setLngLat([
@@ -160,15 +259,16 @@ const useRasterData = ({
           .addTo(map.current);
       };
 
-      map.current.on('click', `${material}Polygons`, handleClick);
+      map.current.on('click', layerId, handleClick);
 
       return () => {
-        if (map.current.getLayer(`${material}Polygons`)) {
-          map.current.off('click', `${material}Polygons`, handleClick);
+        if (map.current) {
+          map.current.off('click', layerId, handleClick);
+          removeLayerAndSource(layerId);
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey]);
 };
 
 export default useRasterData;

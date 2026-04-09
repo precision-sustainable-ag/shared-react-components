@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import { fn } from '@storybook/test';
 import { Provider } from 'react-redux';
-import initRasterObject from './data/sample-raster-data-response.json';
+import initRasterObject from './data/sample-prescription.json';
 import ReduxMap from './reduxmap';
 
 const mockStore = configureStore({
@@ -135,23 +135,45 @@ export const MapWithAllFeatures = {
 
 export const MapWithRasterLayer = {
   args: {
-    // setProperties: fn(),
-    // setFeatures: fn(),
     initWidth: '900px',
     initHeight: '400px',
-    initLat: 39.023,
-    initLon: -76.913,
-    initStartZoom: 14,
-    hasMarker: true,
-    hasMarkerPopup: true,
-    hasMarkerMovable: true,
+    initLat: 35.5220,
+    initLon: -82.7055,
+    initStartZoom: 16,
     hasFullScreen: true,
     fitBounds: true,
     mapboxToken: mapboxToken,
     initRasterObject: initRasterObject,
+    valueKey: 'biomass_average',
     rasterColors: ['red', 'white', 'green'],
     unit: 'kg/ha',
     material: 'biomass',
     color_steps: 5,
+  },
+};
+
+  export const MapWithRasterLayerDiscrete = {
+  args: {
+    initWidth: '900px',
+    initHeight: '400px',
+    initLat: 35.5220,
+    initLon: -82.7055,
+    initStartZoom: 16,
+    hasFullScreen: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    initRasterObject: initRasterObject,
+    valueKey: 'category',
+    material: 'treatment',
+    color_steps: 5,
+    discreteLabels: {
+      1: 'Control',
+      2: 'Full',
+      3: 'Average',
+      4: 'Cap',
+      _colors: {
+        1: 'red', 2: 'yellow', 3: 'blue', 4: 'green',
+      },
+    }
   },
 };

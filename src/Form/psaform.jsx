@@ -1,8 +1,18 @@
-import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  Typography,
+  Dialog,
+  DialogContent,
+  Alert,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import PSAButton from '../Button';
 import PSADropdown from '../Dropdown';
+import PSALoadingSpinner from '../LoadingSpinner';
 import PSATextField from '../Textfield';
 
 export const PSAForm = ({
@@ -16,11 +26,12 @@ export const PSAForm = ({
   onFormChange,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [snackbarData, setSnackbarData] = useState({
+  const [alertData, setAlertData] = useState({
     open: false,
     message: '',
-    color: '',
+    severity: 'success',
   });
 
   const initialFormData = fields.reduce(
@@ -36,6 +47,7 @@ export const PSAForm = ({
 
   const [formData, setFormData] = useState(initialFormData);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <>
   useEffect(() => {
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
@@ -55,7 +67,7 @@ export const PSAForm = ({
         }));
       }
     });
-  }, [fields]);
+  }, [fields, formData]);
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return '';
@@ -104,16 +116,19 @@ export const PSAForm = ({
     }));
   };
 
-  const submit = () => {
+  const submit = async () => {
     const { state, message } = checkDisabled();
     if (state) {
-      setSnackbarData({ open: true, message, color: 'red' });
+      setAlertData({ open: true, message, severity: 'error' });
       return;
     }
+
+    setIsSubmitting(true);
 
     const payload = { ...formData };
 
     payload.labels = payload.labels || [];
+    payload.labels.push(`${formData.repository}`);
     if (formData.state) {
       payload.labels.push(`State: ${formData.state}`);
     }
@@ -121,32 +136,37 @@ export const PSAForm = ({
       payload.labels.push(`County: ${formData.county}`);
     }
 
-    if (handleSubmit) {
-      handleSubmit(formData);
-    } else {
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      })
-        .then((response) => {
-          setSnackbarData({
-            open: true,
-            message:
-              response.status === 201
-                ? submitMessage
-                : `Error ${response.status}. ${
-                    response.status === 400
-                      ? 'Bad Request'
-                      : response.status === 422
-                        ? 'Unprocessable Entry'
-                        : 'Internal Server Error'
-                  }`,
-            color: response.status === 201 ? 'green' : 'red',
-          });
-          return response.json();
-        })
-        .catch((error) => console.error(error));
+    try {
+      if (handleSubmit) {
+        await handleSubmit(formData);
+      } else {
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        setAlertData({
+          open: true,
+          message:
+            response.status === 201
+              ? submitMessage
+              : `Error ${response.status}. ${
+                  response.status === 400
+                    ? 'Bad Request'
+                    : response.status === 422
+                      ? 'Unprocessable Entry'
+                      : 'Internal Server Error'
+                }`,
+          severity: response.status === 201 ? 'success' : 'error',
+        });
+        if (response.status === 201) {
+          setFormData(initialFormData);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -181,6 +201,7 @@ export const PSAForm = ({
               {field.type === 'text' && (
                 <PSATextField
                   {...field.props}
+                  value={formData[field.name] || ''}
                   onChange={(event) => handleTextInputChange(event, field.name)}
                 />
               )}
@@ -202,7 +223,13 @@ export const PSAForm = ({
                   {field.options.map((checkbox, index) => (
                     <FormControlLabel
                       key={index}
-                      control={<Checkbox {...checkbox.props} onChange={handleCheckboxChange} />}
+                      control={
+                        <Checkbox
+                          {...checkbox.props}
+                          checked={(formData.labels || []).includes(checkbox.props.name)}
+                          onChange={handleCheckboxChange}
+                        />
+                      }
                       label={checkbox.label}
                     />
                   ))}
@@ -258,21 +285,41 @@ export const PSAForm = ({
             <PSAButton
               {...button.props}
               onClick={button.action === 'submit' ? submit : button.onClick}
-              disabled={isSubmitDisabled}
+              disabled={isSubmitDisabled || isSubmitting}
             />
           </Grid>
         ))}
       </Grid>
 
-      <Snackbar
-        open={snackbarData.open}
-        autoHideDuration={5000}
-        onClose={() => setSnackbarData({ ...snackbarData, open: false })}
-        message={snackbarData.message}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        color={snackbarData.color}
-        data-test="feedback_snackbar"
-      />
+      {isSubmitting && (
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(255,255,255,0.6)',
+            zIndex: 9999,
+          }}
+        >
+          <PSALoadingSpinner />
+        </Grid>
+      )}
+
+      <Dialog open={alertData.open} onClose={() => setAlertData({ ...alertData, open: false })}>
+        <DialogContent>
+          <Alert
+            severity={alertData.severity}
+            onClose={() => setAlertData({ ...alertData, open: false })}
+          >
+            {alertData.message}
+          </Alert>
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };
