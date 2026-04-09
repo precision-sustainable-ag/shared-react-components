@@ -33,6 +33,7 @@ const useRasterData = ({
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
+    setGeojsonData(null);
     if (initRasterObject && initRasterObject.features && initRasterObject.features.length > 0) {
       setGeojsonData(initRasterObject);
     }
@@ -60,9 +61,21 @@ const useRasterData = ({
     };
   }, [map.current]);
 
+  const removeLayerAndSource = (layerId) => {
+    if (!map.current) return;
+    if (map.current.getLayer(layerId)) {
+      map.current.removeLayer(layerId);
+    }
+    if (map.current.getSource(layerId)) {
+      map.current.removeSource(layerId);
+    }
+  };
+
   useEffect(() => {
     if (!map.current || !geojsonData || !isMapLoaded) return;
     if (!geojsonData.features || geojsonData.features.length === 0) return;
+
+    const layerId = `${material}Polygons_${valueKey}`;
 
     if (discreteLabels) {
     const knownValues = Object.keys(discreteLabels)
@@ -102,22 +115,22 @@ const useRasterData = ({
     const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
     setRasterColorSteps(rasterColorsVals);
 
-    if (!map.current.getSource(`${material}Polygons`)) {
-      map.current.addSource(`${material}Polygons`, {
+    if (!map.current.getSource(layerId)) {
+      map.current.addSource(layerId, {
         type: 'geojson',
         data: processedGeojson,
       });
       map.current.addLayer({
-        id: `${material}Polygons`,
+        id: layerId,
         type: 'fill',
-        source: `${material}Polygons`,
+        source: layerId,
         paint: {
           'fill-opacity': 0.5,
           'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
         },
       });
     } else {
-      map.current.getSource(`${material}Polygons`).setData(processedGeojson);
+      map.current.getSource(layerId).setData(processedGeojson);
     }
 
     const handleClick = (e) => {
@@ -136,11 +149,12 @@ const useRasterData = ({
         .addTo(map.current);
     };
 
-    map.current.on('click', `${material}Polygons`, handleClick);
+    map.current.on('click', layerId, handleClick);
 
     return () => {
-      if (map.current.getLayer(`${material}Polygons`)) {
-        map.current.off('click', `${material}Polygons`, handleClick);
+      if (map.current) {
+        map.current.off('click', layerId, handleClick);
+        removeLayerAndSource(layerId);
       }
     };
     } else {
@@ -212,22 +226,22 @@ const useRasterData = ({
       setRasterColorSteps(rasterColorsVals);
 
       // Update map source and layer with the pixel polygon
-      if (!map.current.getSource(`${material}Polygons`)) {
-        map.current.addSource(`${material}Polygons`, {
+      if (!map.current.getSource(layerId)) {
+        map.current.addSource(layerId, {
           type: 'geojson',
           data: processedGeojson,
         });
         map.current.addLayer({
-          id: `${material}Polygons`,
+          id: layerId,
           type: 'fill',
-          source: `${material}Polygons`,
+          source: layerId,
           paint: {
             'fill-opacity': 0.5,
             'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
           },
         });
       } else {
-        map.current.getSource(`${material}Polygons`).setData(processedGeojson);
+        map.current.getSource(layerId).setData(processedGeojson);
       }
 
       const handleClick = (e) => {
@@ -245,11 +259,12 @@ const useRasterData = ({
           .addTo(map.current);
       };
 
-      map.current.on('click', `${material}Polygons`, handleClick);
+      map.current.on('click', layerId, handleClick);
 
       return () => {
-        if (map.current.getLayer(`${material}Polygons`)) {
-          map.current.off('click', `${material}Polygons`, handleClick);
+        if (map.current) {
+          map.current.off('click', layerId, handleClick);
+          removeLayerAndSource(layerId);
         }
       };
     }
