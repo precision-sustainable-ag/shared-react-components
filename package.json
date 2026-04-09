@@ -1,6 +1,5 @@
 {
   "name": "shared-react-components",
-  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "storybook dev -p 3001",
     "build-storybook": "storybook build",
+    "vegspec": "storybook build -o ../vpt/public/story",
     "create-new-component": "node ./utils/create-new-component"
   },
   "keywords": [],
@@ -49,6 +49,7 @@
     "chroma-js": "^3.0.0",
     "mapbox-gl": "^3.19.1",
     "proj4": "^2.15.0",
+    "react-router-dom": "^7.13.2",
     "recharts": "^2.13.3",
     "shapefile": "^0.6.6",
     "wellknown": "^0.5.0"

@@ -16,7 +16,15 @@ const config = {
   },
   viteFinal: async (config) => {
     config.esbuild = { jsx: 'automatic' };
+    config.build = config.build || {};
+    config.build.rollupOptions = config.build.rollupOptions || {};
+    config.build.rollupOptions.output = {
+      entryFileNames: 'assets/[name].js',
+      chunkFileNames: 'assets/[name].js',
+      assetFileNames: 'assets/[name][extname]',
+    };
     return config;
   },
+  staticDirs: [{ from: '../public', to: '/', ignore: ['.env'] }],
 };
 export default config;

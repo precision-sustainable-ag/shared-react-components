@@ -59,3 +59,14 @@ MCCCLogo.args = {
     height: 'auto',
   },
 };
+
+// USDA Logo
+export const USDALogo = Template.bind({});
+USDALogo.args = {
+  council: 'USDA',
+  alt: 'USDA Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};
