@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
  * @param {string} params.material - Name of the raster material (used as the source/layer ID in Mapbox).
  * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
  * @param {number} params.color_steps - Number of steps in the map legend.
+ * @param {Object} params.discreteLabels - Optional mapping of discrete raster values to human-readable labels, with an optional `_colors` key for pinned colors.
  */
 const useRasterData = ({
   map,
@@ -23,6 +24,7 @@ const useRasterData = ({
   material = 'biomass',
   setRasterColorSteps,
   color_steps = 7,
+  discreteLabels = null,
 }) => {
   const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
@@ -58,7 +60,88 @@ const useRasterData = ({
 
   useEffect(() => {
     if (!map.current || !geojsonData || !isMapLoaded) return;
-    if (geojsonData.features && geojsonData.features.length > 0) {
+    if (!geojsonData.features || geojsonData.features.length === 0) return;
+
+    if (discreteLabels) {
+    const knownValues = Object.keys(discreteLabels)
+      .filter((k) => k !== '_colors')
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    const pinnedColors = discreteLabels._colors || {};
+
+    // Auto-assign colors from the rasterColors scale for values without a pinned color.
+    const scale = chroma.scale(rasterColors).colors(knownValues.length);
+    const valueColorMap = {};
+    knownValues.forEach((val, idx) => {
+      valueColorMap[val] = pinnedColors[val] || scale[idx];
+    });
+
+    const featuresWithColors = geojsonData.features.map((feature) => {
+      const rawVal = feature.properties.value;
+      const discreteVal = Math.round(rawVal);
+      const color = valueColorMap[discreteVal] || 'transparent';
+      return {
+        ...feature,
+        properties: {
+          ...feature.properties,
+          value: discreteVal,
+          color,
+        },
+      };
+    });
+
+    const processedGeojson = {
+      type: 'FeatureCollection',
+      features: featuresWithColors,
+    };
+    polygonsRef.current = processedGeojson;
+
+    const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
+    setRasterColorSteps(rasterColorsVals);
+
+    if (!map.current.getSource(`${material}Polygons`)) {
+      map.current.addSource(`${material}Polygons`, {
+        type: 'geojson',
+        data: processedGeojson,
+      });
+      map.current.addLayer({
+        id: `${material}Polygons`,
+        type: 'fill',
+        source: `${material}Polygons`,
+        paint: {
+          'fill-opacity': 0.5,
+          'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
+        },
+      });
+    } else {
+      map.current.getSource(`${material}Polygons`).setData(processedGeojson);
+    }
+
+    const handleClick = (e) => {
+      if (!e.features?.length) return;
+
+      const coords = e.features[0].geometry.coordinates.slice();
+      const val = e.features[0].properties.value;
+      const label = discreteLabels[val] ?? val;
+
+      new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
+        .setLngLat([
+          (coords[0][0][0] + coords[0][2][0]) / 2,
+          (coords[0][0][1] + coords[0][2][1]) / 2,
+        ])
+        .setHTML(`<div>${material}: ${label}</div>`)
+        .addTo(map.current);
+    };
+
+    map.current.on('click', `${material}Polygons`, handleClick);
+
+    return () => {
+      if (map.current.getLayer(`${material}Polygons`)) {
+        map.current.off('click', `${material}Polygons`, handleClick);
+      }
+    };
+    } else {
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;
       let biomassMin, biomassMax;
@@ -168,7 +251,7 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels]);
 };
 
 export default useRasterData;

@@ -110,6 +110,7 @@ const ReduxMap = ({
   unit,
   material,
   color_steps,
+  discreteLabels = null,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -598,6 +599,7 @@ const ReduxMap = ({
     material,
     setRasterColorSteps,
     color_steps,
+    discreteLabels,
   });
 
   if (!isMapSupported) {
@@ -875,6 +877,10 @@ ReduxMap.propTypes = {
    * Number of steps in the map legend
    */
   color_steps: PropTypes.number,
+  /**
+   * Optional map of {integer value : display label} for discrete raster mode.
+   */
+  discreteLabels: PropTypes.object,
   /**
    * Mapbox API access token.
    */
