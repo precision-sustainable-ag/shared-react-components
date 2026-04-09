@@ -14,6 +14,12 @@ import { useState } from 'react';
 const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' }) => {
   const [opacityValue, setOpacityValue] = useState(50);
 
+  /**
+   * colorStops[0]: [value, color] for continuous legend
+   * colorStops[0]: [value, color, label] for discrete legend
+   */
+  const isDiscrete = colorStops && colorStops.length > 0 && colorStops[0].length === 3;
+
   const handleOpacityChange = (event) => {
     const { value: val } = event.target;
     setOpacityValue(val);
@@ -38,16 +44,30 @@ const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' })
           />
         </div>
         <div className={styles.rasterlegend}>
-          <span className={styles.rastertitle}>
-            unit: &nbsp;
-            {unit}
-          </span>
-          {colorStops.map((stop, i) => (
-            <div key={i} className={styles.rasterlegenditem}>
-              <div className={styles.rasterlegendcolor} style={{ backgroundColor: stop[1] }} />
-              <div className={styles.rasterlegendvalue}>{stop[0]}</div>
-            </div>
-          ))}
+          {isDiscrete ? (
+            <>
+              <span className={styles.rastertitle}>{material}</span>
+              {colorStops.map(([value, color, label], i) => (
+                <div key={i} className={styles.rasterlegenditem}>
+                  <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
+                  <div className={styles.rasterlegendvalue}>{label}</div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <span className={styles.rastertitle}>
+                unit: &nbsp;
+                {unit}
+              </span>
+              {colorStops.map(([value, color], i) => (
+                <div key={i} className={styles.rasterlegenditem}>
+                  <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
+                  <div className={styles.rasterlegendvalue}>{value}</div>
+                </div>
+              ))}
+          </>
+          )}
         </div>
       </div>
     )

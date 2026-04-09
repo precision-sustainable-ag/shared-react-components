@@ -106,10 +106,12 @@ const ReduxMap = ({
   fitMapToPolygons = false,
   fitBounds = false,
   initRasterObject = {},
+  valueKey = 'value',
   rasterColors,
   unit,
   material,
   color_steps,
+  discreteLabels = null,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -236,24 +238,27 @@ const ReduxMap = ({
 
   // Sync features with drawing tool
   useEffect(() => {
-    if (drawerRef.current && features?.length) {
+    if (drawerRef.current) {
       try {
         drawerRef.current?.deleteAll?.();
 
-        if (Array.isArray(features[0])) {
-          features.forEach((f) => {
-            drawerRef.current.add({
-              type: 'FeatureCollection',
-              f,
+        if (features && features.length > 0) {
+          if (Array.isArray(features[0])) {
+            features.forEach((f) => {
+              drawerRef.current.add({
+                type: 'FeatureCollection',
+                f,
+              });
             });
-          });
-        } else {
-          features.forEach((feature) => {
-            drawerRef.current.add(feature);
-          });
-        }
-
-        setPolygonArea(calcArea(features));
+          } else {
+            features.forEach((feature) => {
+              drawerRef.current.add(feature);
+            });
+          }
+          setPolygonArea(calcArea(features));
+      } else {
+        setPolygonArea(0);
+      }
       } catch {
         // Silently handle failures (happens when importing shapefile without setter)
       }
@@ -590,11 +595,13 @@ const ReduxMap = ({
   useRasterData({
     map,
     initRasterObject,
+    valueKey,
     rasterColors,
     unit,
     material,
     setRasterColorSteps,
     color_steps,
+    discreteLabels,
   });
 
   if (!isMapSupported) {
@@ -857,6 +864,10 @@ ReduxMap.propTypes = {
    */
   initRasterObject: PropTypes.object,
   /**
+   * The GeoJSON feature property key to read raster values from. Defaults to 'value'.
+   */
+  valueKey: PropTypes.string,
+  /**
    * Color scale range used to map raster values to colors.
    */
   rasterColors: PropTypes.array,
@@ -872,6 +883,10 @@ ReduxMap.propTypes = {
    * Number of steps in the map legend
    */
   color_steps: PropTypes.number,
+  /**
+   * Optional map of {integer value : display label} for discrete raster mode.
+   */
+  discreteLabels: PropTypes.object,
   /**
    * Mapbox API access token.
    */
