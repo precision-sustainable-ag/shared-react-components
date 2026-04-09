@@ -1,9 +1,18 @@
-import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
+import {
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  Typography,
+  Dialog,
+  DialogContent,
+  Alert,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import PSAButton from '../Button';
 import PSADropdown from '../Dropdown';
-import PSALoadingSpinner from "../LoadingSpinner";
+import PSALoadingSpinner from '../LoadingSpinner';
 import PSATextField from '../Textfield';
 
 export const PSAForm = ({
@@ -21,8 +30,8 @@ export const PSAForm = ({
 
   const [alertData, setAlertData] = useState({
     open: false,
-    message: "",
-    severity: "success",
+    message: '',
+    severity: 'success',
   });
 
   const initialFormData = fields.reduce(
@@ -38,6 +47,7 @@ export const PSAForm = ({
 
   const [formData, setFormData] = useState(initialFormData);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <>
   useEffect(() => {
     const { state } = checkDisabled();
     setIsSubmitDisabled(state);
@@ -57,7 +67,7 @@ export const PSAForm = ({
         }));
       }
     });
-  }, [fields]);
+  }, [fields, formData]);
 
   const convertMessageArr = (arr) => {
     if (arr.length === 0) return '';
@@ -109,7 +119,7 @@ export const PSAForm = ({
   const submit = async () => {
     const { state, message } = checkDisabled();
     if (state) {
-      setAlertData({ open: true, message, severity: "error" });
+      setAlertData({ open: true, message, severity: 'error' });
       return;
     }
 
@@ -131,8 +141,8 @@ export const PSAForm = ({
         await handleSubmit(formData);
       } else {
         const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
         setAlertData({
@@ -140,13 +150,14 @@ export const PSAForm = ({
           message:
             response.status === 201
               ? submitMessage
-              : `Error ${response.status}. ${response.status === 400
-                ? "Bad Request"
-                : response.status === 422
-                  ? "Unprocessable Entry"
-                  : "Internal Server Error"
-              }`,
-          severity: response.status === 201 ? "success" : "error",
+              : `Error ${response.status}. ${
+                  response.status === 400
+                    ? 'Bad Request'
+                    : response.status === 422
+                      ? 'Unprocessable Entry'
+                      : 'Internal Server Error'
+                }`,
+          severity: response.status === 201 ? 'success' : 'error',
         });
         if (response.status === 201) {
           setFormData(initialFormData);
@@ -167,65 +178,64 @@ export const PSAForm = ({
         </Grid>
       </Grid>
 
-      {fields.filter((field) => !(field.type === "dropdown" && field.orientation === "horizontal")).map((field, index) => (
-        <Grid
-          key={index}
-          container
-          item
-          spacing={1}
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12}>
-            <Typography variant="h6">
-              {field.label}{" "}
-              {field.required && <span style={{ color: "red" }}>*</span>}
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body1">{field.description}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            {field.type === "text" && (
-              <PSATextField
-                {...field.props}
-                value={formData[field.name] || ""}
-                onChange={(event) => handleTextInputChange(event, field.name)}
-              />
-            )}
+      {fields
+        .filter((field) => !(field.type === 'dropdown' && field.orientation === 'horizontal'))
+        .map((field, index) => (
+          <Grid
+            key={index}
+            container
+            item
+            spacing={1}
+            justifyContent="flex-start"
+            alignItems="flex-start"
+          >
+            <Grid item xs={12}>
+              <Typography variant="h6">
+                {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1">{field.description}</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              {field.type === 'text' && (
+                <PSATextField
+                  {...field.props}
+                  value={formData[field.name] || ''}
+                  onChange={(event) => handleTextInputChange(event, field.name)}
+                />
+              )}
 
-            {/* Vertical dropdowns */}
-            {field.type === "dropdown" && (
-              <PSADropdown
-                {...field.props}
-                items={field.items}
-                SelectProps={{
-                  ...field.props?.SelectProps,
-                  value: formData[field.name] ?? "",
-                  onChange: (event) =>
-                    handleDropdownChange(event, field.name),
-                }}
-              />
-            )}
-            {field.type === "checkbox" && (
-              <FormGroup>
-                {field.options.map((checkbox, index) => (
-                  <FormControlLabel
-                    key={index}
-                    control={
-                      <Checkbox
-                        {...checkbox.props}
-                        checked={(formData.labels || []).includes(
-                          checkbox.props.name
-                        )}
-                        onChange={handleCheckboxChange}
-                      />
-                    }
-                    label={checkbox.label}
-                  />
-                ))}
-              </FormGroup>
-            )}
+              {/* Vertical dropdowns */}
+              {field.type === 'dropdown' && (
+                <PSADropdown
+                  {...field.props}
+                  items={field.items}
+                  SelectProps={{
+                    ...field.props?.SelectProps,
+                    value: formData[field.name] ?? '',
+                    onChange: (event) => handleDropdownChange(event, field.name),
+                  }}
+                />
+              )}
+              {field.type === 'checkbox' && (
+                <FormGroup>
+                  {field.options.map((checkbox, index) => (
+                    <FormControlLabel
+                      key={index}
+                      control={
+                        <Checkbox
+                          {...checkbox.props}
+                          checked={(formData.labels || []).includes(checkbox.props.name)}
+                          onChange={handleCheckboxChange}
+                        />
+                      }
+                      label={checkbox.label}
+                    />
+                  ))}
+                </FormGroup>
+              )}
+            </Grid>
           </Grid>
         ))}
 
@@ -274,7 +284,7 @@ export const PSAForm = ({
           <Grid key={index} item xs={12}>
             <PSAButton
               {...button.props}
-              onClick={button.action === "submit" ? submit : button.onClick}
+              onClick={button.action === 'submit' ? submit : button.onClick}
               disabled={isSubmitDisabled || isSubmitting}
             />
           </Grid>
@@ -287,12 +297,12 @@ export const PSAForm = ({
           justifyContent="center"
           alignItems="center"
           style={{
-            position: "fixed",
+            position: 'fixed',
             top: 0,
             left: 0,
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "rgba(255,255,255,0.6)",
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(255,255,255,0.6)',
             zIndex: 9999,
           }}
         >
@@ -300,10 +310,7 @@ export const PSAForm = ({
         </Grid>
       )}
 
-      <Dialog
-        open={alertData.open}
-        onClose={() => setAlertData({ ...alertData, open: false })}
-      >
+      <Dialog open={alertData.open} onClose={() => setAlertData({ ...alertData, open: false })}>
         <DialogContent>
           <Alert
             severity={alertData.severity}
