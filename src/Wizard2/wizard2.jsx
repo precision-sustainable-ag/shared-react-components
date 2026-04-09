@@ -1,0 +1,354 @@
+import {
+  ArrowBack as ArrowBackIcon,
+  ArrowForward as ArrowForwardIcon,
+  Block as BlockIcon,
+  Check as CheckIcon,
+  Close as CloseIcon,
+  Search as SearchIcon,
+} from '@mui/icons-material';
+import { Box, IconButton, Typography } from '@mui/material';
+import { useState } from 'react';
+import PSAButton from '../Button';
+
+import describesImage from './assets/describes.png';
+import nrcsImage from './assets/nrcs.png';
+import openingImage from './assets/opening.png';
+import questionsImage from './assets/questions.png';
+
+import { sx } from './styles';
+
+const Screen = ({ content, setScreen, next, screen }) => (
+  <Box sx={sx.overlay}>
+    <Box sx={sx.modal}>
+      {content.image && (
+        <Box sx={sx.imageWrapper}>
+          <Box component="img" src={content.image} sx={sx.image} />
+        </Box>
+      )}
+
+      <Box sx={sx.content}>
+        <IconButton sx={sx.close}>
+          <CloseIcon />
+        </IconButton>
+
+        <Box sx={sx.inner}>
+          {content.header && (
+            <Typography variant="h4" sx={sx.header}>
+              {content.header}
+            </Typography>
+          )}
+
+          {typeof content.content === 'string' ? (
+            <Typography variant="body1" sx={sx.body}>
+              {content.content}
+            </Typography>
+          ) : (
+            content.content
+          )}
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            mt: screen === 'opening' ? 0 : 'auto',
+          }}
+        >
+          {content.back && (
+            <PSAButton
+              sx={{ ...sx.buttonBase, ...sx.backButton }}
+              title={<Box sx={{ width: '100%', textAlign: 'center' }}>Back</Box>}
+              startIcon={<ArrowBackIcon sx={{ ...sx.arrowIcon, ...sx.arrowBackIcon }} />}
+              onClick={() => setScreen(content.back)}
+            />
+          )}
+
+          {content.next && (
+            <PSAButton
+              sx={{ ...sx.buttonBase, ...sx.nextButton }}
+              title={
+                <Box sx={{ width: '100%', textAlign: 'center' }}>{content.nextTitle || 'Next'}</Box>
+              }
+              endIcon={<ArrowForwardIcon sx={{ ...sx.arrowIcon, ...sx.arrowNextIcon }} />}
+              onClick={() => setScreen(next)}
+            />
+          )}
+        </Box>
+      </Box>
+    </Box>
+  </Box>
+); // Screen
+
+const Screen1 = ({ nrcsPractice, setNrcsPractice }) => (
+  <Box>
+    If you're not sure, you can click no.
+    <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+      <PSAButton
+        sx={{
+          ...sx.optionButton,
+          ...(nrcsPractice === 'yes' && sx.selectedButton),
+        }}
+        startIcon={<CheckIcon />}
+        title="Yes"
+        onClick={() => setNrcsPractice('yes')}
+      />
+
+      <PSAButton
+        sx={{
+          ...sx.optionButton,
+          ...(nrcsPractice === 'no' && sx.selectedButton),
+        }}
+        startIcon={<BlockIcon />}
+        title="No"
+        onClick={() => setNrcsPractice('no')}
+      />
+    </Box>
+  </Box>
+); // Screen1
+
+const Options = ({ options, selected, setSelected }) => (
+  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+    {options.map(([match, title]) => (
+      <PSAButton
+        sx={{
+          ...sx.fullOptionButton,
+          ...(selected === match && sx.selectedButton),
+        }}
+        key={match}
+        match={match}
+        title={title}
+        onClick={() => setSelected(match)}
+      />
+    ))}
+  </Box>
+); // Options
+
+const ScreenDescribes = ({ selected, setSelected }) => {
+  const options = [
+    ['selector', 'I need help picking a cover crop species.'],
+    ['questions', 'I have other questions related to cover crops.'],
+    ['neither', 'Neither of these describe me.'],
+  ];
+
+  return <Options options={options} selected={selected} setSelected={setSelected} />;
+}; // ScreenDescribes
+
+const ScreenQuestions = ({ question, setQuestion }) => {
+  const options = [
+    ['seeding', 'Support as I choose seeding rates'],
+    ['nitrogen', 'Estimation of the nitrogen my crops release'],
+    ['economic', 'Help making economic decisions'],
+    ['none', 'None of the above'],
+  ];
+
+  return <Options options={options} selected={question} setSelected={setQuestion} />;
+}; // ScreenQuestions
+
+const otherTools = [
+  {
+    name: 'Cover Crop Selector',
+    description: 'If you want help selecting a species for planting',
+    link: 'https://covercrop-selector.org/',
+  },
+  {
+    name: 'Seeding Rate Calculator',
+    description: 'If you want help choosing a seeding rate for your cover crops',
+    link: 'https://covercrop-seedcalc.org/',
+  },
+  {
+    name: 'Cover Crop Nitrogen Calculator',
+    description: 'If you want an estimate of the nitrogen released from your cover crops',
+    link: 'https://covercrop-ncalc.org/',
+  },
+  {
+    name: 'Cover Crop Economic Calculator',
+    description: 'If you want to learn about your cover crops economics',
+    link: 'https://covercrop-econ.org/',
+  },
+  {
+    name: 'VegSpec',
+    description: 'If you want solutions based on NRCS conservation practices',
+    link: 'https://vegspec.org/location',
+  },
+];
+
+const RecommendationScreen = ({ tool, description, onStartOver }) => {
+  const link = otherTools.find((t) => t.name === tool)?.link;
+
+  return (
+    <Box sx={sx.resultWrap}>
+      {link && <Typography sx={sx.resultLead}>We recommend using</Typography>}
+      <Typography component="a" href={link} sx={sx.resultTool}>
+        {tool}
+      </Typography>
+      {!link && (
+        <Typography sx={sx.resultLead}>None of these tools fit your exact needs.</Typography>
+      )}
+      <Typography sx={sx.resultBody}>{description}</Typography>
+      <Box sx={sx.resultButtons}>
+        {link && (
+          <Box component="a" href={link}>
+            <PSAButton sx={sx.primaryCta} title="Check it Out" endIcon={<ArrowForwardIcon />} />
+          </Box>
+        )}
+
+        <PSAButton
+          sx={sx.secondaryCta}
+          title={<Box sx={{ width: '100%', textAlign: 'center' }}>Start Over</Box>}
+          endIcon={<SearchIcon sx={{ fontSize: 18 }} />}
+          onClick={onStartOver}
+        />
+      </Box>
+      <Box sx={sx.otherToolsBox}>
+        <Typography sx={sx.otherToolsHeader}>Explore Other Tools</Typography>
+
+        {otherTools
+          .filter((t) => t.name !== tool)
+          .map(({ name, description, link }) => (
+            <Box key={`${name}-${description}`} sx={sx.otherToolRow}>
+              <Typography component="a" href={link} sx={sx.otherToolLink}>
+                {name}
+              </Typography>
+              <Typography sx={sx.otherToolText}>{description}</Typography>
+            </Box>
+          ))}
+      </Box>
+    </Box>
+  );
+}; // RecommendationScreen
+
+export const PSAWizard2 = ({ onFinish, onClose }) => {
+  const [screen, setScreen] = useState('opening');
+  const [nrcsPractice, setNrcsPractice] = useState(null);
+  const [selected, setSelected] = useState('');
+  const [question, setQuestion] = useState('');
+
+  const recScreen = ({ tool, description }) => (
+    <RecommendationScreen
+      tool={tool}
+      description={description}
+      onStartOver={() => {
+        setScreen('opening');
+        setNrcsPractice(null);
+        setSelected('');
+        setQuestion('');
+      }}
+    />
+  );
+
+  const content = {
+    opening: {
+      header: 'Looking for the right Decision Support Tool?',
+      content:
+        'We can help! We will guide you through a few quick questions to match you with the best web-based tool for your goals.',
+      next: 'nrcsPractice',
+      nextTitle: 'Get Started',
+      image: openingImage,
+    },
+    nrcsPractice: {
+      header: 'Are you planting for a NRCS conservation practice?',
+      content: <Screen1 nrcsPractice={nrcsPractice} setNrcsPractice={setNrcsPractice} />,
+      back: 'opening',
+      next: 'userGoal',
+      image: nrcsImage,
+    },
+    userGoal: {
+      header: 'What best describes you?',
+      content: <ScreenDescribes selected={selected} setSelected={setSelected} />,
+      back: 'nrcsPractice',
+      next: 'vegspec',
+      image: describesImage,
+    },
+    questions: {
+      header: 'What cover crop support would be most useful to you?',
+      content: <ScreenQuestions question={question} setQuestion={setQuestion} />,
+      back: 'userGoal',
+      next: 'vegspec',
+      image: questionsImage,
+    },
+    vegspec: {
+      content: recScreen({
+        tool: 'VegSpec',
+        description:
+          'VegSpec lets you search a robust database to find plants that meet the needs of your specific site, work for your selected practice, and meet your planting purpose. VegSpec can also help you to generate seed mixes and estimate project costs.',
+      }),
+    },
+    selector: {
+      content: recScreen({
+        tool: 'Cover Crop Selector',
+        description:
+          'This program helps growers choose the most suitable cover crop species by filtering options based on their location, goals, and farming conditions.',
+      }),
+    },
+    economic: {
+      content: recScreen({
+        tool: 'Cover Crop Economic Calculator',
+        description:
+          'This program helps growers understand the impact of cover crops on profitability when making crop management changes.',
+      }),
+    },
+    seeding: {
+      content: recScreen({
+        tool: 'Seeding Rate Calculator',
+        description:
+          'This program helps growers determine optimal seeding rates for cover crops based on their location, species, and management goals',
+      }),
+    },
+    nitrogen: {
+      content: recScreen({
+        tool: 'Cover Crop Nitrogen Calculator',
+        description:
+          'This program helps growers with decisions regarding cover crop residue persistence, as well as the amount and timing of nitrogen availability.',
+      }),
+    },
+    none: {
+      content: recScreen({
+        tool: 'No Match',
+        description:
+          'Thank you for your interest in our decision support tools. Unfortunately none of these matched exactly with your needs. You can always retake the quiz and pick different answers, or follow along as we release new updates.',
+      }),
+    },
+  };
+
+  const getNextScreen = (screen) => {
+    if (screen === 'nrcsPractice') {
+      return (
+        {
+          yes: 'vegspec',
+          no: 'userGoal',
+        }[nrcsPractice] || content[screen].next
+      );
+    }
+
+    if (screen === 'userGoal') {
+      return (
+        {
+          selector: 'selector',
+          questions: 'questions',
+          neither: 'vegspec',
+        }[selected] || 'vegspec'
+      );
+    }
+
+    if (screen === 'questions') {
+      return (
+        {
+          economic: 'economic',
+          seeding: 'seeding',
+          nitrogen: 'nitrogen',
+          none: 'none',
+        }[question] || content[screen].next
+      );
+    }
+
+    return content[screen].next || null;
+  };
+
+  return (
+    <Screen
+      content={content[screen]}
+      screen={screen}
+      setScreen={setScreen}
+      next={getNextScreen(screen)}
+    />
+  );
+};
