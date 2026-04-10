@@ -3,76 +3,69 @@ import {
   ArrowForward as ArrowForwardIcon,
   Block as BlockIcon,
   Check as CheckIcon,
-  Close as CloseIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import PSAButton from '../Button';
 
-import describesImage from './assets/describes.png';
-import nrcsImage from './assets/nrcs.png';
-import openingImage from './assets/opening.png';
-import questionsImage from './assets/questions.png';
+import describesImage from './assets/describes.jpg';
+import nrcsImage from './assets/nrcs.jpg';
+import openingImage from './assets/opening.jpg';
+import questionsImage from './assets/questions.jpg';
 
 import { sx } from './styles';
 
 const Screen = ({ content, setScreen, next, screen }) => (
-  <Box sx={sx.overlay}>
-    <Box sx={sx.modal}>
-      {content.image && (
-        <Box sx={sx.imageWrapper}>
-          <Box component="img" src={content.image} sx={sx.image} />
-        </Box>
-      )}
+  <Box sx={sx.modal}>
+    {content.image && (
+      <Box sx={sx.imageWrapper}>
+        <Box component="img" src={content.image} sx={sx.image} />
+      </Box>
+    )}
 
-      <Box sx={sx.content}>
-        <IconButton sx={sx.close}>
-          <CloseIcon />
-        </IconButton>
+    <Box sx={sx.content}>
+      <Box sx={sx.inner}>
+        {content.header && (
+          <Typography variant="h4" sx={sx.header}>
+            {content.header}
+          </Typography>
+        )}
 
-        <Box sx={sx.inner}>
-          {content.header && (
-            <Typography variant="h4" sx={sx.header}>
-              {content.header}
-            </Typography>
-          )}
+        {typeof content.content === 'string' ? (
+          <Typography variant="body1" sx={sx.body}>
+            {content.content}
+          </Typography>
+        ) : (
+          content.content
+        )}
+      </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          mt: screen === 'opening' ? 0 : 'auto',
+        }}
+      >
+        {content.back && (
+          <PSAButton
+            sx={{ ...sx.buttonBase, ...sx.backButton }}
+            title={<Box sx={{ width: '100%', textAlign: 'center' }}>Back</Box>}
+            startIcon={<ArrowBackIcon sx={{ ...sx.arrowIcon, ...sx.arrowBackIcon }} />}
+            onClick={() => setScreen(content.back)}
+          />
+        )}
 
-          {typeof content.content === 'string' ? (
-            <Typography variant="body1" sx={sx.body}>
-              {content.content}
-            </Typography>
-          ) : (
-            content.content
-          )}
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            gap: 2,
-            mt: screen === 'opening' ? 0 : 'auto',
-          }}
-        >
-          {content.back && (
-            <PSAButton
-              sx={{ ...sx.buttonBase, ...sx.backButton }}
-              title={<Box sx={{ width: '100%', textAlign: 'center' }}>Back</Box>}
-              startIcon={<ArrowBackIcon sx={{ ...sx.arrowIcon, ...sx.arrowBackIcon }} />}
-              onClick={() => setScreen(content.back)}
-            />
-          )}
-
-          {content.next && (
-            <PSAButton
-              sx={{ ...sx.buttonBase, ...sx.nextButton }}
-              title={
-                <Box sx={{ width: '100%', textAlign: 'center' }}>{content.nextTitle || 'Next'}</Box>
-              }
-              endIcon={<ArrowForwardIcon sx={{ ...sx.arrowIcon, ...sx.arrowNextIcon }} />}
-              onClick={() => setScreen(next)}
-            />
-          )}
-        </Box>
+        {content.next && (
+          <PSAButton
+            sx={{ ...sx.buttonBase, ...sx.nextButton }}
+            title={
+              <Box sx={{ width: '100%', textAlign: 'center' }}>{content.nextTitle || 'Next'}</Box>
+            }
+            endIcon={<ArrowForwardIcon sx={{ ...sx.arrowIcon, ...sx.arrowNextIcon }} />}
+            onClick={() => setScreen(next)}
+          />
+        )}
       </Box>
     </Box>
   </Box>
@@ -216,7 +209,7 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
   );
 }; // RecommendationScreen
 
-export const PSAWizard2 = ({ onFinish, onClose }) => {
+export const PSAWizard2 = () => {
   const [screen, setScreen] = useState('opening');
   const [nrcsPractice, setNrcsPractice] = useState(null);
   const [selected, setSelected] = useState('');
@@ -255,14 +248,14 @@ export const PSAWizard2 = ({ onFinish, onClose }) => {
       header: 'What best describes you?',
       content: <ScreenDescribes selected={selected} setSelected={setSelected} />,
       back: 'nrcsPractice',
-      next: 'vegspec',
+      next: 'none',
       image: describesImage,
     },
     questions: {
       header: 'What cover crop support would be most useful to you?',
       content: <ScreenQuestions question={question} setQuestion={setQuestion} />,
       back: 'userGoal',
-      next: 'vegspec',
+      next: 'none',
       image: questionsImage,
     },
     vegspec: {
@@ -325,7 +318,7 @@ export const PSAWizard2 = ({ onFinish, onClose }) => {
           selector: 'selector',
           questions: 'questions',
           neither: 'vegspec',
-        }[selected] || 'vegspec'
+        }[selected] || 'none'
       );
     }
 

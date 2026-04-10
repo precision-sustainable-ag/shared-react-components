@@ -38,7 +38,7 @@ import {
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
 import PSALogoDisplayer from '../LogoDisplayer';
-import { PSAWizard } from '../Wizard';
+import { PSAWizard2 } from '../Wizard2';
 
 export const PSAHeader = ({
   title,
@@ -53,14 +53,19 @@ export const PSAHeader = ({
   const theme = useTheme();
   council = council || 'PSA';
 
+  const [titlePadding, setTitlePadding] = useState(2);
+  const [dialogMaxWidth, setDialogMaxWidth] = useState('lg');
+
   const showHistory = !!loadHistory;
 
-  const menu = (text, icon, path, item) => ({
+  const menu = (text, icon, path, item, titlePadding = 2, maxWidth = 'auto') => ({
     text,
     icon,
     onClick: () => {
       if (item?.dialog) {
         setDialog(item.dialog);
+        setTitlePadding(titlePadding);
+        setDialogMaxWidth(maxWidth);
       } else {
         window.history.pushState({}, '', path);
         window.dispatchEvent(new PopStateEvent('popstate'));
@@ -76,9 +81,14 @@ export const PSAHeader = ({
     } else if (item === 'Feedback' || item.text === 'Feedback') {
       return menu('Feedback', item.icon ?? <ChatBubbleOutline />, '/Feedback', item);
     } else if (item === 'Wizard' || item.text === 'Wizard') {
-      return menu('Wizard', item.icon ?? <AutoFixHighOutlined />, '/Wizard', {
-        dialog: item.dialog || <PSAWizard />,
-      });
+      return menu(
+        'Wizard',
+        item.icon ?? <AutoFixHighOutlined />,
+        '/Wizard',
+        { dialog: item.dialog || <PSAWizard2 /> },
+        0,
+        1050,
+      );
     } else if (item === 'Notes' || item.text === 'Notes') {
       return menu('Release Notes', item.icon ?? <TextSnippetOutlined />, '/Notes', item);
     }
@@ -279,8 +289,18 @@ export const PSAHeader = ({
 
   return (
     <>
-      <Dialog open={!!dialog} onClose={() => setDialog(null)} fullWidth maxWidth="lg">
-        <DialogTitle sx={{ m: 0, p: 2 }}>
+      <Dialog
+        open={!!dialog}
+        onClose={() => setDialog(null)}
+        fullWidth
+        maxWidth="lg"
+        slotProps={{
+          paper: {
+            sx: { maxWidth: dialogMaxWidth },
+          },
+        }}
+      >
+        <DialogTitle sx={{ m: 0, p: titlePadding }}>
           <IconButton
             aria-label="close"
             onClick={() => setDialog(null)}
@@ -288,12 +308,13 @@ export const PSAHeader = ({
               position: 'absolute',
               right: 8,
               top: 8,
+              zIndex: 9999,
             }}
           >
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent>{dialog}</DialogContent>
+        <DialogContent sx={{ p: 0 }}>{dialog}</DialogContent>
       </Dialog>
 
       <Grid2

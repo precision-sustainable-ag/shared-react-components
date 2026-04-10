@@ -1,31 +1,10 @@
 export const sx = {
-  overlay: {
-    position: 'fixed',
-    maxWidth: 800,
-    inset: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.25)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    p: 2,
-    zIndex: 1300,
-    transform: {
-      xs: 'scale(0.92)',
-      sm: 'scale(0.96)',
-      md: 'scale(1)',
-    },
-    transformOrigin: 'center top',
-  },
-
   modal: {
     fontFamily: 'Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif',
     maxWidth: 1050,
     minHeight: 450,
-    backgroundColor: '#fff',
-    borderRadius: 4,
     overflow: 'hidden',
     display: 'flex',
-    boxShadow: '0 8px 24px rgba(0,0,0,0.18)',
   },
 
   imageWrapper: {
