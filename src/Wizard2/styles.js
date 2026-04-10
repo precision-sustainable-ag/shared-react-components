@@ -103,6 +103,12 @@ export const sx = {
     },
     justifyContent: 'flex-end',
     pr: 2,
+    '&.Mui-disabled': {
+      backgroundColor: '#ccc',
+      color: '#888',
+      boxShadow: 'none',
+      cursor: 'not-allowed',
+    },
   },
 
   arrowIcon: {

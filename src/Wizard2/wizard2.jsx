@@ -16,7 +16,7 @@ import questionsImage from './assets/questions.jpg';
 
 import { sx } from './styles';
 
-const Screen = ({ content, setScreen, next, screen }) => (
+const Screen = ({ content, setScreen, next, screen, disabledNext }) => (
   <Box sx={sx.modal}>
     {content.image && (
       <Box sx={sx.imageWrapper}>
@@ -59,6 +59,7 @@ const Screen = ({ content, setScreen, next, screen }) => (
         {content.next && (
           <PSAButton
             sx={{ ...sx.buttonBase, ...sx.nextButton }}
+            disabled={disabledNext}
             title={
               <Box sx={{ width: '100%', textAlign: 'center' }}>{content.nextTitle || 'Next'}</Box>
             }
@@ -336,12 +337,18 @@ export const PSAWizard2 = () => {
     return content[screen].next || null;
   };
 
+  let disabledNext = false;
+  if (screen === 'nrcsPractice') disabledNext = !nrcsPractice;
+  else if (screen === 'userGoal') disabledNext = !selected;
+  else if (screen === 'questions') disabledNext = !question;
+
   return (
     <Screen
       content={content[screen]}
       screen={screen}
       setScreen={setScreen}
       next={getNextScreen(screen)}
+      disabledNext={disabledNext}
     />
   );
 };
