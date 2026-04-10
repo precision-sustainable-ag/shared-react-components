@@ -25,7 +25,7 @@ const Screen = ({ content, setScreen, next, screen, disabledNext }) => (
     )}
 
     <Box sx={sx.content}>
-      <Box sx={sx.inner}>
+      <Box sx={{ ...sx.inner, flex: screen === 'opening' ? 0 : 1 }}>
         {content.header && (
           <Typography variant="h4" sx={sx.header}>
             {content.header}
@@ -44,7 +44,6 @@ const Screen = ({ content, setScreen, next, screen, disabledNext }) => (
         sx={{
           display: 'flex',
           gap: 2,
-          mt: screen === 'opening' ? 0 : 'auto',
         }}
       >
         {content.back && (

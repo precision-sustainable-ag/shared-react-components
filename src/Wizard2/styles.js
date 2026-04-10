@@ -37,7 +37,10 @@ export const sx = {
   },
 
   inner: {
+    display: 'flex',
+    flexDirection: 'column',
     maxWidth: 'calc(100% - 24px)',
+    justifyContent: 'center',
   },
 
   header: {
