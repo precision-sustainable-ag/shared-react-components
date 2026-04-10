@@ -233,7 +233,7 @@ export const sx = {
   },
 
   otherToolsHeader: {
-    fontSize: 22,
+    fontSize: 'clamp(18px, calc(2vw), 22px)',
     fontWeight: 700,
     color: '#555',
     mb: 2,
@@ -242,22 +242,28 @@ export const sx = {
 
   otherToolRow: {
     display: 'grid',
-    gridTemplateColumns: '190px 1fr',
-    columnGap: 2,
-    rowGap: 1.5,
+    gridTemplateColumns: {
+      xs: '1fr',
+      md: '250px 1fr',
+    },
+    columnGap: 1,
     alignItems: 'start',
     mb: 1.5,
   },
 
   otherToolLink: {
     color: '#6d8e57',
+    textDecoration: 'none',
     textDecorationColor: '#6d8e57',
     fontSize: 16,
     textAlign: 'left',
+    ':hover': {
+      textDecoration: 'underline',
+    },
   },
 
   otherToolText: {
-    fontSize: 16,
+    fontSize: 'clamp(14px, calc(1.5vw), 16px)',
     color: '#222',
     textAlign: 'left',
   },

@@ -16,6 +16,20 @@ import questionsImage from './assets/questions.jpg';
 
 import { sx } from './styles';
 
+const descriptions = {
+  economic:
+    'This program helps growers understand the impact of cover crops on profitability when making crop management changes.',
+  nitrogen:
+    'This program helps growers with decisions regarding cover crop residue persistence, as well as the amount and timing of nitrogen availability.',
+  seeding:
+    'This program helps growers determine optimal seeding rates for cover crops based on their location, species, and management goals',
+  selector:
+    'This program helps growers choose the most suitable cover crop species by filtering options based on their location, goals, and farming conditions.',
+  vegspec:
+    'This program lets you search a robust database to find plants that meet the needs of your specific site, work for your selected practice, and meet your planting purpose. VegSpec can also help you to generate seed mixes and estimate project costs.',
+  none: 'Thank you for your interest in our decision support tools. Unfortunately none of these matched exactly with your needs. You can always retake the quiz and pick different answers, or follow along as we release new updates.',
+};
+
 const Screen = ({ content, setScreen, next, screen, disabledNext }) => (
   <Box sx={sx.modal}>
     {content.image && (
@@ -139,27 +153,27 @@ const ScreenQuestions = ({ question, setQuestion }) => {
 const otherTools = [
   {
     name: 'Cover Crop Selector',
-    description: 'If you want help selecting a species for planting',
+    description: descriptions.selector,
     link: 'https://covercrop-selector.org/',
   },
   {
     name: 'Seeding Rate Calculator',
-    description: 'If you want help choosing a seeding rate for your cover crops',
+    description: descriptions.seeding,
     link: 'https://covercrop-seedcalc.org/',
   },
   {
     name: 'Cover Crop Nitrogen Calculator',
-    description: 'If you want an estimate of the nitrogen released from your cover crops',
+    description: descriptions.nitrogen,
     link: 'https://covercrop-ncalc.org/',
   },
   {
     name: 'Cover Crop Economic Calculator',
-    description: 'If you want to learn about your cover crops economics',
+    description: descriptions.economic,
     link: 'https://covercrop-econ.org/',
   },
   {
     name: 'VegSpec',
-    description: 'If you want solutions based on NRCS conservation practices',
+    description: descriptions.vegspec,
     link: 'https://vegspec.org/location',
   },
 ];
@@ -261,43 +275,37 @@ export const PSAWizard2 = () => {
     vegspec: {
       content: recScreen({
         tool: 'VegSpec',
-        description:
-          'VegSpec lets you search a robust database to find plants that meet the needs of your specific site, work for your selected practice, and meet your planting purpose. VegSpec can also help you to generate seed mixes and estimate project costs.',
+        description: descriptions.vegspec,
       }),
     },
     selector: {
       content: recScreen({
         tool: 'Cover Crop Selector',
-        description:
-          'This program helps growers choose the most suitable cover crop species by filtering options based on their location, goals, and farming conditions.',
+        description: descriptions.selector,
       }),
     },
     economic: {
       content: recScreen({
         tool: 'Cover Crop Economic Calculator',
-        description:
-          'This program helps growers understand the impact of cover crops on profitability when making crop management changes.',
+        description: descriptions.economic,
       }),
     },
     seeding: {
       content: recScreen({
         tool: 'Seeding Rate Calculator',
-        description:
-          'This program helps growers determine optimal seeding rates for cover crops based on their location, species, and management goals',
+        description: descriptions.seeding,
       }),
     },
     nitrogen: {
       content: recScreen({
         tool: 'Cover Crop Nitrogen Calculator',
-        description:
-          'This program helps growers with decisions regarding cover crop residue persistence, as well as the amount and timing of nitrogen availability.',
+        description: descriptions.nitrogen,
       }),
     },
     none: {
       content: recScreen({
         tool: 'No Match',
-        description:
-          'Thank you for your interest in our decision support tools. Unfortunately none of these matched exactly with your needs. You can always retake the quiz and pick different answers, or follow along as we release new updates.',
+        description: descriptions.none,
       }),
     },
   };
