@@ -35,8 +35,6 @@ import {
   useState,
 } from 'react';
 
-import { useLocation } from 'react-router-dom';
-
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
 import PSALogoDisplayer from '../LogoDisplayer';
@@ -52,12 +50,12 @@ export const PSAHeader = ({
   loadHistory,
   getStore,
 }) => {
-  const location = useLocation();
   const theme = useTheme();
   council = council || 'PSA';
 
   const [titlePadding, setTitlePadding] = useState(2);
   const [dialogMaxWidth, setDialogMaxWidth] = useState('lg');
+  const [path, setPath] = useState(window.location.pathname);
 
   const showHistory = !!loadHistory;
 
@@ -136,12 +134,17 @@ export const PSAHeader = ({
 
   useEffect(() => {
     void title;
+    void path;
     setCompact(false);
-    setReady(false);
-    setHeight(null);
     setAnchor(null);
     breakWidthRef.current = 0;
-  }, [title]);
+  }, [title, path]);
+
+  useEffect(() => {
+    const handler = () => setPath(window.location.pathname);
+    window.addEventListener('popstate', handler);
+    return () => window.removeEventListener('popstate', handler);
+  }, []);
 
   useEffect(() => {
     if (!natural) return;
@@ -203,14 +206,18 @@ export const PSAHeader = ({
     const img = parentEl.querySelector('img');
 
     if (img) {
-      img.addEventListener('load', handleImageLoad);
+      if (img.complete) {
+        handleImageLoad();
+      } else {
+        img.addEventListener('load', handleImageLoad);
+      }
     } else {
       setReady(true);
     }
 
     return () => {
       ro.disconnect();
-      if (img) img.removeEventListener('load', handleImageLoad);
+      if (img && !img.complete) img.removeEventListener('load', handleImageLoad);
     };
   }, [checkOverlap]);
 
@@ -347,7 +354,6 @@ export const PSAHeader = ({
             >
               <Box>
                 <PSALogoDisplayer
-                  key={`${council}-${location.pathname}`}
                   council={council}
                   alt={council}
                   onLoad={handleLoad}
