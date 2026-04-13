@@ -18,13 +18,13 @@ import { sx } from './styles';
 
 const descriptions = {
   economic:
-    'This program helps growers understand the impact of cover crops on profitability when making crop management changes.',
+    'This program helps you understand the impact of cover crops on profitability when making crop management changes.',
   nitrogen:
-    'This program helps growers with decisions regarding cover crop residue persistence, as well as the amount and timing of nitrogen availability.',
+    'This program helps you with decisions regarding cover crop residue persistence, as well as the amount and timing of nitrogen availability.',
   seeding:
-    'This program helps growers determine optimal seeding rates for cover crops based on their location, species, and management goals',
+    'This program helps you determine optimal seeding rates for cover crops based on their location, species, and management goals.',
   selector:
-    'This program helps growers choose the most suitable cover crop species by filtering options based on their location, goals, and farming conditions.',
+    'This program helps you choose the most suitable cover crop species by filtering options based on their location, goals, and farming conditions.',
   vegspec:
     'This program lets you search a robust database to find plants that meet the needs of your specific site, work for your selected practice, and meet your planting purpose. VegSpec can also help you to generate seed mixes and estimate project costs.',
   none: 'Thank you for your interest in our decision support tools. Unfortunately none of these matched exactly with your needs. You can always retake the quiz and pick different answers, or follow along as we release new updates.',

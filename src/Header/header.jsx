@@ -35,6 +35,8 @@ import {
   useState,
 } from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
 import PSALogoDisplayer from '../LogoDisplayer';
@@ -50,6 +52,7 @@ export const PSAHeader = ({
   loadHistory,
   getStore,
 }) => {
+  const location = useLocation();
   const theme = useTheme();
   council = council || 'PSA';
 
@@ -344,6 +347,7 @@ export const PSAHeader = ({
             >
               <Box>
                 <PSALogoDisplayer
+                  key={`${council}-${location.pathname}`}
                   council={council}
                   alt={council}
                   onLoad={handleLoad}
@@ -472,24 +476,27 @@ PSAHeader.propTypes = {
   /**
    * Navigation items for the header
    */
-  navContent: PropTypes.arrayOf(
-    PropTypes.shape({
-      text: PropTypes.string,
-      icon: PropTypes.node,
-      onClick: PropTypes.func,
-      props: PropTypes.object,
-      buttonSx: PropTypes.object,
-      textSx: PropTypes.object,
-      component: PropTypes.node,
-      dialog: PropTypes.node,
+  navContent: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        text: PropTypes.string,
+        icon: PropTypes.node,
+        onClick: PropTypes.func,
+        props: PropTypes.object,
+        buttonSx: PropTypes.object,
+        textSx: PropTypes.object,
+        component: PropTypes.node,
+        dialog: PropTypes.node,
 
-      /**
-       * Optional overrides.
-       */
-      variant: PropTypes.oneOf(['standard', 'color', 'text']),
-      rightIcon: PropTypes.bool,
-    }),
-  ),
+        /**
+         * Optional overrides.
+         */
+        variant: PropTypes.oneOf(['standard', 'color', 'text']),
+        rightIcon: PropTypes.bool,
+      }),
+    ),
+  ]),
   loadHistory: PropTypes.func,
   getStore: PropTypes.func,
 };
