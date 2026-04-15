@@ -256,9 +256,9 @@ const ReduxMap = ({
             });
           }
           setPolygonArea(calcArea(features));
-      } else {
-        setPolygonArea(0);
-      }
+        } else {
+          setPolygonArea(0);
+        }
       } catch {
         // Silently handle failures (happens when importing shapefile without setter)
       }

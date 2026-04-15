@@ -192,20 +192,24 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
       )}
       <Typography sx={sx.resultBody}>{description}</Typography>
       <Box sx={sx.resultButtons}>
-        {link && (
-          <Box component="a" href={link}>
-            <PSAButton sx={sx.primaryCta} title="Check it Out" endIcon={<ArrowForwardIcon />} />
-          </Box>
-        )}
-
         <PSAButton
           sx={sx.secondaryCta}
           title={<Box sx={{ width: '100%', textAlign: 'center' }}>Start Over</Box>}
           endIcon={<SearchIcon sx={{ fontSize: 18 }} />}
           onClick={onStartOver}
         />
+
+        {link && (
+          <Box component="a" href={link}>
+            <PSAButton sx={sx.primaryCta} title="Check it Out" endIcon={<ArrowForwardIcon />} />
+          </Box>
+        )}
       </Box>
-      <Box sx={sx.otherToolsBox}>
+
+      <Typography component="a" href="https://develop.vegspec.org/" sx={sx.otherToolsHeader}>
+        Explore all of our Tools
+      </Typography>
+      {/* <Box sx={sx.otherToolsBox}>
         <Typography sx={sx.otherToolsHeader}>Explore Other Tools</Typography>
 
         {otherTools
@@ -218,7 +222,7 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
               <Typography sx={sx.otherToolText}>{description}</Typography>
             </Box>
           ))}
-      </Box>
+      </Box> */}
     </Box>
   );
 }; // RecommendationScreen

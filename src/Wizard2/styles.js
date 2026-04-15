@@ -235,9 +235,13 @@ export const sx = {
   otherToolsHeader: {
     fontSize: 'clamp(18px, calc(2vw), 22px)',
     fontWeight: 700,
-    color: '#555',
+    color: '#6d8e57',
     mb: 2,
     textAlign: 'left',
+    textDecoration: 'none',
+    ':hover': {
+      textDecoration: 'underline',
+    },
   },
 
   otherToolRow: {
@@ -254,7 +258,6 @@ export const sx = {
   otherToolLink: {
     color: '#6d8e57',
     textDecoration: 'none',
-    textDecorationColor: '#6d8e57',
     fontSize: 16,
     textAlign: 'left',
     ':hover': {
