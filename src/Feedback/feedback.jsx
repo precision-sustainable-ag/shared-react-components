@@ -1,8 +1,21 @@
-import { Checkbox, FormControlLabel, FormGroup, Grid, Snackbar, Typography } from '@mui/material';
+import { Box, Checkbox, FormControlLabel, FormGroup, Snackbar, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import PSAButton from '../Button';
 import PSATextField from '../Textfield';
+
+const requiredMark = (
+  <Typography component="span" variant="h6" sx={{ color: 'red' }}>
+    *
+  </Typography>
+);
+
+const sectionSx = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 1,
+};
+
 export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
   const [snackbarData, setSnackbarData] = useState({
     open: false,
@@ -54,9 +67,12 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
     }
     return { state: false, message: '' };
   };
+
   useEffect(() => {
+    void consentRedux;
     pirschAnalytics('Visited Page', { meta: { visited: 'Feedback' } });
-  }, [consentRedux]);
+  }, [consentRedux, pirschAnalytics]);
+
   useEffect(() => {
     document.title = 'Feedback';
   }, []);
@@ -131,70 +147,60 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         return response.json();
       })
       .catch((error) => {
-        // eslint-disable-next-line
         console.error(error);
       });
   };
 
+  const disabledState = checkDisabled();
+
   return (
-    <Grid
-      container
-      rowSpacing={5}
-      style={{
-        paddingLeft: '10%',
-        paddingRight: '10%',
-        paddingTop: '3%',
-        paddingBottom: '3%',
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 5,
+        px: '10%',
+        py: '3%',
         textAlign: 'left',
       }}
     >
       {/* Title */}
-      <Grid container item spacing={1} justifyContent="center">
-        <Grid item xs={12}>
-          <Typography variant="h3">{title}</Typography>
-        </Grid>
-      </Grid>
+      <Box>
+        <Typography variant="h3">{title}</Typography>
+      </Box>
 
       {/* Feedback Title */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
+      <Box sx={sectionSx}>
+        <Box>
+          <Typography variant="h6" component="span">
             Title
-          </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-            *
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
-        </Grid>
-        <Grid item xs={12}>
+          </Typography>{' '}
+          {requiredMark}
+        </Box>
+        <Typography variant="body1">Give your feedback a short descriptive title.</Typography>
+        <Box>
           <PSATextField
             placeholder="Enter Your Title"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'title')}
             data-test="feedback_title"
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       {/* Feedback Messsage */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
-            Message{' '}
-          </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-            *
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">
-            Explain your feedback as thoroughly as you can. Your feedback will help us improve the
-            species selection experience. You can attach a screenshot of your feedback below.
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Box sx={sectionSx}>
+        <Box>
+          <Typography variant="h6" component="span">
+            Message
+          </Typography>{' '}
+          {requiredMark}
+        </Box>
+        <Typography variant="body1">
+          Explain your feedback as thoroughly as you can. Your feedback will help us improve the
+          species selection experience. You can attach a screenshot of your feedback below.
+        </Typography>
+        <Box>
           <PSATextField
             placeholder="Enter Your Feedback"
             multiline
@@ -204,105 +210,92 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
             onChange={(event) => handleTextInputChange(event, 'comments')}
             data-test="feedback_message"
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
-      {/* Feedback Topic */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6" display="inline-block">
-            Topic{' '}
-          </Typography>
-          <Typography variant="h6" display="inline-block" style={{ color: 'red' }}>
-            *
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">What is this feedback about?</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={handleCheckboxChange}
-                  name="About the Cover Crop Data"
-                  data-test="feedback_data"
-                />
-              }
-              label="About the Cover Crop Data"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={handleCheckboxChange}
-                  name="About the Website"
-                  data-test="feedback_website"
-                />
-              }
-              label="About the Website"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox onChange={handleCheckboxChange} name="Other" data-test="feedback_other" />
-              }
-              label="Other"
-            />
-          </FormGroup>
-        </Grid>
-      </Grid>
-
+      <Box sx={sectionSx}>
+        <Box>
+          <Typography variant="h6" component="span">
+            Topic
+          </Typography>{' '}
+          {requiredMark}
+        </Box>
+        <Typography variant="body1">What is this feedback about?</Typography>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={handleCheckboxChange}
+                name="About the Cover Crop Data"
+                data-test="feedback_data"
+              />
+            }
+            label="About the Cover Crop Data"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                onChange={handleCheckboxChange}
+                name="About the Website"
+                data-test="feedback_website"
+              />
+            }
+            label="About the Website"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox onChange={handleCheckboxChange} name="Other" data-test="feedback_other" />
+            }
+            label="Other"
+          />
+        </FormGroup>
+      </Box>
       {/* Name */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6">Name </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Box sx={sectionSx}>
+        <Typography variant="h6">Name</Typography>
+        <Box>
           <PSATextField
             placeholder="Enter Name"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'name')}
             data-test="feedback_name"
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       {/* Email */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        <Grid item xs={12}>
-          <Typography variant="h6">Email </Typography>
-        </Grid>
-        <Grid item xs={12}>
+      <Box sx={sectionSx}>
+        <Typography variant="h6">Email</Typography>
+        <Box>
           <PSATextField
             placeholder="Enter Email"
             variant="outlined"
             onChange={(event) => handleTextInputChange(event, 'email')}
             data-test="feedback_email"
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       {/* Submit */}
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
-        {checkDisabled().state && (
-          <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: 'red' }} data-test="feedback_alert">
-              {checkDisabled().message}. Please fill all required fields before submitting.
-            </Typography>
-          </Grid>
+      <Box sx={sectionSx}>
+        {disabledState.state && (
+          <Typography variant="body1" sx={{ color: 'red' }} data-test="feedback_alert">
+            {disabledState.message}. Please fill all required fields before submitting.
+          </Typography>
         )}
-        <Grid item xs={12}>
+        <Box>
           <PSAButton
             title="Submit"
-            disabled={checkDisabled().state}
+            disabled={disabledState.state}
             onClick={handleSubmit}
             size="large"
             variant="outlined"
             data-test="feedback_submit"
             buttonType=""
           />
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
+
       <Snackbar
         open={snackbarData.open}
         autoHideDuration={5000}
@@ -312,7 +305,7 @@ export function PSAFeedback({ title, label, consentRedux, pirschAnalytics }) {
         color={snackbarData.color}
         data-test="feedback_snackbar"
       />
-    </Grid>
+    </Box>
   );
 }
 
