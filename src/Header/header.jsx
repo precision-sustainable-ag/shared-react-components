@@ -482,9 +482,9 @@ PSAHeader.propTypes = {
   /**
    * Navigation items for the header
    */
-  navContent: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(
+  navContent: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
       PropTypes.shape({
         text: PropTypes.string,
         icon: PropTypes.node,
@@ -501,8 +501,8 @@ PSAHeader.propTypes = {
         variant: PropTypes.oneOf(['standard', 'color', 'text']),
         rightIcon: PropTypes.bool,
       }),
-    ),
-  ]),
+    ]),
+  ),
   loadHistory: PropTypes.func,
   getStore: PropTypes.func,
 };
