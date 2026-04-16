@@ -8,10 +8,6 @@ import {
   TextSnippetOutlined,
 } from '@mui/icons-material';
 
-import * as MUI from '@mui/material';
-
-const Grid2 = MUI.Grid2 || MUI.Unstable_Grid2;
-
 import {
   Box,
   Button,
@@ -326,18 +322,17 @@ export const PSAHeader = ({
         </DialogTitle>
         <DialogContent sx={{ p: 0 }}>{dialog}</DialogContent>
       </Dialog>
-
-      <Grid2
+      <Box
         ref={mainRef}
-        container
-        alignItems="stretch"
-        wrap="nowrap"
         sx={{
+          display: 'flex',
+          alignItems: 'stretch',
+          flexWrap: 'nowrap',
           visibility: ready ? 'visible' : 'hidden',
           position: 'relative',
         }}
       >
-        <Grid2
+        <Box
           ref={leftRef}
           sx={{
             display: 'flex',
@@ -366,7 +361,7 @@ export const PSAHeader = ({
             </Button>
           ) : null}
 
-          <Grid2
+          <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
@@ -374,7 +369,7 @@ export const PSAHeader = ({
               minWidth: 0,
             }}
           >
-            <Grid2 sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography
                 variant="header"
                 fontSize={council === 'USDA' ? '20px' : 'clamp(20px, 2vw, 32px)'}
@@ -384,10 +379,10 @@ export const PSAHeader = ({
               >
                 {title}
               </Typography>
-            </Grid2>
+            </Box>
 
             {subtitle && (
-              <Grid2 sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography
                     variant="subtitle"
@@ -403,12 +398,12 @@ export const PSAHeader = ({
                     {subtitle}
                   </Typography>
                 </Box>
-              </Grid2>
+              </Box>
             )}
-          </Grid2>
-        </Grid2>
+          </Box>
+        </Box>
 
-        <Grid2
+        <Box
           ref={rightRef}
           sx={{
             position: 'relative',
@@ -450,8 +445,8 @@ export const PSAHeader = ({
               </Box>
             </Box>
           </ClickAwayListener>
-        </Grid2>
-      </Grid2>
+        </Box>
+      </Box>
     </>
   );
 };
