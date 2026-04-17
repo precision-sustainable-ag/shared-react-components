@@ -3,6 +3,7 @@ import {
   ArrowForward as ArrowForwardIcon,
   Block as BlockIcon,
   Check as CheckIcon,
+  Refresh as RefreshIcon,
   Search as SearchIcon,
 } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
@@ -192,12 +193,14 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
       )}
       <Typography sx={sx.resultBody}>{description}</Typography>
       <Box sx={sx.resultButtons}>
-        <PSAButton
-          sx={sx.secondaryCta}
-          title={<Box sx={{ width: '100%', textAlign: 'center' }}>Start Over</Box>}
-          endIcon={<SearchIcon sx={{ fontSize: 18 }} />}
-          onClick={onStartOver}
-        />
+        <Box component="a" href="https://develop.vegspec.org/">
+          <PSAButton
+            sx={sx.secondaryCta}
+            title={<Box sx={{ width: '100%', textAlign: 'center' }}>Other Tools</Box>}
+            endIcon={<SearchIcon sx={{ fontSize: 18 }} />}
+            onClick={onStartOver}
+          />
+        </Box>
 
         {link && (
           <Box component="a" href={link}>
@@ -205,10 +208,10 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
           </Box>
         )}
       </Box>
-
-      <Typography component="a" href="https://develop.vegspec.org/" sx={sx.otherToolsHeader}>
-        Explore all of our Tools
+      <Typography sx={sx.otherToolsHeader} onClick={onStartOver}>
+        Start Over <RefreshIcon fontSize="small" />
       </Typography>
+
       {/* <Box sx={sx.otherToolsBox}>
         <Typography sx={sx.otherToolsHeader}>Explore Other Tools</Typography>
 

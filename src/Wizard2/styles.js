@@ -233,15 +233,15 @@ export const sx = {
   },
 
   otherToolsHeader: {
-    fontSize: 'clamp(18px, calc(2vw), 22px)',
-    fontWeight: 700,
-    color: '#6d8e57',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: 0.5,
+    textDecoration: 'underline',
+    verticalAlign: 'bottom',
+    color: '#555',
     mb: 2,
     textAlign: 'left',
-    textDecoration: 'none',
-    ':hover': {
-      textDecoration: 'underline',
-    },
+    cursor: 'pointer',
   },
 
   otherToolRow: {

@@ -472,8 +472,8 @@ const ReduxMap = ({
       });
 
       if (cursorRef.current) {
-        cursorRef.current.style.left = `${e.originalEvent.pageX - 58}px`;
-        cursorRef.current.style.top = `${e.originalEvent.pageY - 25}px`;
+        cursorRef.current.style.left = `${e.originalEvent.clientX - 58}px`;
+        cursorRef.current.style.top = `${e.originalEvent.clientY - 25}px`;
       }
     };
 
