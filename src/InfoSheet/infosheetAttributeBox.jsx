@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import PSATooltip from '../Tooltip';
 
@@ -9,21 +9,19 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
     // case 'texts':
     default:
       return (
-        <Grid
-          item
-          xs={12}
-          md={6}
+        <Box
           className="info-sheet-item"
           sx={{
+            width: { xs: '100%', md: '50%' },
             wordWrap: 'break-word',
             padding: { xs: 0, md: '8px', lg: '8px 16px' },
             ...sx,
           }}
         >
-          <Grid
-            container
+          <Box
             sx={{
               display: 'flex',
+              flexWrap: 'wrap',
               alignItems: isText ? 'flex-start' : 'center',
               backgroundColor: '#F5F5F5',
               borderTop: { xs: '1px solid #e6e3e3', md: '' },
@@ -34,11 +32,11 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
               height: '100%',
             }}
           >
-            <Grid
-              item
-              xs={isText ? 12 : 6}
+            {/* Label Section */}
+            <Box
               className={`attribute-label${isText ? '-text' : ''}`}
               sx={{
+                width: isText ? '100%' : '50%',
                 textAlign: isText ? 'center' : 'inherit',
               }}
             >
@@ -46,11 +44,7 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
                 placement="top-end"
                 enterTouchDelay={0}
                 title={description}
-                PopperProps={{
-                  style: {
-                    zIndex: 10000000,
-                  },
-                }}
+                PopperProps={{ style: { zIndex: 10000000 } }}
                 arrow
                 tooltipContent={
                   <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
@@ -58,9 +52,13 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
                   </Typography>
                 }
               />
-            </Grid>
+            </Box>
 
-            <Grid item xs={isText ? 12 : 6} className={`attribute-value${isText ? '-text' : ''}`}>
+            {/* Value Section */}
+            <Box
+              className={`attribute-value${isText ? '-text' : ''}`}
+              sx={{ width: isText ? '100%' : '50%' }}
+            >
               <Typography
                 sx={{
                   display: 'block',
@@ -69,9 +67,9 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
               >
                 {value}
               </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
+            </Box>
+          </Box>
+        </Box>
       );
   }
 };

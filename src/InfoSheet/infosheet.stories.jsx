@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useState } from 'react';
 import PSAAccordion from '../Accordion';
 import { PSAInfoSheet, PSAInfoSheetAttributeBox } from './index';
@@ -69,7 +69,7 @@ export const SampleSelectorInfoSheet = () => {
                 </Typography>
               }
               detailsContent={
-                <Grid container>
+                <Box sx={{ display: 'flex' }}>
                   <PSAInfoSheetAttributeBox
                     key={0}
                     description={'description'}
@@ -83,7 +83,7 @@ export const SampleSelectorInfoSheet = () => {
                     label={'sample note'}
                     value={'value'}
                   />
-                </Grid>
+                </Box>
               }
             />
           </Box>
