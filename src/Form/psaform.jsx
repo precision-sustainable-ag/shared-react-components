@@ -1,12 +1,12 @@
 import {
+  Alert,
+  Box,
   Checkbox,
-  FormControlLabel,
-  FormGroup,
-  Grid,
-  Typography,
   Dialog,
   DialogContent,
-  Alert,
+  FormControlLabel,
+  FormGroup,
+  Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -171,72 +171,55 @@ export const PSAForm = ({
   };
 
   return (
-    <Grid container rowSpacing={5} style={{ padding: '3% 10%', textAlign: 'left' }}>
-      <Grid container item spacing={1} justifyContent="center">
-        <Grid item xs={12}>
-          <Typography variant="h3">{headerTitle}</Typography>
-        </Grid>
-      </Grid>
+    <Box sx={{ display: 'grid', rowGap: 5, padding: '3% 10%', textAlign: 'left' }}>
+      <Typography variant="h3">{headerTitle}</Typography>
 
       {fields
         .filter((field) => !(field.type === 'dropdown' && field.orientation === 'horizontal'))
-        .map((field, index) => (
-          <Grid
-            key={index}
-            container
-            item
-            spacing={1}
-            justifyContent="flex-start"
-            alignItems="flex-start"
-          >
-            <Grid item xs={12}>
-              <Typography variant="h6">
-                {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1">{field.description}</Typography>
-            </Grid>
-            <Grid item xs={12}>
-              {field.type === 'text' && (
-                <PSATextField
-                  {...field.props}
-                  value={formData[field.name] || ''}
-                  onChange={(event) => handleTextInputChange(event, field.name)}
-                />
-              )}
+        .map((field) => (
+          <Box key={field.label} sx={{ display: 'grid', gap: 1, placeItems: 'start' }}>
+            <Typography variant="h6">
+              {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
+            </Typography>
+            <Typography variant="body1">{field.description}</Typography>
+            {field.type === 'text' && (
+              <PSATextField
+                {...field.props}
+                value={formData[field.name] || ''}
+                onChange={(event) => handleTextInputChange(event, field.name)}
+              />
+            )}
 
-              {/* Vertical dropdowns */}
-              {field.type === 'dropdown' && (
-                <PSADropdown
-                  {...field.props}
-                  items={field.items}
-                  SelectProps={{
-                    ...field.props?.SelectProps,
-                    value: formData[field.name] ?? '',
-                    onChange: (event) => handleDropdownChange(event, field.name),
-                  }}
-                />
-              )}
-              {field.type === 'checkbox' && (
-                <FormGroup>
-                  {field.options.map((checkbox, index) => (
-                    <FormControlLabel
-                      key={index}
-                      control={
-                        <Checkbox
-                          {...checkbox.props}
-                          checked={(formData.labels || []).includes(checkbox.props.name)}
-                          onChange={handleCheckboxChange}
-                        />
-                      }
-                      label={checkbox.label}
-                    />
-                  ))}
-                </FormGroup>
-              )}
-            </Grid>
-          </Grid>
+            {/* Vertical dropdowns */}
+            {field.type === 'dropdown' && (
+              <PSADropdown
+                {...field.props}
+                items={field.items}
+                SelectProps={{
+                  ...field.props?.SelectProps,
+                  value: formData[field.name] ?? '',
+                  onChange: (event) => handleDropdownChange(event, field.name),
+                }}
+              />
+            )}
+            {field.type === 'checkbox' && (
+              <FormGroup>
+                {field.options.map((checkbox) => (
+                  <FormControlLabel
+                    key={checkbox.label}
+                    control={
+                      <Checkbox
+                        {...checkbox.props}
+                        checked={(formData.labels || []).includes(checkbox.props.name)}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
+                    label={checkbox.label}
+                  />
+                ))}
+              </FormGroup>
+            )}
+          </Box>
         ))}
 
       {/* Horizontal dropdowns */}
@@ -246,57 +229,56 @@ export const PSAForm = ({
         );
         return (
           horizontalDropdowns.length > 0 && (
-            <Grid item xs={12}>
-              <Typography variant="h6">{horizontalDropdowns[0].label}</Typography>
-            </Grid>
+            <Typography variant="h6">{horizontalDropdowns[0].label}</Typography>
           )
         );
       })()}
-      <Grid item xs={12}>
-        <Grid container spacing={2} alignItems="center">
-          {fields
-            .filter((field) => field.type === 'dropdown' && field.orientation === 'horizontal')
-            .map((field) => (
-              <Grid item key={field.name}>
-                <PSADropdown
-                  {...field.props}
-                  items={field.items}
-                  SelectProps={{
-                    ...field.props?.SelectProps,
-                    value: formData[field.name] ?? '',
-                    onChange: (event) => handleDropdownChange(event, field.name),
-                  }}
-                />
-              </Grid>
-            ))}
-        </Grid>
-      </Grid>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        {fields
+          .filter((field) => field.type === 'dropdown' && field.orientation === 'horizontal')
+          .map((field) => (
+            <PSADropdown
+              key={field.name}
+              {...field.props}
+              items={field.items}
+              SelectProps={{
+                ...field.props?.SelectProps,
+                value: formData[field.name] ?? '',
+                onChange: (event) => handleDropdownChange(event, field.name),
+              }}
+            />
+          ))}
+      </Box>
 
-      <Grid container item spacing={1} justifyContent="flex-start" alignItems="flex-start">
+      <Box
+        sx={{
+          display: 'grid',
+          gap: 1,
+          placeContent: 'start',
+          width: 'max-content',
+        }}
+      >
         {isSubmitDisabled && (
-          <Grid item xs={12}>
-            <Typography variant="body1" style={{ color: 'red' }}>
-              {checkDisabled().message}. Please fill all required fields before submitting.
-            </Typography>
-          </Grid>
+          <Typography variant="body1" style={{ color: 'red' }}>
+            {checkDisabled().message}. Please fill all required fields before submitting.
+          </Typography>
         )}
-        {buttons.map((button, index) => (
-          <Grid key={index} item xs={12}>
+        {buttons.map((button) => (
+          <Box key={button.action}>
             <PSAButton
               {...button.props}
               onClick={button.action === 'submit' ? submit : button.onClick}
               disabled={isSubmitDisabled || isSubmitting}
             />
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
 
       {isSubmitting && (
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          style={{
+        <Box
+          sx={{
+            display: 'grid',
+            placeItems: 'center',
             position: 'fixed',
             top: 0,
             left: 0,
@@ -307,7 +289,7 @@ export const PSAForm = ({
           }}
         >
           <PSALoadingSpinner />
-        </Grid>
+        </Box>
       )}
 
       <Dialog open={alertData.open} onClose={() => setAlertData({ ...alertData, open: false })}>
@@ -320,7 +302,7 @@ export const PSAForm = ({
           </Alert>
         </DialogContent>
       </Dialog>
-    </Grid>
+    </Box>
   );
 };
 
