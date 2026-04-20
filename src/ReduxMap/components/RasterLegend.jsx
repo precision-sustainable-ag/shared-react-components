@@ -66,7 +66,7 @@ const RasterLegend = ({ map, colorStops, unit = 'kg/ha', material = 'biomass' })
                   <div className={styles.rasterlegendvalue}>{value}</div>
                 </div>
               ))}
-          </>
+            </>
           )}
         </div>
       </div>

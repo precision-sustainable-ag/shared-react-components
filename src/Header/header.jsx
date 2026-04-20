@@ -1,8 +1,8 @@
 import {
   AutoFixHighOutlined,
-  ChatBubbleOutline,
+  ChatBubbleOutlined,
   Close as CloseIcon,
-  HelpOutline,
+  HelpOutlined,
   InfoOutlined,
   Menu as MenuIcon,
   TextSnippetOutlined,
@@ -74,9 +74,9 @@ export const PSAHeader = ({
     if (item === 'About' || item.text === 'About') {
       return menu('About', item.icon ?? <InfoOutlined />, '/About', item);
     } else if (item === 'Help' || item.text === 'Help') {
-      return menu('Help', item.icon ?? <HelpOutline />, '/Help', item);
+      return menu('Help', item.icon ?? <HelpOutlined />, '/Help', item);
     } else if (item === 'Feedback' || item.text === 'Feedback') {
-      return menu('Feedback', item.icon ?? <ChatBubbleOutline />, '/Feedback', item);
+      return menu('Feedback', item.icon ?? <ChatBubbleOutlined />, '/Feedback', item);
     } else if (item === 'Wizard' || item.text === 'Wizard') {
       return menu(
         'Wizard',

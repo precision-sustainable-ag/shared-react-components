@@ -6,8 +6,10 @@ import { styled, TextField } from '@mui/material';
 export const PSATextField = styled((props) => (
   <TextField
     {...props}
-    InputLabelProps={{ shrink: true }}
     sx={{ fieldset: props.label ? {} : { top: 0 } }}
+    slotProps={{
+      inputLabel: { shrink: true },
+    }}
   />
 ))(({ theme }) => ({
   marginTop: '20px',

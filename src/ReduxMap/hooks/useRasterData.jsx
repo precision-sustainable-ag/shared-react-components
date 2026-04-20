@@ -78,85 +78,89 @@ const useRasterData = ({
     const layerId = `${material}Polygons_${valueKey}`;
 
     if (discreteLabels) {
-    const knownValues = Object.keys(discreteLabels)
-      .filter((k) => k !== '_colors')
-      .map(Number)
-      .sort((a, b) => a - b);
+      const knownValues = Object.keys(discreteLabels)
+        .filter((k) => k !== '_colors')
+        .map(Number)
+        .sort((a, b) => a - b);
 
-    const pinnedColors = discreteLabels._colors || {};
+      const pinnedColors = discreteLabels._colors || {};
 
-    // Auto-assign colors from the rasterColors scale for values without a pinned color.
-    const scale = chroma.scale(rasterColors).colors(knownValues.length);
-    const valueColorMap = {};
-    knownValues.forEach((val, idx) => {
-      valueColorMap[val] = pinnedColors[val] || scale[idx];
-    });
+      // Auto-assign colors from the rasterColors scale for values without a pinned color.
+      const scale = chroma.scale(rasterColors).colors(knownValues.length);
+      const valueColorMap = {};
+      knownValues.forEach((val, idx) => {
+        valueColorMap[val] = pinnedColors[val] || scale[idx];
+      });
 
-    const featuresWithColors = geojsonData.features.map((feature) => {
-      const rawVal = feature.properties[valueKey];
-      const discreteVal = Math.round(rawVal);
-      const color = valueColorMap[discreteVal] || 'transparent';
-      return {
-        ...feature,
-        properties: {
-          ...feature.properties,
-          value: discreteVal,
-          color,
-        },
+      const featuresWithColors = geojsonData.features.map((feature) => {
+        const rawVal = feature.properties[valueKey];
+        const discreteVal = Math.round(rawVal);
+        const color = valueColorMap[discreteVal] || 'transparent';
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            value: discreteVal,
+            color,
+          },
+        };
+      });
+
+      const processedGeojson = {
+        type: 'FeatureCollection',
+        features: featuresWithColors,
       };
-    });
+      polygonsRef.current = processedGeojson;
 
-    const processedGeojson = {
-      type: 'FeatureCollection',
-      features: featuresWithColors,
-    };
-    polygonsRef.current = processedGeojson;
+      const rasterColorsVals = knownValues.map((val) => [
+        val,
+        valueColorMap[val],
+        discreteLabels[val],
+      ]);
+      setRasterColorSteps(rasterColorsVals);
 
-    const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
-    setRasterColorSteps(rasterColorsVals);
-
-    if (!map.current.getSource(layerId)) {
-      map.current.addSource(layerId, {
-        type: 'geojson',
-        data: processedGeojson,
-      });
-      map.current.addLayer({
-        id: layerId,
-        type: 'fill',
-        source: layerId,
-        paint: {
-          'fill-opacity': 0.5,
-          'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
-        },
-      });
-    } else {
-      map.current.getSource(layerId).setData(processedGeojson);
-    }
-
-    const handleClick = (e) => {
-      if (!e.features?.length) return;
-
-      const coords = e.features[0].geometry.coordinates.slice();
-      const val = e.features[0].properties[valueKey];
-      const label = discreteLabels[val] ?? val;
-
-      new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-        .setLngLat([
-          (coords[0][0][0] + coords[0][2][0]) / 2,
-          (coords[0][0][1] + coords[0][2][1]) / 2,
-        ])
-        .setHTML(`<div>${material}: ${label}</div>`)
-        .addTo(map.current);
-    };
-
-    map.current.on('click', layerId, handleClick);
-
-    return () => {
-      if (map.current) {
-        map.current.off('click', layerId, handleClick);
-        removeLayerAndSource(layerId);
+      if (!map.current.getSource(layerId)) {
+        map.current.addSource(layerId, {
+          type: 'geojson',
+          data: processedGeojson,
+        });
+        map.current.addLayer({
+          id: layerId,
+          type: 'fill',
+          source: layerId,
+          paint: {
+            'fill-opacity': 0.5,
+            'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
+          },
+        });
+      } else {
+        map.current.getSource(layerId).setData(processedGeojson);
       }
-    };
+
+      const handleClick = (e) => {
+        if (!e.features?.length) return;
+
+        const coords = e.features[0].geometry.coordinates.slice();
+        const val = e.features[0].properties[valueKey];
+        const label = discreteLabels[val] ?? val;
+
+        new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
+          .setLngLat([
+            (coords[0][0][0] + coords[0][2][0]) / 2,
+            (coords[0][0][1] + coords[0][2][1]) / 2,
+          ])
+          .setHTML(`<div>${material}: ${label}</div>`)
+          .addTo(map.current);
+      };
+
+      map.current.on('click', layerId, handleClick);
+
+      return () => {
+        if (map.current) {
+          map.current.off('click', layerId, handleClick);
+          removeLayerAndSource(layerId);
+        }
+      };
     } else {
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;

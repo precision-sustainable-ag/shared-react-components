@@ -1,4 +1,4 @@
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ChatBubbleOutlinedIcon from '@mui/icons-material/ChatBubbleOutlined';
 // import { fn } from '@storybook/test';
 import PSAAuthButton from '../Authbutton';
 import PSADropdown from '../Dropdown';
@@ -26,7 +26,7 @@ const navContent = [
     type: 'button',
     variant: 'text',
     text: 'Release Notes',
-    icon: <ChatBubbleOutlineIcon />,
+    icon: <ChatBubbleOutlinedIcon />,
     rightIcon: true,
     // onClick: fn(),
     style: { fontSize: '1rem' },
@@ -35,7 +35,7 @@ const navContent = [
     type: 'button',
     variant: 'text',
     text: 'About',
-    icon: <ChatBubbleOutlineIcon />,
+    icon: <ChatBubbleOutlinedIcon />,
     rightIcon: true,
     // onClick: fn(),
   },
@@ -43,7 +43,7 @@ const navContent = [
     type: 'button',
     variant: 'text',
     text: 'Feedback',
-    icon: <ChatBubbleOutlineIcon />,
+    icon: <ChatBubbleOutlinedIcon />,
     rightIcon: true,
     // onClick: fn(),
   },
