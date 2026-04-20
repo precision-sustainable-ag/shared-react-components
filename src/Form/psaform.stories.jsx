@@ -8,7 +8,7 @@ export default {
     layout: 'centered',
     docs: {
       description: {
-        component: `This is a custom Form component based on MUI's \`Grid, Typography, Snackbar, Checkbox, FormGroup,\` that allows for capturing user input, validating required fields, and providing feedback.`,
+        component: `This is a custom Form component based on MUI's \`Typography, Snackbar, Checkbox, FormGroup,\` that allows for capturing user input, validating required fields, and providing feedback.`,
       },
     },
   },
