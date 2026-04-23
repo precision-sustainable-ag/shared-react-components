@@ -373,9 +373,9 @@ export const PSAHeader = ({
               <Typography
                 variant="header"
                 fontSize={council === 'USDA' ? '20px' : 'clamp(20px, 2vw, 32px)'}
-                whiteSpace="nowrap"
                 data-test="header_title"
                 color="black"
+                noWrap
               >
                 {title}
               </Typography>
