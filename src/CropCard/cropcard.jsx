@@ -420,7 +420,7 @@ export const PSACropCard = ({
 /** PropTypes for better type checking */
 PSACropCard.propTypes = {
   /** Common name for the species (required) */
-  species: PropTypes.string.isRequired,
+  species: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   /** The cultivar name. */
   cultivar: PropTypes.string,
   /** The scientific name. */
