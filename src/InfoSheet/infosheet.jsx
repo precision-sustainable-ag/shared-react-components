@@ -11,6 +11,7 @@ export const PSAInfoSheet = ({ open, setOpen, title, content, ...props }) => {
       maxWidth="lg"
       aria-labelledby="infosheet-title"
       {...props}
+      sx={{ zIndex: 9999, ...props.sx }}
     >
       <DialogTitle
         id="infosheet-title"

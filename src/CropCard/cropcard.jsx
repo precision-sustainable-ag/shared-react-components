@@ -90,6 +90,7 @@ export const PSACropImage = ({
         onClose={() => setOpen(false)}
         maxWidth="xl"
         width="100%"
+        sx={{ zIndex: 9999 }}
         slotProps={{
           backdrop: {
             sx: {
