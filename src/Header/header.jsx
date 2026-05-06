@@ -166,6 +166,7 @@ export const PSAHeader = ({
 
   const checkOverlap = useCallback(() => {
     requestAnimationFrame(() => {
+      if (!leftRef.current || !rightRef.current || !mainRef.current) return;
       const lw = leftRef.current.scrollWidth;
       const rl = rightRef.current.getBoundingClientRect().left - 10;
       const sw = mainRef.current.clientWidth;
