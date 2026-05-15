@@ -16,7 +16,14 @@ import { useEffect, useState } from 'react';
 import PSAFigmaButton from '../FigmaButton';
 
 const StepLight = ({ strokeColor }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="43"
+    height="43"
+    viewBox="0 0 43 43"
+    fill="none"
+    aria-hidden="true"
+  >
     <circle
       cx="21.4318"
       cy="21.4318"
@@ -29,7 +36,14 @@ const StepLight = ({ strokeColor }) => (
 );
 
 const StepDark = ({ strokeColor }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="43"
+    height="43"
+    viewBox="0 0 43 43"
+    fill="none"
+    aria-hidden="true"
+  >
     <circle
       cx="21.5001"
       cy="21.4318"
@@ -42,7 +56,14 @@ const StepDark = ({ strokeColor }) => (
 );
 
 const StepActive = ({ strokeColor }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="42"
+    height="42"
+    viewBox="0 0 42 42"
+    fill="none"
+    aria-hidden="true"
+  >
     <circle cx="21" cy="21" r="20" fill="#334A03" stroke={strokeColor} strokeWidth="17" />
     <circle cx="21" cy="21" r="19" stroke="#334A03" strokeWidth="3" />
   </svg>
@@ -75,7 +96,6 @@ export const PSAStepper = ({
   steps = [],
   maxAvailableStep,
   onStepClick = () => {},
-  boxProps = {},
   stepperProps = {},
   stepProps = {},
   stepButtonProps = {},
@@ -101,7 +121,7 @@ export const PSAStepper = ({
 
   const getStepIcon = (currStep, activeStep) => {
     const baseIcon =
-      maxAvailableStep != undefined
+      maxAvailableStep !== undefined
         ? (() => {
             if (activeStep === currStep) return <StepActive strokeColor={strokeColor} />;
             if (maxAvailableStep < currStep) return <StepLight strokeColor={strokeColor} />;
@@ -114,7 +134,7 @@ export const PSAStepper = ({
           })();
 
     const getTextColor =
-      maxAvailableStep != undefined
+      maxAvailableStep !== undefined
         ? () => {
             if (activeStep === currStep) return 'white';
             if (maxAvailableStep >= currStep) return 'white';
@@ -202,7 +222,7 @@ export const PSAStepper = ({
     >
       {steps.map((step, index) => (
         <Step
-          key={index}
+          key={step}
           completed={index < activeStep}
           disabled={maxAvailableStep !== undefined ? maxAvailableStep < index : false}
           {...stepProps}
