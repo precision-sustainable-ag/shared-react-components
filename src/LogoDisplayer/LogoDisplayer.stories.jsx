@@ -70,3 +70,14 @@ USDALogo.args = {
     height: 'auto',
   },
 };
+
+// PSA-USDA Logo
+export const USDAPSALogo = Template.bind({});
+USDAPSALogo.args = {
+  council: 'USDA-PSA',
+  alt: 'USDA-PSA Logo',
+  style: {
+    maxWidth: '100%',
+    height: 'auto',
+  },
+};

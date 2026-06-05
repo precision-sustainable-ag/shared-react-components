@@ -6,6 +6,7 @@ import necccIcon from '../assets/favicons/neccc-favicon.ico';
 import psaIcon from '../assets/favicons/psa-favicon.ico';
 import scccIcon from '../assets/favicons/sccc-favicon.ico';
 import usdaIcon from '../assets/favicons/usda-favicon.ico';
+import usda_psaIcon from '../assets/favicons/usda-psa-favicon.ico';
 import wcccIcon from '../assets/favicons/wccc-favicon.ico';
 
 import mccc from '../assets/images/mwccc_logo.png';
@@ -13,6 +14,7 @@ import neccc from '../assets/images/neccc_logo.png';
 import psa from '../assets/images/PSA_logo.png';
 import sccc from '../assets/images/sccc_logo.png';
 import usda from '../assets/images/usda_logo.png';
+import usda_psa from '../assets/images/usda_psa_logo.png';
 import wccc from '../assets/images/wccc_logo.png';
 
 export const PSALogoDisplayer = ({ council, alt, style, onLoad }) => {
@@ -26,6 +28,8 @@ export const PSALogoDisplayer = ({ council, alt, style, onLoad }) => {
         return { logo: mccc, favicon: mcccIcon };
       case 'WCCC':
         return { logo: wccc, favicon: wcccIcon };
+      case 'USDA-PSA':
+        return { logo: usda_psa, favicon: usda_psaIcon };
       case 'USDA':
         return { logo: usda, favicon: usdaIcon };
       default:
