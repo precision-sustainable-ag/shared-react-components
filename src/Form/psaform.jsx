@@ -24,6 +24,7 @@ export const PSAForm = ({
   buttons,
   handleSubmit,
   onFormChange,
+  isDarkMode = false,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -171,10 +172,12 @@ export const PSAForm = ({
   };
 
   return (
-    <Grid container rowSpacing={5} style={{ padding: '3% 10%', textAlign: 'left' }}>
+    <Grid container rowSpacing={5} style={{ padding: '3% 10%', textAlign: 'left', backgroundColor: isDarkMode ? '#000' : '#fff' }}>
       <Grid container item spacing={1} justifyContent="center">
         <Grid item xs={12}>
-          <Typography variant="h3">{headerTitle}</Typography>
+          <Typography variant="h3" style={{ color: isDarkMode ? '#aaa' : '#000' }}>
+            {headerTitle}
+          </Typography>
         </Grid>
       </Grid>
 
@@ -190,16 +193,26 @@ export const PSAForm = ({
             alignItems="flex-start"
           >
             <Grid item xs={12}>
-              <Typography variant="h6">
+              <Typography variant="h6" style={{ color: isDarkMode ? '#aaa' : '#000' }}>
                 {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1">{field.description}</Typography>
+              <Typography variant="body1" style={{ color: isDarkMode ? 'rgb(170, 170, 170, 0.8)' : '#333' }}>
+                {field.description}
+              </Typography>
             </Grid>
             <Grid item xs={12}>
               {field.type === 'text' && (
                 <PSATextField
+                  sx={{ 
+                    "& input": {
+                      color: isDarkMode ? '#aaa' : '#000',
+                    },
+                    "& textarea": {
+                      color: isDarkMode ? '#aaa' : '#000',
+                    }, 
+                  }}
                   {...field.props}
                   value={formData[field.name] || ''}
                   onChange={(event) => handleTextInputChange(event, field.name)}
@@ -223,6 +236,7 @@ export const PSAForm = ({
                   {field.options.map((checkbox, index) => (
                     <FormControlLabel
                       key={index}
+                      style={{ color: isDarkMode ? '#aaa' : '#000' }}
                       control={
                         <Checkbox
                           {...checkbox.props}
@@ -286,6 +300,12 @@ export const PSAForm = ({
               {...button.props}
               onClick={button.action === 'submit' ? submit : button.onClick}
               disabled={isSubmitDisabled || isSubmitting}
+              sx={{
+                '&.Mui-disabled': {
+                  backgroundColor: isDarkMode ? '#2c2c2c' : '#e0e0e0',
+                  borderColor: isDarkMode ? '#444' : '#ccc',
+                },
+              }}
             />
           </Grid>
         ))}
