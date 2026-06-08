@@ -25,6 +25,7 @@ export const PSAForm = ({
   handleSubmit,
   onFormChange,
   isDarkMode = false,
+  loaderImage,
 }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -172,7 +173,15 @@ export const PSAForm = ({
   };
 
   return (
-    <Grid container rowSpacing={5} style={{ padding: '3% 10%', textAlign: 'left', backgroundColor: isDarkMode ? '#000' : '#fff' }}>
+    <Grid
+      container
+      rowSpacing={5}
+      style={{
+        padding: '3% 10%',
+        textAlign: 'left',
+        backgroundColor: isDarkMode ? '#000' : '#fff',
+      }}
+    >
       <Grid container item spacing={1} justifyContent="center">
         <Grid item xs={12}>
           <Typography variant="h3" style={{ color: isDarkMode ? '#aaa' : '#000' }}>
@@ -198,20 +207,23 @@ export const PSAForm = ({
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <Typography variant="body1" style={{ color: isDarkMode ? 'rgb(170, 170, 170, 0.8)' : '#333' }}>
+              <Typography
+                variant="body1"
+                style={{ color: isDarkMode ? 'rgb(170, 170, 170, 0.8)' : '#333' }}
+              >
                 {field.description}
               </Typography>
             </Grid>
             <Grid item xs={12}>
               {field.type === 'text' && (
                 <PSATextField
-                  sx={{ 
-                    "& input": {
+                  sx={{
+                    '& input': {
                       color: isDarkMode ? '#aaa' : '#000',
                     },
-                    "& textarea": {
+                    '& textarea': {
                       color: isDarkMode ? '#aaa' : '#000',
-                    }, 
+                    },
                   }}
                   {...field.props}
                   value={formData[field.name] || ''}
@@ -326,7 +338,7 @@ export const PSAForm = ({
             zIndex: 9999,
           }}
         >
-          <PSALoadingSpinner />
+          <PSALoadingSpinner image={loaderImage} />
         </Grid>
       )}
 
