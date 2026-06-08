@@ -230,7 +230,7 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
   );
 }; // RecommendationScreen
 
-export const PSAWizard2 = () => {
+export const PSAWizard = () => {
   const [screen, setScreen] = useState('opening');
   const [nrcsPractice, setNrcsPractice] = useState(null);
   const [selected, setSelected] = useState('');

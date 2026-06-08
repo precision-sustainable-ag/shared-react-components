@@ -34,7 +34,7 @@ import {
 import PSAFigmaButton from '../FigmaButton';
 import PSAHistory from '../History';
 import PSALogoDisplayer from '../LogoDisplayer';
-import { PSAWizard2 } from '../Wizard2';
+import { PSAWizard } from '../Wizard';
 
 export const PSAHeader = ({
   title,
@@ -82,7 +82,7 @@ export const PSAHeader = ({
         'Wizard',
         item.icon ?? <AutoFixHighOutlined />,
         '/Wizard',
-        { dialog: item.dialog || <PSAWizard2 /> },
+        { dialog: item.dialog || <PSAWizard /> },
         0,
         1050,
       );
