@@ -9,6 +9,8 @@ import {
   DialogTitle,
   FormControlLabel,
   IconButton,
+  Menu,
+  MenuItem,
   Radio,
   RadioGroup,
   TextField,
@@ -21,6 +23,8 @@ import PSAProfile from '../Profile';
 
 export const historyServer = 'https://develophistory.covercrop-data.org/v1';
 // export const historyServer = 'http://localhost:3002/v1';
+
+const schemaId = 19;
 
 const useConfirm = () => {
   const [state, setState] = useState({ open: false, message: '', resolve: null });
@@ -50,8 +54,6 @@ const useConfirm = () => {
   return { confirm, ConfirmDialog };
 };
 
-const schemaId = 19;
-
 const formatDate = (d) => {
   const date = new Date(d);
 
@@ -67,6 +69,93 @@ const formatDate = (d) => {
   return formatted.replace(' PM', 'p').replace(' AM', 'a');
 };
 
+const AuthenticatedDropdown = ({
+  user,
+  compact = false,
+  setAnchor = () => {},
+  savedDropdown = null,
+  openSaveDialog,
+  setSaveOpenProfile,
+}) => {
+  const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const close = () => {
+    setAnchorEl(null);
+    setAnchor(null);
+  };
+
+  const handleProfile = () => {
+    setSaveOpenProfile(true);
+    close();
+  };
+
+  const handleSaveHistory = () => {
+    openSaveDialog();
+    close();
+  };
+
+  const compactButtonSx = {
+    justifyContent: 'flex-start',
+    color: theme.palette.additional.greydark,
+    textTransform: 'none',
+    fontFamily: 'IBM Plex Sans',
+    fontSize: '0.9rem',
+    pt: 0,
+    pb: 0,
+  };
+
+  if (compact) {
+    return (
+      <>
+        <Button fullWidth sx={compactButtonSx} onClick={handleProfile}>
+          Profile
+        </Button>
+
+        {savedDropdown}
+        <Button fullWidth sx={compactButtonSx} endIcon={<Save />} onClick={handleSaveHistory}>
+          Save History
+        </Button>
+
+        <Box sx={{ width: '100%' }}>
+          <PSAAuthButton />
+        </Box>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Box
+        sx={{
+          cursor: 'pointer',
+          background: '#3B82F6',
+          width: 30,
+          height: 30,
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      >
+        {user?.name?.[0]}
+      </Box>
+
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={close}>
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
+        {savedDropdown ? <Box sx={{ px: 1, py: 0.5, minWidth: 220 }}>{savedDropdown}</Box> : null}
+
+        <MenuItem onClick={handleSaveHistory}>Save History</MenuItem>
+
+        <MenuItem disableGutters sx={{ px: 1 }}>
+          <PSAAuthButton />
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
+
 export const PSAHistory = ({
   loadHistory = () => {},
   getStore = () => {},
@@ -74,8 +163,8 @@ export const PSAHistory = ({
   compact = false,
   setAnchor = () => {},
 }) => {
-  const theme = useTheme();
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+
   const [histories, setHistories] = useState([]);
   const [label, setLabel] = useState('');
   const [id, setId] = useState('');
@@ -88,7 +177,6 @@ export const PSAHistory = ({
   const [saveOpenProfile, setSaveOpenProfile] = useState(false);
 
   const inputRef = useRef(null);
-
   const { confirm, ConfirmDialog } = useConfirm();
 
   const getHistories = useCallback(async () => {
@@ -283,6 +371,37 @@ export const PSAHistory = ({
     setSaveOpen(false);
   };
 
+  const savedDropdown = histories.length ? (
+    <PSADropdown
+      label={compact ? undefined : 'Saved'}
+      items={items}
+      formSx={{
+        width: compact ? '100%' : '100%',
+        minWidth: compact ? '100%' : '12rem',
+        div: { p: '0.2rem !important' },
+        button: { display: 'none' },
+        '.date': { display: 'none' },
+        pl: compact ? 0.8 : undefined,
+        pr: compact ? 0.8 : undefined,
+      }}
+      SelectProps={{
+        value: id,
+        onChange: (e) => {
+          const selected = histories.find((d) => d.id === e.target.value);
+          if (!selected) return;
+
+          loadHistory(selected.json.history);
+          setLabel(selected.label);
+          setId(selected.id);
+
+          if (compact) {
+            setAnchor(null);
+          }
+        },
+      }}
+    />
+  ) : null;
+
   return (
     <>
       <Dialog open={saveOpen} onClose={() => setSaveOpen(false)} maxWidth="xs" fullWidth>
@@ -361,95 +480,19 @@ export const PSAHistory = ({
         }}
       >
         <ConfirmDialog />
-        {histories.length ? (
-          <PSADropdown
-            label={compact ? undefined : 'Saved'}
-            items={items}
-            formSx={{
-              width: compact ? '100%' : '8rem',
-              minWidth: compact ? '100%' : '8rem',
-              div: { p: '0.2rem !important' },
-              button: { display: 'none' },
-              '.date': { display: 'none' },
-              pl: compact ? 0.8 : undefined,
-              pr: compact ? 0.8 : undefined,
-            }}
-            SelectProps={{
-              value: id,
-              onChange: (e) => {
-                const selected = histories.find((d) => d.id === e.target.value);
-                if (!selected) return;
-                loadHistory(selected.json.history);
-                setLabel(selected.label);
-                setId(selected.id);
-                if (compact) setAnchor(null);
-              },
-            }}
+
+        {isAuthenticated ? (
+          <AuthenticatedDropdown
+            user={user}
+            compact={compact}
+            setAnchor={setAnchor}
+            savedDropdown={savedDropdown}
+            openSaveDialog={openSaveDialog}
+            setSaveOpenProfile={setSaveOpenProfile}
           />
-        ) : null}
-        {isAuthenticated ? (
-          <Button
-            sx={{
-              fontFamily: 'IBM Plex Sans',
-              fontSize: compact ? '0.9rem' : '1rem',
-              fontWeight: compact ? 'bold' : '',
-              borderRadius: '8px',
-              pt: 0,
-              pb: 0,
-              justifyContent: compact ? 'flex-start' : 'center',
-              textTransform: compact ? 'none' : 'uppercase',
-              color: compact ? theme.palette.additional.greydark : '',
-            }}
-            variant={compact ? 'text' : 'contained'}
-            endIcon={<Save />}
-            onClick={openSaveDialog}
-            fullWidth={compact}
-          >
-            Save
-          </Button>
-        ) : null}
-        {isAuthenticated ? (
-          compact ? (
-            <Button
-              onClick={() => {
-                setSaveOpenProfile(true);
-                setAnchor(null);
-              }}
-              fullWidth
-              sx={{
-                justifyContent: 'flex-start',
-                color: theme.palette.additional.greydark,
-                textTransform: 'none',
-                fontFamily: 'IBM Plex Sans',
-                fontSize: compact ? '0.9rem' : '1rem',
-                fontWeight: compact ? 'bold' : '',
-                pt: 0,
-                pb: 0,
-              }}
-            >
-              Profile
-            </Button>
-          ) : (
-            <Box
-              sx={{
-                cursor: 'pointer',
-                background: '#3B82F6',
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onClick={() => setSaveOpenProfile(true)}
-            >
-              {user?.name?.[0]}
-            </Box>
-          )
-        ) : null}
-        <Box sx={{ order: 999 }}>
+        ) : (
           <PSAAuthButton />
-        </Box>
+        )}
       </Box>
     </>
   );

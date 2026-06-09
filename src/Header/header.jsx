@@ -15,6 +15,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   IconButton,
   Typography,
   useTheme,
@@ -224,12 +225,18 @@ export const PSAHeader = ({
         display: 'flex',
         flexDirection: compact ? 'column' : 'row',
         alignItems: compact ? 'stretch' : 'center',
-        gap: 0.5,
+        gap: items.length > 6 ? 0 : 0.5,
       }}
     >
       {items.map((item) => (
         <Fragment key={item.key ?? item.text}>
-          {isValidElement(item) ? (
+          {item.text === '|' ? (
+            compact ? (
+              <Divider />
+            ) : (
+              '|'
+            )
+          ) : isValidElement(item) ? (
             item
           ) : item.component ? (
             item.component
@@ -251,7 +258,6 @@ export const PSAHeader = ({
               }}
               textSx={{
                 fontSize: compact ? '0.9rem' : '1rem',
-                fontWeight: compact ? 'bold' : '',
                 textDecoration: compact ? 'none !important' : '',
                 ...item.textSx,
               }}
@@ -260,6 +266,17 @@ export const PSAHeader = ({
           )}
         </Fragment>
       ))}
+      {showHistory ? (
+        <Box sx={{ order: compact ? -1 : 999, alignSelf: 'flex-end' }}>
+          <PSAHistory
+            loadHistory={loadHistory}
+            getStore={getStore}
+            compact={compact}
+            setAnchor={setAnchor}
+          />
+          {compact && <Divider sx={{ my: 0.5 }} />}
+        </Box>
+      ) : null}
     </Box>
   );
 
@@ -269,7 +286,7 @@ export const PSAHeader = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: compact ? 'stretch' : 'center',
-        justifyContent: compact ? 'flex-start' : showHistory ? 'flex-start' : 'center',
+        justifyContent: compact ? 'flex-start' : 'center',
         flex: compact ? '0 0 auto' : '1 1 auto',
         gap: 1,
         p: compact ? 1.5 : 0,
@@ -279,17 +296,6 @@ export const PSAHeader = ({
         borderRadius: compact ? 1 : 0,
       }}
     >
-      {showHistory ? (
-        <Box sx={{ order: compact ? 999 : 0, alignSelf: 'flex-end' }}>
-          <PSAHistory
-            loadHistory={loadHistory}
-            getStore={getStore}
-            compact={compact}
-            setAnchor={setAnchor}
-          />
-        </Box>
-      ) : null}
-
       {navButtons}
     </Box>
   );
