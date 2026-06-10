@@ -1,12 +1,13 @@
 import MenuIcon from '@mui/icons-material/Menu';
-import { Divider } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { toJpeg, toPng, toSvg } from 'html-to-image';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from 'recharts';
+import * as XLSX from 'xlsx';
 import PSASubContainer from '../SubContainer';
 
 const COLORS = [
@@ -34,13 +35,31 @@ const renderLabel = ({ cx, cy, midAngle, outerRadius, percent, smallChart }) => 
   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
   return (
-    <text x={x} y={y} textAnchor="middle" dominantBaseline="central" fontSize={14}>
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      dominantBaseline="central"
+      fontSize={14}
+      fill="#000"
+      stroke="#fff"
+      strokeWidth={1}
+      paintOrder="stroke"
+    >
       {(percent * 100).toFixed(smallChart ? 0 : 1)}%
     </text>
   );
 };
 
-export const PSAPiechart2 = ({ chartData, label, donut = true }) => {
+export const PSAPiechart2 = ({
+  chartData,
+  label,
+  donut = true,
+  footer,
+  animate = true,
+  width = '100%',
+  height = 220,
+}) => {
   const handlePrint = async () => {
     if (!chartRef.current) return;
 
@@ -126,6 +145,16 @@ export const PSAPiechart2 = ({ chartData, label, donut = true }) => {
     URL.revokeObjectURL(url);
   };
 
+  const downloadXlsx = () => {
+    const worksheet = XLSX.utils.json_to_sheet(chartData);
+
+    const workbook = XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+
+    XLSX.writeFile(workbook, `${label}.xlsx`);
+  };
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuOpen = (event) => {
@@ -145,94 +174,147 @@ export const PSAPiechart2 = ({ chartData, label, donut = true }) => {
   const [smallChart, setSmallChart] = useState(false);
 
   const [chartKey, setChartKey] = useState(0);
-  const hasAnimatedRef = useRef(false);
+
+  const [activeIndex, setActiveIndex] = useState(-1);
+
+  const hasAnimatedRef = useRef(!animate);
 
   return (
-    <PSASubContainer
-      title={label}
-      content={
-        <div ref={chartRef} style={{ position: 'relative', width: '100%' }}>
-          <IconButton
-            onClick={handleMenuOpen}
-            size="small"
-            sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}
-          >
-            <MenuIcon fontSize="small" />
-          </IconButton>
-
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            <MenuItem onClick={handleFullscreen}>View in full screen</MenuItem>
-
-            <MenuItem onClick={handlePrint}>Print chart</MenuItem>
-
-            <Divider />
-
-            <MenuItem onClick={() => downloadImage('png')}>Download PNG image</MenuItem>
-
-            <MenuItem onClick={() => downloadImage('jpeg')}>Download JPEG image</MenuItem>
-
-            <MenuItem onClick={() => downloadImage('svg')}>Download SVG vector image</MenuItem>
-            <Divider />
-
-            <MenuItem onClick={downloadCsv}>Download CSV</MenuItem>
-          </Menu>
-
-          <ResponsiveContainer
-            width="100%"
-            height={220}
-            debounce={50}
-            onResize={(width) => {
-              if (width > 0) {
-                setSmallChart(width < 300);
-                setChartKey((current) => current + 1);
-              }
+    <Box sx={{ width }}>
+      <PSASubContainer
+        title={label}
+        content={
+          <Box
+            ref={chartRef}
+            sx={{
+              position: 'relative',
+              width: '100%',
+              '& .recharts-tooltip-item-value': { fontWeight: 'bold' },
+              '&:fullscreen': {
+                bgcolor: '#fff',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100vw',
+                height: '100vh',
+                p: 4,
+              },
             }}
           >
-            <PieChart key={chartKey} margin={{ top: 16, right: 24, bottom: 16, left: 24 }}>
-              <Pie
-                isAnimationActive={!hasAnimatedRef.current}
-                onAnimationEnd={() => {
-                  hasAnimatedRef.current = true;
-                }}
-                data={chartData}
-                dataKey="value"
-                nameKey="name"
-                cx={smallChart ? '50%' : '40%'}
-                cy={smallChart ? '38%' : '50%'}
-                innerRadius={donut ? 48 : 0}
-                outerRadius={smallChart ? 58 : 68}
-                label={(props) => renderLabel({ ...props, smallChart })}
-                labelLine={false}
-              >
-                {chartData.map((entry, index) => (
-                  <Cell key={entry.name} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
+            <IconButton
+              onClick={handleMenuOpen}
+              size="small"
+              sx={{ position: 'absolute', top: 8, right: 8, zIndex: 1 }}
+            >
+              <MenuIcon fontSize="small" />
+            </IconButton>
 
-              <Tooltip
-                formatter={(_value, name, props) => {
-                  const total = chartData.reduce((sum, item) => sum + item.value, 0);
-                  const percent = total ? (props.payload.value / total) * 100 : 0;
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              sx={{ '& .MuiMenuItem-root': { fontSize: 12 } }}
+            >
+              <MenuItem onClick={handleFullscreen}>View in full screen</MenuItem>
 
-                  return [`${percent.toFixed(1)}%`, name];
-                }}
-              />
+              <MenuItem onClick={handlePrint}>Print chart</MenuItem>
 
-              <Legend
-                layout="vertical"
-                align={smallChart ? 'center' : 'right'}
-                verticalAlign={smallChart ? 'bottom' : 'middle'}
-                wrapperStyle={{
-                  fontSize: 12,
-                  lineHeight: '18px',
-                  maxHeight: smallChart ? 60 : undefined,
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      }
-    />
+              <Divider />
+
+              <MenuItem onClick={() => downloadImage('png')}>Download PNG image</MenuItem>
+
+              <MenuItem onClick={() => downloadImage('jpeg')}>Download JPEG image</MenuItem>
+
+              <MenuItem onClick={() => downloadImage('svg')}>Download SVG vector image</MenuItem>
+              <Divider />
+
+              <MenuItem onClick={downloadCsv}>Download CSV</MenuItem>
+              <MenuItem onClick={downloadXlsx}>Download Excel</MenuItem>
+            </Menu>
+
+            <ResponsiveContainer
+              width="100%"
+              height={height}
+              debounce={50}
+              onResize={(width) => {
+                if (width > 0) {
+                  setSmallChart(width < 300);
+                  setChartKey((current) => current + 1);
+                }
+              }}
+            >
+              <PieChart key={chartKey} margin={{ top: 16, right: 24, bottom: 16, left: 24 }}>
+                <Pie
+                  isAnimationActive={!hasAnimatedRef.current}
+                  animationDuration={1000}
+                  onAnimationEnd={() => {
+                    hasAnimatedRef.current = true;
+                  }}
+                  data={chartData}
+                  dataKey="value"
+                  nameKey="name"
+                  cx={smallChart ? '50%' : '40%'}
+                  cy={smallChart ? '38%' : '50%'}
+                  innerRadius={donut ? 48 : 0}
+                  outerRadius={smallChart ? 58 : 68}
+                  label={(props) => renderLabel({ ...props, smallChart })}
+                  labelLine={false}
+                  activeIndex={activeIndex}
+                  // activeShape={(props) => <Sector {...props} outerRadius={props.outerRadius + 8} />}
+                  activeShape={(props) => (
+                    <g>
+                      <Sector
+                        {...props}
+                        outerRadius={props.outerRadius + 10}
+                        fill={props.fill}
+                        opacity={0.25}
+                      />
+
+                      <Sector {...props} />
+                    </g>
+                  )}
+                  onMouseEnter={(_, index) => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(-1)}
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell
+                      key={entry.name}
+                      fill={COLORS[index % COLORS.length]}
+                      fillOpacity={activeIndex === -1 || activeIndex === index ? 1 : 0.3}
+                    />
+                  ))}
+                </Pie>
+
+                <Tooltip
+                  contentStyle={{ fontSize: 12 }}
+                  itemStyle={{ fontSize: 12 }}
+                  labelStyle={{ fontSize: 12, fontWeight: 'bold' }}
+                  formatter={(_value, name, props) => {
+                    const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                    const percent = total ? (props.payload.value / total) * 100 : 0;
+
+                    return [`${percent.toFixed(1)}%`, name];
+                  }}
+                />
+                <Legend
+                  layout="vertical"
+                  align={smallChart ? 'center' : 'right'}
+                  verticalAlign={smallChart ? 'bottom' : 'middle'}
+                  wrapperStyle={{
+                    fontSize: 12,
+                    lineHeight: '18px',
+                    maxHeight: smallChart ? 60 : undefined,
+                  }}
+                  onMouseEnter={(_data, index) => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(-1)}
+                />
+              </PieChart>
+            </ResponsiveContainer>
+            {footer && <Box sx={{ mt: 2, p: 1, fontSize: 12 }}>{footer}</Box>}
+          </Box>
+        }
+      />
+    </Box>
   );
 };
 
@@ -244,5 +326,9 @@ PSAPiechart2.propTypes = {
     }),
   ),
   label: PropTypes.string,
+  footer: PropTypes.node,
   donut: PropTypes.bool,
+  animate: PropTypes.bool,
+  width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };

@@ -17,6 +17,7 @@ export { default as PSALoadingSpinner } from './LoadingSpinner/index';
 export { default as PSALogoDisplayer } from './LogoDisplayer/index';
 export { default as PSAModal } from './Modal/index';
 export { default as PSAPiechart } from './Piechart/index';
+export { default as PSAPiechart2 } from './Piechart2/index';
 export { default as PSAProfile } from './Profile/index';
 export { default as PSARadioButton } from './RadioButton/index';
 export {

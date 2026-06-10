@@ -54,7 +54,8 @@
     "react-router-dom": "^7.13.2",
     "recharts": "^2.15.4",
     "shapefile": "^0.6.6",
-    "wellknown": "^0.5.0"
+    "wellknown": "^0.5.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.2/xlsx-0.20.2.tgz"
   },
   "peerDependencies": {
     "@auth0/auth0-react": "^2.2.4",
