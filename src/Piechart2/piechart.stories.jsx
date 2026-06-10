@@ -25,7 +25,7 @@ export const Default = {
   },
 };
 
-export const PieChart = {
+export const BasicPie = {
   args: {
     chartData,
     label: 'Pie Chart',
@@ -35,7 +35,7 @@ export const PieChart = {
   },
 };
 
-export const PieChartNonAnimated = {
+export const BasicPieNonAnimated = {
   args: {
     chartData,
     label: 'Pie Chart Non-Animated',
