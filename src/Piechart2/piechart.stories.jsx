@@ -8,8 +8,6 @@ const meta = {
 
 export default meta;
 
-const Template = (args) => <PSAPiechart2 {...args} />;
-
 const chartData = [
   { name: 'Category A', value: 40 },
   { name: 'Category B', value: 30 },
@@ -19,28 +17,31 @@ const chartData = [
 
 const width = 400;
 
-export const DonutChart = Template.bind({});
-DonutChart.args = {
-  chartData,
-  label: 'Donut Chart',
-  width,
+export const Default = {
+  args: {
+    chartData,
+    label: 'Donut Chart',
+    width,
+  },
 };
 
-export const PieChart = Template.bind({});
-PieChart.args = {
-  chartData,
-  label: 'Pie Chart',
-  donut: false,
-  footer: 'Data as of 2024',
-  width,
+export const PieChart = {
+  args: {
+    chartData,
+    label: 'Pie Chart',
+    donut: false,
+    footer: 'Data as of 2024',
+    width,
+  },
 };
 
-export const PieChartNonAnimated = Template.bind({});
-PieChartNonAnimated.args = {
-  chartData,
-  label: 'Pie Chart Non-Animated',
-  donut: false,
-  footer: 'Data as of 2024',
-  animate: false,
-  width,
+export const PieChartNonAnimated = {
+  args: {
+    chartData,
+    label: 'Pie Chart Non-Animated',
+    donut: false,
+    footer: 'Data as of 2024',
+    animate: false,
+    width,
+  },
 };
