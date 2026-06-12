@@ -1,6 +1,5 @@
 import * as PSAAccordion from '../Accordion/accordion.stories';
 import * as PSAAuthbutton from '../Authbutton/authbutton.stories';
-// import * as PSABarchart from '../Barchart/barchart.stories';
 import * as PSAButton from '../Button/button.stories';
 import * as PSACheckbox from '../Checkbox/checkbox.stories';
 import * as PSACropCard from '../CropCard/cropcard.stories';
@@ -13,11 +12,10 @@ import * as PSAForm from '../Form/psaform.stories.jsx';
 import * as PSAHeader from '../Header/header.stories.jsx';
 import * as PSAInfoSheet from '../InfoSheet/infosheet.stories.jsx';
 import * as PSAInfoSheetAttributeBox from '../InfoSheet/infosheetAttributeBox.stories.jsx';
-// import * as PSALineChart from '../LineChart/lineChart.stories.jsx';
 import * as PSALoadingSpinner from '../LoadingSpinner/loadingspinner.stories.jsx';
 import * as PSALogoDisplayer from '../LogoDisplayer/LogoDisplayer.stories.jsx';
 import * as PSAModal from '../Modal/modal.stories.jsx';
-// import * as PSAPiechart from '../Piechart/piechart.stories.jsx';
+import * as PSAPiechart from '../Piechart/piechart.stories.jsx';
 import * as PSAProfile from '../Profile/profile.stories.jsx';
 import * as PSARadioButton from '../RadioButton/radiobutton.stories.jsx';
 import * as PSAReduxMap from '../ReduxMap/reduxmap.stories.jsx';
@@ -37,7 +35,6 @@ import * as PSAWizard from '../Wizard/wizard.stories.jsx';
 export {
   PSAAccordion,
   PSAAuthbutton,
-  // Barchart,
   PSAButton,
   PSACheckbox,
   PSACropCard,
@@ -50,11 +47,10 @@ export {
   PSAHeader,
   PSAInfoSheet,
   PSAInfoSheetAttributeBox,
-  // PSALineChart,
   PSALoadingSpinner,
   PSALogoDisplayer,
   PSAModal,
-  // PSAPiechart,
+  PSAPiechart,
   PSAProfile,
   PSARadioButton,
   PSAReduxMap,
