@@ -45,11 +45,13 @@ export const PSAAccordion = ({
       expanded={expanded}
       onChange={handleChange}
       sx={{
-        boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
+        // boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
+        boxShadow: 'none',
         '&.MuiAccordion-root': {
           borderRadius: '1.6875rem',
         },
-        backgroundColor: error ? '#f3e2dd' : 'additional.background2',
+        backgroundColor: error ? '#fee' : 'additional.background2',
+        border: error ? '2pt solid #dd3804' : '',
         ...sx,
       }}
       data-test={testId}

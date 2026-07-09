@@ -178,10 +178,10 @@ export const PSAForm = ({
         .filter((field) => !(field.type === 'dropdown' && field.orientation === 'horizontal'))
         .map((field) => (
           <Box key={field.label} sx={{ display: 'grid', gap: 1, placeItems: 'start' }}>
-            <Typography variant="h6">
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
               {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
             </Typography>
-            <Typography variant="body1">{field.description}</Typography>
+            {field.description && <Typography variant="body1">{field.description}</Typography>}
             {field.type === 'text' && (
               <PSATextField
                 {...field.props}

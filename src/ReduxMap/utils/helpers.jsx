@@ -164,7 +164,6 @@ const getElevation = async (lat, lon, elevations, setElevation) => {
 const addPolygonToMap = (map, boundsPadding) => {
   return (id, poly, options = {}) => {
     if (typeof poly === 'string') {
-      // console.log(poly);
       fetch(poly)
         .then((response) => response.json())
         .then((data) => {
@@ -175,6 +174,7 @@ const addPolygonToMap = (map, boundsPadding) => {
             map.current.addPolygon(id, data.polygonarray[0], options);
           } else if (data.polygon) {
             const geojson = wellknown(data.polygon);
+            console.log(geojson);
             map.current.addPolygon(id, geojson, options);
           }
         });

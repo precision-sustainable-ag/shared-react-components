@@ -12,9 +12,7 @@ export const PSATextField = styled((props) => (
     }}
   />
 ))(({ theme }) => ({
-  marginTop: '20px',
   '.MuiOutlinedInput-root': {
-    boxShadow: '0px 1px 10px 0px rgba(0, 0, 0, 0.10)',
     fieldset: {
       borderWidth: '2px',
       borderColor: theme.palette.additional.border,
