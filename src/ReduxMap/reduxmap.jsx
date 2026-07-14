@@ -109,6 +109,7 @@ const ReduxMap = ({
   fitBounds = false,
   initRasterObject = {},
   valueKey = 'value',
+  scaleType = 'linear',
   rasterColors,
   unit,
   material,
@@ -683,6 +684,7 @@ const ReduxMap = ({
     map,
     initRasterObject,
     valueKey,
+    scaleType,
     rasterColors,
     unit,
     material,
@@ -961,6 +963,10 @@ ReduxMap.propTypes = {
    * The GeoJSON feature property key to read raster values from. Defaults to 'value'.
    */
   valueKey: PropTypes.string,
+  /**
+   * 'linear' colors by value; 'quantile' colors by rank so skewed data uses the full ramp.
+   */
+  scaleType: PropTypes.oneOf(['linear', 'quantile']),
   /**
    * Color scale range used to map raster values to colors.
    */

@@ -21,6 +21,7 @@ const useRasterData = ({
   map,
   initRasterObject = {},
   valueKey = 'value',
+  scaleType = 'linear',
   rasterColors = ['red', 'green'],
   unit = 'kg/ha',
   material = 'biomass',
@@ -193,32 +194,48 @@ const useRasterData = ({
     } else {
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;
+      const sortedValues = geojsonData.features
+        .map((feat) => f * feat.properties[valueKey])
+        .filter((val) => val > 0)
+        .sort((a, b) => a - b);
+
       let biomassMin, biomassMax;
       if (geojsonData.properties) {
         biomassMin = f * geojsonData.properties.biomass_min;
         biomassMax = f * geojsonData.properties.biomass_max;
       } else {
-        // Calculate from features if not provided
-        const values = geojsonData.features
-          .map((feat) => f * feat.properties[valueKey])
-          .filter((val) => val > 0);
-        biomassMin = Math.min(...values);
-        biomassMax = Math.max(...values);
+              biomassMin = sortedValues[0];
+              biomassMax = sortedValues[sortedValues.length - 1];
       }
       const range = biomassMax - biomassMin;
 
       const scale = chroma.scale(rasterColors);
 
+      // 'quantile' colors by the value's rank in the data so skewed distributions
+      // and outliers still spread across the full ramp; 'linear' colors by value.
+      const rankDenominator = Math.max(sortedValues.length - 1, 1);
+      const firstIndexByValue = new Map();
+      if (scaleType === 'quantile') {
+        sortedValues.forEach((value, index) => {
+          if (!firstIndexByValue.has(value)) firstIndexByValue.set(value, index);
+        });
+      }
+      const normalize = (value) => {
+        if (scaleType === 'quantile' && sortedValues.length) {
+          if (firstIndexByValue.has(value)) return firstIndexByValue.get(value) / rankDenominator;
+          return value <= sortedValues[0] ? 0 : 1;
+        }
+        return range > 0 ? (value - biomassMin) / range : 0;
+      };
+
       const featuresWithColors = geojsonData.features.map((feature) => {
         const convertedValue = f * feature.properties[valueKey];
-        const normalizedValue = range > 0 ? (convertedValue - biomassMin) / range : 0;
-
         return {
           ...feature,
           properties: {
             ...feature.properties,
             value: convertedValue,
-            color: scale(normalizedValue).hex(),
+            color: scale(normalize(convertedValue)).hex(),
           },
         };
       });
@@ -230,10 +247,6 @@ const useRasterData = ({
 
       polygonsRef.current = processedGeojson;
 
-      // Setting up the color legend
-      var colorValues = [];
-      const step = (biomassMax - biomassMin) / (color_steps - 1);
-
       // Determine appropriate decimal precision based on range
       const getDecimalPlaces = (range) => {
         if (range < 1) return 2;
@@ -241,19 +254,32 @@ const useRasterData = ({
         if (range < 100) return 1;
         return 0;
       };
-
       const decimalPlaces = getDecimalPlaces(range);
 
-      for (var i = biomassMin; i < biomassMax; i = i + step) {
-        colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
-      }
-      colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
+      // Setting up the color legend
+      let rasterColorsVals;
+      if (scaleType === 'quantile' && sortedValues.length) {
+        // Legend steps at evenly spaced ranks: colors are linear, values show the
+        // actual (non-linear) quantiles of the data
+        rasterColorsVals = [...Array(color_steps).keys()].map((idx) => {
+          const q = idx / (color_steps - 1);
+          const value = sortedValues[Math.round((sortedValues.length - 1) * q)];
+          return [parseFloat(value.toFixed(decimalPlaces)), scale(q).hex()];
+        });
+      } else {
+        const colorValues = [];
+        const step = (biomassMax - biomassMin) / (color_steps - 1);
+        for (let i = biomassMin; i < biomassMax; i += step) {
+          colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
+        }
+        colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
 
-      var rasterColorsVals = colorValues.map((e, i) => {
-        const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
-        const colorV = range ? scale(normalizedBiomassVal).hex() : null;
-        return [e, colorV];
-      });
+        rasterColorsVals = colorValues.map((e) => {
+          const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
+          const colorV = range ? scale(normalizedBiomassVal).hex() : null;
+          return [e, colorV];
+        });
+      }
 
       // Update rasterColorSteps in parent component
       setRasterColorSteps(rasterColorsVals);
@@ -283,7 +309,7 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey, scaleType]);
 };
 
 export default useRasterData;
