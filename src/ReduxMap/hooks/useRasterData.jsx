@@ -63,12 +63,64 @@ const useRasterData = ({
 
   const removeLayerAndSource = (layerId) => {
     if (!map.current) return;
+    if (map.current.getLayer(`${layerId}-points`)) {
+      map.current.removeLayer(`${layerId}-points`);
+    }
     if (map.current.getLayer(layerId)) {
       map.current.removeLayer(layerId);
     }
     if (map.current.getSource(layerId)) {
       map.current.removeSource(layerId);
     }
+  };
+
+  // Adds a fill layer for polygon features and a circle layer for point features,
+  // both colored by the per-feature `color` property computed from the gradient.
+  const addRasterLayers = (layerId, processedGeojson) => {
+    const colorExpression = [
+      'case',
+      ['!=', ['get', 'color'], null],
+      ['get', 'color'],
+      'transparent',
+    ];
+
+    if (!map.current.getSource(layerId)) {
+      map.current.addSource(layerId, {
+        type: 'geojson',
+        data: processedGeojson,
+      });
+      map.current.addLayer({
+        id: layerId,
+        type: 'fill',
+        source: layerId,
+        filter: ['==', ['geometry-type'], 'Polygon'],
+        paint: {
+          'fill-opacity': 0.5,
+          'fill-color': colorExpression,
+        },
+      });
+      map.current.addLayer({
+        id: `${layerId}-points`,
+        type: 'circle',
+        source: layerId,
+        filter: ['==', ['geometry-type'], 'Point'],
+        paint: {
+          'circle-radius': 6,
+          'circle-color': colorExpression,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': '#fff',
+        },
+      });
+    } else {
+      map.current.getSource(layerId).setData(processedGeojson);
+    }
+  };
+
+  // Returns the popup anchor for a clicked feature (points vs. polygon cells)
+  const getPopupLngLat = (feature) => {
+    const coords = feature.geometry.coordinates.slice();
+    if (feature.geometry.type === 'Point') return coords;
+    return [(coords[0][0][0] + coords[0][2][0]) / 2, (coords[0][0][1] + coords[0][2][1]) / 2];
   };
 
   useEffect(() => {
@@ -115,45 +167,27 @@ const useRasterData = ({
     const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
     setRasterColorSteps(rasterColorsVals);
 
-    if (!map.current.getSource(layerId)) {
-      map.current.addSource(layerId, {
-        type: 'geojson',
-        data: processedGeojson,
-      });
-      map.current.addLayer({
-        id: layerId,
-        type: 'fill',
-        source: layerId,
-        paint: {
-          'fill-opacity': 0.5,
-          'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
-        },
-      });
-    } else {
-      map.current.getSource(layerId).setData(processedGeojson);
-    }
+    addRasterLayers(layerId, processedGeojson);
 
     const handleClick = (e) => {
       if (!e.features?.length) return;
 
-      const coords = e.features[0].geometry.coordinates.slice();
       const val = e.features[0].properties[valueKey];
       const label = discreteLabels[val] ?? val;
 
       new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-        .setLngLat([
-          (coords[0][0][0] + coords[0][2][0]) / 2,
-          (coords[0][0][1] + coords[0][2][1]) / 2,
-        ])
+        .setLngLat(getPopupLngLat(e.features[0]))
         .setHTML(`<div>${material}: ${label}</div>`)
         .addTo(map.current);
     };
 
     map.current.on('click', layerId, handleClick);
+    map.current.on('click', `${layerId}-points`, handleClick);
 
     return () => {
       if (map.current) {
         map.current.off('click', layerId, handleClick);
+        map.current.off('click', `${layerId}-points`, handleClick);
         removeLayerAndSource(layerId);
       }
     };
@@ -225,45 +259,27 @@ const useRasterData = ({
       // Update rasterColorSteps in parent component
       setRasterColorSteps(rasterColorsVals);
 
-      // Update map source and layer with the pixel polygon
-      if (!map.current.getSource(layerId)) {
-        map.current.addSource(layerId, {
-          type: 'geojson',
-          data: processedGeojson,
-        });
-        map.current.addLayer({
-          id: layerId,
-          type: 'fill',
-          source: layerId,
-          paint: {
-            'fill-opacity': 0.5,
-            'fill-color': ['case', ['!=', ['get', 'color'], null], ['get', 'color'], 'transparent'],
-          },
-        });
-      } else {
-        map.current.getSource(layerId).setData(processedGeojson);
-      }
+      // Update map source and layers with the pixel polygons and points
+      addRasterLayers(layerId, processedGeojson);
 
       const handleClick = (e) => {
         if (!e.features?.length) return;
 
-        const coords = e.features[0].geometry.coordinates.slice();
         const val = parseFloat(e.features[0].properties[valueKey].toFixed(decimalPlaces));
 
         new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-          .setLngLat([
-            (coords[0][0][0] + coords[0][2][0]) / 2,
-            (coords[0][0][1] + coords[0][2][1]) / 2,
-          ])
+          .setLngLat(getPopupLngLat(e.features[0]))
           .setHTML(`<div>${material} value: ${val} ${unit}</div>`)
           .addTo(map.current);
       };
 
       map.current.on('click', layerId, handleClick);
+      map.current.on('click', `${layerId}-points`, handleClick);
 
       return () => {
         if (map.current) {
           map.current.off('click', layerId, handleClick);
+          map.current.off('click', `${layerId}-points`, handleClick);
           removeLayerAndSource(layerId);
         }
       };
