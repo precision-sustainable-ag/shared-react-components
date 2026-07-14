@@ -105,10 +105,9 @@ const useRasterData = ({
         source: layerId,
         filter: ['==', ['geometry-type'], 'Point'],
         paint: {
-          'circle-radius': 6,
+          // Scale circles down as the map zooms out so dense point sets stay readable
+          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1, 14, 2.5, 17, 6],
           'circle-color': colorExpression,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff',
         },
       });
     } else {
