@@ -209,6 +209,9 @@ const useRasterData = ({
       }
       const range = biomassMax - biomassMin;
 
+      // No usable values for this valueKey
+      if (!Number.isFinite(biomassMin) || !Number.isFinite(biomassMax)) return undefined;
+
       const scale = chroma.scale(rasterColors);
 
       // 'quantile' colors by the value's rank in the data so skewed distributions
