@@ -10,6 +10,20 @@ import PSAFigmaButton from '../FigmaButton';
 export function PSAAuthButton({ buttonSx, textSx }) {
   const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } = useAuth0();
 
+  const handleSignup = async () => {
+    const options = {
+      authorizationParams: {
+        screen_hint: 'signup',
+      },
+    };
+
+    if (window.Cypress) {
+      await loginWithRedirect(options);
+    } else {
+      await loginWithPopup(options);
+    }
+  };
+
   const handleLogin = async () => {
     if (window.Cypress) await loginWithRedirect();
     else await loginWithPopup();
@@ -23,25 +37,39 @@ export function PSAAuthButton({ buttonSx, textSx }) {
     });
   };
 
-  const handleAuthButtonClick = () => {
-    if (isAuthenticated) return handleLogout();
-    return handleLogin();
-  };
-
   return (
-    <PSAFigmaButton
-      variant="color"
-      icon={<PersonIcon />}
-      rightIcon
-      text={isAuthenticated ? 'LOGOUT' : 'LOGIN'}
-      onClick={handleAuthButtonClick}
-      buttonSx={{
-        backgroundColor: isAuthenticated ? 'additional.error' : 'main.accent2',
-        ...buttonSx,
-      }}
-      textSx={{ fontSize: '1rem', ...textSx }}
-      data-test="auth_button"
-    />
+    <>
+      <PSAFigmaButton
+        variant="color"
+        icon={<PersonIcon />}
+        rightIcon
+        text={isAuthenticated ? 'LOGOUT' : 'LOGIN'}
+        onClick={isAuthenticated ? handleLogout : handleLogin}
+        buttonSx={{
+          backgroundColor: isAuthenticated ? 'additional.error' : 'main.accent2',
+          ...buttonSx,
+        }}
+        textSx={{ fontSize: '1rem', ...textSx }}
+        data-test="auth_button"
+      />
+
+      {!isAuthenticated && (
+        <PSAFigmaButton
+          variant="color"
+          icon={<PersonIcon />}
+          rightIcon
+          text={'SIGN UP'}
+          onClick={handleSignup}
+          buttonSx={{
+            // backgroundColor: 'main.accent2',
+            backgroundColor: '#66f',
+            ...buttonSx,
+          }}
+          textSx={{ fontSize: '1rem', ...textSx }}
+          data-test="signup_button"
+        />
+      )}
+    </>
   );
 }
 
