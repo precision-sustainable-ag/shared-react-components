@@ -4,6 +4,7 @@ import {
   Close as CloseIcon,
   HelpOutlineOutlined,
   InfoOutlined,
+  MenuBook as MenuBookIcon,
   Menu as MenuIcon,
   TextSnippetOutlined,
 } from '@mui/icons-material';
@@ -89,6 +90,8 @@ export const PSAHeader = ({
       );
     } else if (item === 'Notes' || item.text === 'Notes') {
       return menu('Release Notes', item.icon ?? <TextSnippetOutlined />, '/Notes', item);
+    } else if (item === 'Data Dictionary' || item.text === 'Data Dictionary') {
+      return menu('Data Dictionary', item.icon ?? <MenuBookIcon />, '/Dictionary', item);
     }
 
     return item;
