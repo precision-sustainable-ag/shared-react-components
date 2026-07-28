@@ -3,6 +3,7 @@ import {
   ChatBubbleOutlineOutlined,
   Close as CloseIcon,
   HelpOutlineOutlined,
+  Home as HomeIcon,
   InfoOutlined,
   MenuBook as MenuBookIcon,
   Menu as MenuIcon,
@@ -73,7 +74,9 @@ export const PSAHeader = ({
   });
 
   const items = navContent.map((item) => {
-    if (item === 'About' || item.text === 'About') {
+    if (item === 'Home' || item.text === 'Home') {
+      return menu('Home', item.icon ?? <HomeIcon />, '/', item);
+    } else if (item === 'About' || item.text === 'About') {
       return menu('About', item.icon ?? <InfoOutlined />, '/About', item);
     } else if (item === 'Help' || item.text === 'Help') {
       return menu('Help', item.icon ?? <HelpOutlineOutlined />, '/Help', item);
