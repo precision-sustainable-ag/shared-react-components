@@ -65,15 +65,19 @@ const RasterLegend = ({
         </div>
         <div className={styles.rasterlegend}>
           {isDiscrete ? (
-            <>
-              <span className={styles.rasterlegendheader}>{material}</span>
+            <div className={styles.rasterlegendgrid}>
+              <div className={styles.rasterlegendheader}>
+                <span className={styles.rasterlegendunitlabel} />
+                <div className={styles.rasterlegendvalue}>{material}</div>
+                {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
+              </div>
               {colorStops.map(([value, color, label], i) => (
                 <div key={i} className={styles.rasterlegenditem}>
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{label}</div>
                 </div>
               ))}
-            </>
+            </div>
           ) : (
             <div
               className={`${styles.rasterlegendgrid} ${
