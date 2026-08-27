@@ -114,6 +114,7 @@ const ReduxMap = ({
   discreteLabels = null,
   secondaryUnit,
   secondaryUnitMultiplier,
+  roundTo,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -606,6 +607,7 @@ const ReduxMap = ({
     discreteLabels,
     secondaryUnit,
     secondaryUnitMultiplier,
+    roundTo,
   });
 
   // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
@@ -915,6 +917,11 @@ ReduxMap.propTypes = {
    * Factor applied to each raster value to show a second legend column.
    */
   secondaryUnitMultiplier: PropTypes.number,
+  /**
+   * Optional increment to round legend/popup values to (e.g. 0.01, 0.1, 1, 5, 10).
+   * When omitted, precision is derived from the value range.
+   */
+  roundTo: PropTypes.number,
   /**
    * Mapbox API access token.
    */

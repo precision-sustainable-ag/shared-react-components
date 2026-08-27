@@ -18,6 +18,7 @@ import { useEffect, useRef, useState } from 'react';
  * @param {Object} params.discreteLabels - Optional mapping of discrete raster values to human-readable labels, with an optional `_colors` key for pinned colors.
  * @param {string} params.secondaryUnit - Optional unit label for the multiplier-derived secondary value.
  * @param {number} params.secondaryUnitMultiplier - Factor applied to each value to show a secondary value in the popup.
+ * @param {number} params.roundTo - Optional increment to round legend/popup values to (e.g. 0.01, 0.1, 1, 5, 10). Falls back to range-based precision when not set.
  */
 const useRasterData = ({
   map,
@@ -31,6 +32,7 @@ const useRasterData = ({
   discreteLabels = null,
   secondaryUnit,
   secondaryUnitMultiplier,
+  roundTo,
 }) => {
   const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
@@ -211,12 +213,28 @@ const useRasterData = ({
 
       const decimalPlaces = getDecimalPlaces(range);
 
+      // Number of decimals implied by an increment (0.01 -> 2, 5 -> 0, 10 -> 0).
+      const decimalsForStep = (increment) => {
+        const [, fraction = ''] = String(increment).split('.');
+        return fraction.length;
+      };
+
+      // Rounds a value to the nearest `roundTo` increment when set otherwise falls back to the range-based decimal precision.
+      const hasRoundTo = typeof roundTo === 'number' && Number.isFinite(roundTo) && roundTo > 0;
+      const roundValue = (value) => {
+        if (hasRoundTo) {
+          const rounded = Math.round(value / roundTo) * roundTo;
+          return parseFloat(rounded.toFixed(decimalsForStep(roundTo)));
+        }
+        return parseFloat(value.toFixed(decimalPlaces));
+      };
+
       var rasterColorsVals;
       if (range > 0) {
         for (var i = biomassMin; i < biomassMax; i = i + step) {
-          colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
+          colorValues.push(roundValue(i));
         }
-        colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
+        colorValues[colorValues.length - 1] = roundValue(biomassMax);
 
         rasterColorsVals = colorValues.map((e) => {
           const normalizedBiomassVal = (e - biomassMin) / range;
@@ -224,7 +242,7 @@ const useRasterData = ({
         });
       } else {
         // Single uniform value (e.g. fixed target rate): render one legend entry
-        rasterColorsVals = [[parseFloat(biomassMax.toFixed(decimalPlaces)), scale(0).hex()]];
+        rasterColorsVals = [[roundValue(biomassMax), scale(0).hex()]];
       }
 
       // Update rasterColorSteps in parent component
@@ -252,11 +270,11 @@ const useRasterData = ({
       const handleClick = (e) => {
         if (!e.features?.length) return;
 
-        const val = parseFloat(e.features[0].properties[valueKey].toFixed(decimalPlaces));
+        const val = roundValue(e.features[0].properties[valueKey]);
 
         let secondaryLine = '';
         if (typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier)) {
-          const secondaryVal = parseFloat((val * secondaryUnitMultiplier).toFixed(decimalPlaces));
+          const secondaryVal = parseFloat((val * secondaryUnitMultiplier).toFixed(0));
           secondaryLine = `<div>OR ${secondaryVal} ${secondaryUnit ?? ''}</div>`;
         }
 
@@ -275,7 +293,7 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey, secondaryUnitMultiplier, secondaryUnit]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey, secondaryUnitMultiplier, secondaryUnit, roundTo]);
 };
 
 export default useRasterData;

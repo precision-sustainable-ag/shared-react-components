@@ -32,14 +32,6 @@ const RasterLegend = ({
   // Check if multiplier is valid which turns the continuous legend into two columns.
   const hasSecondary = typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier);
 
-  const formatSecondary = (value) => {
-    const converted = value * secondaryUnitMultiplier;
-    const magnitude = Math.abs(converted);
-    let decimalPlaces = 0;
-    if (magnitude < 1) decimalPlaces = 1;
-    return parseFloat(converted.toFixed(decimalPlaces));
-  };
-
   const handleOpacityChange = (event) => {
     const { value: val } = event.target;
     setOpacityValue(val);
@@ -94,7 +86,7 @@ const RasterLegend = ({
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{value}</div>
                   {hasSecondary && (
-                    <div className={styles.rasterlegendvalue}>{formatSecondary(value)}</div>
+                    <div className={styles.rasterlegendvalue}>{parseFloat((value * secondaryUnitMultiplier).toFixed(0))}</div>
                   )}
                 </div>
               ))}
