@@ -387,14 +387,6 @@ const ReduxMap = ({
     }
   }, [map.current]);
 
-  // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
-  useEffect(() => () => {
-    if (map.current) {
-      map.current.remove();
-      map.current = null;
-    }
-  }, []);
-
   // Use effect for map configuration and map resize
   useEffect(() => {
     if (!map.current) return;
@@ -615,6 +607,15 @@ const ReduxMap = ({
     secondaryUnit,
     secondaryUnitMultiplier,
   });
+
+  // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
+  // Registered last so its cleanup runs after the control hooks' cleanups (useMapGeolocate/useMapGeocoder).
+  useEffect(() => () => {
+    if (map.current) {
+      map.current.remove();
+      map.current = null;
+    }
+  }, []);
 
   if (!isMapSupported) {
     return (
