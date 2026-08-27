@@ -112,6 +112,8 @@ const ReduxMap = ({
   material,
   color_steps,
   discreteLabels = null,
+  secondaryUnit,
+  secondaryUnitMultiplier,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -602,6 +604,8 @@ const ReduxMap = ({
     setRasterColorSteps,
     color_steps,
     discreteLabels,
+    secondaryUnit,
+    secondaryUnitMultiplier,
   });
 
   if (!isMapSupported) {
@@ -663,7 +667,14 @@ const ReduxMap = ({
         />
       )}
       {rasterColorSteps && rasterColorSteps.length > 0 && (
-        <RasterLegend map={map} colorStops={rasterColorSteps} unit={unit} material={material} />
+        <RasterLegend
+          map={map}
+          colorStops={rasterColorSteps}
+          unit={unit}
+          material={material}
+          secondaryUnit={secondaryUnit}
+          secondaryUnitMultiplier={secondaryUnitMultiplier}
+        />
       )}
     </div>
   );
@@ -887,6 +898,14 @@ ReduxMap.propTypes = {
    * Optional map of {integer value : display label} for discrete raster mode.
    */
   discreteLabels: PropTypes.object,
+  /**
+   * Optional unit label for the multiplier-derived second legend column.
+   */
+  secondaryUnit: PropTypes.string,
+  /**
+   * Factor applied to each raster value to show a second legend column.
+   */
+  secondaryUnitMultiplier: PropTypes.number,
   /**
    * Mapbox API access token.
    */

@@ -16,6 +16,8 @@ import { useEffect, useRef, useState } from 'react';
  * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
  * @param {number} params.color_steps - Number of steps in the map legend.
  * @param {Object} params.discreteLabels - Optional mapping of discrete raster values to human-readable labels, with an optional `_colors` key for pinned colors.
+ * @param {string} params.secondaryUnit - Optional unit label for the multiplier-derived secondary value.
+ * @param {number} params.secondaryUnitMultiplier - Factor applied to each value to show a secondary value in the popup.
  */
 const useRasterData = ({
   map,
@@ -27,6 +29,8 @@ const useRasterData = ({
   setRasterColorSteps,
   color_steps = 7,
   discreteLabels = null,
+  secondaryUnit,
+  secondaryUnitMultiplier,
 }) => {
   const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
@@ -250,12 +254,18 @@ const useRasterData = ({
         const coords = e.features[0].geometry.coordinates.slice();
         const val = parseFloat(e.features[0].properties[valueKey].toFixed(decimalPlaces));
 
+        let secondaryLine = '';
+        if (typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier)) {
+          const secondaryVal = parseFloat((val * secondaryUnitMultiplier).toFixed(decimalPlaces));
+          secondaryLine = `<div>OR ${secondaryVal} ${secondaryUnit ?? ''}</div>`;
+        }
+
         new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
           .setLngLat([
             (coords[0][0][0] + coords[0][2][0]) / 2,
             (coords[0][0][1] + coords[0][2][1]) / 2,
           ])
-          .setHTML(`<div>${material} value: ${val} ${unit}</div>`)
+          .setHTML(`<div>${material} value: ${val} ${unit}</div>${secondaryLine}`)
           .addTo(map.current);
       };
 
@@ -268,7 +278,7 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey]);
+  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey, secondaryUnitMultiplier, secondaryUnit]);
 };
 
 export default useRasterData;

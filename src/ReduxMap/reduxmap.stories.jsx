@@ -152,6 +152,27 @@ export const MapWithRasterLayer = {
   },
 };
 
+export const MapWithRasterLayerMultiplier = {
+  args: {
+    initWidth: '900px',
+    initHeight: '400px',
+    initLat: 35.5220,
+    initLon: -82.7055,
+    initStartZoom: 16,
+    hasFullScreen: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    initRasterObject: initRasterObject,
+    valueKey: 'biomass_average',
+    rasterColors: ['red', 'white', 'green'],
+    unit: 'lbs of N/acre',
+    material: 'biomass',
+    color_steps: 5,
+    secondaryUnit: 'gals/acre of fert',
+    secondaryUnitMultiplier: 0.3,
+  },
+};
+
   export const MapWithRasterLayerDiscrete = {
   args: {
     initWidth: '900px',
