@@ -75,9 +75,13 @@ const RasterLegend = ({
               ))}
             </>
           ) : (
-            <>
+            <div
+              className={`${styles.rasterlegendgrid} ${
+                hasSecondary ? styles.rasterlegendgridsecondary : ''
+              }`}
+            >
               <div className={styles.rasterlegendheader}>
-                unit: &nbsp;
+                <span className={styles.rasterlegendunitlabel}>unit:</span>
                 <div className={styles.rasterlegendvalue}>{unit}</div>
                 {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
               </div>
@@ -90,7 +94,7 @@ const RasterLegend = ({
                   )}
                 </div>
               ))}
-          </>
+            </div>
           )}
         </div>
       </div>

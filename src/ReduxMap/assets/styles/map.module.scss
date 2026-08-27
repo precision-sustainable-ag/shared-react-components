@@ -65,7 +65,7 @@
   padding-right: 10px;
   transform: scaleY(0.6) scaleX(0.8) rotate(-90deg) translate(100px, -90px);
   position: absolute;
-  bottom: 20px;
+  bottom: -5px;
   left: 10px;
 }
 
@@ -76,7 +76,7 @@
   font-size: 10px;
   padding: 5px;
   position: absolute;
-  bottom: 40px;
+  bottom: 20px;
   left: 40px;
 }
 
@@ -94,15 +94,38 @@
 }
 
 .rasterlegendheader {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   margin-bottom: 3px;
 }
 
 .rasterlegendvalue {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
   min-width: 60px;
+}
+
+.rasterlegendgrid {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 12px;
+  row-gap: 4px;
+}
+
+.rasterlegendgridsecondary {
+  grid-template-columns: auto auto auto;
+}
+
+.rasterlegendgrid .rasterlegendheader,
+.rasterlegendgrid .rasterlegenditem {
+  display: contents;
+}
+
+.rasterlegendgrid .rasterlegendvalue {
+  min-width: 0;
+}
+
+.rasterlegendgrid .rasterlegendcolor {
+  margin-right: 0;
+  margin-top: 0;
+}
+
+.rasterlegendunitlabel {
+  white-space: nowrap;
 }
