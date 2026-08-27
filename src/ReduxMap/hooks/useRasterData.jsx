@@ -140,15 +140,11 @@ const useRasterData = ({
     const handleClick = (e) => {
       if (!e.features?.length) return;
 
-      const coords = e.features[0].geometry.coordinates.slice();
       const val = e.features[0].properties[valueKey];
       const label = discreteLabels[val] ?? val;
 
       new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-        .setLngLat([
-          (coords[0][0][0] + coords[0][2][0]) / 2,
-          (coords[0][0][1] + coords[0][2][1]) / 2,
-        ])
+        .setLngLat(e.lngLat)
         .setHTML(`<div>${material}: ${label}</div>`)
         .addTo(map.current);
     };
@@ -215,16 +211,21 @@ const useRasterData = ({
 
       const decimalPlaces = getDecimalPlaces(range);
 
-      for (var i = biomassMin; i < biomassMax; i = i + step) {
-        colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
-      }
-      colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
+      var rasterColorsVals;
+      if (range > 0) {
+        for (var i = biomassMin; i < biomassMax; i = i + step) {
+          colorValues.push(parseFloat(i.toFixed(decimalPlaces)));
+        }
+        colorValues[colorValues.length - 1] = parseFloat(biomassMax.toFixed(decimalPlaces));
 
-      var rasterColorsVals = colorValues.map((e, i) => {
-        const normalizedBiomassVal = range ? (e - biomassMin) / range : null;
-        const colorV = range ? scale(normalizedBiomassVal).hex() : null;
-        return [e, colorV];
-      });
+        rasterColorsVals = colorValues.map((e) => {
+          const normalizedBiomassVal = (e - biomassMin) / range;
+          return [e, scale(normalizedBiomassVal).hex()];
+        });
+      } else {
+        // Single uniform value (e.g. fixed target rate): render one legend entry
+        rasterColorsVals = [[parseFloat(biomassMax.toFixed(decimalPlaces)), scale(0).hex()]];
+      }
 
       // Update rasterColorSteps in parent component
       setRasterColorSteps(rasterColorsVals);
@@ -251,7 +252,6 @@ const useRasterData = ({
       const handleClick = (e) => {
         if (!e.features?.length) return;
 
-        const coords = e.features[0].geometry.coordinates.slice();
         const val = parseFloat(e.features[0].properties[valueKey].toFixed(decimalPlaces));
 
         let secondaryLine = '';
@@ -261,10 +261,7 @@ const useRasterData = ({
         }
 
         new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-          .setLngLat([
-            (coords[0][0][0] + coords[0][2][0]) / 2,
-            (coords[0][0][1] + coords[0][2][1]) / 2,
-          ])
+          .setLngLat(e.lngLat)
           .setHTML(`<div>${material} value: ${val} ${unit}</div>${secondaryLine}`)
           .addTo(map.current);
       };
