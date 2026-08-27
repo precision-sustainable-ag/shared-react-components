@@ -387,6 +387,14 @@ const ReduxMap = ({
     }
   }, [map.current]);
 
+  // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
+  useEffect(() => () => {
+    if (map.current) {
+      map.current.remove();
+      map.current = null;
+    }
+  }, []);
+
   // Use effect for map configuration and map resize
   useEffect(() => {
     if (!map.current) return;
