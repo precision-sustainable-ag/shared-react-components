@@ -10,12 +10,14 @@ import { useEffect, useRef, useState } from 'react';
  * @param {React.RefObject} params.map - Reference to the Mapbox map instance.
  * @param {Object} params.initRasterObject - Initial raster object containing the geojson object.
  * @param {string} params.valueKey - The feature property key to read the raster value from.
+ * @param {string} params.scaleType - 'linear' colors by value; 'quantile' colors by rank so skewed data uses the full ramp.
  * @param {string[]} params.rasterColors - Color scale range used to map raster values to colors.
  * @param {string} params.unit - Unit of the raster values.
  * @param {string} params.material - Name of the raster material (used as the source/layer ID in Mapbox).
  * @param {Function} params.setRasterColorSteps - Setter function to update the raster color legend in the parent component.
  * @param {number} params.color_steps - Number of steps in the map legend.
  * @param {Object} params.discreteLabels - Optional mapping of discrete raster values to human-readable labels, with an optional `_colors` key for pinned colors.
+ * @param {React.RefObject} params.rasterSourceIdsRef - Ref holding the ids of raster geojson sources so the parent can exclude them when collecting editable features.
  */
 const useRasterData = ({
   map,
@@ -28,6 +30,7 @@ const useRasterData = ({
   setRasterColorSteps,
   color_steps = 7,
   discreteLabels = null,
+  rasterSourceIdsRef,
 }) => {
   const polygonsRef = useRef(featureCollection([]));
   const [geojsonData, setGeojsonData] = useState(null);
@@ -73,10 +76,11 @@ const useRasterData = ({
     if (map.current.getSource(layerId)) {
       map.current.removeSource(layerId);
     }
+    rasterSourceIdsRef?.current?.delete(layerId);
   };
 
-  // Adds a fill layer for polygon features and a circle layer for point features,
-  // both colored by the per-feature `color` property computed from the gradient.
+  // Adds a fill layer for polygon features and a circle layer for point features.
+  // Both are colored by the per-feature `color` property computed from the gradient.
   const addRasterLayers = (layerId, processedGeojson) => {
     const colorExpression = [
       'case',
@@ -84,6 +88,9 @@ const useRasterData = ({
       ['get', 'color'],
       'transparent',
     ];
+
+    // Track this as a display-only raster source so updateFeatures skips it.
+    rasterSourceIdsRef?.current?.add(layerId);
 
     if (!map.current.getSource(layerId)) {
       map.current.addSource(layerId, {
@@ -214,8 +221,8 @@ const useRasterData = ({
 
       const scale = chroma.scale(rasterColors);
 
-      // 'quantile' colors by the value's rank in the data so skewed distributions
-      // and outliers still spread across the full ramp; 'linear' colors by value.
+      // 'quantile' colors by the value's rank in the data so skewed distributions and outliers still spread across the full ramp.
+      // 'linear' colors by value.
       const rankDenominator = Math.max(sortedValues.length - 1, 1);
       const firstIndexByValue = new Map();
       if (scaleType === 'quantile') {
@@ -262,8 +269,7 @@ const useRasterData = ({
       // Setting up the color legend
       let rasterColorsVals;
       if (scaleType === 'quantile' && sortedValues.length) {
-        // Legend steps at evenly spaced ranks: colors are linear, values show the
-        // actual (non-linear) quantiles of the data
+        // Legend steps at evenly spaced ranks: colors are linear, values are non-linear quantiles of the data
         rasterColorsVals = [...Array(color_steps).keys()].map((idx) => {
           const q = idx / (color_steps - 1);
           const value = sortedValues[Math.round((sortedValues.length - 1) * q)];

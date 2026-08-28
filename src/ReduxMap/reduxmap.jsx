@@ -84,7 +84,6 @@ const ReduxMap = ({
   hasMarkerPopup = false,
   hasMarkerMovable = false,
   markerOptions = {},
-  pointStyles = {},
   popupContent,
   hasNavigation = false,
   hasFullScreen = false,
@@ -153,6 +152,8 @@ const ReduxMap = ({
   const cursorRef = useRef();
   const locationRef = useRef({ lat, lon });
   const featuresRef = useRef(features);
+  // Ref holding the ids of raster geojson sources so updateFeatures can exclude them when collecting editable features.
+  const rasterSourceIdsRef = useRef(new Set());
 
   const elevations = {};
 
@@ -169,6 +170,9 @@ const ReduxMap = ({
     drawerRef?.current?.deleteAll?.();
 
     Object.keys(sources).forEach((sourceName) => {
+      // Skip display-only raster sources so their geometry isn't merged into editable features.
+      if (rasterSourceIdsRef.current.has(sourceName)) return;
+
       const source = map.current.getSource(sourceName);
       if (source.type === 'geojson') {
         const data = { ...source._data };
@@ -259,14 +263,10 @@ const ReduxMap = ({
               });
             });
           } else {
-            // Points are rendered separately (display-only) and must not go into the draw layer
-            const polygonFeatures = features.filter(
-              (feature) => !feature?.geometry || /Polygon/.test(feature.geometry.type),
-            );
-            polygonFeatures.forEach((feature) => {
+            features.forEach((feature) => {
               drawerRef.current.add(feature);
             });
-            setPolygonArea(calcArea(polygonFeatures));
+            setPolygonArea(calcArea(features));
           }
       } else {
         setPolygonArea(0);
@@ -430,82 +430,6 @@ const ReduxMap = ({
       initHeight,
     );
   }, [map.current, features]);
-
-  // Render display-only Point features as a circle layer
-  useEffect(() => {
-    if (!map.current) return;
-
-    const POINTS_SOURCE = 'psa-points';
-    const POINTS_LAYER = 'psa-points-layer';
-
-    const renderPoints = () => {
-      if (!map.current) return;
-
-      const pointFeatures = (features || []).filter(
-        (feature) => feature?.geometry?.type === 'Point',
-      );
-
-      // Color points by their value using the same gradient as the raster polygons
-      const values = pointFeatures
-        .map((feature) => feature?.properties?.[valueKey])
-        .filter((value) => typeof value === 'number');
-
-      let coloredFeatures = pointFeatures;
-      if (values.length > 0) {
-        const min = Math.min(...values);
-        const max = Math.max(...values);
-        const range = max - min;
-        const scale = chroma.scale(rasterColors ?? ['red', 'green']);
-
-        coloredFeatures = pointFeatures.map((feature) => {
-          const value = feature?.properties?.[valueKey];
-          if (typeof value !== 'number') return feature;
-          const normalizedValue = range > 0 ? (value - min) / range : 0;
-          return {
-            ...feature,
-            properties: {
-              ...feature.properties,
-              color: scale(normalizedValue).hex(),
-            },
-          };
-        });
-      }
-
-      const data = { type: 'FeatureCollection', features: coloredFeatures };
-      const source = map.current.getSource(POINTS_SOURCE);
-
-      if (source) {
-        source.setData(data);
-        return;
-      }
-
-      map.current.addSource(POINTS_SOURCE, { type: 'geojson', data });
-      map.current.addLayer({
-        id: POINTS_LAYER,
-        type: 'circle',
-        source: POINTS_SOURCE,
-        paint: {
-          'circle-radius': pointStyles['circle-radius'] ?? 6,
-          // Use the per-point gradient color when present, otherwise the fixed style
-          'circle-color': [
-            'coalesce',
-            ['get', 'color'],
-            pointStyles['circle-color'] ?? '#ff3333',
-          ],
-          'circle-opacity': pointStyles['circle-opacity'] ?? 1,
-          'circle-stroke-width': pointStyles['circle-stroke-width'] ?? 2,
-          'circle-stroke-color': pointStyles['circle-stroke-color'] ?? '#fff',
-        },
-      });
-    };
-
-    // The style must be loaded before adding sources/layers
-    if (map.current.isStyleLoaded()) {
-      renderPoints();
-    } else {
-      map.current.once('styledata', renderPoints);
-    }
-  }, [map.current, features, valueKey]);
 
   // Use effect for setting map event handlers
   useEffect(() => {
@@ -691,6 +615,7 @@ const ReduxMap = ({
     setRasterColorSteps,
     color_steps,
     discreteLabels,
+    rasterSourceIdsRef,
   });
 
   if (!isMapSupported) {
@@ -860,13 +785,6 @@ ReduxMap.propTypes = {
    * Custom marker configuration.
    */
   markerOptions: PropTypes.object,
-  /**
-   * Paint properties for display-only Point features (circle-radius, circle-color,
-   * circle-opacity, circle-stroke-width, circle-stroke-color). Points with a numeric
-   * `properties[valueKey]` are colored from the `rasterColors` gradient instead;
-   * circle-color only applies to points without a value.
-   */
-  pointStyles: PropTypes.object,
   /**
    * Custom HTML content for the popup.
    */
