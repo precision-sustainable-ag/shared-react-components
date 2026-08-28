@@ -107,6 +107,7 @@ const ReduxMap = ({
   fitBounds = false,
   initRasterObject = {},
   valueKey = 'value',
+  scaleType = 'linear',
   rasterColors,
   unit,
   material,
@@ -153,6 +154,8 @@ const ReduxMap = ({
   const cursorRef = useRef();
   const locationRef = useRef({ lat, lon });
   const featuresRef = useRef(features);
+  // Ref holding the ids of raster geojson sources so updateFeatures can exclude them when collecting editable features.
+  const rasterSourceIdsRef = useRef(new Set());
 
   const elevations = {};
 
@@ -169,6 +172,9 @@ const ReduxMap = ({
     drawerRef?.current?.deleteAll?.();
 
     Object.keys(sources).forEach((sourceName) => {
+      // Skip display-only raster sources so their geometry isn't merged into editable features.
+      if (rasterSourceIdsRef.current.has(sourceName)) return;
+
       const source = map.current.getSource(sourceName);
       if (source.type === 'geojson') {
         const data = { ...source._data };
@@ -209,7 +215,12 @@ const ReduxMap = ({
       if (newFeatures?.length > 1) newFeatures = [newFeatures[newFeatures.length - 1]];
     }
 
-    setFeatures(newFeatures);
+    // Preserve any display-only Point features so drawing/editing polygons doesn't drop them
+    const pointFeatures = (featuresRef.current || []).filter(
+      (feature) => feature?.geometry?.type === 'Point',
+    );
+
+    setFeatures([...pointFeatures, ...newFeatures]);
     setPolygonArea(calcArea(newFeatures));
 
     if (newLat) {
@@ -257,8 +268,8 @@ const ReduxMap = ({
             features.forEach((feature) => {
               drawerRef.current.add(feature);
             });
+            setPolygonArea(calcArea(features));
           }
-          setPolygonArea(calcArea(features));
       } else {
         setPolygonArea(0);
       }
@@ -599,6 +610,7 @@ const ReduxMap = ({
     map,
     initRasterObject,
     valueKey,
+    scaleType,
     rasterColors,
     unit,
     material,
@@ -608,6 +620,7 @@ const ReduxMap = ({
     secondaryUnit,
     secondaryUnitMultiplier,
     roundTo,
+    rasterSourceIdsRef,
   });
 
   // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
@@ -889,6 +902,10 @@ ReduxMap.propTypes = {
    * The GeoJSON feature property key to read raster values from. Defaults to 'value'.
    */
   valueKey: PropTypes.string,
+  /**
+   * 'linear' colors by value; 'quantile' colors by rank so skewed data uses the full ramp.
+   */
+  scaleType: PropTypes.oneOf(['linear', 'quantile']),
   /**
    * Color scale range used to map raster values to colors.
    */

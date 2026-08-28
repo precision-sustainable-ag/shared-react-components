@@ -152,6 +152,70 @@ export const MapWithRasterLayer = {
   },
 };
 
+// Simulated as-applied spray points (GreenStar monitor style) on a field near the Chesapeake.
+// A grid of points whose application rate varies, so the gradient is visible.
+const sprayPointsRaster = {
+  type: 'FeatureCollection',
+  features: Array.from({ length: 40 }, (_, i) => ({
+    type: 'Feature',
+    properties: {
+      Field: 70,
+      Product: 'Sidedress',
+      'Rt Apd Liq(gal(US)/ac)': 20 + (i % 10) * 5 + (i % 3),
+    },
+    geometry: {
+      type: 'Point',
+      // GeoJSON order: [longitude, latitude]
+      coordinates: [-75.9639 + (i % 8) * 0.0006, 39.3028 + Math.floor(i / 8) * 0.0005],
+    },
+  })),
+};
+
+export const MapWithRasterPoints = {
+  args: {
+    initWidth: '900px',
+    initHeight: '400px',
+    initLat: 39.3038,
+    initLon: -75.9618,
+    initStartZoom: 16,
+    hasFullScreen: true,
+    mapboxToken: mapboxToken,
+    initRasterObject: sprayPointsRaster,
+    valueKey: 'Rt Apd Liq(gal(US)/ac)',
+    rasterColors: ['red', 'yellow', 'green'],
+    unit: 'gal(US)/ac',
+    material: 'Rt Apd Liq',
+    color_steps: 5,
+  },
+};
+
+// Display-only Point features passed through initFeatures,
+// colored from the rasterColors gradient by their properties.value
+const gradientPointFeatures = Array.from({ length: 12 }, (_, i) => ({
+  type: 'Feature',
+  properties: { value: (i + 1) * 10 },
+  geometry: {
+    type: 'Point',
+    coordinates: [-90 + (i % 4) * 0.005, 41 + Math.floor(i / 4) * 0.004],
+  },
+}));
+
+export const MapWithPointFeatures = {
+  args: {
+    initWidth: '900px',
+    initHeight: '400px',
+    initLat: 41.004,
+    initLon: -89.9925,
+    initStartZoom: 14,
+    hasCoordBar: true,
+    fitBounds: true,
+    mapboxToken: mapboxToken,
+    initFeatures: gradientPointFeatures,
+    rasterColors: ['red', 'yellow', 'green'],
+    pointStyles: { 'circle-radius': 8 },
+  },
+};
+
 export const MapWithRasterLayerMultiplier = {
   args: {
     initWidth: '900px',
