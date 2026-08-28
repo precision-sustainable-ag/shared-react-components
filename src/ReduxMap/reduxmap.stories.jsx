@@ -137,7 +137,7 @@ export const MapWithRasterLayer = {
   args: {
     initWidth: '900px',
     initHeight: '400px',
-    initLat: 35.5220,
+    initLat: 35.522,
     initLon: -82.7055,
     initStartZoom: 16,
     hasFullScreen: true,
@@ -220,7 +220,7 @@ export const MapWithRasterLayerMultiplier = {
   args: {
     initWidth: '900px',
     initHeight: '400px',
-    initLat: 35.5220,
+    initLat: 35.522,
     initLon: -82.7055,
     initStartZoom: 16,
     hasFullScreen: true,
@@ -237,11 +237,11 @@ export const MapWithRasterLayerMultiplier = {
   },
 };
 
-  export const MapWithRasterLayerDiscrete = {
+export const MapWithRasterLayerDiscrete = {
   args: {
     initWidth: '900px',
     initHeight: '400px',
-    initLat: 35.5220,
+    initLat: 35.522,
     initLon: -82.7055,
     initStartZoom: 16,
     hasFullScreen: true,
@@ -257,8 +257,11 @@ export const MapWithRasterLayerMultiplier = {
       3: 'Average',
       4: 'Cap',
       _colors: {
-        1: 'red', 2: 'yellow', 3: 'blue', 4: 'green',
+        1: 'red',
+        2: 'yellow',
+        3: 'blue',
+        4: 'green',
       },
-    }
+    },
   },
 };

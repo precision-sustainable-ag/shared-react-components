@@ -1,5 +1,5 @@
-import styles from '../assets/styles/map.module.scss';
 import { useState } from 'react';
+import styles from '../assets/styles/map.module.scss';
 
 /**
  * Displays a color legend and an opacity slider for raster data rendered on a Mapbox map.
@@ -30,19 +30,19 @@ const RasterLegend = ({
   const isDiscrete = colorStops && colorStops.length > 0 && colorStops[0].length === 3;
 
   // Check if multiplier is valid which turns the continuous legend into two columns.
-  const hasSecondary = typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier);
+  const hasSecondary =
+    typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier);
 
   const handleOpacityChange = (event) => {
     const { value: val } = event.target;
     setOpacityValue(val);
-    if (map && map.current) {
+    if (map?.current) {
       map.current.setPaintProperty(`${material}Polygons`, 'fill-opacity', val / 100);
     }
   };
 
   return (
-    colorStops &&
-    colorStops.length && (
+    colorStops?.length && (
       <div>
         <div className={styles.opacityslider}>
           <input
@@ -63,8 +63,8 @@ const RasterLegend = ({
                 <div className={styles.rasterlegendvalue}>{material}</div>
                 {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
               </div>
-              {colorStops.map(([value, color, label], i) => (
-                <div key={i} className={styles.rasterlegenditem}>
+              {colorStops.map(([_value, color, label], _i) => (
+                <div key={color} className={styles.rasterlegenditem}>
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{label}</div>
                 </div>
@@ -81,12 +81,14 @@ const RasterLegend = ({
                 <div className={styles.rasterlegendvalue}>{unit}</div>
                 {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
               </div>
-              {colorStops.map(([value, color], i) => (
-                <div key={i} className={styles.rasterlegenditem}>
+              {colorStops.map(([value, color], _i) => (
+                <div key={color} className={styles.rasterlegenditem}>
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{value}</div>
                   {hasSecondary && (
-                    <div className={styles.rasterlegendvalue}>{parseFloat((value * secondaryUnitMultiplier).toFixed(0))}</div>
+                    <div className={styles.rasterlegendvalue}>
+                      {parseFloat((value * secondaryUnitMultiplier).toFixed(0))}
+                    </div>
                   )}
                 </div>
               ))}

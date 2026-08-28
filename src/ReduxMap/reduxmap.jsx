@@ -270,9 +270,9 @@ const ReduxMap = ({
             });
             setPolygonArea(calcArea(features));
           }
-      } else {
-        setPolygonArea(0);
-      }
+        } else {
+          setPolygonArea(0);
+        }
       } catch {
         // Silently handle failures (happens when importing shapefile without setter)
       }
@@ -320,7 +320,7 @@ const ReduxMap = ({
         return;
       }
 
-      const Map = new mapboxgl.Map({
+      const initMap = new mapboxgl.Map({
         accessToken: MAPBOX_TOKEN,
         container: mapContainer.current,
         style: layer,
@@ -328,8 +328,8 @@ const ReduxMap = ({
         zoom,
         projection: projection,
       });
-      map.current = Map;
-      setMap(Map);
+      map.current = initMap;
+      setMap(initMap);
 
       // Disable dragging and moving polygons and points
       const simpleSelect = { ...MapboxDraw.modes.simple_select };
@@ -625,12 +625,15 @@ const ReduxMap = ({
 
   // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
   // Registered last so its cleanup runs after the control hooks' cleanups (useMapGeolocate/useMapGeocoder).
-  useEffect(() => () => {
-    if (map.current) {
-      map.current.remove();
-      map.current = null;
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    },
+    [],
+  );
 
   if (!isMapSupported) {
     return (

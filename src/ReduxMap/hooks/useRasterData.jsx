@@ -1,7 +1,7 @@
 import { featureCollection } from '@turf/helpers';
 import chroma from 'chroma-js';
 import mapboxgl from 'mapbox-gl';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 /**
  * Custom hook to process raster data as a colored grid on a Mapbox map.
@@ -42,9 +42,13 @@ const useRasterData = ({
   const [geojsonData, setGeojsonData] = useState(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
+  const rasterColorsKey = JSON.stringify(rasterColors);
+  const stableRasterColors = useMemo(() => JSON.parse(rasterColorsKey), [rasterColorsKey]);
+
+
   useEffect(() => {
     setGeojsonData(null);
-    if (initRasterObject && initRasterObject.features && initRasterObject.features.length > 0) {
+    if (initRasterObject?.features && initRasterObject.features.length > 0) {
       setGeojsonData(initRasterObject);
     }
   }, [initRasterObject]);
@@ -71,71 +75,77 @@ const useRasterData = ({
     };
   }, [map.current]);
 
-  const removeLayerAndSource = (layerId) => {
-    if (!map.current) return;
-    if (map.current.getLayer(`${layerId}-points`)) {
-      map.current.removeLayer(`${layerId}-points`);
-    }
-    if (map.current.getLayer(layerId)) {
-      map.current.removeLayer(layerId);
-    }
-    if (map.current.getSource(layerId)) {
-      map.current.removeSource(layerId);
-    }
-    rasterSourceIdsRef?.current?.delete(layerId);
-  };
+  const removeLayerAndSource = useCallback(
+    (layerId) => {
+      if (!map.current) return;
+      if (map.current.getLayer(`${layerId}-points`)) {
+        map.current.removeLayer(`${layerId}-points`);
+      }
+      if (map.current.getLayer(layerId)) {
+        map.current.removeLayer(layerId);
+      }
+      if (map.current.getSource(layerId)) {
+        map.current.removeSource(layerId);
+      }
+      rasterSourceIdsRef?.current?.delete(layerId);
+    },
+    [map, rasterSourceIdsRef],
+  );
 
   // Adds a fill layer for polygon features and a circle layer for point features.
   // Both are colored by the per-feature `color` property computed from the gradient.
-  const addRasterLayers = (layerId, processedGeojson) => {
-    const colorExpression = [
-      'case',
-      ['!=', ['get', 'color'], null],
-      ['get', 'color'],
-      'transparent',
-    ];
+  const addRasterLayers = useCallback(
+    (layerId, processedGeojson) => {
+      const colorExpression = [
+        'case',
+        ['!=', ['get', 'color'], null],
+        ['get', 'color'],
+        'transparent',
+      ];
 
-    // Track this as a display-only raster source so updateFeatures skips it.
-    rasterSourceIdsRef?.current?.add(layerId);
+      // Track this as a display-only raster source so updateFeatures skips it.
+      rasterSourceIdsRef?.current?.add(layerId);
 
-    if (!map.current.getSource(layerId)) {
-      map.current.addSource(layerId, {
-        type: 'geojson',
-        data: processedGeojson,
-      });
-      map.current.addLayer({
-        id: layerId,
-        type: 'fill',
-        source: layerId,
-        filter: ['==', ['geometry-type'], 'Polygon'],
-        paint: {
-          'fill-opacity': 0.5,
-          'fill-color': colorExpression,
-        },
-      });
-      map.current.addLayer({
-        id: `${layerId}-points`,
-        type: 'circle',
-        source: layerId,
-        filter: ['==', ['geometry-type'], 'Point'],
-        paint: {
-          // Scale circles down as the map zooms out so dense point sets stay readable
-          'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1, 14, 2.5, 17, 6],
-          'circle-color': colorExpression,
-        },
-      });
-    } else {
-      map.current.getSource(layerId).setData(processedGeojson);
-    }
-  };
+      if (!map.current.getSource(layerId)) {
+        map.current.addSource(layerId, {
+          type: 'geojson',
+          data: processedGeojson,
+        });
+        map.current.addLayer({
+          id: layerId,
+          type: 'fill',
+          source: layerId,
+          filter: ['==', ['geometry-type'], 'Polygon'],
+          paint: {
+            'fill-opacity': 0.5,
+            'fill-color': colorExpression,
+          },
+        });
+        map.current.addLayer({
+          id: `${layerId}-points`,
+          type: 'circle',
+          source: layerId,
+          filter: ['==', ['geometry-type'], 'Point'],
+          paint: {
+            // Scale circles down as the map zooms out so dense point sets stay readable
+            'circle-radius': ['interpolate', ['linear'], ['zoom'], 10, 1, 14, 2.5, 17, 6],
+            'circle-color': colorExpression,
+          },
+        });
+      } else {
+        map.current.getSource(layerId).setData(processedGeojson);
+      }
+    },
+    [map, rasterSourceIdsRef],
+  );
 
   // Returns the popup anchor: a Point's own coords, otherwise the click location
-  const getPopupLngLat = (feature, e) => {
+  const getPopupLngLat = useCallback((feature, e) => {
     if (feature.geometry.type === 'Point') {
       return feature.geometry.coordinates.slice();
     }
     return e.lngLat;
-  };
+  }, []);
 
   useEffect(() => {
     if (!map.current || !geojsonData || !isMapLoaded) return;
@@ -144,67 +154,71 @@ const useRasterData = ({
     const layerId = `${material}Polygons_${valueKey}`;
 
     if (discreteLabels) {
-    const knownValues = Object.keys(discreteLabels)
-      .filter((k) => k !== '_colors')
-      .map(Number)
-      .sort((a, b) => a - b);
+      const knownValues = Object.keys(discreteLabels)
+        .filter((k) => k !== '_colors')
+        .map(Number)
+        .sort((a, b) => a - b);
 
-    const pinnedColors = discreteLabels._colors || {};
+      const pinnedColors = discreteLabels._colors || {};
 
-    // Auto-assign colors from the rasterColors scale for values without a pinned color.
-    const scale = chroma.scale(rasterColors).colors(knownValues.length);
-    const valueColorMap = {};
-    knownValues.forEach((val, idx) => {
-      valueColorMap[val] = pinnedColors[val] || scale[idx];
-    });
+      // Auto-assign colors from the rasterColors scale for values without a pinned color.
+      const scale = chroma.scale(stableRasterColors).colors(knownValues.length);
+      const valueColorMap = {};
+      knownValues.forEach((val, idx) => {
+        valueColorMap[val] = pinnedColors[val] || scale[idx];
+      });
 
-    const featuresWithColors = geojsonData.features.map((feature) => {
-      const rawVal = feature.properties[valueKey];
-      const discreteVal = Math.round(rawVal);
-      const color = valueColorMap[discreteVal] || 'transparent';
-      return {
-        ...feature,
-        properties: {
-          ...feature.properties,
-          value: discreteVal,
-          color,
-        },
+      const featuresWithColors = geojsonData.features.map((feature) => {
+        const rawVal = feature.properties[valueKey];
+        const discreteVal = Math.round(rawVal);
+        const color = valueColorMap[discreteVal] || 'transparent';
+        return {
+          ...feature,
+          properties: {
+            ...feature.properties,
+            value: discreteVal,
+            color,
+          },
+        };
+      });
+
+      const processedGeojson = {
+        type: 'FeatureCollection',
+        features: featuresWithColors,
       };
-    });
+      polygonsRef.current = processedGeojson;
 
-    const processedGeojson = {
-      type: 'FeatureCollection',
-      features: featuresWithColors,
-    };
-    polygonsRef.current = processedGeojson;
+      const rasterColorsVals = knownValues.map((val) => [
+        val,
+        valueColorMap[val],
+        discreteLabels[val],
+      ]);
+      setRasterColorSteps(rasterColorsVals);
 
-    const rasterColorsVals = knownValues.map((val) => [val, valueColorMap[val], discreteLabels[val]]);
-    setRasterColorSteps(rasterColorsVals);
+      addRasterLayers(layerId, processedGeojson);
 
-    addRasterLayers(layerId, processedGeojson);
+      const handleClick = (e) => {
+        if (!e.features?.length) return;
 
-    const handleClick = (e) => {
-      if (!e.features?.length) return;
+        const val = e.features[0].properties[valueKey];
+        const label = discreteLabels[val] ?? val;
 
-      const val = e.features[0].properties[valueKey];
-      const label = discreteLabels[val] ?? val;
+        new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
+          .setLngLat(getPopupLngLat(e.features[0], e))
+          .setHTML(`<div>${material}: ${label}</div>`)
+          .addTo(map.current);
+      };
 
-      new mapboxgl.Popup({ closeButton: false, closeOnClick: true })
-        .setLngLat(getPopupLngLat(e.features[0], e))
-        .setHTML(`<div>${material}: ${label}</div>`)
-        .addTo(map.current);
-    };
+      map.current.on('click', layerId, handleClick);
+      map.current.on('click', `${layerId}-points`, handleClick);
 
-    map.current.on('click', layerId, handleClick);
-    map.current.on('click', `${layerId}-points`, handleClick);
-
-    return () => {
-      if (map.current) {
-        map.current.off('click', layerId, handleClick);
-        map.current.off('click', `${layerId}-points`, handleClick);
-        removeLayerAndSource(layerId);
-      }
-    };
+      return () => {
+        if (map.current) {
+          map.current.off('click', layerId, handleClick);
+          map.current.off('click', `${layerId}-points`, handleClick);
+          removeLayerAndSource(layerId);
+        }
+      };
     } else {
       // const f = unit === "lb/ac" ? 0.892179 : 1;
       const f = 1;
@@ -226,7 +240,7 @@ const useRasterData = ({
       // No usable values for this valueKey
       if (!Number.isFinite(biomassMin) || !Number.isFinite(biomassMax)) return undefined;
 
-      const scale = chroma.scale(rasterColors);
+      const scale = chroma.scale(stableRasterColors);
 
       // 'quantile' colors by the value's rank in the data so skewed distributions and outliers still spread across the full ramp.
       // 'linear' colors by value.
@@ -326,7 +340,10 @@ const useRasterData = ({
         const val = roundValue(e.features[0].properties[valueKey]);
 
         let secondaryLine = '';
-        if (typeof secondaryUnitMultiplier === 'number' && Number.isFinite(secondaryUnitMultiplier)) {
+        if (
+          typeof secondaryUnitMultiplier === 'number' &&
+          Number.isFinite(secondaryUnitMultiplier)
+        ) {
           const secondaryVal = parseFloat((val * secondaryUnitMultiplier).toFixed(0));
           secondaryLine = `<div>OR ${secondaryVal} ${secondaryUnit ?? ''}</div>`;
         }
@@ -348,7 +365,25 @@ const useRasterData = ({
         }
       };
     }
-  }, [map.current, geojsonData, unit, material, isMapLoaded, discreteLabels, valueKey, scaleType, secondaryUnitMultiplier, secondaryUnit, roundTo]);
+  }, [
+    map.current,
+    geojsonData,
+    unit,
+    material,
+    isMapLoaded,
+    discreteLabels,
+    valueKey,
+    scaleType,
+    secondaryUnitMultiplier,
+    secondaryUnit,
+    roundTo,
+    addRasterLayers,
+    stableRasterColors,
+    color_steps,
+    getPopupLngLat,
+    removeLayerAndSource,
+    setRasterColorSteps,
+  ]);
 };
 
 export default useRasterData;
