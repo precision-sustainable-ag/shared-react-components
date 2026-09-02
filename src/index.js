@@ -1,4 +1,5 @@
 export { default as PSAAccordion } from './Accordion/index';
+export { default as PSAAdminPortal } from './AdminPortal/frontend/index';
 export { default as PSAAuthButton } from './Authbutton/index';
 export { default as PSAButton } from './Button/index';
 export { default as PSACheckbox } from './Checkbox/index';

@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "setup-admin-portal-backend": "./utils/setup-admin-portal-backend.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "storybook dev -p 3001",
     "build-storybook": "storybook build",
     "vegspec": "storybook build -o ../vpt/public/story",
-    "create-new-component": "node ./utils/create-new-component"
+    "create-new-component": "node ./utils/create-new-component",
+    "setup-admin-portal-backend": "node ./utils/setup-admin-portal-backend.js"
   },
   "keywords": [],
   "author": "",
