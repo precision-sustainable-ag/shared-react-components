@@ -148,10 +148,17 @@ const useRasterData = ({
   }, []);
 
   useEffect(() => {
-    if (!map.current || !geojsonData || !isMapLoaded) return;
-    if (!geojsonData.features || geojsonData.features.length === 0) return;
+    if (!map.current || !isMapLoaded) return;
+    // Clear any stale legend left over from the previous raster.
+    if (!geojsonData || !geojsonData.features || geojsonData.features.length === 0) {
+      setRasterColorSteps([]);
+      return;
+    }
 
     const layerId = `${material}Polygons_${valueKey}`;
+
+    // Clear old legend entries before setting new ones
+    setRasterColorSteps([]);
 
     if (discreteLabels) {
       const knownValues = Object.keys(discreteLabels)

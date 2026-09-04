@@ -695,6 +695,7 @@ const ReduxMap = ({
       )}
       {rasterColorSteps && rasterColorSteps.length > 0 && (
         <RasterLegend
+          key={material}
           map={map}
           colorStops={rasterColorSteps}
           unit={unit}

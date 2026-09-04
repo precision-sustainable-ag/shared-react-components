@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <ArrayIndexKey is needed to enforce uniqueness> */
 import { useState } from 'react';
 import styles from '../assets/styles/map.module.scss';
 
@@ -63,8 +64,8 @@ const RasterLegend = ({
                 <div className={styles.rasterlegendvalue}>{material}</div>
                 {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
               </div>
-              {colorStops.map(([_value, color, label], _i) => (
-                <div key={color} className={styles.rasterlegenditem}>
+              {colorStops.map(([_value, color, label], i) => (
+                <div key={`${material}-${color}-${i}`} className={styles.rasterlegenditem}>
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{label}</div>
                 </div>
@@ -81,8 +82,8 @@ const RasterLegend = ({
                 <div className={styles.rasterlegendvalue}>{unit}</div>
                 {hasSecondary && <div className={styles.rasterlegendvalue}>{secondaryUnit}</div>}
               </div>
-              {colorStops.map(([value, color], _i) => (
-                <div key={color} className={styles.rasterlegenditem}>
+              {colorStops.map(([value, color], i) => (
+                <div key={`${material}-${color}-${i}`} className={styles.rasterlegenditem}>
                   <div className={styles.rasterlegendcolor} style={{ backgroundColor: color }} />
                   <div className={styles.rasterlegendvalue}>{value}</div>
                   {hasSecondary && (
