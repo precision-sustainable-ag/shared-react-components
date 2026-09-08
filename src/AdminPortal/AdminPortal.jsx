@@ -22,15 +22,10 @@ import {
 import { useAdminPortal } from './useAdminPortal';
 
 /**
- * Drop-in admin table for managing Auth0 users/roles against a backend
- * running the AdminPortal Express server (see ../backend).
- *
  * Required props:
- * - apiBaseUrl (string): base URL the backend is mounted at, e.g.
- *   `${BACKEND_URL}/api`. Must point at a running AdminPortal backend.
- * - getAccessToken (() => Promise<string>): returns a bearer token scoped
- *   to the same Auth0 API the backend's AUTH0_AUDIENCE is set to (e.g. the
- *   Auth0 React SDK's getAccessTokenSilently).
+ * - apiBaseUrl (string): base URL the backend is mounted at. Must point at a running AdminPortal backend.
+ * - getAccessToken: returns a bearer token scoped
+ *   to the same Auth0 API the backend's AUTH0_AUDIENCE is set to.
  *
  * Optional props:
  * - roleAssignmentMode ('single' | 'multiple', default 'single'): whether a
@@ -53,7 +48,7 @@ const AdminPortal = ({
   }
   if (typeof getAccessToken !== 'function') {
     throw new Error(
-      '<AdminPortal> requires a `getAccessToken` prop: () => Promise<string>, returning a bearer token for the backend.',
+      '<AdminPortal> requires a `getAccessToken` prop, returning a bearer token for the backend.',
     );
   }
   if (!['single', 'multiple'].includes(roleAssignmentMode)) {
