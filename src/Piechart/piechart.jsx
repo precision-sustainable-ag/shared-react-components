@@ -279,7 +279,7 @@ export const PSAPiechart = ({
                   {chartData.map((entry, index) => (
                     <Cell
                       key={entry.name}
-                      fill={COLORS[index % COLORS.length]}
+                      fill={entry.color || COLORS[index % COLORS.length]}
                       fillOpacity={activeIndex === -1 || activeIndex === index ? 1 : 0.3}
                     />
                   ))}
@@ -305,6 +305,7 @@ export const PSAPiechart = ({
                     lineHeight: '18px',
                     maxHeight: smallChart ? 60 : undefined,
                   }}
+                  formatter={(value) => <span style={{ color: '#333' }}>{value}</span>}
                   onMouseEnter={(_data, index) => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(-1)}
                 />
@@ -323,6 +324,7 @@ PSAPiechart.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       value: PropTypes.number,
+      color: PropTypes.string,
     }),
   ).isRequired,
   label: PropTypes.string.isRequired,
