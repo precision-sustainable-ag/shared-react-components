@@ -43,7 +43,7 @@ const renderLabel = ({ cx, cy, midAngle, outerRadius, percent, smallChart }) => 
       fontSize={14}
       fill="#000"
       stroke="#fff"
-      strokeWidth={1}
+      strokeWidth={2}
       paintOrder="stroke"
     >
       {(percent * 100).toFixed(smallChart ? 0 : 1)}%
