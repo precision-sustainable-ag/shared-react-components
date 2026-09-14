@@ -107,11 +107,15 @@ const ReduxMap = ({
   fitBounds = false,
   initRasterObject = {},
   valueKey = 'value',
+  scaleType = 'linear',
   rasterColors,
   unit,
   material,
   color_steps,
   discreteLabels = null,
+  secondaryUnit,
+  secondaryUnitMultiplier,
+  roundTo,
   mapboxToken,
 }) => {
   const MAPBOX_TOKEN =
@@ -150,6 +154,8 @@ const ReduxMap = ({
   const cursorRef = useRef();
   const locationRef = useRef({ lat, lon });
   const featuresRef = useRef(features);
+  // Ref holding the ids of raster geojson sources so updateFeatures can exclude them when collecting editable features.
+  const rasterSourceIdsRef = useRef(new Set());
 
   const elevations = {};
 
@@ -166,6 +172,9 @@ const ReduxMap = ({
     drawerRef?.current?.deleteAll?.();
 
     Object.keys(sources).forEach((sourceName) => {
+      // Skip display-only raster sources so their geometry isn't merged into editable features.
+      if (rasterSourceIdsRef.current.has(sourceName)) return;
+
       const source = map.current.getSource(sourceName);
       if (source.type === 'geojson') {
         const data = { ...source._data };
@@ -206,7 +215,12 @@ const ReduxMap = ({
       if (newFeatures?.length > 1) newFeatures = [newFeatures[newFeatures.length - 1]];
     }
 
-    setFeatures(newFeatures);
+    // Preserve any display-only Point features so drawing/editing polygons doesn't drop them
+    const pointFeatures = (featuresRef.current || []).filter(
+      (feature) => feature?.geometry?.type === 'Point',
+    );
+
+    setFeatures([...pointFeatures, ...newFeatures]);
     setPolygonArea(calcArea(newFeatures));
 
     if (newLat) {
@@ -254,11 +268,11 @@ const ReduxMap = ({
             features.forEach((feature) => {
               drawerRef.current.add(feature);
             });
+            setPolygonArea(calcArea(features));
           }
-          setPolygonArea(calcArea(features));
-      } else {
-        setPolygonArea(0);
-      }
+        } else {
+          setPolygonArea(0);
+        }
       } catch {
         // Silently handle failures (happens when importing shapefile without setter)
       }
@@ -306,7 +320,7 @@ const ReduxMap = ({
         return;
       }
 
-      const Map = new mapboxgl.Map({
+      const initMap = new mapboxgl.Map({
         accessToken: MAPBOX_TOKEN,
         container: mapContainer.current,
         style: layer,
@@ -314,8 +328,8 @@ const ReduxMap = ({
         zoom,
         projection: projection,
       });
-      map.current = Map;
-      setMap(Map);
+      map.current = initMap;
+      setMap(initMap);
 
       // Disable dragging and moving polygons and points
       const simpleSelect = { ...MapboxDraw.modes.simple_select };
@@ -596,13 +610,30 @@ const ReduxMap = ({
     map,
     initRasterObject,
     valueKey,
+    scaleType,
     rasterColors,
     unit,
     material,
     setRasterColorSteps,
     color_steps,
     discreteLabels,
+    secondaryUnit,
+    secondaryUnitMultiplier,
+    roundTo,
+    rasterSourceIdsRef,
   });
+
+  // Release the mapbox-gl instance (and its WebGL context) when the map unmounts.
+  // Registered last so its cleanup runs after the control hooks' cleanups (useMapGeolocate/useMapGeocoder).
+  useEffect(
+    () => () => {
+      if (map.current) {
+        map.current.remove();
+        map.current = null;
+      }
+    },
+    [],
+  );
 
   if (!isMapSupported) {
     return (
@@ -663,7 +694,15 @@ const ReduxMap = ({
         />
       )}
       {rasterColorSteps && rasterColorSteps.length > 0 && (
-        <RasterLegend map={map} colorStops={rasterColorSteps} unit={unit} material={material} />
+        <RasterLegend
+          key={material}
+          map={map}
+          colorStops={rasterColorSteps}
+          unit={unit}
+          material={material}
+          secondaryUnit={secondaryUnit}
+          secondaryUnitMultiplier={secondaryUnitMultiplier}
+        />
       )}
     </div>
   );
@@ -868,6 +907,10 @@ ReduxMap.propTypes = {
    */
   valueKey: PropTypes.string,
   /**
+   * 'linear' colors by value; 'quantile' colors by rank so skewed data uses the full ramp.
+   */
+  scaleType: PropTypes.oneOf(['linear', 'quantile']),
+  /**
    * Color scale range used to map raster values to colors.
    */
   rasterColors: PropTypes.array,
@@ -887,6 +930,19 @@ ReduxMap.propTypes = {
    * Optional map of {integer value : display label} for discrete raster mode.
    */
   discreteLabels: PropTypes.object,
+  /**
+   * Optional unit label for the multiplier-derived second legend column.
+   */
+  secondaryUnit: PropTypes.string,
+  /**
+   * Factor applied to each raster value to show a second legend column.
+   */
+  secondaryUnitMultiplier: PropTypes.number,
+  /**
+   * Optional increment to round legend/popup values to (e.g. 0.01, 0.1, 1, 5, 10).
+   * When omitted, precision is derived from the value range.
+   */
+  roundTo: PropTypes.number,
   /**
    * Mapbox API access token.
    */
