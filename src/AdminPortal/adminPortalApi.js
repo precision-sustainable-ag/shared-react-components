@@ -1,5 +1,4 @@
-// `apiBaseUrl` is the full base path the backend's admin-portal router was mounted at
-export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken }) => {
+export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken, appName }) => {
   const request = async (path, options = {}) => {
     const accessToken = await getAccessToken();
 
@@ -7,6 +6,7 @@ export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken }) => {
       ...options,
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        'X-App-Name': appName,
         ...(options.body ? { 'Content-Type': 'application/json' } : {}),
         ...options.headers,
       },
@@ -24,6 +24,7 @@ export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken }) => {
   };
 
   return {
+    fetchConfig: () => request('/config'),
     fetchUsers: () => request('/admin/users'),
     fetchRoles: () => request('/roles'),
     assignRole: (userId, roleIdOrIds) =>

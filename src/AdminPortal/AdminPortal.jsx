@@ -23,23 +23,26 @@ import { useAdminPortal } from './useAdminPortal';
 
 /**
  * Required props:
- * - apiBaseUrl (string): base URL the backend is mounted at. Must point at a running AdminPortal backend.
+ * - apiBaseUrl (string): base URL the backend is mounted at. Must point at a running auth0-api deployment.
  * - getAccessToken: returns a bearer token scoped
  *   to the same Auth0 API the backend's AUTH0_AUDIENCE is set to.
+ * - appName (string): identifies this project to auth0-api, sent as an
+ *   `X-App-Name` header on every request. Must be one of the names listed
+ *   in that deployment's APP_NAMES — see auth0-api's README.
  *
  * Optional props:
- * - roleAssignmentMode ('single' | 'multiple', default 'single'): whether a
- *   user can hold one role or several. MUST match the backend's own
- *   ROLE_ASSIGNMENT_MODE env var — the two are separate processes with no
- *   shared source of truth, so keep them in sync by hand.
  * - showRequests (boolean, default true): show the Requests column with
  *   approve/reject actions for pending access requests.
  * - title (string, default 'Manage Users'): heading above the table.
+ *
+ * Whether a user can hold one role or several is fetched from the backend's
+ * `/config` endpoint, not a prop — that's what actually enforces it, so
+ * there's nothing for a separate frontend setting to drift out of sync with.
  */
 const AdminPortal = ({
   apiBaseUrl,
   getAccessToken,
-  roleAssignmentMode = 'single',
+  appName,
   showRequests = true,
   title = 'Manage Users',
 }) => {
@@ -51,12 +54,22 @@ const AdminPortal = ({
       '<AdminPortal> requires a `getAccessToken` prop, returning a bearer token for the backend.',
     );
   }
-  if (!['single', 'multiple'].includes(roleAssignmentMode)) {
-    throw new Error('<AdminPortal> `roleAssignmentMode` must be "single" or "multiple".');
+  if (!appName) {
+    throw new Error(
+      '<AdminPortal> requires an `appName` prop identifying this project to the backend.',
+    );
   }
 
-  const { roles, userRows, isLoading, loadError, updatingUserId, assignRole, rejectRequest } =
-    useAdminPortal({ apiBaseUrl, getAccessToken });
+  const {
+    roles,
+    userRows,
+    roleAssignmentMode,
+    isLoading,
+    loadError,
+    updatingUserId,
+    assignRole,
+    rejectRequest,
+  } = useAdminPortal({ apiBaseUrl, getAccessToken, appName });
 
   const isMultiple = roleAssignmentMode === 'multiple';
 

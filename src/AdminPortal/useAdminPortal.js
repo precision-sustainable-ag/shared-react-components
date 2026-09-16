@@ -6,14 +6,15 @@ const sortByPendingRequestFirst = (rows) => {
   return [...rows].sort((a, b) => Number(hasPendingRequest(b)) - Number(hasPendingRequest(a)));
 };
 
-export const useAdminPortal = ({ apiBaseUrl, getAccessToken }) => {
+export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
   const api = useMemo(
-    () => createAdminPortalApi({ apiBaseUrl, getAccessToken }),
-    [apiBaseUrl, getAccessToken],
+    () => createAdminPortalApi({ apiBaseUrl, getAccessToken, appName }),
+    [apiBaseUrl, getAccessToken, appName],
   );
 
   const [roles, setRoles] = useState([]);
   const [userRows, setUserRows] = useState([]);
+  const [roleAssignmentMode, setRoleAssignmentMode] = useState('single');
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [updatingUserId, setUpdatingUserId] = useState(null);
@@ -26,11 +27,16 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken }) => {
       setLoadError('');
 
       try {
-        const [rows, allRoles] = await Promise.all([api.fetchUsers(), api.fetchRoles()]);
+        const [rows, allRoles, config] = await Promise.all([
+          api.fetchUsers(),
+          api.fetchRoles(),
+          api.fetchConfig(),
+        ]);
 
         if (isMounted) {
           setRoles(allRoles);
           setUserRows(sortByPendingRequestFirst(rows));
+          setRoleAssignmentMode(config.roleAssignmentMode);
         }
       } catch (error) {
         console.error('Failed to load admin user data:', error);
@@ -50,6 +56,13 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken }) => {
       isMounted = false;
     };
   }, [api]);
+
+  useEffect(() => {
+    if (!loadError) return;
+
+    const timeoutId = setTimeout(() => setLoadError(''), 3000);
+    return () => clearTimeout(timeoutId);
+  }, [loadError]);
 
   const assignRole = async (userRow, roleIdOrIds, matchedRoles) => {
     setUpdatingUserId(userRow.id);
@@ -101,5 +114,14 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken }) => {
     }
   };
 
-  return { roles, userRows, isLoading, loadError, updatingUserId, assignRole, rejectRequest };
+  return {
+    roles,
+    userRows,
+    roleAssignmentMode,
+    isLoading,
+    loadError,
+    updatingUserId,
+    assignRole,
+    rejectRequest,
+  };
 };

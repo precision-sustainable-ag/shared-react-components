@@ -14,7 +14,7 @@ const jsonResponse = (body, status = 200) =>
     }),
   );
 
-const installMockAdminPortalBackend = (apiBaseUrl, initialUsers) => {
+const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentMode = 'single') => {
   if (!window.__adminPortalMockBackends__) {
     const realFetch = window.fetch.bind(window);
     window.__adminPortalMockBackends__ = new Map();
@@ -33,6 +33,7 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers) => {
     const path = url.slice(apiBaseUrl.length);
     const method = init.method ?? 'GET';
 
+    if (method === 'GET' && path === '/config') return jsonResponse({ roleAssignmentMode });
     if (method === 'GET' && path === '/roles') return jsonResponse(ROLES);
     if (method === 'GET' && path === '/admin/users') return jsonResponse(users);
 
@@ -79,65 +80,73 @@ const meta = {
 
 export default meta;
 
-installMockAdminPortalBackend('mock://admin-portal/single', [
-  {
-    id: 'u1',
-    name: 'Test Name',
-    email: 'test@example.com',
-    role: ROLES[0],
-    requestedAccess: null,
-    requestStatus: null,
-  },
-  {
-    id: 'u2',
-    name: 'Test Name 2',
-    email: 'test2@example.com',
-    role: ROLES[2],
-    requestedAccess: 'Editor',
-    requestStatus: 'PENDING',
-  },
-  {
-    id: 'u3',
-    name: 'Test Name 3',
-    email: 'test3@example.com',
-    role: null,
-    requestedAccess: null,
-    requestStatus: null,
-  },
-]);
+installMockAdminPortalBackend(
+  'mock://admin-portal/single',
+  [
+    {
+      id: 'u1',
+      name: 'Test Name',
+      email: 'test@example.com',
+      role: ROLES[0],
+      requestedAccess: null,
+      requestStatus: null,
+    },
+    {
+      id: 'u2',
+      name: 'Test Name 2',
+      email: 'test2@example.com',
+      role: ROLES[2],
+      requestedAccess: 'Editor',
+      requestStatus: 'PENDING',
+    },
+    {
+      id: 'u3',
+      name: 'Test Name 3',
+      email: 'test3@example.com',
+      role: null,
+      requestedAccess: null,
+      requestStatus: null,
+    },
+  ],
+  'single',
+);
 
 export const SingleRole = {
   args: {
     apiBaseUrl: 'mock://admin-portal/single',
     getAccessToken: mockGetAccessToken,
-    roleAssignmentMode: 'single',
+    appName: 'STORYBOOK',
   },
 };
 
-installMockAdminPortalBackend('mock://admin-portal/multiple', [
-  {
-    id: 'u1',
-    name: 'Test Name',
-    email: 'test@example.com',
-    roles: [ROLES[0]],
-    requestedAccess: null,
-    requestStatus: null,
-  },
-  {
-    id: 'u2',
-    name: 'Test Name 2',
-    email: 'test2@example.com',
-    roles: [ROLES[1], ROLES[2]],
-    requestedAccess: null,
-    requestStatus: null,
-  },
-]);
+installMockAdminPortalBackend(
+  'mock://admin-portal/multiple',
+  [
+    {
+      id: 'u1',
+      name: 'Test Name',
+      email: 'test@example.com',
+      roles: [ROLES[0]],
+      requestedAccess: null,
+      requestStatus: null,
+    },
+    {
+      id: 'u2',
+      name: 'Test Name 2',
+      email: 'test2@example.com',
+      roles: [ROLES[1], ROLES[2]],
+      requestedAccess: null,
+      requestStatus: null,
+    },
+  ],
+  'multiple',
+);
 
 export const MultipleRoles = {
   args: {
     apiBaseUrl: 'mock://admin-portal/multiple',
     getAccessToken: mockGetAccessToken,
-    roleAssignmentMode: 'multiple',
+    appName: 'STORYBOOK',
     title: 'Manage Team Access',
   },
 };
@@ -157,6 +166,7 @@ export const WithoutRequestsColumn = {
   args: {
     apiBaseUrl: 'mock://admin-portal/no-requests',
     getAccessToken: mockGetAccessToken,
+    appName: 'STORYBOOK',
     showRequests: false,
   },
 };
