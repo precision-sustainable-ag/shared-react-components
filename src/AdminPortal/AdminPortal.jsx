@@ -187,7 +187,16 @@ const AdminPortal = ({
                             renderValue={() => 'Assign roles'}
                             disabled={isUpdating}
                             onChange={(event) => handleMultiAssign(row, event.target.value)}
-                            onClose={() => setTimeout(() => document.activeElement?.blur(), 0)}
+                            sx={{
+                              '& .MuiSelect-select:focus': { outline: 'none' },
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                                borderWidth: '1px',
+                              },
+                            }}
                           >
                             {roles.map((role) => (
                               <MenuItem key={role.id} value={role.id}>
@@ -205,7 +214,16 @@ const AdminPortal = ({
                             renderValue={() => 'Assign role'}
                             disabled={isUpdating}
                             onChange={(event) => handleSingleAssign(row, event.target.value)}
-                            onClose={() => setTimeout(() => document.activeElement?.blur(), 0)}
+                            sx={{
+                              '& .MuiSelect-select:focus': { outline: 'none' },
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                                borderWidth: '1px',
+                              },
+                            }}
                           >
                             {roles.map((role) => (
                               <MenuItem
