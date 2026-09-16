@@ -34,10 +34,6 @@ import { useAdminPortal } from './useAdminPortal';
  * - showRequests (boolean, default true): show the Requests column with
  *   approve/reject actions for pending access requests.
  * - title (string, default 'Manage Users'): heading above the table.
- *
- * Whether a user can hold one role or several is fetched from the backend's
- * `/config` endpoint, not a prop — that's what actually enforces it, so
- * there's nothing for a separate frontend setting to drift out of sync with.
  */
 const AdminPortal = ({
   apiBaseUrl,
@@ -191,6 +187,7 @@ const AdminPortal = ({
                             renderValue={() => 'Assign roles'}
                             disabled={isUpdating}
                             onChange={(event) => handleMultiAssign(row, event.target.value)}
+                            onClose={() => setTimeout(() => document.activeElement?.blur(), 0)}
                           >
                             {roles.map((role) => (
                               <MenuItem key={role.id} value={role.id}>
@@ -208,6 +205,7 @@ const AdminPortal = ({
                             renderValue={() => 'Assign role'}
                             disabled={isUpdating}
                             onChange={(event) => handleSingleAssign(row, event.target.value)}
+                            onClose={() => setTimeout(() => document.activeElement?.blur(), 0)}
                           >
                             {roles.map((role) => (
                               <MenuItem
