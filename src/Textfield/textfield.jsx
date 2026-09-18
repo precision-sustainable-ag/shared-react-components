@@ -8,7 +8,8 @@ export const PSATextField = styled((props) => (
     {...props}
     sx={{ fieldset: props.label ? {} : { top: 0 } }}
     slotProps={{
-      inputLabel: { shrink: true },
+      ...props.slotProps,
+      inputLabel: { shrink: true, ...props.slotProps?.inputLabel },
     }}
   />
 ))(({ theme }) => ({
