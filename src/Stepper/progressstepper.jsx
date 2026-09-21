@@ -146,14 +146,14 @@ export const PSAStepper = ({
           };
 
     return (
-      <Box position="relative" display="inline-flex">
+      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
         {baseIcon}
         <Typography
           variant="caption"
-          position="absolute"
-          top="50%"
-          left="50%"
           sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
             transform: 'translate(-50%, -50%)',
             color: getTextColor(),
             fontWeight: activeStep === currStep ? 'bold' : 'normal',
