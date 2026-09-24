@@ -1,5 +1,5 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
   Box,
@@ -270,7 +270,7 @@ const AdminPortal = ({
                         onClick={() => setUserPendingDelete(row)}
                         sx={{ color: 'error.main' }}
                       >
-                        <DeleteOutlineIcon fontSize="small" />
+                        <DeleteOutlinedIcon fontSize="small" />
                       </IconButton>
                     </TableCell>
                   </TableRow>
