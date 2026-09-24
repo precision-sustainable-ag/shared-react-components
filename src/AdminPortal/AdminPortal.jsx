@@ -47,6 +47,7 @@ import { useAdminPortal } from './useAdminPortal';
  * - title (string, default 'Manage Users'): heading above the table.
  */
 const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
+const USERS_PER_PAGE = 10;
 
 const AdminPortal = ({
   apiBaseUrl,
@@ -83,6 +84,7 @@ const AdminPortal = ({
 
   const [userPendingDelete, setUserPendingDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pageIndex, setPageIndex] = useState(0);
 
   const isMultiple = roleAssignmentMode === 'multiple';
   const columnCount = showRequests ? 6 : 5;
@@ -95,6 +97,21 @@ const AdminPortal = ({
           row.email?.toLowerCase().includes(normalizedQuery),
       )
     : userRows;
+
+  // Clamped here rather than in an effect so that deleting the last row on
+  // the last page falls back to the previous page without an empty render.
+  const pageCount = Math.max(1, Math.ceil(visibleRows.length / USERS_PER_PAGE));
+  const currentPage = Math.min(pageIndex, pageCount - 1);
+  const pageRows = visibleRows.slice(
+    currentPage * USERS_PER_PAGE,
+    (currentPage + 1) * USERS_PER_PAGE,
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setPageIndex(0);
+  };
+
   const isDeleting = userPendingDelete !== null && updatingUserId === userPendingDelete.id;
 
   const handleConfirmDelete = async () => {
@@ -145,7 +162,7 @@ const AdminPortal = ({
             size="small"
             placeholder="Search by name or email"
             value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
+            onChange={handleSearchChange}
             sx={{ mb: 2, width: '100%', maxWidth: 360 }}
             slotProps={{
               htmlInput: { 'aria-label': 'Search users by name or email' },
@@ -191,7 +208,7 @@ const AdminPortal = ({
                   </TableRow>
                 )}
 
-                {visibleRows.map((row) => {
+                {pageRows.map((row) => {
                   const isPending = row.requestedAccess && row.requestStatus === 'PENDING';
                   const isUpdating = updatingUserId === row.id;
                   const currentRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map(
@@ -331,6 +348,38 @@ const AdminPortal = ({
               </TableBody>
             </Table>
           </TableContainer>
+
+          {visibleRows.length > 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                gap: 2,
+                mt: 2,
+              }}
+            >
+              <Button
+                variant="outlined"
+                size="small"
+                disabled={currentPage === 0}
+                onClick={() => setPageIndex(currentPage - 1)}
+              >
+                Back
+              </Button>
+              <Typography aria-live="polite" sx={{ fontSize: '14px' }}>
+                Page {currentPage + 1} of {pageCount}
+              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                disabled={currentPage >= pageCount - 1}
+                onClick={() => setPageIndex(currentPage + 1)}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
         </>
       )}
 
