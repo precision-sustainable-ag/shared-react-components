@@ -1,10 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { createAdminPortalApi } from './adminPortalApi';
 
-const sortByPendingRequestFirst = (rows) => {
-  const hasPendingRequest = (row) => row.requestedAccess && row.requestStatus === 'PENDING';
-  return [...rows].sort((a, b) => Number(hasPendingRequest(b)) - Number(hasPendingRequest(a)));
+// Pending new-user registrations first, then pending profile requests, then
+// everyone else. Requests without a requestSource rank as profile requests.
+const requestPriority = (row) => {
+  if (!row.requestedAccess || row.requestStatus !== 'PENDING') return 2;
+  return row.requestSource === 'REGISTRATION' ? 0 : 1;
 };
+
+const sortByRequestPriority = (rows) =>
+  [...rows].sort((a, b) => requestPriority(a) - requestPriority(b));
 
 export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
   const api = useMemo(
@@ -35,7 +40,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
 
         if (isMounted) {
           setRoles(allRoles);
-          setUserRows(sortByPendingRequestFirst(rows));
+          setUserRows(sortByRequestPriority(rows));
           setRoleAssignmentMode(config.roleAssignmentMode);
         }
       } catch (error) {
@@ -71,7 +76,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
       const result = await api.assignRole(userRow.id, roleIdOrIds);
 
       setUserRows((prevRows) =>
-        sortByPendingRequestFirst(
+        sortByRequestPriority(
           prevRows.map((row) =>
             row.id === userRow.id
               ? {
@@ -80,6 +85,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
                   role: matchedRoles[0] ?? null,
                   requestedAccess: result.requestedAccess,
                   requestStatus: result.requestStatus,
+                  requestSource: result.requestSource,
                 }
               : row,
           ),
@@ -100,9 +106,11 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
       await api.rejectAccessRequest(userRow.id);
 
       setUserRows((prevRows) =>
-        sortByPendingRequestFirst(
+        sortByRequestPriority(
           prevRows.map((row) =>
-            row.id === userRow.id ? { ...row, requestedAccess: null, requestStatus: null } : row,
+            row.id === userRow.id
+              ? { ...row, requestedAccess: null, requestStatus: null, requestSource: null }
+              : row,
           ),
         ),
       );

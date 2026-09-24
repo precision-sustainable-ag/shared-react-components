@@ -50,7 +50,8 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
       }
       user.requestedAccess = null;
       user.requestStatus = null;
-      return jsonResponse({ requestedAccess: null, requestStatus: null });
+      user.requestSource = null;
+      return jsonResponse({ requestedAccess: null, requestStatus: null, requestSource: null });
     }
 
     const rejectMatch = path.match(/^\/admin\/users\/([^/]+)\/reject-request$/);
@@ -59,6 +60,7 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
       if (user) {
         user.requestedAccess = null;
         user.requestStatus = null;
+        user.requestSource = null;
       }
       return jsonResponse(null, 204);
     }
@@ -98,6 +100,7 @@ installMockAdminPortalBackend(
       role: ROLES[2],
       requestedAccess: 'Editor',
       requestStatus: 'PENDING',
+      requestSource: 'PROFILE',
     },
     {
       id: 'u3',
@@ -106,6 +109,15 @@ installMockAdminPortalBackend(
       role: null,
       requestedAccess: null,
       requestStatus: null,
+    },
+    {
+      id: 'u4',
+      name: 'Test Name 4',
+      email: 'test4@example.com',
+      role: ROLES[2],
+      requestedAccess: 'Editor',
+      requestStatus: 'PENDING',
+      requestSource: 'REGISTRATION',
     },
   ],
   'single',
