@@ -1,5 +1,6 @@
 import { PSALoadingSpinner } from './loadingspinner';
 import styles from './spinner.module.scss';
+import orangeLoader from '../assets/images/orange.png';
 
 const meta = {
   title: 'Feedback/LoadingSpinner',
@@ -26,5 +27,11 @@ export const LoaderStyle = {
       borderRadius: '50%',
       animation: `${styles.spin} 2s linear infinite`,
     },
+  },
+};
+
+export const ImageLoader = {
+  args: {
+    image: orangeLoader,
   },
 };

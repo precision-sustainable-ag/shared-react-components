@@ -26,6 +26,7 @@ export const PSAForm = ({
   onFormChange,
   isDarkMode = false,
   labels = [],
+  loaderImage,
 }) => {
   const colors = isDarkMode
     ? {
@@ -337,7 +338,7 @@ export const PSAForm = ({
             zIndex: 9999,
           }}
         >
-          <PSALoadingSpinner />
+          <PSALoadingSpinner image={loaderImage} />
         </Box>
       )}
 
