@@ -431,6 +431,8 @@ PSAForm.propTypes = {
    * Renders the form with a dark background and light text
    */
   isDarkMode: PropTypes.bool,
+
+  /**
    * Optional array of labels to seed the form with. These are merged with any
    * labels the user selects via checkbox fields (checkbox selections are added
    * to/removed from this same array as the user interacts with the form).
