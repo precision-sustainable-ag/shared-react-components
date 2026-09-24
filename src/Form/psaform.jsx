@@ -25,6 +25,7 @@ export const PSAForm = ({
   handleSubmit,
   onFormChange,
   isDarkMode = false,
+  labels = [],
 }) => {
   const colors = isDarkMode
     ? {
@@ -61,7 +62,7 @@ export const PSAForm = ({
       }
       return acc;
     },
-    { repository: repository, labels: [] },
+    { repository: repository, labels: [...labels] },
   );
 
   const [formData, setFormData] = useState(initialFormData);
@@ -147,7 +148,6 @@ export const PSAForm = ({
     const payload = { ...formData };
 
     payload.labels = payload.labels || [];
-    payload.labels.push(`${formData.repository}`);
     if (formData.state) {
       payload.labels.push(`State: ${formData.state}`);
     }
@@ -431,4 +431,9 @@ PSAForm.propTypes = {
    * Renders the form with a dark background and light text
    */
   isDarkMode: PropTypes.bool,
+   * Optional array of labels to seed the form with. These are merged with any
+   * labels the user selects via checkbox fields (checkbox selections are added
+   * to/removed from this same array as the user interacts with the form).
+   */
+  labels: PropTypes.arrayOf(PropTypes.string),
 };
