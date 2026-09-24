@@ -1,6 +1,7 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Button,
@@ -14,6 +15,7 @@ import {
   DialogTitle,
   FormControl,
   IconButton,
+  InputAdornment,
   ListItemText,
   MenuItem,
   Paper,
@@ -24,6 +26,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -79,8 +82,19 @@ const AdminPortal = ({
   } = useAdminPortal({ apiBaseUrl, getAccessToken, appName });
 
   const [userPendingDelete, setUserPendingDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isMultiple = roleAssignmentMode === 'multiple';
+  const columnCount = showRequests ? 6 : 5;
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const visibleRows = normalizedQuery
+    ? userRows.filter(
+        (row) =>
+          row.name?.toLowerCase().includes(normalizedQuery) ||
+          row.email?.toLowerCase().includes(normalizedQuery),
+      )
+    : userRows;
   const isDeleting = userPendingDelete !== null && updatingUserId === userPendingDelete.id;
 
   const handleConfirmDelete = async () => {
@@ -126,159 +140,198 @@ const AdminPortal = ({
           <CircularProgress />
         </Box>
       ) : (
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>{isMultiple ? 'Roles' : 'Role'}</TableCell>
-                {showRequests && <TableCell sx={{ fontWeight: 600 }}>Requests</TableCell>}
-                <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
-                  {isMultiple ? 'Assign Roles' : 'Assign Role'}
-                </TableCell>
-                <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="right">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
+        <>
+          <TextField
+            size="small"
+            placeholder="Search by name or email"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            sx={{ mb: 2, width: '100%', maxWidth: 360 }}
+            slotProps={{
+              htmlInput: { 'aria-label': 'Search users by name or email' },
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon fontSize="small" />
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
 
-            <TableBody>
-              {userRows.map((row) => {
-                const isPending = row.requestedAccess && row.requestStatus === 'PENDING';
-                const isUpdating = updatingUserId === row.id;
-                const currentRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map(
-                  (role) => role.id,
-                );
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
+                  <TableCell sx={{ fontWeight: 600 }}>{isMultiple ? 'Roles' : 'Role'}</TableCell>
+                  {showRequests && <TableCell sx={{ fontWeight: 600 }}>Requests</TableCell>}
+                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
+                    {isMultiple ? 'Assign Roles' : 'Assign Role'}
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="right">
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
 
-                return (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>
-                      {isMultiple
-                        ? (row.roles ?? []).length > 0
-                          ? row.roles.map((role) => (
-                              <Chip key={role.id} label={role.name} size="small" sx={{ mr: 0.5 }} />
-                            ))
-                          : 'No role assigned'
-                        : (row.role?.name ?? 'No role assigned')}
-                    </TableCell>
-
-                    {showRequests && (
-                      <TableCell>
-                        {isPending ? (
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <Typography sx={{ color: 'red.main', fontSize: 'inherit' }}>
-                              {row.requestedAccess}
-                            </Typography>
-
-                            <IconButton
-                              size="small"
-                              aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
-                              color="success"
-                              disabled={isUpdating}
-                              onClick={() => handleApprove(row)}
-                            >
-                              <CheckCircleOutlineIcon fontSize="small" />
-                            </IconButton>
-
-                            <IconButton
-                              size="small"
-                              aria-label={`Reject ${row.requestedAccess} request for ${row.name}`}
-                              color="error"
-                              disabled={isUpdating}
-                              onClick={() => rejectRequest(row)}
-                            >
-                              <HighlightOffIcon fontSize="small" />
-                            </IconButton>
-                          </Box>
-                        ) : (
-                          'None'
-                        )}
-                      </TableCell>
-                    )}
-
-                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                      {isMultiple ? (
-                        <FormControl size="small" sx={{ minWidth: 220 }}>
-                          <Select
-                            multiple
-                            displayEmpty
-                            value={currentRoleIds}
-                            renderValue={() => 'Assign roles'}
-                            disabled={isUpdating}
-                            onChange={(event) => handleMultiAssign(row, event.target.value)}
-                            sx={{
-                              '& .MuiSelect-select:focus': { outline: 'none' },
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                              },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                                borderWidth: '1px',
-                              },
-                            }}
-                          >
-                            {roles.map((role) => (
-                              <MenuItem key={role.id} value={role.id}>
-                                <Checkbox checked={currentRoleIds.includes(role.id)} />
-                                <ListItemText primary={role.name} />
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      ) : (
-                        <FormControl size="small" sx={{ minWidth: 180 }}>
-                          <Select
-                            displayEmpty
-                            value=""
-                            renderValue={() => 'Assign role'}
-                            disabled={isUpdating}
-                            onChange={(event) => handleSingleAssign(row, event.target.value)}
-                            sx={{
-                              '& .MuiSelect-select:focus': { outline: 'none' },
-                              '& .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                              },
-                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                borderColor: 'rgba(0, 0, 0, 0.23)',
-                                borderWidth: '1px',
-                              },
-                            }}
-                          >
-                            {roles.map((role) => (
-                              <MenuItem
-                                key={role.id}
-                                value={role.id}
-                                disabled={role.id === row.role?.id}
-                              >
-                                {role.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                      )}
-                      {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
-                    </TableCell>
-
-                    <TableCell align="right">
-                      <IconButton
-                        size="small"
-                        aria-label={`Delete ${row.name}`}
-                        disabled={isUpdating}
-                        onClick={() => setUserPendingDelete(row)}
-                        sx={{ color: 'error.main' }}
-                      >
-                        <DeleteOutlinedIcon fontSize="small" />
-                      </IconButton>
+              <TableBody>
+                {visibleRows.length === 0 && (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columnCount}
+                      align="center"
+                      sx={{ color: 'text.secondary' }}
+                    >
+                      {normalizedQuery
+                        ? `No users match "${searchQuery.trim()}"`
+                        : 'No users found'}
                     </TableCell>
                   </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                )}
+
+                {visibleRows.map((row) => {
+                  const isPending = row.requestedAccess && row.requestStatus === 'PENDING';
+                  const isUpdating = updatingUserId === row.id;
+                  const currentRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map(
+                    (role) => role.id,
+                  );
+
+                  return (
+                    <TableRow key={row.id}>
+                      <TableCell>{row.name}</TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>
+                        {isMultiple
+                          ? (row.roles ?? []).length > 0
+                            ? row.roles.map((role) => (
+                                <Chip
+                                  key={role.id}
+                                  label={role.name}
+                                  size="small"
+                                  sx={{ mr: 0.5 }}
+                                />
+                              ))
+                            : 'No role assigned'
+                          : (row.role?.name ?? 'No role assigned')}
+                      </TableCell>
+
+                      {showRequests && (
+                        <TableCell>
+                          {isPending ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                              <Typography sx={{ color: 'red.main', fontSize: 'inherit' }}>
+                                {row.requestedAccess}
+                              </Typography>
+
+                              <IconButton
+                                size="small"
+                                aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
+                                color="success"
+                                disabled={isUpdating}
+                                onClick={() => handleApprove(row)}
+                              >
+                                <CheckCircleOutlineIcon fontSize="small" />
+                              </IconButton>
+
+                              <IconButton
+                                size="small"
+                                aria-label={`Reject ${row.requestedAccess} request for ${row.name}`}
+                                color="error"
+                                disabled={isUpdating}
+                                onClick={() => rejectRequest(row)}
+                              >
+                                <HighlightOffIcon fontSize="small" />
+                              </IconButton>
+                            </Box>
+                          ) : (
+                            'None'
+                          )}
+                        </TableCell>
+                      )}
+
+                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
+                        {isMultiple ? (
+                          <FormControl size="small" sx={{ minWidth: 220 }}>
+                            <Select
+                              multiple
+                              displayEmpty
+                              value={currentRoleIds}
+                              renderValue={() => 'Assign roles'}
+                              disabled={isUpdating}
+                              onChange={(event) => handleMultiAssign(row, event.target.value)}
+                              sx={{
+                                '& .MuiSelect-select:focus': { outline: 'none' },
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'rgba(0, 0, 0, 0.23)',
+                                },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'rgba(0, 0, 0, 0.23)',
+                                  borderWidth: '1px',
+                                },
+                              }}
+                            >
+                              {roles.map((role) => (
+                                <MenuItem key={role.id} value={role.id}>
+                                  <Checkbox checked={currentRoleIds.includes(role.id)} />
+                                  <ListItemText primary={role.name} />
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          <FormControl size="small" sx={{ minWidth: 180 }}>
+                            <Select
+                              displayEmpty
+                              value=""
+                              renderValue={() => 'Assign role'}
+                              disabled={isUpdating}
+                              onChange={(event) => handleSingleAssign(row, event.target.value)}
+                              sx={{
+                                '& .MuiSelect-select:focus': { outline: 'none' },
+                                '& .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'rgba(0, 0, 0, 0.23)',
+                                },
+                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                  borderColor: 'rgba(0, 0, 0, 0.23)',
+                                  borderWidth: '1px',
+                                },
+                              }}
+                            >
+                              {roles.map((role) => (
+                                <MenuItem
+                                  key={role.id}
+                                  value={role.id}
+                                  disabled={role.id === row.role?.id}
+                                >
+                                  {role.name}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
+                        )}
+                        {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
+                      </TableCell>
+
+                      <TableCell align="right">
+                        <IconButton
+                          size="small"
+                          aria-label={`Delete ${row.name}`}
+                          disabled={isUpdating}
+                          onClick={() => setUserPendingDelete(row)}
+                          sx={{ color: 'error.main' }}
+                        >
+                          <DeleteOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </>
       )}
 
       <Dialog
