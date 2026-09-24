@@ -439,4 +439,10 @@ PSAForm.propTypes = {
    * to/removed from this same array as the user interacts with the form).
    */
   labels: PropTypes.arrayOf(PropTypes.string),
+
+  /**
+   * Image source (URL or imported asset) shown in the loading overlay while the
+   * form is submitting. Falls back to the default spinner when not provided.
+   */
+  loaderImage: PropTypes.string,
 };
