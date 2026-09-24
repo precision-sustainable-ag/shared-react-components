@@ -48,6 +48,8 @@ import { useAdminPortal } from './useAdminPortal';
  */
 const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
 const USERS_PER_PAGE = 10;
+const ALL_ROLES = '';
+const NO_ROLE = '__no_role__';
 
 const AdminPortal = ({
   apiBaseUrl,
@@ -84,19 +86,26 @@ const AdminPortal = ({
 
   const [userPendingDelete, setUserPendingDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [roleFilter, setRoleFilter] = useState(ALL_ROLES);
   const [pageIndex, setPageIndex] = useState(0);
 
   const isMultiple = roleAssignmentMode === 'multiple';
   const columnCount = showRequests ? 6 : 5;
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
-  const visibleRows = normalizedQuery
-    ? userRows.filter(
-        (row) =>
-          row.name?.toLowerCase().includes(normalizedQuery) ||
-          row.email?.toLowerCase().includes(normalizedQuery),
-      )
-    : userRows;
+  const matchesSearch = (row) =>
+    !normalizedQuery ||
+    row.name?.toLowerCase().includes(normalizedQuery) ||
+    row.email?.toLowerCase().includes(normalizedQuery);
+
+  const matchesRole = (row) => {
+    if (roleFilter === ALL_ROLES) return true;
+    const rowRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map((role) => role.id);
+    return roleFilter === NO_ROLE ? rowRoleIds.length === 0 : rowRoleIds.includes(roleFilter);
+  };
+
+  const isFiltering = Boolean(normalizedQuery) || roleFilter !== ALL_ROLES;
+  const visibleRows = userRows.filter((row) => matchesSearch(row) && matchesRole(row));
 
   // Clamped here rather than in an effect so that deleting the last row on
   // the last page falls back to the previous page without an empty render.
@@ -109,6 +118,11 @@ const AdminPortal = ({
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
+    setPageIndex(0);
+  };
+
+  const handleRoleFilterChange = (event) => {
+    setRoleFilter(event.target.value);
     setPageIndex(0);
   };
 
@@ -158,23 +172,42 @@ const AdminPortal = ({
         </Box>
       ) : (
         <>
-          <TextField
-            size="small"
-            placeholder="Search by name or email"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            sx={{ mb: 2, width: '100%', maxWidth: 360 }}
-            slotProps={{
-              htmlInput: { 'aria-label': 'Search users by name or email' },
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
+            <TextField
+              size="small"
+              placeholder="Search by name or email"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              sx={{ width: '100%', maxWidth: 360 }}
+              slotProps={{
+                htmlInput: { 'aria-label': 'Search users by name or email' },
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon fontSize="small" />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+            />
+
+            <FormControl size="small" sx={{ minWidth: 180 }}>
+              <Select
+                value={roleFilter}
+                onChange={handleRoleFilterChange}
+                displayEmpty
+                inputProps={{ 'aria-label': 'Filter users by role' }}
+              >
+                <MenuItem value={ALL_ROLES}>All roles</MenuItem>
+                {roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.name}
+                  </MenuItem>
+                ))}
+                <MenuItem value={NO_ROLE}>No role assigned</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
           <TableContainer component={Paper}>
             <Table>
@@ -201,9 +234,7 @@ const AdminPortal = ({
                       align="center"
                       sx={{ color: 'text.secondary' }}
                     >
-                      {normalizedQuery
-                        ? `No users match "${searchQuery.trim()}"`
-                        : 'No users found'}
+                      {isFiltering ? 'No users match the current filters' : 'No users found'}
                     </TableCell>
                   </TableRow>
                 )}
