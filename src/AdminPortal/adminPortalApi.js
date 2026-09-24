@@ -38,5 +38,9 @@ export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken, appName }) =>
       request(`/admin/users/${encodeURIComponent(userId)}/reject-request`, {
         method: 'POST',
       }),
+    deleteUser: (userId) =>
+      request(`/admin/users/${encodeURIComponent(userId)}`, {
+        method: 'DELETE',
+      }),
   };
 };

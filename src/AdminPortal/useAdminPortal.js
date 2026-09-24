@@ -122,6 +122,23 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
     }
   };
 
+  // Resolves true on success so the caller can close its confirmation dialog.
+  const deleteUser = async (userRow) => {
+    setUpdatingUserId(userRow.id);
+
+    try {
+      await api.deleteUser(userRow.id);
+      setUserRows((prevRows) => prevRows.filter((row) => row.id !== userRow.id));
+      return true;
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      setLoadError(`Failed to delete ${userRow.name}.`);
+      return false;
+    } finally {
+      setUpdatingUserId(null);
+    }
+  };
+
   return {
     roles,
     userRows,
@@ -131,5 +148,6 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
     updatingUserId,
     assignRole,
     rejectRequest,
+    deleteUser,
   };
 };

@@ -1,10 +1,17 @@
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import {
   Box,
+  Button,
   Checkbox,
   Chip,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   FormControl,
   IconButton,
   ListItemText,
@@ -19,6 +26,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
 import { useAdminPortal } from './useAdminPortal';
 
 /**
@@ -35,6 +43,8 @@ import { useAdminPortal } from './useAdminPortal';
  *   approve/reject actions for pending access requests.
  * - title (string, default 'Manage Users'): heading above the table.
  */
+const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
+
 const AdminPortal = ({
   apiBaseUrl,
   getAccessToken,
@@ -65,9 +75,18 @@ const AdminPortal = ({
     updatingUserId,
     assignRole,
     rejectRequest,
+    deleteUser,
   } = useAdminPortal({ apiBaseUrl, getAccessToken, appName });
 
+  const [userPendingDelete, setUserPendingDelete] = useState(null);
+
   const isMultiple = roleAssignmentMode === 'multiple';
+  const isDeleting = userPendingDelete !== null && updatingUserId === userPendingDelete.id;
+
+  const handleConfirmDelete = async () => {
+    const deleted = await deleteUser(userPendingDelete);
+    if (deleted) setUserPendingDelete(null);
+  };
 
   const handleSingleAssign = (row, roleId) => {
     const matchedRole = roles.find((role) => role.id === roleId);
@@ -115,8 +134,11 @@ const AdminPortal = ({
                 <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
                 <TableCell sx={{ fontWeight: 600 }}>{isMultiple ? 'Roles' : 'Role'}</TableCell>
                 {showRequests && <TableCell sx={{ fontWeight: 600 }}>Requests</TableCell>}
-                <TableCell sx={{ fontWeight: 600 }}>
+                <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
                   {isMultiple ? 'Assign Roles' : 'Assign Role'}
+                </TableCell>
+                <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="right">
+                  Actions
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -177,7 +199,7 @@ const AdminPortal = ({
                       </TableCell>
                     )}
 
-                    <TableCell>
+                    <TableCell sx={{ whiteSpace: 'nowrap' }}>
                       {isMultiple ? (
                         <FormControl size="small" sx={{ minWidth: 220 }}>
                           <Select
@@ -239,6 +261,18 @@ const AdminPortal = ({
                       )}
                       {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
                     </TableCell>
+
+                    <TableCell align="right">
+                      <IconButton
+                        size="small"
+                        aria-label={`Delete ${row.name}`}
+                        disabled={isUpdating}
+                        onClick={() => setUserPendingDelete(row)}
+                        sx={{ color: 'error.main' }}
+                      >
+                        <DeleteOutlineIcon fontSize="small" />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -246,6 +280,34 @@ const AdminPortal = ({
           </Table>
         </TableContainer>
       )}
+
+      <Dialog
+        open={userPendingDelete !== null}
+        onClose={() => !isDeleting && setUserPendingDelete(null)}
+        aria-labelledby="admin-portal-delete-title"
+      >
+        <DialogTitle id="admin-portal-delete-title">Delete user?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This will permanently delete <strong>{userPendingDelete?.name}</strong> (
+            {userPendingDelete?.email}) and remove their access. This cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setUserPendingDelete(null)} disabled={isDeleting}>
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={handleConfirmDelete}
+            disabled={isDeleting}
+            startIcon={isDeleting ? <CircularProgress size={16} color="inherit" /> : null}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

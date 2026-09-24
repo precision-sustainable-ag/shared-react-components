@@ -65,6 +65,15 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
       return jsonResponse(null, 204);
     }
 
+    const deleteMatch = path.match(/^\/admin\/users\/([^/]+)$/);
+    if (method === 'DELETE' && deleteMatch) {
+      const index = users.findIndex((row) => row.id === decodeURIComponent(deleteMatch[1]));
+      if (index === -1) return jsonResponse({ message: 'Not found' }, 404);
+
+      users.splice(index, 1);
+      return jsonResponse(null, 204);
+    }
+
     return jsonResponse({ message: `Unhandled mock route: ${method} ${path}` }, 404);
   });
 };
