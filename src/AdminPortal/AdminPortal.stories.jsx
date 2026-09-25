@@ -137,6 +137,7 @@ export const SingleRole = {
     apiBaseUrl: 'mock://admin-portal/single',
     getAccessToken: mockGetAccessToken,
     appName: 'STORYBOOK',
+    allowUserDeletion: true,
   },
 };
 
@@ -169,6 +170,7 @@ export const MultipleRoles = {
     getAccessToken: mockGetAccessToken,
     appName: 'STORYBOOK',
     title: 'Manage Team Access',
+    allowUserDeletion: true,
   },
 };
 

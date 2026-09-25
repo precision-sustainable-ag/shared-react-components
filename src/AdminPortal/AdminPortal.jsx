@@ -44,6 +44,9 @@ import { useAdminPortal } from './useAdminPortal';
  * Optional props:
  * - showRequests (boolean, default true): show the Requests column with
  *   approve/reject actions for pending access requests.
+ * - allowUserDeletion (boolean, default false): show the Actions column with a
+ *   delete button (and confirmation dialog) for each user. Deleting removes the
+ *   user from Auth0 permanently, so apps must opt in explicitly.
  * - title (string, default 'Manage Users'): heading above the table.
  */
 const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
@@ -56,6 +59,7 @@ const AdminPortal = ({
   getAccessToken,
   appName,
   showRequests = true,
+  allowUserDeletion = false,
   title = 'Manage Users',
 }) => {
   if (!apiBaseUrl) {
@@ -90,7 +94,7 @@ const AdminPortal = ({
   const [pageIndex, setPageIndex] = useState(0);
 
   const isMultiple = roleAssignmentMode === 'multiple';
-  const columnCount = showRequests ? 6 : 5;
+  const columnCount = 4 + Number(showRequests) + Number(allowUserDeletion);
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const matchesSearch = (row) =>
@@ -220,9 +224,11 @@ const AdminPortal = ({
                   <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
                     {isMultiple ? 'Assign Roles' : 'Assign Role'}
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="center">
-                    Actions
-                  </TableCell>
+                  {allowUserDeletion && (
+                    <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="center">
+                      Actions
+                    </TableCell>
+                  )}
                 </TableRow>
               </TableHead>
 
@@ -362,17 +368,19 @@ const AdminPortal = ({
                         {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
                       </TableCell>
 
-                      <TableCell align="center">
-                        <IconButton
-                          size="small"
-                          aria-label={`Delete ${row.name}`}
-                          disabled={isUpdating}
-                          onClick={() => setUserPendingDelete(row)}
-                          sx={{ color: 'error.main' }}
-                        >
-                          <DeleteOutlinedIcon fontSize="small" />
-                        </IconButton>
-                      </TableCell>
+                      {allowUserDeletion && (
+                        <TableCell align="center">
+                          <IconButton
+                            size="small"
+                            aria-label={`Delete ${row.name}`}
+                            disabled={isUpdating}
+                            onClick={() => setUserPendingDelete(row)}
+                            sx={{ color: 'error.main' }}
+                          >
+                            <DeleteOutlinedIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      )}
                     </TableRow>
                   );
                 })}
@@ -414,33 +422,35 @@ const AdminPortal = ({
         </>
       )}
 
-      <Dialog
-        open={userPendingDelete !== null}
-        onClose={() => !isDeleting && setUserPendingDelete(null)}
-        aria-labelledby="admin-portal-delete-title"
-      >
-        <DialogTitle id="admin-portal-delete-title">Delete user?</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This will permanently delete <strong>{userPendingDelete?.name}</strong> (
-            {userPendingDelete?.email}) and remove their access. This cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setUserPendingDelete(null)} disabled={isDeleting}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleConfirmDelete}
-            disabled={isDeleting}
-            startIcon={isDeleting ? <CircularProgress size={16} color="inherit" /> : null}
-          >
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {allowUserDeletion && (
+        <Dialog
+          open={userPendingDelete !== null}
+          onClose={() => !isDeleting && setUserPendingDelete(null)}
+          aria-labelledby="admin-portal-delete-title"
+        >
+          <DialogTitle id="admin-portal-delete-title">Delete user?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              This will permanently delete <strong>{userPendingDelete?.name}</strong> (
+              {userPendingDelete?.email}) and remove their access. This cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setUserPendingDelete(null)} disabled={isDeleting}>
+              Cancel
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleConfirmDelete}
+              disabled={isDeleting}
+              startIcon={isDeleting ? <CircularProgress size={16} color="inherit" /> : null}
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </Box>
   );
 };
