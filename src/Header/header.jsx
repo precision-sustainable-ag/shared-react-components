@@ -95,6 +95,8 @@ export const PSAHeader = ({
       return menu('Release Notes', item.icon ?? <TextSnippetOutlined />, '/Notes', item);
     } else if (item === 'Data Dictionary' || item.text === 'Data Dictionary') {
       return menu('Data Dictionary', item.icon ?? <MenuBookIcon />, '/Dictionary', item);
+    } else if (item?.dialog) {
+      return menu(item.text, item.icon, '', item);
     }
 
     return item;
@@ -333,7 +335,19 @@ export const PSAHeader = ({
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ p: 0 }}>{dialog}</DialogContent>
+        <DialogContent
+          tabIndex={0}
+          autoFocus
+          sx={{
+            p: 0,
+            overflowY: 'auto',
+            '&:focus': {
+              outline: 'none',
+            },
+          }}
+        >
+          {dialog}
+        </DialogContent>
       </Dialog>
       <Box
         ref={mainRef}

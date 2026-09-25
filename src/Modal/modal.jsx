@@ -33,6 +33,7 @@ export function PSAModal({ open, button, modalContent, paperProps, onClose, ...p
 
       <Modal open={modalOpen} onClose={handleClose} {...props}>
         <Box
+          onClick={handleClose}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -41,6 +42,7 @@ export function PSAModal({ open, button, modalContent, paperProps, onClose, ...p
           }}
         >
           <Paper
+            onClick={(event) => event.stopPropagation()}
             sx={{
               position: 'relative',
               p: 3,

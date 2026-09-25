@@ -24,7 +24,28 @@ export const PSAForm = ({
   buttons,
   handleSubmit,
   onFormChange,
+  isDarkMode = false,
+  labels = [],
+  loaderImage,
 }) => {
+  const colors = isDarkMode
+    ? {
+        background: '#000',
+        text: '#aaa',
+        description: 'rgba(170, 170, 170, 0.8)',
+        disabledBg: '#2c2c2c',
+        disabledBorder: '#444',
+        overlay: 'rgba(0, 0, 0, 0.6)',
+      }
+    : {
+        background: '#fff',
+        text: '#000',
+        description: '#333',
+        disabledBg: '#e0e0e0',
+        disabledBorder: '#ccc',
+        overlay: 'rgba(255, 255, 255, 0.6)',
+      };
+
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -42,7 +63,7 @@ export const PSAForm = ({
       }
       return acc;
     },
-    { repository: repository, labels: [] },
+    { repository: repository, labels: [...labels] },
   );
 
   const [formData, setFormData] = useState(initialFormData);
@@ -128,7 +149,6 @@ export const PSAForm = ({
     const payload = { ...formData };
 
     payload.labels = payload.labels || [];
-    payload.labels.push(`${formData.repository}`);
     if (formData.state) {
       payload.labels.push(`State: ${formData.state}`);
     }
@@ -171,17 +191,39 @@ export const PSAForm = ({
   };
 
   return (
-    <Box sx={{ display: 'grid', rowGap: 5, padding: '3% 10%', textAlign: 'left' }}>
-      <Typography variant="h3">{headerTitle}</Typography>
+    <Box
+      sx={{
+        display: 'grid',
+        rowGap: 5,
+        padding: '3% 10%',
+        textAlign: 'left',
+        backgroundColor: colors.background,
+      }}
+    >
+      <Typography variant="h3" sx={{ color: colors.text }}>
+        {headerTitle}
+      </Typography>
 
       {fields
         .filter((field) => !(field.type === 'dropdown' && field.orientation === 'horizontal'))
         .map((field) => (
-          <Box key={field.label} sx={{ display: 'grid', gap: 1, placeItems: 'start' }}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          <Box
+            key={field.label}
+            sx={{
+              display: 'grid',
+              gap: 1,
+              placeItems: 'start',
+              '& input, & textarea': { color: colors.text },
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: colors.text }}>
               {field.label} {field.required && <span style={{ color: 'red' }}>*</span>}
             </Typography>
-            {field.description && <Typography variant="body1">{field.description}</Typography>}
+            {field.description && (
+              <Typography variant="body1" sx={{ color: colors.description }}>
+                {field.description}
+              </Typography>
+            )}
             {field.type === 'text' && (
               <PSATextField
                 {...field.props}
@@ -207,6 +249,7 @@ export const PSAForm = ({
                 {field.options.map((checkbox) => (
                   <FormControlLabel
                     key={checkbox.label}
+                    sx={{ color: colors.text }}
                     control={
                       <Checkbox
                         {...checkbox.props}
@@ -229,7 +272,9 @@ export const PSAForm = ({
         );
         return (
           horizontalDropdowns.length > 0 && (
-            <Typography variant="h6">{horizontalDropdowns[0].label}</Typography>
+            <Typography variant="h6" sx={{ color: colors.text }}>
+              {horizontalDropdowns[0].label}
+            </Typography>
           )
         );
       })()}
@@ -255,7 +300,6 @@ export const PSAForm = ({
           display: 'grid',
           gap: 1,
           placeContent: 'start',
-          width: 'max-content',
         }}
       >
         {isSubmitDisabled && (
@@ -269,6 +313,12 @@ export const PSAForm = ({
               {...button.props}
               onClick={button.action === 'submit' ? submit : button.onClick}
               disabled={isSubmitDisabled || isSubmitting}
+              sx={{
+                '&.Mui-disabled': {
+                  backgroundColor: colors.disabledBg,
+                  borderColor: colors.disabledBorder,
+                },
+              }}
             />
           </Box>
         ))}
@@ -284,11 +334,11 @@ export const PSAForm = ({
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'rgba(255,255,255,0.6)',
+            backgroundColor: colors.overlay,
             zIndex: 9999,
           }}
         >
-          <PSALoadingSpinner />
+          <PSALoadingSpinner image={loaderImage} />
         </Box>
       )}
 
@@ -372,4 +422,27 @@ PSAForm.propTypes = {
    * Function to handle form submission
    */
   handleSubmit: PropTypes.func,
+
+  /**
+   * Callback fired with the current form data whenever it changes
+   */
+  onFormChange: PropTypes.func,
+
+  /**
+   * Renders the form with a dark background and light text
+   */
+  isDarkMode: PropTypes.bool,
+
+  /**
+   * Optional array of labels to seed the form with. These are merged with any
+   * labels the user selects via checkbox fields (checkbox selections are added
+   * to/removed from this same array as the user interacts with the form).
+   */
+  labels: PropTypes.arrayOf(PropTypes.string),
+
+  /**
+   * Image source (URL or imported asset) shown in the loading overlay while the
+   * form is submitting. Falls back to the default spinner when not provided.
+   */
+  loaderImage: PropTypes.string,
 };
