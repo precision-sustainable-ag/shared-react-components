@@ -220,7 +220,7 @@ const AdminPortal = ({
                   <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
                     {isMultiple ? 'Assign Roles' : 'Assign Role'}
                   </TableCell>
-                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="right">
+                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="center">
                     Actions
                   </TableCell>
                 </TableRow>
@@ -362,7 +362,7 @@ const AdminPortal = ({
                         {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
                       </TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <IconButton
                           size="small"
                           aria-label={`Delete ${row.name}`}
