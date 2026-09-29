@@ -47,7 +47,9 @@ import { useAdminPortal } from './useAdminPortal';
  * - allowUserDeletion (boolean, default false): show the Actions column with a
  *   delete button (and confirmation dialog) for each user. Deleting removes the
  *   user from Auth0 permanently, so apps must opt in explicitly.
- * - title (string, default 'Manage Users'): heading above the table.
+ * - nonAssignableRoles (string[], default []): role names an admin cannot
+ *   assign from this UI. Matched case-insensitively by name; the matching
+ *   options are shown but disabled in the assign-role dropdown.
  */
 const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
 const USERS_PER_PAGE = 10;
@@ -60,6 +62,7 @@ const AdminPortal = ({
   appName,
   showRequests = true,
   allowUserDeletion = false,
+  nonAssignableRoles = [],
   title = 'Manage Users',
 }) => {
   if (!apiBaseUrl) {
@@ -95,6 +98,9 @@ const AdminPortal = ({
 
   const isMultiple = roleAssignmentMode === 'multiple';
   const columnCount = 4 + Number(showRequests) + Number(allowUserDeletion);
+
+  const disabledRoleNames = new Set(nonAssignableRoles.map((name) => name.toLowerCase()));
+  const isRoleAssignable = (role) => !disabledRoleNames.has(role.name.toLowerCase());
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const matchesSearch = (row) =>
@@ -327,7 +333,11 @@ const AdminPortal = ({
                               }}
                             >
                               {roles.map((role) => (
-                                <MenuItem key={role.id} value={role.id}>
+                                <MenuItem
+                                  key={role.id}
+                                  value={role.id}
+                                  disabled={!isRoleAssignable(role)}
+                                >
                                   <Checkbox checked={currentRoleIds.includes(role.id)} />
                                   <ListItemText primary={role.name} />
                                 </MenuItem>
@@ -357,7 +367,7 @@ const AdminPortal = ({
                                 <MenuItem
                                   key={role.id}
                                   value={role.id}
-                                  disabled={role.id === row.role?.id}
+                                  disabled={role.id === row.role?.id || !isRoleAssignable(role)}
                                 >
                                   {role.name}
                                 </MenuItem>

@@ -138,6 +138,7 @@ export const SingleRole = {
     getAccessToken: mockGetAccessToken,
     appName: 'STORYBOOK',
     allowUserDeletion: true,
+    nonAssignableRoles: ['Admin'],
   },
 };
 
