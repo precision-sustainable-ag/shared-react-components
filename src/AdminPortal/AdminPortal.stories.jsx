@@ -6,8 +6,10 @@ const ROLES = [
   { id: 'role_viewer', name: 'Viewer', description: 'Read-only access' },
 ];
 
-// Mirrors auth0-api, which won't delete the admin or default role.
-const PROTECTED_ROLE_NAMES = new Set(['Admin']);
+// Mirrors auth0-api, which won't delete the admin or default role, and gives
+// the default role to users left with none after a role is deleted.
+const DEFAULT_ROLE_NAME = 'Viewer';
+const PROTECTED_ROLE_NAMES = new Set(['Admin', DEFAULT_ROLE_NAME]);
 
 const jsonResponse = (body, status = 200) =>
   Promise.resolve(
@@ -104,11 +106,30 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
       }
 
       const [removed] = roles.splice(index, 1);
+      const defaultRole = roles.find((role) => role.name === DEFAULT_ROLE_NAME);
+      const reassignedUserIds = [];
+
       users.forEach((user) => {
-        if (user.roles) user.roles = user.roles.filter((role) => role.id !== removed.id);
-        if (user.role?.id === removed.id) user.role = null;
+        const hadRole =
+          user.role?.id === removed.id || user.roles?.some((role) => role.id === removed.id);
+        if (!hadRole) return;
+
+        const remainingRoles = (user.roles ?? []).filter((role) => role.id !== removed.id);
+        if (remainingRoles.length === 0) {
+          reassignedUserIds.push(user.id);
+          if (user.roles) user.roles = [defaultRole];
+          user.role = defaultRole;
+        } else {
+          if (user.roles) user.roles = remainingRoles;
+          if (user.role?.id === removed.id) user.role = remainingRoles[0];
+        }
       });
-      return jsonResponse(null, 204);
+
+      return jsonResponse({
+        defaultRole: toAdminRole(defaultRole),
+        reassignedUserIds,
+        unassignedUserIds: [],
+      });
     }
 
     return jsonResponse({ message: `Unhandled mock route: ${method} ${path}` }, 404);

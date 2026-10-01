@@ -161,15 +161,30 @@ export const useAdminPortal = ({
   };
 
   // Resolves true on success so the caller can close its confirmation dialog.
-  // Auth0 unassigns a deleted role from every user, so mirror that locally.
+  // Auth0 unassigns a deleted role from every user, and the backend gives the
+  // default role to anyone left with none, so mirror both locally.
   const deleteRole = async (role) => {
     setUpdatingRoleId(role.id);
 
     try {
-      await api.deleteRole(role.id);
+      const {
+        defaultRole,
+        reassignedUserIds = [],
+        unassignedUserIds = [],
+      } = (await api.deleteRole(role.id)) ?? {};
+      const reassignedIds = new Set(reassignedUserIds);
+
       setRoles((prevRoles) => prevRoles.filter((candidate) => candidate.id !== role.id));
       setUserRows((prevRows) =>
         prevRows.map((row) => {
+          if (defaultRole && reassignedIds.has(row.id)) {
+            return {
+              ...row,
+              ...(row.roles && { roles: [defaultRole] }),
+              role: defaultRole,
+            };
+          }
+
           const remainingRoles = row.roles?.filter((candidate) => candidate.id !== role.id);
           return {
             ...row,
@@ -178,6 +193,12 @@ export const useAdminPortal = ({
           };
         }),
       );
+
+      if (unassignedUserIds.length > 0) {
+        setLoadError(
+          `Deleted role ${role.name}, but ${unassignedUserIds.length} user(s) could not be given the default role and now have no role.`,
+        );
+      }
       return true;
     } catch (error) {
       console.error('Failed to delete role:', error);

@@ -286,7 +286,8 @@ const ManageRoles = ({ roles, updatingRoleId, createRole, deleteRole }) => {
         <DialogContent>
           <DialogContentText>
             This will permanently delete the <strong>{rolePendingDelete?.name}</strong> role and
-            remove it from every user who has it. This cannot be undone.
+            remove it from every user who has it. Users left with no other role will be given the
+            default role. This cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
