@@ -1,10 +1,13 @@
 import AdminPortal from './AdminPortal';
 
 const ROLES = [
-  { id: 'role_admin', name: 'Admin' },
-  { id: 'role_editor', name: 'Editor' },
-  { id: 'role_viewer', name: 'Viewer' },
+  { id: 'role_admin', name: 'Admin', description: 'Full access, including this portal' },
+  { id: 'role_editor', name: 'Editor', description: 'Can create and edit content' },
+  { id: 'role_viewer', name: 'Viewer', description: 'Read-only access' },
 ];
+
+// Mirrors auth0-api, which won't delete the admin or default role.
+const PROTECTED_ROLE_NAMES = new Set(['Admin']);
 
 const jsonResponse = (body, status = 200) =>
   Promise.resolve(
@@ -28,13 +31,20 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
   }
 
   const users = initialUsers.map((user) => ({ ...user }));
+  const roles = ROLES.map((role) => ({ ...role }));
+  let nextRoleNumber = 1;
+
+  const toAdminRole = (role) => ({ ...role, isProtected: PROTECTED_ROLE_NAMES.has(role.name) });
 
   window.__adminPortalMockBackends__.set(apiBaseUrl, async (url, init = {}) => {
     const path = url.slice(apiBaseUrl.length);
     const method = init.method ?? 'GET';
 
     if (method === 'GET' && path === '/config') return jsonResponse({ roleAssignmentMode });
-    if (method === 'GET' && path === '/roles') return jsonResponse(ROLES);
+    if (method === 'GET' && path === '/roles') {
+      return jsonResponse(roles.map(({ id, name }) => ({ id, name })));
+    }
+    if (method === 'GET' && path === '/admin/roles') return jsonResponse(roles.map(toAdminRole));
     if (method === 'GET' && path === '/admin/users') return jsonResponse(users);
 
     const assignMatch = path.match(/^\/admin\/users\/([^/]+)\/role$/);
@@ -44,9 +54,9 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
 
       const body = JSON.parse(init.body ?? '{}');
       if (Array.isArray(body.roleIds)) {
-        user.roles = ROLES.filter((role) => body.roleIds.includes(role.id));
+        user.roles = roles.filter((role) => body.roleIds.includes(role.id));
       } else {
-        user.role = ROLES.find((role) => role.id === body.roleId) ?? null;
+        user.role = roles.find((role) => role.id === body.roleId) ?? null;
       }
       user.requestedAccess = null;
       user.requestStatus = null;
@@ -71,6 +81,33 @@ const installMockAdminPortalBackend = (apiBaseUrl, initialUsers, roleAssignmentM
       if (index === -1) return jsonResponse({ message: 'Not found' }, 404);
 
       users.splice(index, 1);
+      return jsonResponse(null, 204);
+    }
+
+    if (method === 'POST' && path === '/admin/roles') {
+      const { name, description } = JSON.parse(init.body ?? '{}');
+      if (roles.some((role) => role.name.toLowerCase() === name.toLowerCase())) {
+        return jsonResponse({ error: `A role named "${name}" already exists` }, 409);
+      }
+
+      const role = { id: `role_custom_${nextRoleNumber++}`, name, description };
+      roles.push(role);
+      return jsonResponse(toAdminRole(role), 201);
+    }
+
+    const deleteRoleMatch = path.match(/^\/admin\/roles\/([^/]+)$/);
+    if (method === 'DELETE' && deleteRoleMatch) {
+      const index = roles.findIndex((role) => role.id === decodeURIComponent(deleteRoleMatch[1]));
+      if (index === -1) return jsonResponse({ error: 'Role not found' }, 404);
+      if (PROTECTED_ROLE_NAMES.has(roles[index].name)) {
+        return jsonResponse({ error: `The "${roles[index].name}" role cannot be deleted` }, 400);
+      }
+
+      const [removed] = roles.splice(index, 1);
+      users.forEach((user) => {
+        if (user.roles) user.roles = user.roles.filter((role) => role.id !== removed.id);
+        if (user.role?.id === removed.id) user.role = null;
+      });
       return jsonResponse(null, 204);
     }
 
@@ -192,5 +229,40 @@ export const WithoutRequestsColumn = {
     getAccessToken: mockGetAccessToken,
     appName: 'STORYBOOK',
     showRequests: false,
+  },
+};
+
+installMockAdminPortalBackend(
+  'mock://admin-portal/role-management',
+  [
+    {
+      id: 'u1',
+      name: 'Test Name',
+      email: 'test@example.com',
+      roles: [ROLES[0]],
+      role: ROLES[0],
+      requestedAccess: null,
+      requestStatus: null,
+    },
+    {
+      id: 'u2',
+      name: 'Test Name 2',
+      email: 'test2@example.com',
+      roles: [ROLES[1]],
+      role: ROLES[1],
+      requestedAccess: null,
+      requestStatus: null,
+    },
+  ],
+  'single',
+);
+
+export const WithRoleManagement = {
+  args: {
+    apiBaseUrl: 'mock://admin-portal/role-management',
+    getAccessToken: mockGetAccessToken,
+    appName: 'STORYBOOK',
+    allowUserDeletion: true,
+    allowRoleManagement: true,
   },
 };

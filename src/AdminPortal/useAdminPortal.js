@@ -11,7 +11,14 @@ const requestPriority = (row) => {
 const sortByRequestPriority = (rows) =>
   [...rows].sort((a, b) => requestPriority(a) - requestPriority(b));
 
-export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
+// With role management on, roles come from the admin endpoint, which adds
+// each role's description and whether the server allows deleting it.
+export const useAdminPortal = ({
+  apiBaseUrl,
+  getAccessToken,
+  appName,
+  allowRoleManagement = false,
+}) => {
   const api = useMemo(
     () => createAdminPortalApi({ apiBaseUrl, getAccessToken, appName }),
     [apiBaseUrl, getAccessToken, appName],
@@ -23,6 +30,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [updatingUserId, setUpdatingUserId] = useState(null);
+  const [updatingRoleId, setUpdatingRoleId] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -34,7 +42,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
       try {
         const [rows, allRoles, config] = await Promise.all([
           api.fetchUsers(),
-          api.fetchRoles(),
+          allowRoleManagement ? api.fetchAdminRoles() : api.fetchRoles(),
           api.fetchConfig(),
         ]);
 
@@ -60,7 +68,7 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
     return () => {
       isMounted = false;
     };
-  }, [api]);
+  }, [api, allowRoleManagement]);
 
   useEffect(() => {
     if (!loadError) return;
@@ -139,6 +147,47 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
     }
   };
 
+  // Resolves to null on success, or an error message for the create dialog to
+  // show inline (the page-level error sits behind the open dialog).
+  const createRole = async ({ name, description }) => {
+    try {
+      const role = await api.createRole({ name, description });
+      setRoles((prevRoles) => [...prevRoles, role]);
+      return null;
+    } catch (error) {
+      console.error('Failed to create role:', error);
+      return error.serverMessage ?? `Failed to create role ${name}.`;
+    }
+  };
+
+  // Resolves true on success so the caller can close its confirmation dialog.
+  // Auth0 unassigns a deleted role from every user, so mirror that locally.
+  const deleteRole = async (role) => {
+    setUpdatingRoleId(role.id);
+
+    try {
+      await api.deleteRole(role.id);
+      setRoles((prevRoles) => prevRoles.filter((candidate) => candidate.id !== role.id));
+      setUserRows((prevRows) =>
+        prevRows.map((row) => {
+          const remainingRoles = row.roles?.filter((candidate) => candidate.id !== role.id);
+          return {
+            ...row,
+            ...(remainingRoles && { roles: remainingRoles }),
+            role: row.role?.id === role.id ? (remainingRoles?.[0] ?? null) : row.role,
+          };
+        }),
+      );
+      return true;
+    } catch (error) {
+      console.error('Failed to delete role:', error);
+      setLoadError(error.serverMessage ?? `Failed to delete role ${role.name}.`);
+      return false;
+    } finally {
+      setUpdatingRoleId(null);
+    }
+  };
+
   return {
     roles,
     userRows,
@@ -146,8 +195,11 @@ export const useAdminPortal = ({ apiBaseUrl, getAccessToken, appName }) => {
     isLoading,
     loadError,
     updatingUserId,
+    updatingRoleId,
     assignRole,
     rejectRequest,
     deleteUser,
+    createRole,
+    deleteRole,
   };
 };

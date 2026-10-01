@@ -1,35 +1,7 @@
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Chip,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControl,
-  IconButton,
-  InputAdornment,
-  ListItemText,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
+import ManageRoles from './ManageRoles';
+import ManageUsers from './ManageUsers';
 import { useAdminPortal } from './useAdminPortal';
 
 /**
@@ -50,11 +22,15 @@ import { useAdminPortal } from './useAdminPortal';
  * - nonAssignableRoles (string[], default []): role names an admin cannot
  *   assign from this UI. Matched case-insensitively by name; the matching
  *   options are shown but disabled in the assign-role dropdown.
+ * - allowRoleManagement (boolean, default false): add a Manage Roles tab for
+ *   creating and deleting Auth0 roles. The backend's Management API client
+ *   needs the `create:roles` and `delete:roles` scopes for this.
+ * - title (string, default 'Manage Users'): page heading, or the users tab's
+ *   label when role management is enabled.
  */
-const shrinkToContent = { width: '1%', whiteSpace: 'nowrap' };
-const USERS_PER_PAGE = 10;
-const ALL_ROLES = '';
-const NO_ROLE = '__no_role__';
+const USERS_TAB = 'users';
+const ROLES_TAB = 'roles';
+const tabSx = { textTransform: 'none', fontWeight: 600 };
 
 const AdminPortal = ({
   apiBaseUrl,
@@ -63,6 +39,7 @@ const AdminPortal = ({
   showRequests = true,
   allowUserDeletion = false,
   nonAssignableRoles = [],
+  allowRoleManagement = false,
   title = 'Manage Users',
 }) => {
   if (!apiBaseUrl) {
@@ -86,93 +63,32 @@ const AdminPortal = ({
     isLoading,
     loadError,
     updatingUserId,
+    updatingRoleId,
     assignRole,
     rejectRequest,
     deleteUser,
-  } = useAdminPortal({ apiBaseUrl, getAccessToken, appName });
+    createRole,
+    deleteRole,
+  } = useAdminPortal({ apiBaseUrl, getAccessToken, appName, allowRoleManagement });
 
-  const [userPendingDelete, setUserPendingDelete] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [roleFilter, setRoleFilter] = useState(ALL_ROLES);
-  const [pageIndex, setPageIndex] = useState(0);
-
-  const isMultiple = roleAssignmentMode === 'multiple';
-  const columnCount = 4 + Number(showRequests) + Number(allowUserDeletion);
-
-  const disabledRoleNames = new Set(nonAssignableRoles.map((name) => name.toLowerCase()));
-  const isRoleAssignable = (role) => !disabledRoleNames.has(role.name.toLowerCase());
-
-  const normalizedQuery = searchQuery.trim().toLowerCase();
-  const matchesSearch = (row) =>
-    !normalizedQuery ||
-    row.name?.toLowerCase().includes(normalizedQuery) ||
-    row.email?.toLowerCase().includes(normalizedQuery);
-
-  const matchesRole = (row) => {
-    if (roleFilter === ALL_ROLES) return true;
-    const rowRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map((role) => role.id);
-    return roleFilter === NO_ROLE ? rowRoleIds.length === 0 : rowRoleIds.includes(roleFilter);
-  };
-
-  const isFiltering = Boolean(normalizedQuery) || roleFilter !== ALL_ROLES;
-  const visibleRows = userRows.filter((row) => matchesSearch(row) && matchesRole(row));
-
-  // Clamped here rather than in an effect so that deleting the last row on
-  // the last page falls back to the previous page without an empty render.
-  const pageCount = Math.max(1, Math.ceil(visibleRows.length / USERS_PER_PAGE));
-  const currentPage = Math.min(pageIndex, pageCount - 1);
-  const pageRows = visibleRows.slice(
-    currentPage * USERS_PER_PAGE,
-    (currentPage + 1) * USERS_PER_PAGE,
-  );
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-    setPageIndex(0);
-  };
-
-  const handleRoleFilterChange = (event) => {
-    setRoleFilter(event.target.value);
-    setPageIndex(0);
-  };
-
-  const isDeleting = userPendingDelete !== null && updatingUserId === userPendingDelete.id;
-
-  const handleConfirmDelete = async () => {
-    const deleted = await deleteUser(userPendingDelete);
-    if (deleted) setUserPendingDelete(null);
-  };
-
-  const handleSingleAssign = (row, roleId) => {
-    const matchedRole = roles.find((role) => role.id === roleId);
-    if (!matchedRole || roleId === row.role?.id) return;
-
-    assignRole(row, roleId, [matchedRole]);
-  };
-
-  const handleMultiAssign = (row, roleIds) => {
-    const matchedRoles = roles.filter((role) => roleIds.includes(role.id));
-    assignRole(row, roleIds, matchedRoles);
-  };
-
-  const handleApprove = (row) => {
-    const requestedRole = roles.find((role) => role.name === row.requestedAccess);
-    if (!requestedRole) return;
-
-    if (isMultiple) {
-      const currentIds = (row.roles ?? []).map((role) => role.id);
-      const nextIds = currentIds.includes(requestedRole.id)
-        ? currentIds
-        : [...currentIds, requestedRole.id];
-      handleMultiAssign(row, nextIds);
-    } else {
-      handleSingleAssign(row, requestedRole.id);
-    }
-  };
+  const [activeTab, setActiveTab] = useState(USERS_TAB);
+  const showRolesTab = allowRoleManagement && activeTab === ROLES_TAB;
 
   return (
     <Box sx={{ p: 4 }}>
-      <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 3 }}>{title}</Typography>
+      {allowRoleManagement ? (
+        <Tabs
+          value={activeTab}
+          onChange={(_event, nextTab) => setActiveTab(nextTab)}
+          aria-label="Admin portal sections"
+          sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
+        >
+          <Tab value={USERS_TAB} label={title} sx={tabSx} />
+          <Tab value={ROLES_TAB} label="Manage Roles" sx={tabSx} />
+        </Tabs>
+      ) : (
+        <Typography sx={{ fontSize: '20px', fontWeight: 600, mb: 3 }}>{title}</Typography>
+      )}
 
       {loadError && <Typography sx={{ color: 'red.main', mb: 2 }}>{loadError}</Typography>}
 
@@ -180,286 +96,26 @@ const AdminPortal = ({
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <CircularProgress />
         </Box>
+      ) : showRolesTab ? (
+        <ManageRoles
+          roles={roles}
+          updatingRoleId={updatingRoleId}
+          createRole={createRole}
+          deleteRole={deleteRole}
+        />
       ) : (
-        <>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
-            <TextField
-              size="small"
-              placeholder="Search by name or email"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              sx={{ width: '100%', maxWidth: 360 }}
-              slotProps={{
-                htmlInput: { 'aria-label': 'Search users by name or email' },
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-
-            <FormControl size="small" sx={{ minWidth: 180 }}>
-              <Select
-                value={roleFilter}
-                onChange={handleRoleFilterChange}
-                displayEmpty
-                inputProps={{ 'aria-label': 'Filter users by role' }}
-              >
-                <MenuItem value={ALL_ROLES}>All roles</MenuItem>
-                {roles.map((role) => (
-                  <MenuItem key={role.id} value={role.id}>
-                    {role.name}
-                  </MenuItem>
-                ))}
-                <MenuItem value={NO_ROLE}>No role assigned</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 600 }}>Name</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>Email</TableCell>
-                  <TableCell sx={{ fontWeight: 600 }}>{isMultiple ? 'Roles' : 'Role'}</TableCell>
-                  {showRequests && <TableCell sx={{ fontWeight: 600 }}>Requests</TableCell>}
-                  <TableCell sx={{ fontWeight: 600, ...shrinkToContent }}>
-                    {isMultiple ? 'Assign Roles' : 'Assign Role'}
-                  </TableCell>
-                  {allowUserDeletion && (
-                    <TableCell sx={{ fontWeight: 600, ...shrinkToContent }} align="center">
-                      Actions
-                    </TableCell>
-                  )}
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {visibleRows.length === 0 && (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columnCount}
-                      align="center"
-                      sx={{ color: 'text.secondary' }}
-                    >
-                      {isFiltering ? 'No users match the current filters' : 'No users found'}
-                    </TableCell>
-                  </TableRow>
-                )}
-
-                {pageRows.map((row) => {
-                  const isPending = row.requestedAccess && row.requestStatus === 'PENDING';
-                  const isUpdating = updatingUserId === row.id;
-                  const currentRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map(
-                    (role) => role.id,
-                  );
-
-                  return (
-                    <TableRow key={row.id}>
-                      <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>
-                        {isMultiple
-                          ? (row.roles ?? []).length > 0
-                            ? row.roles.map((role) => (
-                                <Chip
-                                  key={role.id}
-                                  label={role.name}
-                                  size="small"
-                                  sx={{ mr: 0.5 }}
-                                />
-                              ))
-                            : 'No role assigned'
-                          : (row.role?.name ?? 'No role assigned')}
-                      </TableCell>
-
-                      {showRequests && (
-                        <TableCell>
-                          {isPending ? (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                              <Typography sx={{ color: 'red.main', fontSize: 'inherit' }}>
-                                {row.requestedAccess}
-                              </Typography>
-
-                              <IconButton
-                                size="small"
-                                aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
-                                color="success"
-                                disabled={isUpdating}
-                                onClick={() => handleApprove(row)}
-                              >
-                                <CheckCircleOutlineIcon fontSize="small" />
-                              </IconButton>
-
-                              <IconButton
-                                size="small"
-                                aria-label={`Reject ${row.requestedAccess} request for ${row.name}`}
-                                color="error"
-                                disabled={isUpdating}
-                                onClick={() => rejectRequest(row)}
-                              >
-                                <HighlightOffIcon fontSize="small" />
-                              </IconButton>
-                            </Box>
-                          ) : (
-                            'None'
-                          )}
-                        </TableCell>
-                      )}
-
-                      <TableCell sx={{ whiteSpace: 'nowrap' }}>
-                        {isMultiple ? (
-                          <FormControl size="small" sx={{ minWidth: 220 }}>
-                            <Select
-                              multiple
-                              displayEmpty
-                              value={currentRoleIds}
-                              renderValue={() => 'Assign roles'}
-                              disabled={isUpdating}
-                              onChange={(event) => handleMultiAssign(row, event.target.value)}
-                              sx={{
-                                '& .MuiSelect-select:focus': { outline: 'none' },
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                                },
-                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                                  borderWidth: '1px',
-                                },
-                              }}
-                            >
-                              {roles.map((role) => (
-                                <MenuItem
-                                  key={role.id}
-                                  value={role.id}
-                                  disabled={!isRoleAssignable(role)}
-                                >
-                                  <Checkbox checked={currentRoleIds.includes(role.id)} />
-                                  <ListItemText primary={role.name} />
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        ) : (
-                          <FormControl size="small" sx={{ minWidth: 180 }}>
-                            <Select
-                              displayEmpty
-                              value=""
-                              renderValue={() => 'Assign role'}
-                              disabled={isUpdating}
-                              onChange={(event) => handleSingleAssign(row, event.target.value)}
-                              sx={{
-                                '& .MuiSelect-select:focus': { outline: 'none' },
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                                },
-                                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                  borderColor: 'rgba(0, 0, 0, 0.23)',
-                                  borderWidth: '1px',
-                                },
-                              }}
-                            >
-                              {roles.map((role) => (
-                                <MenuItem
-                                  key={role.id}
-                                  value={role.id}
-                                  disabled={role.id === row.role?.id || !isRoleAssignable(role)}
-                                >
-                                  {role.name}
-                                </MenuItem>
-                              ))}
-                            </Select>
-                          </FormControl>
-                        )}
-                        {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
-                      </TableCell>
-
-                      {allowUserDeletion && (
-                        <TableCell align="center">
-                          <IconButton
-                            size="small"
-                            aria-label={`Delete ${row.name}`}
-                            disabled={isUpdating}
-                            onClick={() => setUserPendingDelete(row)}
-                            sx={{ color: 'error.main' }}
-                          >
-                            <DeleteOutlinedIcon fontSize="small" />
-                          </IconButton>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          {visibleRows.length > 0 && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                gap: 2,
-                mt: 2,
-              }}
-            >
-              <Button
-                variant="outlined"
-                size="small"
-                disabled={currentPage === 0}
-                onClick={() => setPageIndex(currentPage - 1)}
-              >
-                Back
-              </Button>
-              <Typography aria-live="polite" sx={{ fontSize: '14px' }}>
-                Page {currentPage + 1} of {pageCount}
-              </Typography>
-              <Button
-                variant="outlined"
-                size="small"
-                disabled={currentPage >= pageCount - 1}
-                onClick={() => setPageIndex(currentPage + 1)}
-              >
-                Next
-              </Button>
-            </Box>
-          )}
-        </>
-      )}
-
-      {allowUserDeletion && (
-        <Dialog
-          open={userPendingDelete !== null}
-          onClose={() => !isDeleting && setUserPendingDelete(null)}
-          aria-labelledby="admin-portal-delete-title"
-        >
-          <DialogTitle id="admin-portal-delete-title">Delete user?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              This will permanently delete <strong>{userPendingDelete?.name}</strong> (
-              {userPendingDelete?.email}) and remove their access. This cannot be undone.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setUserPendingDelete(null)} disabled={isDeleting}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleConfirmDelete}
-              disabled={isDeleting}
-              startIcon={isDeleting ? <CircularProgress size={16} color="inherit" /> : null}
-            >
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <ManageUsers
+          roles={roles}
+          userRows={userRows}
+          roleAssignmentMode={roleAssignmentMode}
+          updatingUserId={updatingUserId}
+          assignRole={assignRole}
+          rejectRequest={rejectRequest}
+          deleteUser={deleteUser}
+          showRequests={showRequests}
+          allowUserDeletion={allowUserDeletion}
+          nonAssignableRoles={nonAssignableRoles}
+        />
       )}
     </Box>
   );

@@ -13,7 +13,11 @@ export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken, appName }) =>
     });
 
     if (!response.ok) {
-      throw new Error(`Admin portal request to ${path} failed: ${response.status}`);
+      const body = await response.json().catch(() => null);
+      throw Object.assign(new Error(`Admin portal request to ${path} failed: ${response.status}`), {
+        status: response.status,
+        serverMessage: body?.error ?? null,
+      });
     }
 
     if (response.status === 204) {
@@ -40,6 +44,16 @@ export const createAdminPortalApi = ({ apiBaseUrl, getAccessToken, appName }) =>
       }),
     deleteUser: (userId) =>
       request(`/admin/users/${encodeURIComponent(userId)}`, {
+        method: 'DELETE',
+      }),
+    fetchAdminRoles: () => request('/admin/roles'),
+    createRole: ({ name, description }) =>
+      request('/admin/roles', {
+        method: 'POST',
+        body: JSON.stringify({ name, description }),
+      }),
+    deleteRole: (roleId) =>
+      request(`/admin/roles/${encodeURIComponent(roleId)}`, {
         method: 'DELETE',
       }),
   };
