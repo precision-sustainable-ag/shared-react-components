@@ -155,22 +155,22 @@ const otherTools = [
   {
     name: 'Cover Crop Selector',
     description: descriptions.selector,
-    link: 'https://covercrop-selector.org/',
+    link: 'https://www.covercrop-selector.org/',
   },
   {
     name: 'Seeding Rate Calculator',
     description: descriptions.seeding,
-    link: 'https://covercrop-seedcalc.org/',
+    link: 'https://www.covercrop-seedcalc.org/',
   },
   {
     name: 'Cover Crop Nitrogen Calculator',
     description: descriptions.nitrogen,
-    link: 'https://covercrop-ncalc.org/',
+    link: 'https://www.covercrop-ncalc.org/',
   },
   {
     name: 'Cover Crop Economic Calculator',
     description: descriptions.economic,
-    link: 'https://covercrop-econ.org/',
+    link: 'https://www.covercrop-econ.org/',
   },
   {
     name: 'VegSpec',
@@ -193,7 +193,7 @@ const RecommendationScreen = ({ tool, description, onStartOver }) => {
       )}
       <Typography sx={sx.resultBody}>{description}</Typography>
       <Box sx={sx.resultButtons}>
-        <Box component="a" href="https://develop.vegspec.org/">
+        <Box component="a" href="https://vegspec.org/">
           <PSAButton
             sx={sx.secondaryCta}
             title={<Box sx={{ width: '100%', textAlign: 'center' }}>Other Tools</Box>}
