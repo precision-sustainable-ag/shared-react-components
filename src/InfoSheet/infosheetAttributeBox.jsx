@@ -104,5 +104,5 @@ PSAInfoSheetAttributeBox.propTypes = {
   /**
    * Additional stylings that would be applied to the outer grid
    */
-  sx: PropTypes.node,
+  sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.func]),
 };
