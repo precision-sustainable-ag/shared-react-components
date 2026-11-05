@@ -27,6 +27,7 @@ export const PSAForm = ({
   isDarkMode = false,
   labels = [],
   loaderImage,
+  debugData = {},
 }) => {
   const colors = isDarkMode
     ? {
@@ -146,7 +147,7 @@ export const PSAForm = ({
 
     setIsSubmitting(true);
 
-    const payload = { ...formData };
+    const payload = { ...formData, debugData };
 
     payload.labels = payload.labels || [];
     if (formData.state) {
@@ -158,7 +159,7 @@ export const PSAForm = ({
 
     try {
       if (handleSubmit) {
-        await handleSubmit(formData);
+        await handleSubmit(payload);
       } else {
         const response = await fetch(apiUrl, {
           method: 'POST',
@@ -445,4 +446,9 @@ PSAForm.propTypes = {
    * form is submitting. Falls back to the default spinner when not provided.
    */
   loaderImage: PropTypes.string,
+
+  /**
+   * Optional object for debugging metadata to be appended to the api payload
+   */
+  debugData: PropTypes.object,
 };

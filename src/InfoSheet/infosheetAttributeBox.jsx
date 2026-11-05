@@ -44,7 +44,13 @@ export const PSAInfoSheetAttributeBox = ({ variant, description, label, value, s
                 placement="top-end"
                 enterTouchDelay={0}
                 title={description}
-                PopperProps={{ style: { zIndex: 10000000 } }}
+                slotProps={{
+                  popper: {
+                    style: {
+                      zIndex: 10000000,
+                    },
+                  },
+                }}
                 arrow
                 tooltipContent={
                   <Typography sx={{ fontWeight: 'bold' }} variant="body1" tabIndex="0">
@@ -98,5 +104,5 @@ PSAInfoSheetAttributeBox.propTypes = {
   /**
    * Additional stylings that would be applied to the outer grid
    */
-  sx: PropTypes.node,
+  sx: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.func]),
 };

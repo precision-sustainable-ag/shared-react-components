@@ -5,11 +5,11 @@ import { PSATooltip } from '../Tooltip/tooltip';
 export function PSATagItem({
   chipId,
   label,
-  tooltipText,
-  disabled,
-  color,
-  avatarContent,
-  onClick,
+  tooltipText = '',
+  disabled = false,
+  color = 'secondary',
+  avatarContent = null,
+  onClick = () => {},
   ...props
 }) {
   return (
@@ -65,14 +65,6 @@ PSATagItem.propTypes = {
   avatarContent: PropTypes.node,
   /** click handler */
   onClick: PropTypes.func,
-};
-
-PSATagItem.defaultProps = {
-  tooltipText: '',
-  disabled: false,
-  color: 'secondary',
-  avatarContent: null,
-  onClick: () => {},
 };
 
 export default PSATagItem;

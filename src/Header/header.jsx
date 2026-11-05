@@ -236,8 +236,8 @@ export const PSAHeader = ({
         gap: items.length > 6 ? 0 : 0.5,
       }}
     >
-      {items.map((item) => (
-        <Fragment key={item.key ?? item.text}>
+      {items.map((item, index) => (
+        <Fragment key={item?.key ?? index}>
           {item.text === '|' ? (
             compact ? (
               <Divider />

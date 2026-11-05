@@ -232,7 +232,7 @@ export const PSACropCard = ({
       ([entry]) => {
         if (entry.isIntersecting) {
           setHasLoaded(true);
-          observer.unobserve(elementRef.current);
+          observer.disconnect();
         }
       },
       {

@@ -3,7 +3,14 @@ import { Box, Button, IconButton, Modal, Paper } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-export function PSAModal({ open, button, modalContent, paperProps, onClose, ...props }) {
+export function PSAModal({
+  open,
+  button = null,
+  modalContent = null,
+  paperProps = {},
+  onClose,
+  ...props
+}) {
   const [internalOpen, setInternalOpen] = useState(false);
 
   const controlled = open !== undefined;
@@ -75,12 +82,4 @@ PSAModal.propTypes = {
   modalContent: PropTypes.node,
   paperProps: PropTypes.object,
   onClose: PropTypes.func,
-};
-
-PSAModal.defaultProps = {
-  open: undefined,
-  button: null,
-  modalContent: null,
-  paperProps: {},
-  onClose: undefined,
 };
