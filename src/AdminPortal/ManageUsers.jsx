@@ -27,6 +27,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
@@ -39,6 +40,7 @@ const NO_ROLE = '__no_role__';
 const ManageUsers = ({
   roles,
   userRows,
+  currentUserId,
   roleAssignmentMode,
   updatingUserId,
   assignRole,
@@ -197,6 +199,7 @@ const ManageUsers = ({
             {pageRows.map((row) => {
               const isPending = row.requestedAccess && row.requestStatus === 'PENDING';
               const isUpdating = updatingUserId === row.id;
+              const isOwnRow = row.id === currentUserId;
               const currentRoleIds = (row.roles ?? (row.role ? [row.role] : [])).map(
                 (role) => role.id,
               );
@@ -283,50 +286,66 @@ const ManageUsers = ({
                         </Select>
                       </FormControl>
                     ) : (
-                      <FormControl size="small" sx={{ minWidth: 180 }}>
-                        <Select
-                          displayEmpty
-                          value=""
-                          renderValue={() => 'Assign role'}
-                          disabled={isUpdating}
-                          onChange={(event) => handleSingleAssign(row, event.target.value)}
-                          sx={{
-                            '& .MuiSelect-select:focus': { outline: 'none' },
-                            '& .MuiOutlinedInput-notchedOutline': {
-                              borderColor: 'rgba(0, 0, 0, 0.23)',
-                            },
-                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                              borderColor: 'rgba(0, 0, 0, 0.23)',
-                              borderWidth: '1px',
-                            },
-                          }}
-                        >
-                          {roles.map((role) => (
-                            <MenuItem
-                              key={role.id}
-                              value={role.id}
-                              disabled={role.id === row.role?.id || !isRoleAssignable(role)}
-                            >
-                              {role.name}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                      </FormControl>
+                      <Tooltip
+                        title={isOwnRow ? 'You cannot change your own role' : ''}
+                        describeChild
+                      >
+                        <FormControl size="small" sx={{ minWidth: 180 }}>
+                          <Select
+                            displayEmpty
+                            value=""
+                            renderValue={() => 'Assign role'}
+                            disabled={isUpdating || isOwnRow}
+                            onChange={(event) => handleSingleAssign(row, event.target.value)}
+                            sx={{
+                              '& .MuiSelect-select:focus': { outline: 'none' },
+                              '& .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                              },
+                              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                borderColor: 'rgba(0, 0, 0, 0.23)',
+                                borderWidth: '1px',
+                              },
+                            }}
+                          >
+                            {roles.map((role) => (
+                              <MenuItem
+                                key={role.id}
+                                value={role.id}
+                                disabled={role.id === row.role?.id || !isRoleAssignable(role)}
+                              >
+                                {role.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Tooltip>
                     )}
                     {isUpdating && <CircularProgress size={16} sx={{ ml: 1 }} />}
                   </TableCell>
 
                   {allowUserDeletion && (
                     <TableCell align="center">
-                      <IconButton
-                        size="small"
-                        aria-label={`Delete ${row.name}`}
-                        disabled={isUpdating}
-                        onClick={() => setUserPendingDelete(row)}
-                        sx={{ color: 'error.main' }}
-                      >
-                        <DeleteOutlinedIcon fontSize="small" />
-                      </IconButton>
+                      {isOwnRow ? (
+                        <Tooltip title="You cannot delete your own account">
+                          {/* Disabled buttons don't fire the events Tooltip listens for. */}
+                          <span>
+                            <IconButton size="small" aria-label={`Delete ${row.name}`} disabled>
+                              <DeleteOutlinedIcon fontSize="small" />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <IconButton
+                          size="small"
+                          aria-label={`Delete ${row.name}`}
+                          disabled={isUpdating}
+                          onClick={() => setUserPendingDelete(row)}
+                          sx={{ color: 'error.main' }}
+                        >
+                          <DeleteOutlinedIcon fontSize="small" />
+                        </IconButton>
+                      )}
                     </TableCell>
                   )}
                 </TableRow>

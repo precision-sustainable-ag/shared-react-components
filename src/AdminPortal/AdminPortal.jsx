@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Box, CircularProgress, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 import ManageRoles from './ManageRoles';
@@ -18,7 +19,9 @@ import { useAdminPortal } from './useAdminPortal';
  *   approve/reject actions for pending access requests.
  * - allowUserDeletion (boolean, default false): show the Actions column with a
  *   delete button (and confirmation dialog) for each user. Deleting removes the
- *   user from Auth0 permanently, so apps must opt in explicitly.
+ *   user from Auth0 permanently, so apps must opt in explicitly. The button is
+ *   disabled on the logged-in user's own row, which needs an Auth0Provider above
+ *   this component to identify them; auth0-api rejects self-deletion regardless.
  * - nonAssignableRoles (string[], default []): role names an admin cannot
  *   assign from this UI. Matched case-insensitively by name; the matching
  *   options are shown but disabled in the assign-role dropdown.
@@ -71,6 +74,8 @@ const AdminPortal = ({
     deleteRole,
   } = useAdminPortal({ apiBaseUrl, getAccessToken, appName, allowRoleManagement });
 
+  const { user: currentUser } = useAuth0();
+
   const [activeTab, setActiveTab] = useState(USERS_TAB);
   const showRolesTab = allowRoleManagement && activeTab === ROLES_TAB;
 
@@ -107,6 +112,7 @@ const AdminPortal = ({
         <ManageUsers
           roles={roles}
           userRows={userRows}
+          currentUserId={currentUser?.sub}
           roleAssignmentMode={roleAssignmentMode}
           updatingUserId={updatingUserId}
           assignRole={assignRole}

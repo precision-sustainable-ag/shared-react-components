@@ -1,3 +1,4 @@
+import { Auth0Context } from '@auth0/auth0-react';
 import AdminPortal from './AdminPortal';
 
 const ROLES = [
@@ -145,6 +146,14 @@ const meta = {
   parameters: {
     layout: 'fullscreen',
   },
+  // Logs in as u1, so that user's delete button shows as disabled.
+  decorators: [
+    (Story) => (
+      <Auth0Context.Provider value={{ user: { sub: 'u1' } }}>
+        <Story />
+      </Auth0Context.Provider>
+    ),
+  ],
 };
 
 export default meta;
