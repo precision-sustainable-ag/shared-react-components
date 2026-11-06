@@ -240,9 +240,9 @@ export const PSAStepper = ({
             {...stepButtonProps}
           >
             <Typography
-              fontFamily="IBM Plex Sans"
-              color="additional.greydark"
               sx={{
+                fontFamily: 'IBM Plex Sans',
+                color: 'additional.greydark',
                 ...(activeStep === index && {
                   color: 'main.text',
                   fontWeight: 700,

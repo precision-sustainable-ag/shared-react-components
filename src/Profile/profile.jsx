@@ -6,7 +6,7 @@ export function PSAProfile({ styles }) {
   const { user, isAuthenticated } = useAuth0();
 
   return (
-    <Box sx={{ border: 0.5, borderColor: 'grey.300', ...styles }} ml={2} mr={2} mt={5}>
+    <Box sx={{ ml: 2, mr: 2, mt: 5, border: 0.5, borderColor: 'grey.300', ...styles }}>
       {isAuthenticated ? (
         <div
           style={{

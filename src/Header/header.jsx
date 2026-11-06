@@ -373,6 +373,7 @@ export const PSAHeader = ({
               title={logoTitle}
               data-test="header_logo_button"
               aria-label="Reset and go back to home page"
+              sx={{ flexShrink: 0 }}
             >
               <Box>
                 <PSALogoDisplayer
@@ -399,10 +400,12 @@ export const PSAHeader = ({
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography
                 variant="header"
-                fontSize={council === 'USDA' ? '20px' : 'clamp(20px, 2vw, 32px)'}
                 data-test="header_title"
-                color="black"
                 noWrap
+                sx={{
+                  fontSize: council === 'USDA' ? '20px' : 'clamp(20px, 2vw, 32px)',
+                  color: 'black',
+                }}
               >
                 {title}
               </Typography>
@@ -413,14 +416,15 @@ export const PSAHeader = ({
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <Typography
                     variant="subtitle"
-                    fontSize={council === 'USDA' ? '12px' : 'clamp(12px, 1.5vw, 20px)'}
-                    fontFamily={
-                      council === 'USDA'
-                        ? 'Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif'
-                        : ''
-                    }
                     data-test="header_subtitle"
-                    color="black"
+                    sx={{
+                      fontSize: council === 'USDA' ? '12px' : 'clamp(12px, 1.5vw, 20px)',
+                      color: 'black',
+                      ...(council === 'USDA' && {
+                        fontFamily:
+                          'Source Sans Pro Web, Helvetica Neue, Helvetica, Roboto, Arial, sans-serif',
+                      }),
+                    }}
                   >
                     {subtitle}
                   </Typography>
