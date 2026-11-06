@@ -39,7 +39,7 @@ export const PSAForm = ({
         overlay: 'rgba(0, 0, 0, 0.6)',
       }
     : {
-        background: '#fff',
+        background: 'transparent',
         text: '#000',
         description: '#333',
         disabledBg: '#e0e0e0',
