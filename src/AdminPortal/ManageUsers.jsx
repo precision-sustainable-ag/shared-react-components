@@ -60,6 +60,7 @@ const ManageUsers = ({
 
   const disabledRoleNames = new Set(nonAssignableRoles.map((name) => name.toLowerCase()));
   const isRoleAssignable = (role) => !disabledRoleNames.has(role.name.toLowerCase());
+  const isRequestApprovable = (row) => !disabledRoleNames.has(row.requestedAccess?.toLowerCase());
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
   const matchesSearch = (row) =>
@@ -116,7 +117,7 @@ const ManageUsers = ({
 
   const handleApprove = (row) => {
     const requestedRole = roles.find((role) => role.name === row.requestedAccess);
-    if (!requestedRole) return;
+    if (!requestedRole || !isRoleAssignable(requestedRole)) return;
 
     if (isMultiple) {
       const currentIds = (row.roles ?? []).map((role) => role.id);
@@ -226,15 +227,32 @@ const ManageUsers = ({
                             {row.requestedAccess}
                           </Typography>
 
-                          <IconButton
-                            size="small"
-                            aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
-                            color="success"
-                            disabled={isUpdating}
-                            onClick={() => handleApprove(row)}
-                          >
-                            <CheckCircleOutlineIcon fontSize="small" />
-                          </IconButton>
+                          {isRequestApprovable(row) ? (
+                            <IconButton
+                              size="small"
+                              aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
+                              color="success"
+                              disabled={isUpdating}
+                              onClick={() => handleApprove(row)}
+                            >
+                              <CheckCircleOutlineIcon fontSize="small" />
+                            </IconButton>
+                          ) : (
+                            <Tooltip
+                              title={`The ${row.requestedAccess} role can't be assigned from here`}
+                            >
+                              {/* Disabled buttons don't fire the events Tooltip listens for. */}
+                              <span>
+                                <IconButton
+                                  size="small"
+                                  aria-label={`Approve ${row.requestedAccess} request for ${row.name}`}
+                                  disabled
+                                >
+                                  <CheckCircleOutlineIcon fontSize="small" />
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+                          )}
 
                           <IconButton
                             size="small"
