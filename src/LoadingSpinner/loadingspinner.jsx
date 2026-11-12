@@ -1,14 +1,16 @@
+import { useTheme } from '@emotion/react';
 import PropTypes from 'prop-types';
 import styles from './spinner.module.scss';
 
 export function PSALoadingSpinner({ loaderStyle, image }) {
+  const theme = useTheme();
   const defaultStyle = {
     width: '50px',
     height: '50px',
-    border: `8px solid #90EE90`,
-    borderTop: `8px solid green`,
-    borderLeft: `8px solid green`,
-    borderRight: `8px solid green`,
+    border: `8px solid #9BB58F`,
+    borderTop: `8px solid ${theme.palette.main.accent1}`,
+    borderLeft: `8px solid ${theme.palette.main.accent1}`,
+    borderRight: `8px solid ${theme.palette.main.accent1}`,
     borderRadius: '50%',
     animation: `${styles.spin} 2s linear infinite`,
   };

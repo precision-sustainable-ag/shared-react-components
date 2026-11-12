@@ -1,6 +1,6 @@
+import orangeLoader from '../assets/images/orange.png';
 import { PSALoadingSpinner } from './loadingspinner';
 import styles from './spinner.module.scss';
-import orangeLoader from '../assets/images/orange.png';
 
 const meta = {
   title: 'Feedback/LoadingSpinner',
@@ -20,10 +20,10 @@ export const LoaderStyle = {
     loaderStyle: {
       width: '50px',
       height: '50px',
-      border: `8px solid black`,
-      borderTop: `8px solid red`,
-      borderLeft: `8px solid red`,
-      borderRight: `8px solid red`,
+      border: `8px solid #EB8868`,
+      borderTop: `8px solid #DD3804`,
+      borderLeft: `8px solid #DD3804`,
+      borderRight: `8px solid #DD3804`,
       borderRadius: '50%',
       animation: `${styles.spin} 2s linear infinite`,
     },
