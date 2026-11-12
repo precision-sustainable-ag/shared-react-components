@@ -95,7 +95,12 @@ const RegionSelectorMap = ({
       source: 'states',
       layout: {},
       paint: {
-        'fill-color': ['case', ['boolean', ['feature-state', 'click'], false], '#000', '#ccc'],
+        'fill-color': [
+          'case',
+          ['boolean', ['feature-state', 'click'], false],
+          '#1F1F1F',
+          '#f5f5f5',
+        ],
         'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.9, 0.5],
       },
     });
@@ -106,7 +111,7 @@ const RegionSelectorMap = ({
       source: 'states',
       layout: {},
       paint: {
-        'line-color': '#000',
+        'line-color': '#598445',
         'line-width': 1,
       },
     });
