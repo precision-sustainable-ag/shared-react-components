@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // Reuse the pillBackgroundColor function
 const pillBackgroundColor = (selected, transparent) => {
   if (selected) {
-    return '#49a8ab';
+    return '#408D79';
   }
   if (transparent) {
     return 'transparent';
@@ -24,28 +24,29 @@ const StyledButton = styled(Button, {
     borderColor: '#e3f2f4',
     '&:hover': {
       borderColor: '#62b8bc',
-      backgroundColor: '#49a8ab',
-      color: '#000',
+      backgroundColor: '#408D79',
+      color: 'white',
     },
   }),
   ...(buttonType === 'PillButton' && {
     backgroundColor: pillBackgroundColor(selected, transparent),
     borderRadius: '200px',
-    color: '#000',
+    color: selected ? 'white' : '#000',
     padding: '10px 20px',
     borderColor: '#e3f2f4',
     '&:hover': {
       borderColor: '#62b8bc',
-      backgroundColor: '#49a8ab',
-      color: '#000',
+      backgroundColor: '#408D79',
+      color: 'white',
     },
   }),
   ...(buttonType === 'ValuesChanged' && {
-    backgroundColor: 'rgba(255, 150, 28, 0.2)',
+    backgroundColor: '#C48B0F',
     borderRadius: '999px',
+    color: 'white',
     padding: '0.5rem',
     '&:hover': {
-      backgroundColor: 'rgba(255, 150, 28, 0.3)',
+      backgroundColor: '#976309',
     },
     '@media (max-width:600px)': {
       padding: '0.5rem',
