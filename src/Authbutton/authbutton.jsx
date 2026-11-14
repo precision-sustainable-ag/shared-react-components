@@ -11,7 +11,7 @@ export function PSAAuthButton({ buttonSx, textSx, onSignup }) {
   const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } = useAuth0();
 
   const handleSignup = async () => {
-    // Let the app run its own step first (e.g. ask registration questions)
+    // Let the app run its own step first (e.g. ask the two registration questions)
     // and start the Auth0 sign-up itself when ready.
     if (onSignup) {
       onSignup();
