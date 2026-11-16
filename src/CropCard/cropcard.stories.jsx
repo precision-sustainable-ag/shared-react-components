@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PSACropCard } from './cropcard';
 
 const meta = {
@@ -17,13 +17,50 @@ const sharedConeflowerArgs = {
   scientific: 'Ratibida pinnata',
   cultivar: 'Sunglow',
   content: (
-    <div style={{ padding: '0 0.5rem' }}>
-      Forb/wildflowers, Legumes
-      <br />
-      Perennial
-      <br />
-      Native
-    </div>
+    <Box sx={{ width: '100%', boxSizing: 'border-box', fontSize: 12 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          minHeight: '32px',
+          padding: '0 0.75rem',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span>Type</span>
+        <span style={{ textAlign: 'right' }}>Forb/wildflowers, Legumes</span>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          minHeight: '32px',
+          background: '#F5F5F5',
+          padding: '0 0.75rem',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span>Duration</span>
+        <span style={{ textAlign: 'right' }}>Perennial</span>
+      </Box>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          minHeight: '32px',
+          padding: '0 0.75rem',
+          boxSizing: 'border-box',
+        }}
+      >
+        <span>Nativity Status</span>
+        <span style={{ textAlign: 'right' }}>Native</span>
+      </Box>
+    </Box>
   ),
   details: (
     <Typography>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>
@@ -98,6 +135,20 @@ export const AppalachianBlazingStarInDetailsExample = {
   args: {
     ...sharedAppalachianBlazingStarArgs,
     inDetails: true,
+  },
+};
+
+export const SelectorCropCardExample = {
+  args: {
+    species: 'Pinnate prairie coneflower',
+    scientific: 'Ratibida pinnata',
+    details: (
+      <Typography>Everything you ever wanted to know about Pinnate prairie coneflower</Typography>
+    ),
+    thumbnail: 'https://plants.sc.egov.usda.gov/ImageLibrary/standard/rapi_004_shp.jpg',
+    fullsize: 'https://plants.sc.egov.usda.gov/ImageLibrary/large/rapi_004_lhp.jpg',
+    title: 'Pinnate prairie coneflower',
+    onSelect: () => alert('Adding to list'),
   },
 };
 
