@@ -9,6 +9,7 @@ import {
   IconButton,
   Link,
   Typography,
+  useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
@@ -37,8 +38,6 @@ export const PSACropImage = ({
             width: inDetails ? 260 : '100%',
             aspectRatio: 260 / 140,
             cursor: 'pointer',
-            borderRadius: 2,
-            border: '1px solid #ddd',
           }}
           onClick={() => {
             if (!inDetails) openDetails(true);
@@ -220,6 +219,7 @@ export const PSACropCard = ({
   infoSheetProps = {},
   ...props
 }) => {
+  const theme = useTheme();
   const elementRef = useRef(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -263,7 +263,7 @@ export const PSACropCard = ({
           }
           variant="color"
           rightIcon
-          textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
+          textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left', fontWeight: 'bold' }}
           buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
           onClick={onSelect}
         />
@@ -278,7 +278,7 @@ export const PSACropCard = ({
             </>
           }
           rightIcon
-          textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
+          textSx={{ fontSize: isMobile ? 16 : 12, color: 'white', fontWeight: 'bold' }}
           buttonSx={{
             borderRadius: '5px',
             padding: '5px 7px',
@@ -318,6 +318,8 @@ export const PSACropCard = ({
       sx={[
         {
           borderRadius: '17px',
+          border: `1pt solid ${theme.palette.additional?.grey2 || '#aaaaaa'}`,
+          boxShadow: 'none',
           width: isMobile ? 160 : 260,
           height: '100%',
           background: 'white',
@@ -356,6 +358,7 @@ export const PSACropCard = ({
             </CardContent>
             <CardActions
               sx={{
+                bgcolor: theme.palette.additional?.background2 || '#F5F5F5',
                 justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
                 marginTop: 'auto',
               }}
@@ -365,11 +368,15 @@ export const PSACropCard = ({
                   text="DETAILS"
                   icon={
                     <Info
-                      sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }}
+                      sx={{
+                        fontSize: '14px !important',
+                        marginLeft: '0.3rem',
+                        color: theme.palette.main.accent2 || '#27739E',
+                      }}
                     />
                   }
                   rightIcon
-                  textSx={{ fontSize: 12 }}
+                  textSx={{ fontSize: 12, fontWeight: 'bold' }}
                   buttonSx={{ borderRadius: '5px' }}
                   onClick={() => setOpen(true)}
                 />
@@ -388,13 +395,14 @@ export const PSACropCard = ({
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '0.25rem',
-                    background: '#bbffbb',
-                    color: 'black',
+                    background: theme.palette.additional?.main || '#598445',
+                    color: 'white',
                     padding: '0.3rem 0.7rem',
                     borderRadius: '5px',
                     '&:hover': {
                       textDecoration: 'underline',
                     },
+                    fontWeight: 'bold',
                   }}
                 >
                   {externalLinkText}
