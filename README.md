@@ -2,23 +2,21 @@
 
 **Date Created:** 9/04/24
 
-**Date Last Modified:** 11/22/2024
+**Date Last Modified:** 11/26/2026
 
 This repository contains a collection of reusable React components which is used across our DST projects. This library is developed using [Storybook](https://storybook.js.org/).
 
 ## Table of Contents:
 
-- [PSA Shared Components Library](#psa-shared-components-library)
-  - [Table of Contents:](#table-of-contents)
-  - [Setup](#setup)
-  - [Development](#development)
-    - [Create New Shared Component](#create-new-shared-component)
-    - [Integrate Component to Current Project](#integrate-component-to-current-project)
-  - [Common Issues](#common-issues)
-    - [Not getting updated components](#not-getting-updated-components)
-    - [Cannot get color properties](#cannot-get-color-properties)
-    - [Not getting correct font](#not-getting-correct-font)
-    - [Problem while import the repo to a project which is not using Vite](#problem-while-import-the-repo-to-a-project-which-is-not-using-vite)
+- [Setup](#setup)
+- [Development](#development)
+   - [Create New Shared Component](#create-new-shared-component)
+   - [Integrate Component to Current Project](#integrate-component-to-current-project)
+   - [Local Development Setup](docs/local-development-setup.md)
+   - [Versioning and Release Rules](docs/release-rules.md)
+- [Common Issues](#common-issues)
+
+---
 
 ## Setup
 
@@ -40,6 +38,8 @@ This repository contains a collection of reusable React components which is used
    To begin developing and previewing your components, start the Storybook development server with `npm start`.
 
    This will open Storybook in your default browser at http://localhost:3001, where you can explore and interact with all the components in the library.
+
+---
 
 ## Development
 
@@ -104,55 +104,76 @@ This repository contains a collection of reusable React components which is used
 
    After all development are done, add the component to `src/index.js` following the format of previous components.
 
+---
+
 ### Integrate Component to Current Project
+
+For active local development alongside a consuming app, refer to [Local Development Setup](docs/local-development-setup.md) to set up instant HMR without committing.
+
+To consume components in a project environment:
 
 1. **Update changes to the project**
 
-   To integrate a component to current project, first add this repo to `package.json` of the project:
+   Add this repo to `package.json` of the consuming project:
 
-   ```
+   ```json
    "dependencies": {
-   ...,
-   "shared-react-components": "github:precision-sustainable-ag/shared-react-components#version",
-   ...,
+     "shared-react-components": "github:precision-sustainable-ag/shared-react-components#v1.0.0"
    }
    ```
 
-   If current work is on a specific branch and it's not been merged to `develop`, replace `#version` with `#branchName` ( e.g. `#feature/header` ). If all works have been merged to `develop`, remove the `#version`.
+   - If testing in-progress work on a specific feature branch before merging, refer to [Local Development Setup](docs/local-development-setup.md). You can also temporarily point directly to the branch (e.g., `#feature/xxx`).
 
-   If the repo is already imported in the project, run
+   To update the package in the consuming project, run:
 
+   ```bash
+   npm install shared-react-components
    ```
-   npm install shared-react-components --force
-   ```
 
-   to update the codes.
+   (Add `--force` only if pulling new commits on the exact same feature branch name).
 
-   To make sure all the changes have been updated, check `node_modules/shared-react-component/src` has all the updates of the component, if the updates are not shown, see [Common Issues](#common-issues).
+   To make sure all changes have updated, verify that `node_modules/shared-react-components/src` has the latest component code.
 
 2. **Replace previous component with shared component**
 
    After getting all updates, replace the previous component with shared component.
 
-   To import the shared component, use
+   To import the shared component, use:
 
-   ```
+   ```javascript
    import { componentName } from 'shared-react-components/src';
    ```
 
    Then replace the previous component, make sure all props are aligned and all functions should work as well. Please take care of the `data-test` tags and make sure that they are also applied to the shared component to maintain consistent testing functionality.
 
+### Versioning and Release Rules
+
+   For release procedures and versioning rules, refer to [Versioning and Release Rules](docs/release-rules.md).
+
+
+---
+
 ## Common Issues
 
 #### Not getting updated components
 
-If you're having problems getting the updated component, try find the updated component under `node_modules/shared-react-component/src`, if the updates are not listed, it means that the updates are not correctly downloaded. First check if the branch name in `package.json` is correct, then run
+If you're having problems getting the updated component, check under `node_modules/shared-react-components/src`. If the updates are not listed, the package was not re-downloaded.
 
+To update the package and refresh the lockfile, run:
+
+```bash
+npm install shared-react-components
 ```
-npm install shared-react-component --force
+
+If you are pulling new commits on the same feature branch name, add `--force`:
+
+```bash
+npm install shared-react-components --force
 ```
 
 If this is not solving the problem, delete `node_modules` and run `npm install` again.
+
+---
 
 #### Cannot get color properties
 
@@ -180,6 +201,8 @@ const theme = createTheme(deepmerge(PSATheme, yourTheme));
 
 Currently the components using the theme are: `FigmaButton`, `Header` and `TextField`.
 
+---
+
 #### Not getting correct font
 
 Currently most of our shared components are using [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) font, if you have not getting the correct font in your app, add this line to your `App.js` :
@@ -187,6 +210,8 @@ Currently most of our shared components are using [IBM Plex Sans](https://fonts.
 ```
 import '@fontsource/ibm-plex-sans';
 ```
+
+---
 
 #### Problem while import the repo to a project which is not using Vite
 

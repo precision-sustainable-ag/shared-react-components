@@ -2,6 +2,10 @@
 
 This document introduce a way for local development and testing the shared components in any project that imports it.
 
+**Date Created:** 11/26/2026
+
+**Date Last Modified:** 11/26/2026
+
 ---
 
 ## 1. Consuming App Configuration
@@ -56,7 +60,7 @@ Add `vite.local.config.js` to the consuming app's `.gitignore` to prevent commit
 vite.local.config.js
 ```
 
-Alternatively, add the config to `.git/info/exclude` file to let it be exluded by git.
+Alternatively, add the config to `.git/info/exclude` file to let it be excluded by git.
 
 ---
 
@@ -68,7 +72,6 @@ Add the following scripts to the consuming app's `package.json`:
 
 ```json
 "scripts": {
-  "start": "vite",
   "start:local": "vite --config vite.local.config.js --force"
 }
 ```

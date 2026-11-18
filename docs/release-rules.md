@@ -1,5 +1,9 @@
 # Versioning and Release Rules
 
+**Date Created:** 11/26/2026
+
+**Date Last Modified:** 11/26/2026
+
 ## 1. Semantic Versioning Rules
 
 Version numbers should follow the [Semantic Versioning](https://semver.org/) format `vMAJOR.MINOR.PATCH`:
@@ -22,9 +26,9 @@ v1.2.3
 
 | Channel | Format Example | Meaning |
 | :--- | :--- | :--- |
-| **Alpha** | `v2.0.0-alpha.1` | Early Work In Progress testing on a branch. |
-| **Beta** | `v2.0.0-beta.1` | Feature complete. Used for broader regression testing across DST apps. |
-| **Release Candidate** | `v2.0.0-rc.1` | Candidate for final release. If no bugs are found during verification, this code is merged to `develop`. |
+| **Alpha** | `v1.0.0-alpha.1` | Early Work In Progress testing on a branch. |
+| **Beta** | `v1.0.0-beta.1` | Feature complete. Used for broader regression testing across DST apps. |
+| **Release Candidate** | `v1.0.0-rc.1` | Candidate for final release. If no bugs are found during verification, this code is merged to `develop`. |
 
 Always append a numeric counter (`.1`, `.2`) so follow-up fixes can be tagged without rewriting history.
 
@@ -35,20 +39,24 @@ Always append a numeric counter (`.1`, `.2`) so follow-up fixes can be tagged wi
    - All stable releases represent code that has passed review and merged into `develop`.
 
 2. **Prereleases (`vMAJOR.MINOR.PATCH-<channel>.<iteration>`) only lives on feature branches:**
-   - Feature branches for long-running overhauls only receive prerelease tags such as `v2.0.0-alpha.1` or `v2.0.0-rc.1`.
+   - Feature branches for long-running overhauls only receive prerelease tags such as `v1.0.0-alpha.1` or `v1.0.0-rc.1`.
    - Never place a prerelease tag on `develop`.
 
-3. **Tags are strictly immutable**
+3. **Tags are strictly immutable:**
    - Once a tag is pushed to GitHub, never delete, move, or overwrite it.
    - If a bug is discovered in stable `v1.0.0`, push the fix to `develop` and tag `v1.0.1`.
-   - If a bug is discovered in `v2.0.0-alpha.1`, push the fix to the branch and tag `v2.0.0-alpha.2`.
+   - If a bug is discovered in `v1.0.0-alpha.1`, push the fix to the branch and tag `v1.0.0-alpha.2`.
+
+4. **Release only when consumers are affected:**
+   - Do not create a release for internal-only changes (Storybook stories, documentation, linting, build configs, or unexported scaffolding).
+   - Only create a new release on `develop` when merged changes modify exported components, styles, or APIs that a consuming application actively needs to adopt.
 
 ## 3. Release and Tag Workflow Example
 
 1. Make development and test locally in both the shared components repo and the consuming app repo.
 2. Push updates to feature branch and open a PR in the shared component repo.
-3. After updates reviewed and merged into `develop`, create next stable release tag on `develop`.
-4. Update the consuming app for the latest release, re-install the shared component repo to update `package-lock.json`.
+3. After updates are reviewed and merged into `develop`, create the next stable release tag on `develop` (if a consuming app needs the update).
+4. In the consuming app, update `package.json` to the new tag and run `npm install shared-react-components` to cleanly update `package-lock.json`.
 5. Test the changes in the consuming app and create a PR in the consuming app.
 6. After the consuming app pr is merged, the update is complete.
 
@@ -66,4 +74,5 @@ Currently, all releases are performed **manually**. To manually create a release
 4. Enter the **Release title** (e.g., `v1.1.0`).
 5. Click **Generate release notes** to automatically list all merged pull requests.
 6. Click **Publish release**. GitHub will create the tag on `develop` and publish the release in one step.
+7. In the consuming app, run `npm install shared-react-components` to update the lockfile and download the released code.
 
