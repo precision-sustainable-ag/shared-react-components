@@ -9,7 +9,6 @@ import {
   IconButton,
   Link,
   Typography,
-  useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
@@ -218,7 +217,6 @@ export const PSACropCard = ({
   infoSheetProps = {},
   ...props
 }) => {
-  const theme = useTheme();
   const elementRef = useRef(null);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [open, setOpen] = useState(false);
@@ -276,7 +274,7 @@ export const PSACropCard = ({
             display: 'inline-flex',
             alignItems: 'center',
             gap: '0.25rem',
-            background: theme.palette.additional?.main || '#598445',
+            backgroundColor: 'main.accent1',
             color: 'white',
             padding: isMobile ? '0.2rem 0.4rem' : '0.3rem 0.7rem',
             borderRadius: '5px',
@@ -304,7 +302,8 @@ export const PSACropCard = ({
       sx={[
         {
           borderRadius: '17px',
-          border: `1pt solid ${theme.palette.additional?.grey2 || '#aaaaaa'}`,
+          border: '1pt solid',
+          borderColor: 'additional.grey2',
           boxShadow: 'none',
           width: isMobile ? 160 : 260,
           height: '100%',
@@ -349,7 +348,7 @@ export const PSACropCard = ({
             </CardContent>
             <CardActions
               sx={{
-                bgcolor: theme.palette.additional?.background2 || '#F5F5F5',
+                bgcolor: 'additional.background2',
                 justifyContent:
                   isMobile || (!(!selected && onSelect) && !(selected && onRemove))
                     ? 'center'
@@ -366,7 +365,7 @@ export const PSACropCard = ({
                       sx={{
                         fontSize: '14px !important',
                         marginLeft: '0.3rem',
-                        color: theme.palette.main.accent2 || '#27739E',
+                        color: 'main.accent2',
                       }}
                     />
                   }
@@ -393,7 +392,7 @@ export const PSACropCard = ({
                   textSx={{ fontSize: 12, fontWeight: 'bold', color: 'white' }}
                   buttonSx={{
                     borderRadius: '5px',
-                    backgroundColor: theme.palette.main.accent2 || '#27739E',
+                    backgroundColor: 'main.accent2',
                     padding: '7px 10px',
                   }}
                   onClick={onSelect}
@@ -415,9 +414,9 @@ export const PSACropCard = ({
                   textSx={{ fontSize: 12, fontWeight: 'bold', color: 'white' }}
                   buttonSx={{
                     borderRadius: '5px',
-                    background: theme.palette.additional.greydark || '#565656',
+                    backgroundColor: 'additional.greydark',
                     '&:hover': {
-                      background: theme.palette.additional.grey1 || '#737373',
+                      backgroundColor: 'additional.grey1',
                     },
                   }}
                   onClick={onRemove}
