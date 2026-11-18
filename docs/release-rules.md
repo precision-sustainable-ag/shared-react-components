@@ -10,14 +10,14 @@ Version numbers should follow the [Semantic Versioning](https://semver.org/) for
 
 ```
 v1.2.3
- │ │ └─ PATCH: Backwards-compatible bug fixes
- │ └─── MINOR: New backwards-compatible features or components
- └───── MAJOR: Breaking changes or incompatible API updates
+ │ │ └─ PATCH: Backwards-compatible bugfixes
+ │ └─── MINOR: Backwards-compatible features or components
+ └───── MAJOR: Incompatible changes or API updates
 ```
 
-- **MAJOR** bumps when existing components change in a way that breaks consuming apps (e.g., upgrading from MUI 5/6 to MUI 9, removing or renaming component props). Consuming apps on older major versions stay unaffected until they explicitly opt in.
-- **MINOR** bumps when adding new functionality that does not break existing code (e.g., adding a new component, adding optional props to an existing component).
-- **PATCH** bumps when making bug fixes, styling corrections, or internal refactors that do not change public behavior.
+- **MAJOR** bumps when changes breaks consuming apps (e.g., upgrading from MUI 5/6 to MUI 9, removing or renaming component props). 
+- **MINOR** bumps when adding new features that does not break existing code (e.g., adding a new component, adding optional props to an existing component).
+- **PATCH** bumps when making bug fixes or style changes that do not change public behavior.
 
 
 ### 1.1 Prerelease Rules
@@ -26,8 +26,8 @@ v1.2.3
 
 | Channel | Format Example | Meaning |
 | :--- | :--- | :--- |
-| **Alpha** | `v1.0.0-alpha.1` | Early Work In Progress testing on a branch. |
-| **Beta** | `v1.0.0-beta.1` | Feature complete. Used for broader regression testing across DST apps. |
+| **Alpha** | `v1.0.0-alpha.1` | Early Work In Progress on a branch. |
+| **Beta** | `v1.0.0-beta.1` | Feature complete. Used for broader testing across apps. |
 | **Release Candidate** | `v1.0.0-rc.1` | Candidate for final release. If no bugs are found during verification, this code is merged to `develop`. |
 
 Always append a numeric counter (`.1`, `.2`) so follow-up fixes can be tagged without rewriting history.
@@ -36,7 +36,6 @@ Always append a numeric counter (`.1`, `.2`) so follow-up fixes can be tagged wi
 
 1. **Stable releases (`vMAJOR.MINOR.PATCH`) only lives on `develop`:**
    - Never tag a stable release directly on a feature branch.
-   - All stable releases represent code that has passed review and merged into `develop`.
 
 2. **Prereleases (`vMAJOR.MINOR.PATCH-<channel>.<iteration>`) only lives on feature branches:**
    - Feature branches for long-running overhauls only receive prerelease tags such as `v1.0.0-alpha.1` or `v1.0.0-rc.1`.
@@ -48,17 +47,20 @@ Always append a numeric counter (`.1`, `.2`) so follow-up fixes can be tagged wi
    - If a bug is discovered in `v1.0.0-alpha.1`, push the fix to the branch and tag `v1.0.0-alpha.2`.
 
 4. **Release only when consumers are affected:**
-   - Do not create a release for internal-only changes (Storybook stories, documentation, linting, build configs, or unexported scaffolding).
-   - Only create a new release on `develop` when merged changes modify exported components, styles, or APIs that a consuming application actively needs to adopt.
+   - Only create a new release on `develop` when changes are actively consumed by applications.
+   - There's no need to create a release for internal changes such as stories or documentation.
 
 ## 3. Release and Tag Workflow Example
 
-1. Make development and test locally in both the shared components repo and the consuming app repo.
-2. Push updates to feature branch and open a PR in the shared component repo.
-3. After updates are reviewed and merged into `develop`, create the next stable release tag on `develop` (if a consuming app needs the update).
-4. In the consuming app, update `package.json` to the new tag and run `npm install shared-react-components` to cleanly update `package-lock.json`.
-5. Test the changes in the consuming app and create a PR in the consuming app.
-6. After the consuming app pr is merged, the update is complete.
+Release and Tag in this repo: 
+   1. Develop and test locally.
+   2. Push updates and open a PR.
+   3. After PR is reviewed and merged, create the next stable release tag on `develop` (if needed).
+
+Update dependency in consuming project: 
+   1. Update `package.json` to the new tag and run `npm install shared-react-components` to update `package-lock.json`.
+   2. Create a PR in the consuming app.
+   3. After the consuming app pr is merged, the update is complete.
 
 Pre-release tags are only reserved for large, long-running changes (such as the **MUI v9 migration**) that affects several projects.
 
