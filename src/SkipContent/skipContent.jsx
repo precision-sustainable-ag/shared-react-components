@@ -2,7 +2,6 @@ import { Link } from '@mui/material';
 import PropTypes from 'prop-types';
 
 export function PSASkipContent({ href, text, sx, ...props }) {
-  console.log(123);
   return (
     <Link
       href={href}
