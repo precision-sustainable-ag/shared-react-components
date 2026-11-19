@@ -19,7 +19,7 @@ import * as PSAPiechart from '../Piechart/piechart.stories.jsx';
 import * as PSAProfile from '../Profile/profile.stories.jsx';
 import * as PSARadioButton from '../RadioButton/radiobutton.stories.jsx';
 import * as PSAReduxMap from '../ReduxMap/reduxmap.stories.jsx';
-import * as PSARegionSelectorMap from '../RegionSelectorMap/region-selector-map.stories.jsx';
+import * as PSARegionSelectorMap from '../ReduxMap/region-selector-map.stories.jsx';
 import * as PSASearch from '../Search/search.stories.jsx';
 import * as PSASkipContent from '../SkipContent/skipContent.stories.jsx';
 import * as PSASlider from '../Slider/slider.stories.jsx';

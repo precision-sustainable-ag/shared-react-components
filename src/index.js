@@ -22,7 +22,6 @@ export {
   ReduxMap as PSAReduxMap,
   RegionSelectorMap as PSARegionSelectorMap,
 } from './ReduxMap/index';
-export { default as RegionSelectorMap } from './RegionSelectorMap/index';
 export { default as PSASkipContent } from './SkipContent/index';
 export { default as PSASlider } from './Slider/index';
 export { default as Spinner } from './Spinner/index';
