@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PSASlider } from './slider';
 
 const meta = {
@@ -21,14 +21,18 @@ const meta = {
 export default meta;
 
 const Template = (args) => {
-  const [value, setValue] = useState(args.value || 50);
+  const [value, setValue] = useState(args.value ?? 50);
+
+  useEffect(() => {
+    setValue(args.value ?? 50);
+  }, [args.value]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box width={300}>
+    <Box sx={{ width: 300 }}>
       <PSASlider {...args} value={value} onChange={handleChange} aria-label="PSA Slider" />
     </Box>
   );

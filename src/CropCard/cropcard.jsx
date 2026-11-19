@@ -37,8 +37,6 @@ export const PSACropImage = ({
             width: inDetails ? 260 : '100%',
             aspectRatio: 260 / 140,
             cursor: 'pointer',
-            borderRadius: 2,
-            border: '1px solid #ddd',
           }}
           onClick={() => {
             if (!inDetails) openDetails(true);
@@ -135,15 +133,15 @@ export const PSACropImage = ({
   );
 }; // PSACropImage
 
-const Header = ({ species, scientific, cultivar }) => (
+const Header = ({ species, scientific, cultivar, isMobile }) => (
   <Box
     sx={{
-      padding: '0.5rem 1rem',
+      padding: isMobile ? '0.5rem 0.5rem' : '0.5rem 1rem',
       background: 'white',
       minHeight: 50,
     }}
   >
-    <Typography component="span">{species}</Typography>
+    {species}
 
     <Typography sx={{ fontStyle: 'italic', fontSize: 14 }}>{scientific}</Typography>
 
@@ -183,7 +181,6 @@ const Content = ({
     {content && (
       <Box
         sx={{
-          padding: '0.5rem 0rem',
           background: 'white',
           fontSize: 12,
         }}
@@ -250,60 +247,47 @@ export const PSACropCard = ({
   }, []);
 
   const speciesBox = (
-    <Box>
-      {!selected && onSelect && (
-        <PSAFigmaButton
-          text={
-            <>
-              ADD&nbsp;TO
-              <br />
-              LIST&nbsp;
-              <PlaylistAdd sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
-            </>
-          }
-          variant="color"
-          rightIcon
-          textSx={{ fontSize: isMobile ? 16 : 12, textAlign: 'left' }}
-          buttonSx={{ borderRadius: '5px', padding: '5px 7px', float: 'right' }}
-          onClick={onSelect}
-        />
-      )}
-      {selected && onRemove && (
-        <PSAFigmaButton
-          text={
-            <>
-              Remove
-              <br />
-              <PlaylistRemove sx={{ fontSize: 15, transform: 'translateY(0.2rem)' }} />
-            </>
-          }
-          rightIcon
-          textSx={{ fontSize: isMobile ? 16 : 12, color: 'white' }}
-          buttonSx={{
-            borderRadius: '5px',
-            padding: '5px 7px',
-            background: '#565656',
-            color: 'white',
-            float: 'right',
-            '&:hover': {
-              background: '#999',
-            },
-          }}
-          onClick={onRemove}
-        />
-      )}
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        gap: 0.5,
+      }}
+    >
+      <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
+        {species}
+      </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'baseline',
-          gap: 0.3,
-        }}
-      >
-        <Typography sx={{ lineHeight: '1.2rem', fontWeight: 'bold' }} data-test="crop-card-label">
-          {species}
-        </Typography>
-      </Box>
+      {externalLink && (
+        <Link
+          href={externalLink}
+          title={externalLinkTitle}
+          target="_blank"
+          rel="noreferrer"
+          sx={{
+            flexShrink: 0,
+            whiteSpace: 'nowrap',
+            fontSize: 12,
+            fontFamily: 'IBM Plex Sans',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.25rem',
+            backgroundColor: 'main.accent1',
+            color: 'white',
+            padding: isMobile ? '0.2rem 0.4rem' : '0.3rem 0.7rem',
+            borderRadius: '5px',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+            fontWeight: 'bold',
+          }}
+        >
+          {externalLinkText}
+          <OpenInNew sx={{ fontSize: '0.9em' }} />
+        </Link>
+      )}
     </Box>
   );
 
@@ -318,6 +302,9 @@ export const PSACropCard = ({
       sx={[
         {
           borderRadius: '17px',
+          border: '1pt solid',
+          borderColor: 'additional.grey2',
+          boxShadow: 'none',
           width: isMobile ? 160 : 260,
           height: '100%',
           background: 'white',
@@ -339,7 +326,12 @@ export const PSACropCard = ({
         </div>
       ) : (
         <>
-          <Header species={speciesBox} scientific={scientific} cultivar={cultivar} />
+          <Header
+            species={speciesBox}
+            scientific={scientific}
+            cultivar={cultivar}
+            isMobile={isMobile}
+          />
           <Box sx={{ marginTop: 'auto' }}>
             <CardContent sx={{ padding: 0 }}>
               <Content
@@ -356,8 +348,13 @@ export const PSACropCard = ({
             </CardContent>
             <CardActions
               sx={{
-                justifyContent: isMobile || !externalLink ? 'center' : 'space-between',
+                bgcolor: 'additional.background2',
+                justifyContent:
+                  isMobile || (!(!selected && onSelect) && !(selected && onRemove))
+                    ? 'center'
+                    : 'space-between',
                 marginTop: 'auto',
+                padding: '10px',
               }}
             >
               {details && !isMobile && (
@@ -365,41 +362,65 @@ export const PSACropCard = ({
                   text="DETAILS"
                   icon={
                     <Info
-                      sx={{ fontSize: '14px !important', marginLeft: '0.3rem', color: 'green' }}
+                      sx={{
+                        fontSize: '14px !important',
+                        marginLeft: '0.3rem',
+                        color: 'main.accent2',
+                      }}
                     />
                   }
                   rightIcon
-                  textSx={{ fontSize: 12 }}
-                  buttonSx={{ borderRadius: '5px' }}
+                  textSx={{ fontSize: 12, fontWeight: 'bold' }}
+                  buttonSx={{ borderRadius: '5px', padding: '7px 10px' }}
                   onClick={() => setOpen(true)}
                 />
               )}
 
-              {externalLink && (
-                <Link
-                  href={externalLink}
-                  title={externalLinkTitle}
-                  target="_blank"
-                  rel="noreferrer"
-                  sx={{
-                    fontSize: 12,
-                    fontFamily: 'IBM Plex Sans',
-                    textDecoration: 'none',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.25rem',
-                    background: '#bbffbb',
-                    color: 'black',
-                    padding: '0.3rem 0.7rem',
+              {!selected && onSelect && (
+                <PSAFigmaButton
+                  text="ADD TO LIST"
+                  icon={
+                    <PlaylistAdd
+                      sx={{
+                        fontSize: '14px !important',
+                        marginLeft: '0.3rem',
+                        color: 'white',
+                      }}
+                    />
+                  }
+                  rightIcon
+                  textSx={{ fontSize: 12, fontWeight: 'bold', color: 'white' }}
+                  buttonSx={{
                     borderRadius: '5px',
+                    backgroundColor: 'main.accent2',
+                    padding: '7px 10px',
+                  }}
+                  onClick={onSelect}
+                />
+              )}
+              {selected && onRemove && (
+                <PSAFigmaButton
+                  text="REMOVE"
+                  icon={
+                    <PlaylistRemove
+                      sx={{
+                        fontSize: '14px !important',
+                        marginLeft: '0.3rem',
+                        color: 'white',
+                      }}
+                    />
+                  }
+                  rightIcon
+                  textSx={{ fontSize: 12, fontWeight: 'bold', color: 'white' }}
+                  buttonSx={{
+                    borderRadius: '5px',
+                    backgroundColor: 'additional.greydark',
                     '&:hover': {
-                      textDecoration: 'underline',
+                      backgroundColor: 'additional.grey1',
                     },
                   }}
-                >
-                  {externalLinkText}
-                  <OpenInNew sx={{ fontSize: '0.9em' }} />
-                </Link>
+                  onClick={onRemove}
+                />
               )}
             </CardActions>
             {open ? (

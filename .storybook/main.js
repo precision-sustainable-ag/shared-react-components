@@ -25,6 +25,5 @@ const config = {
     };
     return config;
   },
-  staticDirs: [{ from: '../public', to: '/', ignore: ['.env'] }],
 };
 export default config;

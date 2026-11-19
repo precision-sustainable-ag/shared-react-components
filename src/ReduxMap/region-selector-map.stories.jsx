@@ -16,7 +16,7 @@ const mockStore = configureStore({
 
 // Storybook metadata
 const meta = {
-  title: 'Functional/ReduxRegionSelectorMap',
+  title: 'Functional/RegionSelectorMap',
   component: RegionSelectorMap,
   tags: ['autodocs'],
   parameters: {
@@ -44,6 +44,7 @@ const availableStates = [
   'Colorado',
   'Connecticut',
   'Delaware',
+  'District of Columbia',
   'Florida',
   'Georgia',
   'Hawaii',

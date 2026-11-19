@@ -33,6 +33,9 @@ export function PSASkipContent({ href, text, sx, ...props }) {
           outlineOffset: '5px',
           outlineColor: 'black',
         },
+        '@media print': {
+          display: 'none',
+        },
         ...sx,
       }}
       {...props}

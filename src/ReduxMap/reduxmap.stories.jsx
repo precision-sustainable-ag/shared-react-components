@@ -20,6 +20,12 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    docs: {
+      story: {
+        inline: false,
+        height: '450px',
+      },
+    },
   },
   decorators: [
     (Story) => (

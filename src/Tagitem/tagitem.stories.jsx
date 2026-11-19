@@ -35,6 +35,23 @@ export const Numbered = {
   },
 };
 
+export const Selected = {
+  args: {
+    ...commonArgs,
+    variant: 'filled',
+    avatar: (
+      <Avatar
+        sx={{
+          bgcolor: '#ffffff !important',
+          color: (theme) => `${theme.palette.primary.main} !important`,
+        }}
+      >
+        1
+      </Avatar>
+    ),
+  },
+};
+
 export const Disabled = {
   args: {
     ...commonArgs,

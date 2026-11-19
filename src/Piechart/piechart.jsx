@@ -11,16 +11,16 @@ import * as XLSX from 'xlsx';
 import PSASubContainer from '../SubContainer';
 
 const COLORS = [
-  '#2caffe',
-  '#544fc5',
-  '#00e272',
-  '#fe6a35',
-  '#6b8abc',
-  '#d568fb',
-  '#2ee0ca',
-  '#fa4b42',
-  '#feb56a',
-  '#91e8e1',
+  '#27739E',
+  '#C48B0F',
+  '#598445',
+  '#624469',
+  '#416782',
+  '#91643B',
+  '#408D79',
+  '#DD3804',
+  '#737373',
+  '#1F1F1F',
 ];
 
 const renderLabel = ({ cx, cy, midAngle, outerRadius, percent, smallChart }) => {
