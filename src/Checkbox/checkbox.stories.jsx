@@ -1,3 +1,4 @@
+import { FormControlLabel, FormGroup } from '@mui/material';
 import { useState } from 'react';
 import { PSACheckbox } from './checkbox';
 
@@ -30,30 +31,33 @@ export const CheckboxGroup = () => {
     { label: 'Option 3', value: 'option3' },
   ];
 
-  return options.map((option) => (
-    <label
-      key={option.value}
-      style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}
-    >
-      <PSACheckbox
-        checked={comparisonKeys.includes(option.value)}
-        color="primary"
-        style={{ marginRight: '8px' }}
-        dataTest={`${option.value}-checkbox`}
-        onChange={() => {
-          const comparisonKeysCopy = [...comparisonKeys];
-          const indexOfValue = comparisonKeysCopy.indexOf(option.value);
+  return (
+    <FormGroup>
+      {options.map((option) => (
+        <FormControlLabel
+          key={option.value}
+          control={
+            <PSACheckbox
+              checked={comparisonKeys.includes(option.value)}
+              color="primary"
+              dataTest={`${option.value}-checkbox`}
+              onChange={() => {
+                const comparisonKeysCopy = [...comparisonKeys];
+                const indexOfValue = comparisonKeysCopy.indexOf(option.value);
 
-          if (indexOfValue === -1) {
-            comparisonKeysCopy.push(option.value);
-          } else {
-            comparisonKeysCopy.splice(indexOfValue, 1);
+                if (indexOfValue === -1) {
+                  comparisonKeysCopy.push(option.value);
+                } else {
+                  comparisonKeysCopy.splice(indexOfValue, 1);
+                }
+
+                handleUpdateComparisonKeys(comparisonKeysCopy);
+              }}
+            />
           }
-
-          handleUpdateComparisonKeys(comparisonKeysCopy);
-        }}
-      />
-      {option.label}
-    </label>
-  ));
+          label={option.label}
+        />
+      ))}
+    </FormGroup>
+  );
 };
