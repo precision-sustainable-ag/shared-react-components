@@ -2,6 +2,44 @@ import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import PropTypes from 'prop-types';
 
+const RadioUncheckedIcon = () => (
+  <Box
+    sx={{
+      width: 16,
+      height: 16,
+      borderRadius: '50%',
+      backgroundColor: 'white',
+      border: '3px solid',
+      borderColor: 'additional.grey2',
+      boxSizing: 'border-box',
+    }}
+  />
+);
+
+const RadioCheckedIcon = () => (
+  <Box
+    sx={{
+      width: 16,
+      height: 16,
+      borderRadius: '50%',
+      backgroundColor: 'white',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxSizing: 'border-box',
+    }}
+  >
+    <Box
+      sx={{
+        width: 10,
+        height: 10,
+        borderRadius: '50%',
+        backgroundColor: 'additional.greydark',
+      }}
+    />
+  </Box>
+);
+
 export function PSARadioButton({
   options,
   selectedValue,
@@ -45,7 +83,7 @@ export function PSARadioButton({
             <SvgIcon
               component={option.icon}
               sx={{
-                color: selectedValue === option.value ? 'white' : 'primary.main',
+                color: selectedValue === option.value ? 'white' : 'additional.grey1',
                 marginRight: 1,
                 padding: '4px',
               }}
@@ -53,14 +91,13 @@ export function PSARadioButton({
           ) : (
             <Radio
               checked={selectedValue === option.value}
+              icon={<RadioUncheckedIcon />}
+              checkedIcon={<RadioCheckedIcon />}
               sx={{
-                color: selectedValue === option.value ? 'white' : 'primary.main',
                 marginRight: 1,
                 padding: '4px',
-                '&.Mui-checked': {
-                  color: 'white',
-                },
               }}
+              disableRipple
               tabIndex={-1}
             />
           )}
