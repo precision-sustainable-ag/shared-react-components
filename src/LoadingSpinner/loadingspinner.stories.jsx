@@ -1,4 +1,4 @@
-import orangeLoader from '../assets/images/orange.png';
+import orangeLoader from './assets/orange.png';
 import { PSALoadingSpinner } from './loadingspinner';
 import styles from './spinner.module.scss';
 
