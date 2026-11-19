@@ -23,7 +23,6 @@ import * as PSARegionSelectorMap from '../ReduxMap/region-selector-map.stories.j
 import * as PSASearch from '../Search/search.stories.jsx';
 import * as PSASkipContent from '../SkipContent/skipContent.stories.jsx';
 import * as PSASlider from '../Slider/slider.stories.jsx';
-import * as PSASpinner from '../Spinner/spinner.stories.jsx';
 import * as PSAStepper from '../Stepper/progressstepper.stories.jsx';
 import * as PSASubContainer from '../SubContainer/subcontainer.stories.jsx';
 import * as PSATagitem from '../Tagitem/tagitem.stories.jsx';
@@ -58,7 +57,6 @@ export {
   PSASearch,
   PSASkipContent,
   PSASlider,
-  PSASpinner,
   PSAStepper,
   PSASubContainer,
   PSATagitem,
