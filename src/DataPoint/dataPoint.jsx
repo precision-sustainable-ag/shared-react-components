@@ -12,10 +12,12 @@ export function PSADataPoint({ title, value, icon, unit, boxSx }) {
             minWidth: '300px',
             minHeight: '155px',
             display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             ...boxSx,
           }}
         >
-          <Box margin={'auto'}>
+          <Box sx={{ margin: 'auto' }}>
             <Typography
               sx={{
                 fontSize: '40px',
