@@ -7,10 +7,17 @@ import PSAFigmaButton from '../FigmaButton';
  * This is a button component based on `figmaButton`. The button includes functions for login/logout and is need to be implemented under
  * `Auth0Provider`. Check [Auth0 document](https://developer.auth0.com/resources/guides/spa/react/basic-authentication) for more details.
  */
-export function PSAAuthButton({ buttonSx, textSx }) {
+export function PSAAuthButton({ buttonSx, textSx, onSignup }) {
   const { isAuthenticated, logout, loginWithPopup, loginWithRedirect } = useAuth0();
 
   const handleSignup = async () => {
+    // Let the app run its own step first (e.g. ask the two registration questions)
+    // and start the Auth0 sign-up itself when ready.
+    if (onSignup) {
+      onSignup();
+      return;
+    }
+
     const options = {
       authorizationParams: {
         screen_hint: 'signup',
@@ -80,4 +87,7 @@ PSAAuthButton.propTypes = {
   buttonSx: PropTypes.object,
   /** Additional styles for the text in the button */
   textSx: PropTypes.object,
+  /** Optional handler for the SIGN UP button. When provided it replaces the default
+   * Auth0 sign-up, so the app can show its own step first and start sign-up itself. */
+  onSignup: PropTypes.func,
 };
